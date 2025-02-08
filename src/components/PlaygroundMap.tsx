@@ -1,25 +1,35 @@
 import { Box, Spinner, Text } from '@chakra-ui/react'
 import L from 'leaflet'
-import icon from 'leaflet/dist/images/marker-icon.png'
-import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import blueIcon from '../assets/playground-icon-blue.svg'
+import greenIcon from '../assets/playground-icon-green.svg'
+import redIcon from '../assets/playground-icon-red.svg'
+import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
+import { useVisits } from '../hooks/useVisits'
 
-// Fix for default markers
+// Create icons for different states
+const createPlaygroundIcon = (iconUrl: string) => {
+  return L.icon({
+    iconUrl,
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [0, -40]
+  })
+}
 
-const DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41]
-})
-L.Marker.prototype.options.icon = DefaultIcon
+// Create the three icon variants
+const bluePlaygroundIcon = createPlaygroundIcon(blueIcon)
+const greenPlaygroundIcon = createPlaygroundIcon(greenIcon)
+const redPlaygroundIcon = createPlaygroundIcon(redIcon)
 
 const PlaygroundMap = () => {
-  const { playgrounds, loading, error } = usePlaygrounds()
+  const { playgrounds, loading: playgroundsLoading, error: playgroundsError } = usePlaygrounds()
+  const { user } = useAuth()
+  const { visits, loading: visitsLoading } = useVisits()
 
-  if (loading) {
+  if (playgroundsLoading || visitsLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Spinner size="xl" />
@@ -27,12 +37,22 @@ const PlaygroundMap = () => {
     )
   }
 
-  if (error) {
+  if (playgroundsError) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
-        <Text color="red.500">{error}</Text>
+        <Text color="red.500">{playgroundsError}</Text>
       </Box>
     )
+  }
+
+  const getPlaygroundIcon = (playgroundId: string) => {
+    // If user is not logged in or visits are still loading, show blue icon
+    if (!user || visitsLoading) {
+      return bluePlaygroundIcon
+    }
+
+    const hasVisited = visits.some(visit => visit.playground_id === playgroundId)
+    return hasVisited ? greenPlaygroundIcon : redPlaygroundIcon
   }
 
   // Calculate center based on first playground or default to New York
@@ -55,6 +75,7 @@ const PlaygroundMap = () => {
           <Marker
             key={playground.id}
             position={[playground.latitude, playground.longitude]}
+            icon={getPlaygroundIcon(playground.id)}
           >
             <Popup>
               <Box p={1}>
