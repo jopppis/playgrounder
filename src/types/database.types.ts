@@ -18,7 +18,28 @@ export interface Visit {
   user_id: string
   visited_at: string
   notes: string | null
-  rating: number | null
+}
+
+export interface Rating {
+  id: string
+  playground_id: string
+  user_id: string
+  rating: number
+  is_public: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface PlaygroundRatings {
+  avg_rating: number
+  total_ratings: number
+  user_rating: number | null
+}
+
+export interface PublicRating {
+  rating: number
+  created_at: string
+  updated_at: string
 }
 
 export interface Database {
@@ -34,6 +55,11 @@ export interface Database {
         Insert: Omit<Visit, 'id'>
         Update: Partial<Omit<Visit, 'id'>>
       }
+      ratings: {
+        Row: Rating
+        Insert: Omit<Rating, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Rating, 'id' | 'created_at' | 'updated_at'>>
+      }
     }
     Functions: {
       playgrounds_nearby: {
@@ -43,6 +69,19 @@ export interface Database {
           radius_meters?: number
         }
         Returns: Playground[]
+      }
+      get_playground_ratings: {
+        Args: {
+          playground_id_param: string
+          user_id_param?: string
+        }
+        Returns: PlaygroundRatings
+      }
+      get_public_ratings: {
+        Args: {
+          playground_id_param: string
+        }
+        Returns: PublicRating[]
       }
     }
   }
