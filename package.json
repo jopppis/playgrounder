@@ -23,7 +23,6 @@
     "vite": "^6.1.0"
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^3.7.0",
     "@chakra-ui/switch": "^2.1.2",
     "@chakra-ui/toast": "^7.0.2",
