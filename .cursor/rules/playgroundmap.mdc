@@ -1,10 +1,11 @@
 ---
 description: Explanation of the project
-globs: 
+globs:
 ---
 
 # Project description
 
+- The project is known as Playgrounder
 - The project is an interactive playground map for tracking visited playgrounds nearby
 - The project is implemented in React, Chakra UI v3, Leaflet
 - The backend is supabase

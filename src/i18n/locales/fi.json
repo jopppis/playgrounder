@@ -25,7 +25,7 @@
   },
   "menu": {
     "about": {
-      "title": "Tietoa Leikkipaikkakartoittimesta",
+      "title": "Tietoa PlayGrounderista",
       "description": "Yhteisöllinen sovellus, joka auttaa vanhempia ja hoitajia löytämään ja jakamaan paikallisia leikkipaikkoja. Seuraa käyntejäsi, arvioi leikkipaikkoja ja löydä uusia paikkoja lasten leikkeihin.",
       "backButton": "Takaisin valikkoon"
     },

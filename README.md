@@ -1,4 +1,4 @@
-# Playground Map
+# PlayGrounder
 
 An interactive web application to help parents and caregivers find and share local playgrounds. Built with React, Vite, and Chakra UI, using Supabase for the backend.
 
