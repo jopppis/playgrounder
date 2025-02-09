@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   HStack,
+  Link,
   Spinner,
   Text,
   VStack
@@ -208,8 +209,61 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
     }
   }
 
+  const renderDescriptionWithLinks = (text: string) => {
+    // Replace \n with actual newlines first
+    const processedText = text.replace(/\\n/g, '\n')
+
+    // Split by newlines to preserve them
+    const lines = processedText.split('\n')
+
+    // URL regex pattern
+    const urlPattern = /(https?:\/\/[^\s]+)/g
+
+    return lines.map((line, lineIndex) => {
+      const parts = []
+      let lastIndex = 0
+      let match
+
+      // Find all URLs in the current line
+      while ((match = urlPattern.exec(line)) !== null) {
+        // Add text before the URL
+        if (match.index > lastIndex) {
+          parts.push(line.slice(lastIndex, match.index))
+        }
+
+        // Add the URL as a link
+        parts.push(
+          <Link
+            key={match.index}
+            href={match[0]}
+            color="#4A90E2"
+            isExternal
+            _hover={{ color: '#FF9F43', textDecoration: 'underline' }}
+          >
+            {match[0]}
+          </Link>
+        )
+
+        lastIndex = urlPattern.lastIndex
+      }
+
+      // Add remaining text after last URL
+      if (lastIndex < line.length) {
+        parts.push(line.slice(lastIndex))
+      }
+
+      // Return the line with a line break if it's not the last line
+      return (
+        <Box key={lineIndex} display="inline">
+          {parts}
+          {lineIndex < lines.length - 1 && '\n'}
+        </Box>
+      )
+    })
+  }
+
   return (
-    <Box p={2}>
+    <Box p={2} minW="300px" maxW="400px">
       <VStack align="stretch" spacing={1.5}>
         <HStack justify="space-between" align="center" spacing={2}>
           <Text fontWeight="bold" color="#2D3E50">{playground.name}</Text>
@@ -223,7 +277,9 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
           )}
         </HStack>
         {playground.description && (
-          <Text fontSize="sm" color="#2D3E50" lineHeight="short">{playground.description}</Text>
+          <Text fontSize="sm" color="#2D3E50" lineHeight="short" whiteSpace="pre-wrap">
+            {renderDescriptionWithLinks(playground.description)}
+          </Text>
         )}
         {playground.address && (
           <Text fontSize="sm" color="#828282" lineHeight="short">
