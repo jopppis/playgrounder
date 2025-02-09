@@ -1,0 +1,44 @@
+{
+  "auth": {
+    "signUp": {
+      "title": "Sign Up",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Create your password",
+      "error": {
+        "title": "Error"
+      },
+      "success": {
+        "title": "Success!",
+        "message": "Please check your email for the confirmation link. Closing in a moment..."
+      },
+      "button": {
+        "loading": "Signing up...",
+        "default": "Sign Up"
+      }
+    },
+    "signIn": {
+      "title": "Sign In",
+      "button": "Sign In"
+    }
+  },
+  "menu": {
+    "about": {
+      "title": "About Playground Tracker",
+      "description": "A community-driven app to help parents and caregivers find and share local playgrounds. Track your visits, rate playgrounds, and discover new places for your children to play.",
+      "backButton": "Back to Menu"
+    },
+    "buttons": {
+      "about": "About",
+      "close": "×"
+    }
+  },
+  "map": {
+    "loading": "Loading...",
+    "attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"
+  },
+  "playground": {
+    "address": "Address"
+  }
+}

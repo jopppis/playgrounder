@@ -8,6 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabaseClient'
 
 interface SignUpProps {
@@ -15,6 +16,7 @@ interface SignUpProps {
 }
 
 export default function SignUp({ onSuccess }: SignUpProps) {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -66,31 +68,28 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         <CloseButton onClick={onSuccess} />
       </Box>
       <Stack gap={8}>
-        <Heading size="lg" color="gray.800">Sign Up</Heading>
+        <Heading size="lg" color="gray.800">{t('auth.signUp.title')}</Heading>
         {error && (
           <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
-            <Text fontWeight="bold">Error</Text>
+            <Text fontWeight="bold">{t('auth.signUp.error.title')}</Text>
             <Text>{error}</Text>
           </Box>
         )}
         {success && (
           <Box p={4} bg="green.50" color="green.500" borderRadius="md" w="100%">
-            <Text fontWeight="bold">Success!</Text>
-            <Text>
-              Please check your email for the confirmation link.
-              Closing in a moment...
-            </Text>
+            <Text fontWeight="bold">{t('auth.signUp.success.title')}</Text>
+            <Text>{t('auth.signUp.success.message')}</Text>
           </Box>
         )}
         <Box as="form" onSubmit={handleSubmit}>
           <Stack gap={4}>
             <Box>
-              <Text mb={2} color="gray.700">Email</Text>
+              <Text mb={2} color="gray.700">{t('auth.signUp.email')}</Text>
               <Input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                placeholder={t('auth.signUp.emailPlaceholder')}
                 required
                 bg="white"
                 color="gray.800"
@@ -101,12 +100,12 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               />
             </Box>
             <Box>
-              <Text mb={2} color="gray.700">Password</Text>
+              <Text mb={2} color="gray.700">{t('auth.signUp.password')}</Text>
               <Input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                placeholder={t('auth.signUp.passwordPlaceholder')}
                 required
                 minLength={6}
                 bg="white"
@@ -126,7 +125,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               _hover={{ transform: 'translateY(-1px)' }}
               transition="all 0.2s"
             >
-              {loading ? 'Signing up...' : 'Sign Up'}
+              {loading ? t('auth.signUp.button.loading') : t('auth.signUp.button.default')}
             </Button>
           </Stack>
         </Box>

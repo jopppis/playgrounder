@@ -1,0 +1,44 @@
+{
+  "auth": {
+    "signUp": {
+      "title": "Rekisteröidy",
+      "email": "Sähköposti",
+      "emailPlaceholder": "Syötä sähköpostiosoitteesi",
+      "password": "Salasana",
+      "passwordPlaceholder": "Luo salasanasi",
+      "error": {
+        "title": "Virhe"
+      },
+      "success": {
+        "title": "Onnistui!",
+        "message": "Tarkista sähköpostisi vahvistuslinkistä. Suljetaan hetken kuluttua..."
+      },
+      "button": {
+        "loading": "Rekisteröidään...",
+        "default": "Rekisteröidy"
+      }
+    },
+    "signIn": {
+      "title": "Kirjaudu",
+      "button": "Kirjaudu"
+    }
+  },
+  "menu": {
+    "about": {
+      "title": "Tietoa Leikkipaikkakartoittimesta",
+      "description": "Yhteisöllinen sovellus, joka auttaa vanhempia ja hoitajia löytämään ja jakamaan paikallisia leikkipaikkoja. Seuraa käyntejäsi, arvioi leikkipaikkoja ja löydä uusia paikkoja lasten leikkeihin.",
+      "backButton": "Takaisin valikkoon"
+    },
+    "buttons": {
+      "about": "Tietoa",
+      "close": "×"
+    }
+  },
+  "map": {
+    "loading": "Ladataan...",
+    "attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> tekijät"
+  },
+  "playground": {
+    "address": "Osoite"
+  }
+}

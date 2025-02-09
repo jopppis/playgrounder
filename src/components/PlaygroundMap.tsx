@@ -1,6 +1,7 @@
 import { Box, Spinner, Text } from '@chakra-ui/react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { useTranslation } from 'react-i18next'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import blueIcon from '../assets/playground-icon-blue.svg'
 import greenIcon from '../assets/playground-icon-green.svg'
@@ -25,6 +26,7 @@ const greenPlaygroundIcon = createPlaygroundIcon(greenIcon)
 const redPlaygroundIcon = createPlaygroundIcon(redIcon)
 
 const PlaygroundMap = () => {
+  const { t } = useTranslation()
   const { playgrounds, loading: playgroundsLoading, error: playgroundsError } = usePlaygrounds()
   const { user } = useAuth()
   const { visits, loading: visitsLoading } = useVisits()
@@ -68,7 +70,7 @@ const PlaygroundMap = () => {
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution={t('map.attribution')}
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {playgrounds.map(playground => (

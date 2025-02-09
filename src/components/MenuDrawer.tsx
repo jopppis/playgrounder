@@ -3,11 +3,14 @@ import {
   Button,
   Grid,
   GridItem,
-  Text
+  Text,
+  VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import SignUp from './Auth/SignUp'
+import LanguageSwitcher from './LanguageSwitcher'
 
 type MenuDrawerProps = {
   isOpen: boolean
@@ -15,6 +18,7 @@ type MenuDrawerProps = {
 }
 
 const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
+  const { t } = useTranslation()
   const [showAbout, setShowAbout] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
   const navigate = useNavigate()
@@ -64,12 +68,12 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
             _hover={{ bg: 'whiteAlpha.200' }}
             fontSize="md"
           >
-            ×
+            {t('menu.buttons.close')}
           </Button>
           <Box pt={12}>
             {!showAbout ? (
-              <>
-                <Grid templateColumns="repeat(2, 1fr)" gap={2} mb={4}>
+              <VStack spacing={4}>
+                <Grid templateColumns="repeat(2, 1fr)" gap={2} w="100%">
                   <GridItem>
                     <Button
                       w="100%"
@@ -77,7 +81,7 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
                       colorScheme="teal"
                       onClick={handleOpenSignUp}
                     >
-                      Sign Up
+                      {t('auth.signUp.title')}
                     </Button>
                   </GridItem>
                   <GridItem>
@@ -88,7 +92,7 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
                       _hover={{ bg: 'whiteAlpha.200' }}
                       onClick={() => handleNavigation('/signin')}
                     >
-                      Sign In
+                      {t('auth.signIn.title')}
                     </Button>
                   </GridItem>
                 </Grid>
@@ -99,17 +103,19 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
                   _hover={{ bg: 'whiteAlpha.200' }}
                   onClick={() => setShowAbout(true)}
                 >
-                  About
+                  {t('menu.buttons.about')}
                 </Button>
-              </>
+                <Box pt={4}>
+                  <LanguageSwitcher />
+                </Box>
+              </VStack>
             ) : (
               <>
                 <Text fontSize="lg" fontWeight="bold" mb={4}>
-                  About Playground Tracker
+                  {t('menu.about.title')}
                 </Text>
                 <Text mb={4}>
-                  A community-driven app to help parents and caregivers find and share local playgrounds.
-                  Track your visits, rate playgrounds, and discover new places for your children to play.
+                  {t('menu.about.description')}
                 </Text>
                 <Button
                   w="100%"
@@ -118,7 +124,7 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
                   _hover={{ bg: 'whiteAlpha.200' }}
                   onClick={() => setShowAbout(false)}
                 >
-                  Back to Menu
+                  {t('menu.about.backButton')}
                 </Button>
               </>
             )}
@@ -145,7 +151,7 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
             borderRadius="md"
             maxW="md"
             w="90%"
-            onClick={e => e.stopPropagation()}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             <SignUp onSuccess={handleCloseSignUp} />
           </Box>
