@@ -20,7 +20,24 @@
     },
     "signIn": {
       "title": "Kirjaudu",
-      "button": "Kirjaudu"
+      "email": "Sähköposti",
+      "emailPlaceholder": "Syötä sähköpostiosoitteesi",
+      "password": "Salasana",
+      "passwordPlaceholder": "Syötä salasanasi",
+      "error": {
+        "title": "Virhe"
+      },
+      "button": {
+        "loading": "Kirjaudutaan...",
+        "default": "Kirjaudu"
+      }
+    },
+    "signOut": {
+      "button": "Kirjaudu ulos"
+    },
+    "user": {
+      "welcome": "Tervetuloa",
+      "email": "Kirjautunut käyttäjänä"
     }
   },
   "menu": {

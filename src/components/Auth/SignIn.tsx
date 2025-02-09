@@ -1,50 +1,45 @@
 import {
-  Box,
-  Button,
-  CloseButton,
-  Heading,
-  Input,
-  Stack,
-  Text,
+    Box,
+    Button,
+    CloseButton,
+    Heading,
+    Input,
+    Stack,
+    Text,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 
-interface SignUpProps {
+interface SignInProps {
   onSuccess?: () => void
 }
 
-export default function SignUp({ onSuccess }: SignUpProps) {
+export default function SignIn({ onSuccess }: SignInProps) {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    setSuccess(false)
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          emailRedirectTo: window.location.origin + '/signin'
-        }
       })
 
       if (error) throw error
 
       if (data) {
-        setSuccess(true)
-        setTimeout(() => {
-          onSuccess?.()
-        }, 3000)
+        navigate('/')
+        onSuccess?.()
       }
     } catch (error: any) {
       setError(error.message)
@@ -74,28 +69,22 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         />
       </Box>
       <Stack gap={8}>
-        <Heading size="lg" color="#4A90E2">{t('auth.signUp.title')}</Heading>
+        <Heading size="lg" color="#4A90E2">{t('auth.signIn.title')}</Heading>
         {error && (
           <Box p={4} bg="#FF6B6B20" color="#FF6B6B" borderRadius="md" w="100%">
-            <Text fontWeight="bold">{t('auth.signUp.error.title')}</Text>
+            <Text fontWeight="bold">{t('auth.signIn.error.title')}</Text>
             <Text>{error}</Text>
-          </Box>
-        )}
-        {success && (
-          <Box p={4} bg="#6FCF9720" color="#6FCF97" borderRadius="md" w="100%">
-            <Text fontWeight="bold">{t('auth.signUp.success.title')}</Text>
-            <Text>{t('auth.signUp.success.message')}</Text>
           </Box>
         )}
         <Box as="form" onSubmit={handleSubmit}>
           <Stack gap={4}>
             <Box>
-              <Text mb={2} color="#2D3E50">{t('auth.signUp.email')}</Text>
+              <Text mb={2} color="#2D3E50">{t('auth.signIn.email')}</Text>
               <Input
                 type="email"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                placeholder={t('auth.signUp.emailPlaceholder')}
+                placeholder={t('auth.signIn.emailPlaceholder')}
                 required
                 bg="white"
                 color="#2D3E50"
@@ -106,14 +95,13 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               />
             </Box>
             <Box>
-              <Text mb={2} color="#2D3E50">{t('auth.signUp.password')}</Text>
+              <Text mb={2} color="#2D3E50">{t('auth.signIn.password')}</Text>
               <Input
                 type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                placeholder={t('auth.signUp.passwordPlaceholder')}
+                placeholder={t('auth.signIn.passwordPlaceholder')}
                 required
-                minLength={6}
                 bg="white"
                 color="#2D3E50"
                 borderColor="#4A90E2"
@@ -133,7 +121,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
               transition="all 0.2s"
             >
-              {loading ? t('auth.signUp.button.loading') : t('auth.signUp.button.default')}
+              {loading ? t('auth.signIn.button.loading') : t('auth.signIn.button.default')}
             </Button>
           </Stack>
         </Box>

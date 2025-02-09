@@ -11,9 +11,20 @@ const Header = () => {
         size="md"
         variant="solid"
         onClick={() => setIsMenuOpen(true)}
-        backgroundColor="gray.800"
+        bg="#4A90E2"
         color="white"
-        _hover={{ backgroundColor: "gray.700" }}
+        border="1px solid"
+        borderColor="#4A90E2"
+        _hover={{
+          bg: '#FF9F43',
+          transform: 'translateY(-2px)',
+          borderColor: '#FF9F43'
+        }}
+        _active={{
+          bg: '#4A90E2',
+          transform: 'translateY(0)'
+        }}
+        transition="all 0.2s"
         boxShadow="md"
         borderRadius="md"
         fontSize="xl"

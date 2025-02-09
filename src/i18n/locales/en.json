@@ -20,7 +20,24 @@
     },
     "signIn": {
       "title": "Sign In",
-      "button": "Sign In"
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "error": {
+        "title": "Error"
+      },
+      "button": {
+        "loading": "Signing in...",
+        "default": "Sign In"
+      }
+    },
+    "signOut": {
+      "button": "Sign Out"
+    },
+    "user": {
+      "welcome": "Welcome",
+      "email": "Signed in as"
     }
   },
   "menu": {
