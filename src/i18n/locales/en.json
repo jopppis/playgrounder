@@ -91,7 +91,7 @@
     "unknownError": "An unknown error occurred"
   },
   "about": {
-    "title": "About Playgrounder",
-    "description": "Playgrounder is an interactive map application that helps you discover and track playgrounds in your area. Mark playgrounds as visited, rate them, and share your experiences with others!"
+    "title": "About PlayGrounder",
+    "description": "PlayGrounder is an interactive map application that helps you discover and track playgrounds in your area. Mark playgrounds as visited, rate them, and share your experiences with others!"
   }
 }
