@@ -21,14 +21,22 @@ type MenuDrawerProps = {
   onClose: () => void
   selectedServiceLevel: number | null
   onServiceLevelChange: (level: number | null) => void
+  showSignIn: boolean
+  setShowSignIn: (show: boolean) => void
 }
 
-const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChange }: MenuDrawerProps) => {
+const MenuDrawer = ({
+  isOpen,
+  onClose,
+  selectedServiceLevel,
+  onServiceLevelChange,
+  showSignIn,
+  setShowSignIn
+}: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const [showAbout, setShowAbout] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
-  const [showSignIn, setShowSignIn] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,22 +48,6 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
   const handleNavigation = (path: string) => {
     navigate(path)
     onClose()
-  }
-
-  const handleOpenSignUp = () => {
-    setShowSignUp(true)
-  }
-
-  const handleCloseSignUp = () => {
-    setShowSignUp(false)
-  }
-
-  const handleOpenSignIn = () => {
-    setShowSignIn(true)
-  }
-
-  const handleCloseSignIn = () => {
-    setShowSignIn(false)
   }
 
   const handleSignOut = async () => {
@@ -79,10 +71,12 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
           color="gray.700"
           borderLeft="1px solid"
           borderColor="purple.100"
+          display="flex"
+          flexDirection="column"
         >
-          <Box pt={4}>
+          <Box pt={14} flex={1}>
             {!showAbout ? (
-              <VStack spacing={4} align="stretch">
+              <VStack spacing={4} align="stretch" h="100%">
                 {user ? (
                   <>
                     <Box>
@@ -121,7 +115,7 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
                         _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
                         _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
                         transition="all 0.2s"
-                        onClick={handleOpenSignUp}
+                        onClick={() => setShowSignUp(true)}
                       >
                         {t('auth.signUp.title')}
                       </Button>
@@ -137,7 +131,7 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
                         _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
                         _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
                         transition="all 0.2s"
-                        onClick={handleOpenSignIn}
+                        onClick={() => setShowSignIn(true)}
                       >
                         {t('auth.signIn.title')}
                       </Button>
@@ -145,27 +139,13 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
                   </Grid>
                 )}
                 <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
-                <Button
-                  w="100%"
-                  variant="solid"
-                  bg="#4A90E2"
-                  color="white"
-                  border="1px solid"
-                  borderColor="#4A90E2"
-                  _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
-                  _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
-                  transition="all 0.2s"
-                  onClick={() => setShowAbout(true)}
-                >
-                  {t('menu.buttons.about')}
-                </Button>
-                <Box pt={4}>
+                <Box>
                   <ServiceLevelSwitcher
                     selectedLevel={selectedServiceLevel}
                     onLevelChange={onServiceLevelChange}
                   />
                 </Box>
-                <Box pt={4}>
+                <Box>
                   <LanguageSwitcher />
                 </Box>
               </VStack>
@@ -194,6 +174,24 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
               </>
             )}
           </Box>
+          {!showAbout && (
+            <Box pt={4} borderTop="1px solid" borderColor="purple.100">
+              <Button
+                w="100%"
+                variant="solid"
+                bg="#4A90E2"
+                color="white"
+                border="1px solid"
+                borderColor="#4A90E2"
+                _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
+                _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
+                transition="all 0.2s"
+                onClick={() => setShowAbout(true)}
+              >
+                {t('menu.buttons.about')}
+              </Button>
+            </Box>
+          )}
         </Box>
       )}
 
@@ -209,7 +207,7 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
           display="flex"
           alignItems="center"
           justifyContent="center"
-          onClick={handleCloseSignUp}
+          onClick={() => setShowSignUp(false)}
         >
           <Box
             bg="white"
@@ -218,12 +216,12 @@ const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChang
             w="90%"
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
-            <SignUp onSuccess={handleCloseSignUp} />
+            <SignUp onSuccess={() => setShowSignUp(false)} />
           </Box>
         </Box>
       )}
 
-      {showSignIn && <SignInModal onClose={handleCloseSignIn} />}
+      {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} />}
     </>
   )
 }

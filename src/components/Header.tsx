@@ -1,5 +1,6 @@
 import { Box, Button } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import MenuDrawer from './MenuDrawer'
 
 interface HeaderProps {
@@ -9,10 +10,20 @@ interface HeaderProps {
 
 const Header = ({ selectedServiceLevel, onServiceLevelChange }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showSignIn, setShowSignIn] = useState(false)
+  const location = useLocation()
+
+  useEffect(() => {
+    // Check for email confirmation redirect
+    const searchParams = new URLSearchParams(location.search)
+    if (searchParams.has('email_confirm') || location.pathname === '/signin') {
+      setShowSignIn(true)
+    }
+  }, [location])
 
   return (
     <>
-      <Box position="fixed" top={4} right={4} zIndex={2100}>
+      <Box position="fixed" top={2} right={4} zIndex={2200}>
         <Button
           size="md"
           variant="solid"
@@ -43,6 +54,8 @@ const Header = ({ selectedServiceLevel, onServiceLevelChange }: HeaderProps) => 
         onClose={() => setIsMenuOpen(false)}
         selectedServiceLevel={selectedServiceLevel}
         onServiceLevelChange={onServiceLevelChange}
+        showSignIn={showSignIn}
+        setShowSignIn={setShowSignIn}
       />
     </>
   )
