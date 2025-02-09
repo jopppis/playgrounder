@@ -21,9 +21,10 @@ interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates
   onClose?: () => void
   onVisitChange: (isVisited: boolean) => void
+  onContentChange?: () => void
 }
 
-export const PlaygroundPopup = ({ playground, onClose, onVisitChange }: PlaygroundPopupProps) => {
+export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { visits } = useVisits()
@@ -35,7 +36,18 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange }: Playgrou
   const [hasVisited, setHasVisited] = useState(false)
   useEffect(() => {
     setHasVisited(visits.some(visit => visit.playground_id === playground.id))
-  }, [visits, playground.id])
+    onContentChange?.()
+  }, [visits, playground.id, onContentChange])
+
+  // Update popup when rating changes
+  useEffect(() => {
+    onContentChange?.()
+  }, [rating, ratingLoading, onContentChange])
+
+  // Update popup when hover state changes
+  useEffect(() => {
+    onContentChange?.()
+  }, [hoveredRating, onContentChange])
 
   const handleVisit = async () => {
     if (!user) {

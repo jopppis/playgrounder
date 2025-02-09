@@ -1,7 +1,7 @@
 import { Box, Spinner, Text } from '@chakra-ui/react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import blueIcon from '../assets/playground-icon-blue.svg'
@@ -44,12 +44,24 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
     return hasVisited ? greenPlaygroundIcon : redPlaygroundIcon
   }, [playground.id, visits, user, visitsLoading])
 
+  const popupRef = useRef<L.Popup>(null)
+
+  const updatePopup = useCallback(() => {
+    if (popupRef.current) {
+      popupRef.current.update()
+    }
+  }, [])
+
   return (
     <Marker
       position={[playground.latitude, playground.longitude]}
       icon={icon}
     >
-      <Popup>
+      <Popup
+        ref={popupRef}
+        autoPan={true}
+        autoPanPadding={[50, 50]}
+      >
         <PlaygroundPopup
           playground={playground}
           onClose={() => {
@@ -57,6 +69,7 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
             map?.click()
           }}
           onVisitChange={(isVisited) => onVisitChange(playground.id, isVisited)}
+          onContentChange={updatePopup}
         />
       </Popup>
     </Marker>
