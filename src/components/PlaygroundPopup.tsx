@@ -209,9 +209,9 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
   }
 
   return (
-    <Box p={3}>
-      <VStack align="stretch" spacing={3}>
-        <HStack justify="space-between" align="center">
+    <Box p={2}>
+      <VStack align="stretch" spacing={1.5}>
+        <HStack justify="space-between" align="center" spacing={2}>
           <Text fontWeight="bold" color="#2D3E50">{playground.name}</Text>
           {!ratingLoading && rating?.avgRating && (
             <Text fontSize="sm" color="#828282">
@@ -223,10 +223,10 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
           )}
         </HStack>
         {playground.description && (
-          <Text fontSize="sm" color="#2D3E50">{playground.description}</Text>
+          <Text fontSize="sm" color="#2D3E50" lineHeight="short">{playground.description}</Text>
         )}
         {playground.address && (
-          <Text fontSize="sm" color="#828282">
+          <Text fontSize="sm" color="#828282" lineHeight="short">
             {playground.address}
           </Text>
         )}
@@ -241,6 +241,7 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
             _active={{ bg: '#2A66A2' }}
             onClick={handleVisit}
             isDisabled={!user}
+            h="28px"
           >
             {t('playground.markVisited')}
           </Button>
@@ -253,6 +254,7 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
             _hover={{ bg: '#3A7BC2' }}
             _active={{ bg: '#2A66A2' }}
             onClick={handleRemoveVisit}
+            h="28px"
           >
             {t('playground.removeVisit')}
           </Button>
@@ -261,15 +263,15 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
         {/* Rating section */}
         {hasVisited && (
           <Box>
-            <Text fontSize="sm" mb={1} color="#2D3E50">
+            <Text fontSize="sm" mb={0.5} color="#2D3E50" lineHeight="short">
               {t('playground.rating')}
             </Text>
             {ratingLoading ? (
               <Spinner size="sm" color="#4A90E2" />
             ) : (
               <>
-                <HStack spacing={1} mb={2} justify="space-between" align="center">
-                  <HStack spacing={1}>
+                <HStack spacing={0.5} mb={1} justify="space-between" align="center">
+                  <HStack spacing={0.5}>
                     {[1, 2, 3, 4, 5].map((value) => (
                       <Box
                         key={value}
@@ -295,9 +297,9 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
                         _focus={{ outline: 'none' }}
                       >
                         {value <= (hoveredRating || rating?.userRating || 0) ? (
-                          <FaStar color="#FF9F43" size={22} />
+                          <FaStar color="#FF9F43" size={20} />
                         ) : (
-                          <FaRegStar color="#828282" size={22} />
+                          <FaRegStar color="#828282" size={20} />
                         )}
                       </Box>
                     ))}
@@ -307,7 +309,7 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
                 {/* Public rating toggle */}
                 {rating?.userRating !== null && (
                   <Button
-                    mt={2}
+                    mt={1}
                     size="sm"
                     bg={rating?.isPublic ? '#4A90E2' : 'white'}
                     color={rating?.isPublic ? 'white' : '#4A90E2'}
@@ -323,6 +325,8 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
                         }}
                       />
                     }
+                    h="28px"
+                    minH="28px"
                     _hover={{ bg: rating?.isPublic ? '#3A7BC2' : '#EDF2F7' }}
                     _active={{ bg: rating?.isPublic ? '#2A66A2' : '#E2E8F0' }}
                     onClick={(e: React.MouseEvent) => {
