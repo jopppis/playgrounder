@@ -1,6 +1,7 @@
 import { Box, Spinner, Text } from '@chakra-ui/react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import blueIcon from '../assets/playground-icon-blue.svg'
@@ -9,6 +10,8 @@ import redIcon from '../assets/playground-icon-red.svg'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useVisits } from '../hooks/useVisits'
+import { PlaygroundWithCoordinates } from '../types/database.types'
+import { PlaygroundPopup } from './PlaygroundPopup'
 
 // Create icons for different states
 const createPlaygroundIcon = (iconUrl: string) => {
@@ -25,11 +28,69 @@ const bluePlaygroundIcon = createPlaygroundIcon(blueIcon)
 const greenPlaygroundIcon = createPlaygroundIcon(greenIcon)
 const redPlaygroundIcon = createPlaygroundIcon(redIcon)
 
+// Separate component for playground markers
+const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange }: {
+  playground: PlaygroundWithCoordinates
+  visits: any[]
+  user: any | null
+  visitsLoading: boolean
+  onVisitChange: (playgroundId: string, isVisited: boolean) => void
+}) => {
+  const icon = useMemo(() => {
+    if (!user || visitsLoading) {
+      return bluePlaygroundIcon
+    }
+    const hasVisited = visits.some(visit => visit.playground_id === playground.id)
+    return hasVisited ? greenPlaygroundIcon : redPlaygroundIcon
+  }, [playground.id, visits, user, visitsLoading])
+
+  return (
+    <Marker
+      position={[playground.latitude, playground.longitude]}
+      icon={icon}
+    >
+      <Popup>
+        <PlaygroundPopup
+          playground={playground}
+          onClose={() => {
+            const map = document.querySelector('.leaflet-popup-close-button') as HTMLElement
+            map?.click()
+          }}
+          onVisitChange={(isVisited) => onVisitChange(playground.id, isVisited)}
+        />
+      </Popup>
+    </Marker>
+  )
+}
+
 const PlaygroundMap = () => {
   const { t } = useTranslation()
   const { playgrounds, loading: playgroundsLoading, error: playgroundsError } = usePlaygrounds()
   const { user } = useAuth()
-  const { visits, loading: visitsLoading } = useVisits()
+  const { visits: initialVisits, loading: visitsLoading } = useVisits()
+  const [visits, setVisits] = useState(initialVisits)
+
+  useEffect(() => {
+    setVisits(initialVisits)
+  }, [initialVisits])
+
+  const handleVisitChange = (playgroundId: string, isVisited: boolean) => {
+    setVisits(prevVisits => {
+      if (isVisited) {
+        // Add visit
+        return [...prevVisits, {
+          id: `temp-${playgroundId}`,
+          playground_id: playgroundId,
+          user_id: user?.id || '',
+          visited_at: new Date().toISOString(),
+          notes: null
+        }]
+      } else {
+        // Remove visit
+        return prevVisits.filter(visit => visit.playground_id !== playgroundId)
+      }
+    })
+  }
 
   if (playgroundsLoading || visitsLoading) {
     return (
@@ -45,16 +106,6 @@ const PlaygroundMap = () => {
         <Text color="red.500">{playgroundsError}</Text>
       </Box>
     )
-  }
-
-  const getPlaygroundIcon = (playgroundId: string) => {
-    // If user is not logged in or visits are still loading, show blue icon
-    if (!user || visitsLoading) {
-      return bluePlaygroundIcon
-    }
-
-    const hasVisited = visits.some(visit => visit.playground_id === playgroundId)
-    return hasVisited ? greenPlaygroundIcon : redPlaygroundIcon
   }
 
   // Calculate center based on first playground or default to New York
@@ -74,25 +125,14 @@ const PlaygroundMap = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {playgrounds.map(playground => (
-          <Marker
+          <PlaygroundMarker
             key={playground.id}
-            position={[playground.latitude, playground.longitude]}
-            icon={getPlaygroundIcon(playground.id)}
-          >
-            <Popup>
-              <Box p={1}>
-                <Text fontWeight="bold">{playground.name}</Text>
-                {playground.description && (
-                  <Text fontSize="sm">{playground.description}</Text>
-                )}
-                {playground.address && (
-                  <Text fontSize="sm" color="gray.600">
-                    {playground.address}
-                  </Text>
-                )}
-              </Box>
-            </Popup>
-          </Marker>
+            playground={playground}
+            visits={visits}
+            user={user}
+            visitsLoading={visitsLoading}
+            onVisitChange={handleVisitChange}
+          />
         ))}
       </MapContainer>
     </Box>

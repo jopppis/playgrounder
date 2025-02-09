@@ -38,6 +38,18 @@
     "user": {
       "welcome": "Tervetuloa",
       "email": "Kirjautunut käyttäjänä"
+    },
+    "confirmPassword": "Vahvista salasana",
+    "passwordsDontMatch": "Salasanat eivät täsmää",
+    "invalidEmail": "Virheellinen sähköpostiosoite",
+    "weakPassword": "Salasana on liian heikko",
+    "signUpSuccess": "Rekisteröityminen onnistui!",
+    "signInSuccess": "Kirjautuminen onnistui!",
+    "signOutSuccess": "Uloskirjautuminen onnistui!",
+    "error": {
+      "emailTaken": "Sähköpostiosoite on jo käytössä",
+      "invalidCredentials": "Virheellinen sähköposti tai salasana",
+      "unknown": "Tuntematon virhe tapahtui"
     }
   },
   "menu": {
@@ -49,13 +61,29 @@
     "buttons": {
       "about": "Tietoa",
       "close": "×"
-    }
+    },
+    "language": "Kieli",
+    "fi": "Suomi",
+    "en": "Englanti"
   },
   "map": {
     "loading": "Ladataan...",
-    "attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> tekijät"
+    "attribution": "© OpenStreetMap contributors"
   },
   "playground": {
-    "address": "Osoite"
+    "address": "Osoite",
+    "markVisited": "Merkitse vierailluksi",
+    "visited": "✓ Vierailtu",
+    "removeVisit": "Poista vierailu",
+    "visitRemoved": "Vierailu poistettu onnistuneesti",
+    "rating": "Arviosi",
+    "avgRating": "{{rating}} ★ ({{count}} arviota)",
+    "makePublic": "Julkaise arvio",
+    "loginRequired": "Kirjaudu ensin sisään",
+    "visitMarked": "Vierailu merkitty onnistuneesti",
+    "clickToRate": "Klikkaa leikkipuiston merkkiä arvioidaksesi sen",
+    "ratingSubmitted": "Arvio lähetetty onnistuneesti",
+    "ratingPublic": "Arvio on nyt julkinen",
+    "ratingPrivate": "Arvio on nyt yksityinen"
   }
 }
