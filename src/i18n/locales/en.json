@@ -68,7 +68,8 @@
   },
   "map": {
     "loading": "Loading...",
-    "attribution": "© OpenStreetMap contributors"
+    "attribution": "© OpenStreetMap contributors",
+    "showMyLocation": "Show my location"
   },
   "playground": {
     "address": "Address",
@@ -90,7 +91,10 @@
     "makePrivate": "Make rating private",
     "serviceLevel": "Service Level",
     "level1": "Level 1 (Supervised)",
-    "level2": "Level 2 (Unsupervised)"
+    "level2": "Level 2 (Unsupervised)",
+    "allLevels": "All",
+    "level1Short": "Level 1",
+    "level2Short": "Level 2"
   },
   "common": {
     "error": "Error",

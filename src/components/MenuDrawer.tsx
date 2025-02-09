@@ -14,13 +14,16 @@ import { supabase } from '../lib/supabaseClient'
 import SignInModal from './Auth/SignInModal'
 import SignUp from './Auth/SignUp'
 import LanguageSwitcher from './LanguageSwitcher'
+import ServiceLevelSwitcher from './ServiceLevelSwitcher'
 
 type MenuDrawerProps = {
   isOpen: boolean
   onClose: () => void
+  selectedServiceLevel: number | null
+  onServiceLevelChange: (level: number | null) => void
 }
 
-const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
+const MenuDrawer = ({ isOpen, onClose, selectedServiceLevel, onServiceLevelChange }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const [showAbout, setShowAbout] = useState(false)
@@ -77,24 +80,7 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
           borderLeft="1px solid"
           borderColor="purple.100"
         >
-          <Button
-            size="sm"
-            onClick={onClose}
-            position="absolute"
-            right={2}
-            top={2}
-            variant="solid"
-            bg="#4A90E2"
-            color="white"
-            border="1px solid"
-            borderColor="#4A90E2"
-            _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
-            _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
-            fontSize="md"
-          >
-            {t('menu.buttons.close')}
-          </Button>
-          <Box pt={12}>
+          <Box pt={4}>
             {!showAbout ? (
               <VStack spacing={4} align="stretch">
                 {user ? (
@@ -173,6 +159,12 @@ const MenuDrawer = ({ isOpen, onClose }: MenuDrawerProps) => {
                 >
                   {t('menu.buttons.about')}
                 </Button>
+                <Box pt={4}>
+                  <ServiceLevelSwitcher
+                    selectedLevel={selectedServiceLevel}
+                    onLevelChange={onServiceLevelChange}
+                  />
+                </Box>
                 <Box pt={4}>
                   <LanguageSwitcher />
                 </Box>

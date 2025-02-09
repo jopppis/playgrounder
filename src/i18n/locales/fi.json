@@ -68,7 +68,8 @@
   },
   "map": {
     "loading": "Ladataan...",
-    "attribution": "© OpenStreetMap contributors"
+    "attribution": "© OpenStreetMap contributors",
+    "showMyLocation": "Näytä sijaintini"
   },
   "playground": {
     "address": "Osoite",
@@ -90,6 +91,9 @@
     "makePrivate": "Tee arviosta yksityinen",
     "serviceLevel": "Palvelutaso",
     "level1": "Taso 1 (Ohjattu)",
-    "level2": "Taso 2 (Ei ohjattua toimintaa)"
+    "level2": "Taso 2 (Ei ohjattua toimintaa)",
+    "allLevels": "Kaikki",
+    "level1Short": "Taso 1",
+    "level2Short": "Taso 2"
   }
 }
