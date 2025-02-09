@@ -276,6 +276,9 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
             </Text>
           )}
         </HStack>
+        <Text fontSize="sm" color="gray.600">
+          {t('playground.serviceLevel')}: {playground.service_level === 1 ? t('playground.level1') : t('playground.level2')}
+        </Text>
         {playground.description && (
           <Text fontSize="sm" color="#2D3E50" lineHeight="short" whiteSpace="pre-wrap">
             {renderDescriptionWithLinks(playground.description)}

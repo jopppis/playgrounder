@@ -75,15 +75,21 @@
     "markVisited": "Merkitse vierailluksi",
     "visited": "✓ Vierailtu",
     "removeVisit": "Poista vierailu",
-    "visitRemoved": "Vierailu poistettu onnistuneesti",
+    "visitRemoved": "Vierailu poistettu",
     "rating": "Arviosi",
     "avgRating": "{{rating}} ★ ({{count}} arviota)",
     "makePublic": "Julkaise arvio",
-    "loginRequired": "Kirjaudu ensin sisään",
-    "visitMarked": "Vierailu merkitty onnistuneesti",
-    "clickToRate": "Klikkaa leikkipuiston merkkiä arvioidaksesi sen",
-    "ratingSubmitted": "Arvio lähetetty onnistuneesti",
+    "loginRequired": "Kirjautuminen vaaditaan",
+    "visitMarked": "Vierailu merkitty",
+    "clickToRate": "Klikkaa tähtiä arvioidaksesi leikkipuiston",
+    "ratingSubmitted": "Arvio lähetetty",
     "ratingPublic": "Arvio on nyt julkinen",
-    "ratingPrivate": "Arvio on nyt yksityinen"
+    "ratingPrivate": "Arvio on nyt yksityinen",
+    "yourRating": "Arviosi",
+    "publicRating": "Julkinen arvio",
+    "makePrivate": "Tee arviosta yksityinen",
+    "serviceLevel": "Palvelutaso",
+    "level1": "Taso 1 (Ohjattu)",
+    "level2": "Taso 2 (Ei ohjattua toimintaa)"
   }
 }
