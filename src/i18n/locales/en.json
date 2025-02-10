@@ -107,7 +107,7 @@
     "github": "View on GitHub"
   },
   "filters": "Filters",
-  "filterPlaygrounds": "Filter Playgrounds",
+  "filterPlaygrounds": "Filter playgrounds",
   "visitStatus": "Visit Status",
   "showAll": "Show All",
   "visited": "Visited",
@@ -115,5 +115,8 @@
   "minStars": "Rating",
   "minStars_plural": "Rating",
   "showMore": "Show more",
-  "showLess": "Show less"
+  "showLess": "Show less",
+  "app": {
+    "name": "PlayGrounder"
+  }
 }

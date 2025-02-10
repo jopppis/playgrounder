@@ -2,9 +2,11 @@ import { Box } from '@chakra-ui/react'
 import { useState } from 'react'
 import Header from './components/Header'
 import PlaygroundMap from './components/PlaygroundMap'
+import useDocumentTitle from './hooks/useDocumentTitle'
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(false)
+  useDocumentTitle()
 
   return (
     <Box position="relative" h="100vh" w="100vw">

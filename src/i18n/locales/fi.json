@@ -54,7 +54,7 @@
   },
   "menu": {
     "about": {
-      "title": "Tietoa PlayGrounderista",
+      "title": "Tietoa Leikkipuistokartasta",
       "description": "Yhteisöllinen sovellus, joka auttaa vanhempia ja hoitajia löytämään ja jakamaan paikallisia leikkipaikkoja. Seuraa käyntejäsi, arvioi leikkipaikkoja ja löydä uusia paikkoja lasten leikkeihin.",
       "acknowledgments": "Kartta-aineisto © OpenStreetMap contributors. Ikonit FontAwesome. Toteutettu React, Chakra UI ja Supabase -teknologioilla.",
       "github": "Katso GitHubissa",
@@ -107,5 +107,8 @@
   "minStars": "Arvio",
   "minStars_plural": "Arvio",
   "showMore": "Näytä lisää",
-  "showLess": "Näytä vähemmän"
+  "showLess": "Näytä vähemmän",
+  "app": {
+    "name": "Leikkipuistokartta"
+  }
 }

@@ -43,7 +43,6 @@ npm run dev
 
 ## TODO
 - Make ratings filter update real time after publishing a rating
-- Rebrand finnish to Leikkipuistokartta
 - Fetch playground info for popups on screen
 - Limit visible playgrounds to some max number
 - Add other Finnish cities
