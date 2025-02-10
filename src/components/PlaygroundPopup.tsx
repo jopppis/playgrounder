@@ -27,7 +27,7 @@ interface PlaygroundPopupProps {
 export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { visits } = useVisits()
+  const { visits, loading: visitsLoading } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating } = useRatings(playground.id)
   const toast = useToast()
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
@@ -35,9 +35,11 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
   // Use useEffect to update hasVisited when visits change
   const [hasVisited, setHasVisited] = useState(false)
   useEffect(() => {
-    setHasVisited(visits.some(visit => visit.playground_id === playground.id))
-    onContentChange?.()
-  }, [visits, playground.id, onContentChange])
+    if (!visitsLoading) {
+      setHasVisited(visits.some(visit => visit.playground_id === playground.id))
+      onContentChange?.()
+    }
+  }, [visits, playground.id, onContentChange, visitsLoading])
 
   // Update popup when rating changes
   useEffect(() => {
@@ -225,144 +227,150 @@ export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentC
 
   return (
     <Box p={2} minW="300px" maxW="400px">
-      <VStack align="stretch" spacing={1.5}>
-        <HStack justify="space-between" align="center" spacing={2}>
-          <Text fontWeight="bold" color="#2D3E50">{playground.name}</Text>
-          {!ratingLoading && rating?.avgRating && (
-            <Text fontSize="sm" color="#828282">
-              {t('playground.avgRating', {
-                rating: Number(rating.avgRating).toFixed(1),
-                count: rating.totalRatings
-              })}
+      {visitsLoading ? (
+        <VStack align="stretch" spacing={1.5} justify="center" minH="100px">
+          <Spinner size="md" color="#4A90E2" alignSelf="center" />
+        </VStack>
+      ) : (
+        <VStack align="stretch" spacing={1.5}>
+          <HStack justify="space-between" align="center" spacing={2}>
+            <Text fontWeight="bold" color="#2D3E50">{playground.name}</Text>
+            {!ratingLoading && rating?.avgRating && (
+              <Text fontSize="sm" color="#828282">
+                {t('playground.avgRating', {
+                  rating: Number(rating.avgRating).toFixed(1),
+                  count: rating.totalRatings
+                })}
+              </Text>
+            )}
+          </HStack>
+          <Text fontSize="sm" color="gray.600">
+            {t('playground.serviceLevel')}: {playground.service_level === 1 ? t('playground.level1') : t('playground.level2')}
+          </Text>
+          {playground.description && (
+            <Text fontSize="sm" color="#2D3E50" lineHeight="short" whiteSpace="pre-wrap">
+              {renderFormattedDescription(playground.description)}
             </Text>
           )}
-        </HStack>
-        <Text fontSize="sm" color="gray.600">
-          {t('playground.serviceLevel')}: {playground.service_level === 1 ? t('playground.level1') : t('playground.level2')}
-        </Text>
-        {playground.description && (
-          <Text fontSize="sm" color="#2D3E50" lineHeight="short" whiteSpace="pre-wrap">
-            {renderFormattedDescription(playground.description)}
-          </Text>
-        )}
-        {playground.address && (
-          <Text fontSize="sm" color="#828282" lineHeight="short">
-            {playground.address}
-          </Text>
-        )}
-
-        {/* Visit button */}
-        {!hasVisited ? (
-          <Button
-            size="sm"
-            bg="#4A90E2"
-            color="white"
-            _hover={{ bg: '#3A7BC2' }}
-            _active={{ bg: '#2A66A2' }}
-            onClick={handleVisit}
-            isDisabled={!user}
-            h="28px"
-          >
-            {t('playground.markVisited')}
-          </Button>
-        ) : (
-          <Button
-            size="sm"
-            bg="#4A90E2"
-            color="white"
-            leftIcon={<Text>✓</Text>}
-            _hover={{ bg: '#3A7BC2' }}
-            _active={{ bg: '#2A66A2' }}
-            onClick={handleRemoveVisit}
-            h="28px"
-          >
-            {t('playground.removeVisit')}
-          </Button>
-        )}
-
-        {/* Rating section */}
-        {hasVisited && (
-          <Box>
-            <Text fontSize="sm" mb={0.5} color="#2D3E50" lineHeight="short">
-              {t('playground.rating')}
+          {playground.address && (
+            <Text fontSize="sm" color="#828282" lineHeight="short">
+              {playground.address}
             </Text>
-            {ratingLoading ? (
-              <Spinner size="sm" color="#4A90E2" />
-            ) : (
-              <>
-                <HStack spacing={0.5} mb={1} justify="space-between" align="center">
-                  <HStack spacing={0.5}>
-                    {[1, 2, 3, 4, 5].map((value) => (
-                      <Box
-                        key={value}
-                        as="button"
-                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleRating(value, e)}
-                        onMouseEnter={() => setHoveredRating(value)}
-                        onMouseLeave={() => setHoveredRating(null)}
-                        disabled={!user}
-                        cursor={user ? 'pointer' : 'not-allowed'}
-                        opacity={!user ? 0.5 : 1}
-                        transition="all 0.2s"
-                        _hover={user ? {
-                          transform: 'scale(1.2)',
-                          '& > *': { color: '#FF9F43' }
-                        } : undefined}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        p={0}
-                        bg="transparent"
-                        border="none"
-                        outline="none"
-                        _focus={{ outline: 'none' }}
-                      >
-                        {value <= (hoveredRating || rating?.userRating || 0) ? (
-                          <FaStar color="#FF9F43" size={20} />
-                        ) : (
-                          <FaRegStar color="#828282" size={20} />
-                        )}
-                      </Box>
-                    ))}
-                  </HStack>
-                </HStack>
+          )}
 
-                {/* Public rating toggle */}
-                {rating?.userRating !== null && (
-                  <Button
-                    mt={1}
-                    size="sm"
-                    bg={rating?.isPublic ? '#4A90E2' : 'white'}
-                    color={rating?.isPublic ? 'white' : '#4A90E2'}
-                    borderColor="#4A90E2"
-                    border="1px solid"
-                    leftIcon={
-                      <Switch
-                        size="sm"
-                        isChecked={rating?.isPublic}
-                        sx={{
-                          '& span[data-checked]': { bg: 'white !important' },
-                          '& span:not([data-checked])': { bg: '#4A90E2 !important' }
-                        }}
-                      />
-                    }
-                    h="28px"
-                    minH="28px"
-                    _hover={{ bg: rating?.isPublic ? '#3A7BC2' : '#EDF2F7' }}
-                    _active={{ bg: rating?.isPublic ? '#2A66A2' : '#E2E8F0' }}
-                    onClick={(e: React.MouseEvent) => {
-                      e.stopPropagation()
-                      handleTogglePublic()
-                    }}
-                    onMouseDown={(e: React.MouseEvent) => e.stopPropagation()}
-                  >
-                    {t('playground.makePublic')}
-                  </Button>
-                )}
-              </>
-            )}
-          </Box>
-        )}
-      </VStack>
+          {/* Visit button */}
+          {!hasVisited ? (
+            <Button
+              size="sm"
+              bg="#4A90E2"
+              color="white"
+              _hover={{ bg: '#3A7BC2' }}
+              _active={{ bg: '#2A66A2' }}
+              onClick={handleVisit}
+              isDisabled={!user}
+              h="28px"
+            >
+              {t('playground.markVisited')}
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              bg="#4A90E2"
+              color="white"
+              leftIcon={<Text>✓</Text>}
+              _hover={{ bg: '#3A7BC2' }}
+              _active={{ bg: '#2A66A2' }}
+              onClick={handleRemoveVisit}
+              h="28px"
+            >
+              {t('playground.removeVisit')}
+            </Button>
+          )}
+
+          {/* Rating section */}
+          {hasVisited && (
+            <Box>
+              <Text fontSize="sm" mb={0.5} color="#2D3E50" lineHeight="short">
+                {t('playground.rating')}
+              </Text>
+              {ratingLoading ? (
+                <Spinner size="sm" color="#4A90E2" />
+              ) : (
+                <>
+                  <HStack spacing={0.5} mb={1} justify="space-between" align="center">
+                    <HStack spacing={0.5}>
+                      {[1, 2, 3, 4, 5].map((value) => (
+                        <Box
+                          key={value}
+                          as="button"
+                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleRating(value, e)}
+                          onMouseEnter={() => setHoveredRating(value)}
+                          onMouseLeave={() => setHoveredRating(null)}
+                          disabled={!user}
+                          cursor={user ? 'pointer' : 'not-allowed'}
+                          opacity={!user ? 0.5 : 1}
+                          transition="all 0.2s"
+                          _hover={user ? {
+                            transform: 'scale(1.2)',
+                            '& > *': { color: '#FF9F43' }
+                          } : undefined}
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          p={0}
+                          bg="transparent"
+                          border="none"
+                          outline="none"
+                          _focus={{ outline: 'none' }}
+                        >
+                          {value <= (hoveredRating || rating?.userRating || 0) ? (
+                            <FaStar color="#FF9F43" size={20} />
+                          ) : (
+                            <FaRegStar color="#828282" size={20} />
+                          )}
+                        </Box>
+                      ))}
+                    </HStack>
+                  </HStack>
+
+                  {/* Public rating toggle */}
+                  {rating?.userRating !== null && (
+                    <Button
+                      mt={1}
+                      size="sm"
+                      bg={rating?.isPublic ? '#4A90E2' : 'white'}
+                      color={rating?.isPublic ? 'white' : '#4A90E2'}
+                      borderColor="#4A90E2"
+                      border="1px solid"
+                      leftIcon={
+                        <Switch
+                          size="sm"
+                          isChecked={rating?.isPublic}
+                          sx={{
+                            '& span[data-checked]': { bg: 'white !important' },
+                            '& span:not([data-checked])': { bg: '#4A90E2 !important' }
+                          }}
+                        />
+                      }
+                      h="28px"
+                      minH="28px"
+                      _hover={{ bg: rating?.isPublic ? '#3A7BC2' : '#EDF2F7' }}
+                      _active={{ bg: rating?.isPublic ? '#2A66A2' : '#E2E8F0' }}
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation()
+                        handleTogglePublic()
+                      }}
+                      onMouseDown={(e: React.MouseEvent) => e.stopPropagation()}
+                    >
+                      {t('playground.makePublic')}
+                    </Button>
+                  )}
+                </>
+              )}
+            </Box>
+          )}
+        </VStack>
+      )}
     </Box>
   )
 }
