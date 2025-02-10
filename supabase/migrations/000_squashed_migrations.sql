@@ -74,7 +74,7 @@ CREATE POLICY "Users can delete their own visits"
 -- Policies for ratings
 CREATE POLICY "Users can view their own ratings"
     ON ratings FOR SELECT
-    USING (auth.uid() = user_id);
+    USING (auth.uid() = user_id OR is_public = true);
 
 CREATE POLICY "Users can insert their own ratings"
     ON ratings FOR INSERT
@@ -121,8 +121,9 @@ CREATE TRIGGER update_ratings_updated_at
 -- Create a view for playground ratings that includes both average and count
 CREATE OR REPLACE VIEW playground_ratings AS
 SELECT
-    playground_id,
-    ROUND(AVG(CASE WHEN is_public THEN rating END)::numeric, 1) as avg_rating,
-    COUNT(CASE WHEN is_public THEN 1 END) as total_ratings
-FROM ratings
-GROUP BY playground_id;
+    p.id as playground_id,
+    ROUND(AVG(CASE WHEN r.is_public THEN r.rating END)::numeric, 1) as avg_rating,
+    COUNT(CASE WHEN r.is_public THEN 1 END) as total_ratings
+FROM playgrounds p
+LEFT JOIN ratings r ON p.id = r.playground_id
+GROUP BY p.id;

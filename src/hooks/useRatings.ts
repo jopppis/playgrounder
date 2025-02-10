@@ -33,7 +33,7 @@ export const useRatings = (playgroundId: string) => {
           .select('rating, is_public')
           .eq('playground_id', playgroundId)
           .eq('user_id', user.id)
-          .single()
+          .maybeSingle()
 
         if (!ratingError && ratingData) {
           userRating = ratingData.rating
