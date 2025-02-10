@@ -9,7 +9,10 @@ const config: Config = {
     '^@chakra-ui/react$': '<rootDir>/src/test/__mocks__/@chakra-ui/react.tsx',
     '^@chakra-ui/transition$': '<rootDir>/src/test/__mocks__/@chakra-ui/transition.tsx'
   },
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/src/test/setup.ts',
+    '<rootDir>/src/setupTests.ts'
+  ],
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
   transform: {
     '^.+\\.tsx?$': ['ts-jest', {
