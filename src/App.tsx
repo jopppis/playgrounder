@@ -4,11 +4,11 @@ import Header from './components/Header'
 import PlaygroundMap from './components/PlaygroundMap'
 
 function App() {
-  const [selectedServiceLevel, setSelectedServiceLevel] = useState<number | null>(null)
+  const [showSignIn, setShowSignIn] = useState(false)
 
   return (
     <Box position="relative" h="100vh" w="100vw">
-      <PlaygroundMap selectedServiceLevel={selectedServiceLevel} />
+      <PlaygroundMap />
       <Box
         position="absolute"
         top={4}
@@ -17,8 +17,8 @@ function App() {
         zIndex={1000}
       >
         <Header
-          selectedServiceLevel={selectedServiceLevel}
-          onServiceLevelChange={setSelectedServiceLevel}
+          showSignIn={showSignIn}
+          setShowSignIn={setShowSignIn}
         />
       </Box>
     </Box>

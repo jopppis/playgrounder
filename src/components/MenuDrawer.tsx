@@ -3,24 +3,24 @@ import {
   Button,
   Grid,
   GridItem,
+  HStack,
+  Icon,
   Text,
   VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FaGithub } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import SignInModal from './Auth/SignInModal'
 import SignUp from './Auth/SignUp'
 import LanguageSwitcher from './LanguageSwitcher'
-import ServiceLevelSwitcher from './ServiceLevelSwitcher'
 
 type MenuDrawerProps = {
   isOpen: boolean
   onClose: () => void
-  selectedServiceLevel: number | null
-  onServiceLevelChange: (level: number | null) => void
   showSignIn: boolean
   setShowSignIn: (show: boolean) => void
 }
@@ -28,8 +28,6 @@ type MenuDrawerProps = {
 const MenuDrawer = ({
   isOpen,
   onClose,
-  selectedServiceLevel,
-  onServiceLevelChange,
   showSignIn,
   setShowSignIn
 }: MenuDrawerProps) => {
@@ -140,12 +138,6 @@ const MenuDrawer = ({
                 )}
                 <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
                 <Box>
-                  <ServiceLevelSwitcher
-                    selectedLevel={selectedServiceLevel}
-                    onLevelChange={onServiceLevelChange}
-                  />
-                </Box>
-                <Box>
                   <LanguageSwitcher />
                 </Box>
               </VStack>
@@ -154,8 +146,26 @@ const MenuDrawer = ({
                 <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
                   {t('menu.about.title')}
                 </Text>
-                <Text mb={4} color="gray.700">
+                <Text mb={6} color="gray.700">
                   {t('menu.about.description')}
+                </Text>
+                <HStack
+                  as="a"
+                  href="https://github.com/jopppis/playgrounder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  spacing={2}
+                  color="#4A90E2"
+                  _hover={{ color: '#FF9F43' }}
+                  transition="all 0.2s"
+                  mb={6}
+                >
+                  <Icon as={FaGithub} boxSize={5} />
+                  <Text>{t('menu.about.github')}</Text>
+                </HStack>
+                <Box flex={1} />
+                <Text fontSize="sm" color="gray.500" mb={4}>
+                  {t('menu.about.acknowledgments')}
                 </Text>
                 <Button
                   w="100%"

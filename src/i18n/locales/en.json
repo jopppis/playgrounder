@@ -102,6 +102,16 @@
   },
   "about": {
     "title": "About PlayGrounder",
-    "description": "PlayGrounder is an interactive map application that helps you discover and track playgrounds in your area. Mark playgrounds as visited, rate them, and share your experiences with others!"
-  }
+    "description": "PlayGrounder is an interactive map application that helps you discover and track playgrounds in your area. Mark playgrounds as visited, rate them, and share your experiences with others!",
+    "acknowledgments": "Map data © OpenStreetMap contributors. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
+    "github": "View on GitHub"
+  },
+  "filters": "Filters",
+  "filterPlaygrounds": "Filter Playgrounds",
+  "visitStatus": "Visit Status",
+  "showAll": "Show All",
+  "visited": "Visited",
+  "unvisited": "Unvisited",
+  "minStars": "Rating",
+  "minStars_plural": "Rating"
 }

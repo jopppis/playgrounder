@@ -4,13 +4,12 @@ import { useLocation } from 'react-router-dom'
 import MenuDrawer from './MenuDrawer'
 
 interface HeaderProps {
-  selectedServiceLevel: number | null
-  onServiceLevelChange: (level: number | null) => void
+  showSignIn?: boolean
+  setShowSignIn?: (show: boolean) => void
 }
 
-const Header = ({ selectedServiceLevel, onServiceLevelChange }: HeaderProps) => {
+const Header = ({ showSignIn = false, setShowSignIn = () => {} }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [showSignIn, setShowSignIn] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -52,8 +51,6 @@ const Header = ({ selectedServiceLevel, onServiceLevelChange }: HeaderProps) => 
       <MenuDrawer
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        selectedServiceLevel={selectedServiceLevel}
-        onServiceLevelChange={onServiceLevelChange}
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
       />

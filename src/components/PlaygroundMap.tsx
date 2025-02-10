@@ -1,4 +1,4 @@
-import { Box, Spinner, Text } from '@chakra-ui/react'
+import { Box, Spinner } from '@chakra-ui/react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -10,7 +10,9 @@ import redIcon from '../assets/playground-icon-red.svg'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useVisits } from '../hooks/useVisits'
+import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates } from '../types/database.types'
+import { FilterOptions, PlaygroundFilter } from './PlaygroundFilter'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
 // Create icons for different states
@@ -207,30 +209,82 @@ const LocationControl = () => {
 }
 
 interface PlaygroundMapProps {
-  selectedServiceLevel: number | null
+  selectedServiceLevel?: number | null  // Make it optional since we'll use filters
+}
+
+interface PlaygroundRating {
+  playground_id: string
+  avg_rating: number | null
+  total_ratings: number
 }
 
 const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
   const { t } = useTranslation()
-  const { playgrounds, loading: playgroundsLoading, error: playgroundsError } = usePlaygrounds()
   const { user } = useAuth()
-  const { visits: initialVisits, loading: visitsLoading } = useVisits()
-  const [visits, setVisits] = useState(initialVisits)
+  const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
+  const { visits, loading: visitsLoading } = useVisits()
+  const [ratings, setRatings] = useState<PlaygroundRating[]>([])
+  const [filters, setFilters] = useState<FilterOptions>({
+    visitStatus: 'all',
+    minStars: null,
+    serviceLevel: selectedServiceLevel ?? null
+  })
   const mapRef = useRef<L.Map | null>(null)
   const initialPositionSet = useRef(false)
+
+  // Fetch ratings when playgrounds change
+  useEffect(() => {
+    const fetchRatings = async () => {
+      const { data, error } = await supabase
+        .from('playground_ratings')
+        .select('playground_id, avg_rating, total_ratings')
+
+      if (!error && data) {
+        setRatings(data)
+      }
+    }
+
+    fetchRatings()
+  }, [playgrounds])
+
+  // Update filters when selectedServiceLevel prop changes
+  useEffect(() => {
+    if (selectedServiceLevel !== undefined) {
+      setFilters(prev => ({ ...prev, serviceLevel: selectedServiceLevel }))
+    }
+  }, [selectedServiceLevel])
 
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
 
-  useEffect(() => {
-    setVisits(initialVisits)
-  }, [initialVisits])
-
-  // Filter playgrounds based on selected service level
   const filteredPlaygrounds = useMemo(() => {
-    if (selectedServiceLevel === null) return playgrounds
-    return playgrounds.filter(p => p.service_level === selectedServiceLevel)
-  }, [playgrounds, selectedServiceLevel])
+    if (!playgrounds) return []
+
+    return playgrounds.filter(playground => {
+      // Filter by service level
+      if (filters.serviceLevel !== null && playground.service_level !== filters.serviceLevel) {
+        return false
+      }
+
+      // Filter by visit status
+      if (user && filters.visitStatus !== 'all') {
+        const hasVisited = visits.some(visit => visit.playground_id === playground.id)
+        if (filters.visitStatus === 'visited' && !hasVisited) return false
+        if (filters.visitStatus === 'unvisited' && hasVisited) return false
+      }
+
+      // Filter by star rating
+      if (filters.minStars !== null) {
+        const rating = ratings.find(r => r.playground_id === playground.id)
+        // Hide unrated playgrounds or those with rating below the minimum
+        if (!rating?.avg_rating || rating.avg_rating < filters.minStars) {
+          return false
+        }
+      }
+
+      return true
+    })
+  }, [playgrounds, filters, user, visits, ratings])
 
   // Handle initial map position
   useEffect(() => {
@@ -278,22 +332,30 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
     }
   }, [playgrounds, visits, playgroundsLoading, visitsLoading])
 
-  const handleVisitChange = (playgroundId: string, isVisited: boolean) => {
-    setVisits(prevVisits => {
+  const handleVisitChange = async (playgroundId: string, isVisited: boolean) => {
+    if (!user) return
+
+    try {
       if (isVisited) {
-        // Add visit
-        return [...prevVisits, {
-          id: `temp-${playgroundId}`,
-          playground_id: playgroundId,
-          user_id: user?.id || '',
-          visited_at: new Date().toISOString(),
-          notes: null
-        }]
+        const { error } = await supabase
+          .from('visits')
+          .insert([{
+            playground_id: playgroundId,
+            user_id: user.id,
+            visited_at: new Date().toISOString(),
+          }])
+        if (error) throw error
       } else {
-        // Remove visit
-        return prevVisits.filter(visit => visit.playground_id !== playgroundId)
+        const { error } = await supabase
+          .from('visits')
+          .delete()
+          .eq('playground_id', playgroundId)
+          .eq('user_id', user.id)
+        if (error) throw error
       }
-    })
+    } catch (err) {
+      console.error('Error updating visit:', err)
+    }
   }
 
   if (playgroundsLoading || visitsLoading) {
@@ -304,16 +366,9 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
     )
   }
 
-  if (playgroundsError) {
-    return (
-      <Box height="100vh" display="flex" alignItems="center" justifyContent="center">
-        <Text color="red.500">{playgroundsError}</Text>
-      </Box>
-    )
-  }
-
   return (
-    <Box position="relative" height="100vh">
+    <Box position="relative" height="100%" width="100%">
+      <PlaygroundFilter filters={filters} onChange={setFilters} />
       <MapContainer
         center={helsinkiCenter}
         zoom={13.5}
