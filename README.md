@@ -41,6 +41,14 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 npm run dev
 ```
 
+## TODO
+- Make ratings filter update real time after publishing a rating
+- Rebrand finnish to Leikkipuistokartta
+- Fetch playground info for popups on screen
+- Limit visible playgrounds to some max number
+- Add other Finnish cities
+
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
