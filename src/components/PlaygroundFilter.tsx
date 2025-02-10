@@ -6,6 +6,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
@@ -26,6 +27,7 @@ interface PlaygroundFilterProps {
 export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
+  const [showAllStars, setShowAllStars] = useState(false)
   const { user } = useAuth()
   const filterRef = useRef<HTMLDivElement>(null)
 
@@ -149,7 +151,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                 {t('minStars')}
               </Text>
               <Stack spacing={0.5}>
-                {[1, 2, 3, 4, 5].map((stars) => (
+                {[5, 4].map((stars) => (
                   <FilterButton
                     key={stars}
                     value={
@@ -166,6 +168,77 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     })}
                   />
                 ))}
+
+                {!showAllStars && (
+                  <Button
+                    size="xs"
+                    height="28px"
+                    variant="ghost"
+                    bg="transparent"
+                    color="#2D3E50"
+                    _hover={{
+                      bg: 'gray.50',
+                      color: '#2D3E50'
+                    }}
+                    _active={{
+                      bg: '#4A90E2',
+                      color: 'white',
+                      transform: 'scale(0.98)'
+                    }}
+                    onClick={() => setShowAllStars(true)}
+                    width="full"
+                    fontSize="sm"
+                    justifyContent="flex-start"
+                    transition="all 0.2s"
+                  >
+                    {t('showMore')}
+                  </Button>
+                )}
+
+                <Collapse in={showAllStars}>
+                  <Stack spacing={0.5}>
+                    {[3, 2, 1].map((stars) => (
+                      <FilterButton
+                        key={stars}
+                        value={
+                          <HStack spacing={0.5}>
+                            {[...Array(stars)].map((_, i) => (
+                              <FaStar key={i} color="#FF9F43" size={14} />
+                            ))}
+                          </HStack>
+                        }
+                        isSelected={filters.minStars === stars}
+                        onClick={() => onChange({
+                          ...filters,
+                          minStars: filters.minStars === stars ? null : stars
+                        })}
+                      />
+                    ))}
+                    <Button
+                      size="xs"
+                      height="28px"
+                      variant="ghost"
+                      bg="transparent"
+                      color="#2D3E50"
+                      _hover={{
+                        bg: 'gray.50',
+                        color: '#2D3E50'
+                      }}
+                      _active={{
+                        bg: '#4A90E2',
+                        color: 'white',
+                        transform: 'scale(0.98)'
+                      }}
+                      onClick={() => setShowAllStars(false)}
+                      width="full"
+                      fontSize="sm"
+                      justifyContent="flex-start"
+                      transition="all 0.2s"
+                    >
+                      {t('showLess')}
+                    </Button>
+                  </Stack>
+                </Collapse>
               </Stack>
             </Box>
           </VStack>

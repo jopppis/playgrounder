@@ -105,5 +105,7 @@
   "visited": "Vierailtu",
   "unvisited": "Ei vierailtu",
   "minStars": "Arvio",
-  "minStars_plural": "Arvio"
+  "minStars_plural": "Arvio",
+  "showMore": "Näytä lisää",
+  "showLess": "Näytä vähemmän"
 }

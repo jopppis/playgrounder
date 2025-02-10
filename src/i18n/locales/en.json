@@ -113,5 +113,7 @@
   "visited": "Visited",
   "unvisited": "Unvisited",
   "minStars": "Rating",
-  "minStars_plural": "Rating"
+  "minStars_plural": "Rating",
+  "showMore": "Show more",
+  "showLess": "Show less"
 }
