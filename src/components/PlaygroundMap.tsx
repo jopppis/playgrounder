@@ -1,4 +1,5 @@
 import { Box, Spinner } from '@chakra-ui/react'
+import { User } from '@supabase/supabase-js'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -11,7 +12,7 @@ import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
-import { PlaygroundWithCoordinates } from '../types/database.types'
+import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import { FilterOptions, PlaygroundFilter } from './PlaygroundFilter'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
@@ -33,8 +34,8 @@ const redPlaygroundIcon = createPlaygroundIcon(redIcon)
 // Separate component for playground markers
 const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange }: {
   playground: PlaygroundWithCoordinates
-  visits: any[]
-  user: any | null
+  visits: Visit[]
+  user: User | null
   visitsLoading: boolean
   onVisitChange: (playgroundId: string, isVisited: boolean) => void
 }) => {
@@ -111,11 +112,6 @@ const LocationControl = () => {
     isInitialized.current = true
   }, [])
 
-  const showLocation = useCallback((location: [number, number]) => {
-    setUserLocation(location)
-    map.setView(location, 13.5)
-  }, [map])
-
   // Request location immediately on mount
   useEffect(() => {
     isInitialized.current = false
@@ -134,18 +130,18 @@ const LocationControl = () => {
 
   // Handle initial location and custom events
   useEffect(() => {
-    const handleInitialLocation = (e: any) => {
+    const handleInitialLocation = (e: CustomEvent<{ lat: number; lng: number }>) => {
       const { lat, lng } = e.detail
       setUserLocation([lat, lng])
       lastKnownPosition.current = [lat, lng]
       isInitialized.current = true
     }
 
-    // @ts-ignore
+    // @ts-expect-error Custom event type not recognized by leaflet types
     map.on('initialLocationFound', handleInitialLocation)
 
     return () => {
-      // @ts-ignore
+      // @ts-expect-error Custom event type not recognized by leaflet types
       map.off('initialLocationFound', handleInitialLocation)
     }
   }, [map])

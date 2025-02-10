@@ -1,9 +1,14 @@
-import { ReactNode } from 'react'
+import React from 'react'
 
-export interface CollapseProps {
-  children?: ReactNode
+interface TransitionProps {
+  children?: React.ReactNode
   in?: boolean
-  [key: string]: any
+  unmountOnExit?: boolean
+  [key: string]: React.ReactNode | boolean | undefined
 }
 
-export const Collapse: React.FC<CollapseProps>
+export declare const Collapse: React.FC<TransitionProps>
+export declare const Fade: React.FC<TransitionProps>
+export declare const ScaleFade: React.FC<TransitionProps>
+export declare const Slide: React.FC<TransitionProps>
+export declare const SlideFade: React.FC<TransitionProps>

@@ -18,7 +18,7 @@ const Header = ({ showSignIn = false, setShowSignIn = () => {} }: HeaderProps) =
     if (searchParams.has('email_confirm') || location.pathname === '/signin') {
       setShowSignIn(true)
     }
-  }, [location])
+  }, [location, setShowSignIn])
 
   return (
     <>

@@ -19,12 +19,11 @@ import { PlaygroundWithCoordinates } from '../types/database.types'
 
 interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates
-  onClose?: () => void
   onVisitChange: (isVisited: boolean) => void
   onContentChange?: () => void
 }
 
-export const PlaygroundPopup = ({ playground, onClose, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
+export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { visits, loading: visitsLoading } = useVisits()

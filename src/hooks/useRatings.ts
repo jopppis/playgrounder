@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { Rating } from '../types/database.types'
 import { useAuth } from './useAuth'
 
 interface PlaygroundRating {
@@ -21,7 +20,7 @@ export const useRatings = (playgroundId: string) => {
   const [error, setError] = useState<string | null>(null)
   const { user } = useAuth()
 
-  const fetchRatings = async () => {
+  const fetchRatings = useCallback(async () => {
     try {
       // First get the user's rating directly from the ratings table
       let userRating = null
@@ -61,11 +60,11 @@ export const useRatings = (playgroundId: string) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [playgroundId, user])
 
   useEffect(() => {
     fetchRatings()
-  }, [playgroundId, user])
+  }, [fetchRatings])
 
   const submitRating = async (newRating: number, isPublic: boolean) => {
     if (!user) return

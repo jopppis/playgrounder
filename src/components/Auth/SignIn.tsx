@@ -1,14 +1,16 @@
 import {
-    Box,
-    Button,
-    CloseButton,
-    Heading,
-    Input,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Heading,
+  Icon,
+  Input,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
+import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FaTimes } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 
@@ -41,8 +43,12 @@ export default function SignIn({ onSuccess }: SignInProps) {
         navigate('/')
         onSuccess?.()
       }
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      if (error instanceof AuthError) {
+        setError(error.message)
+      } else {
+        setError(t('auth.signIn.error.unknown'))
+      }
     } finally {
       setLoading(false)
     }
@@ -60,13 +66,19 @@ export default function SignIn({ onSuccess }: SignInProps) {
       borderColor="#4A90E2"
     >
       <Box position="absolute" right={2} top={2}>
-        <CloseButton
+        <Button
           onClick={onSuccess}
           color="white"
           bg="#4A90E2"
           _hover={{ bg: '#FF9F43' }}
           size="sm"
-        />
+          minW="24px"
+          h="24px"
+          p={0}
+          aria-label="Close"
+        >
+          <Icon as={FaTimes} boxSize={3} />
+        </Button>
       </Box>
       <Stack gap={8}>
         <Heading size="lg" color="#4A90E2">{t('auth.signIn.title')}</Heading>

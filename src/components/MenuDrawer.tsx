@@ -1,17 +1,15 @@
 import {
   Box,
   Button,
+  Flex,
   Grid,
   GridItem,
-  HStack,
   Icon,
   Text,
-  VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaGithub } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { FaGithub, FaSignInAlt, FaUserPlus } from 'react-icons/fa'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import SignInModal from './Auth/SignInModal'
@@ -35,18 +33,12 @@ const MenuDrawer = ({
   const { user } = useAuth()
   const [showAbout, setShowAbout] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (!isOpen) {
       setShowAbout(false)
     }
   }, [isOpen])
-
-  const handleNavigation = (path: string) => {
-    navigate(path)
-    onClose()
-  }
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -74,7 +66,7 @@ const MenuDrawer = ({
         >
           <Box pt={14} flex={1}>
             {!showAbout ? (
-              <VStack spacing={4} align="stretch" h="100%">
+              <Flex direction="column" gap={4} h="100%">
                 {user ? (
                   <>
                     <Box>
@@ -114,6 +106,7 @@ const MenuDrawer = ({
                         _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
                         transition="all 0.2s"
                         onClick={() => setShowSignUp(true)}
+                        leftIcon={<Icon as={FaUserPlus} />}
                       >
                         {t('auth.signUp.title')}
                       </Button>
@@ -130,6 +123,7 @@ const MenuDrawer = ({
                         _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
                         transition="all 0.2s"
                         onClick={() => setShowSignIn(true)}
+                        leftIcon={<Icon as={FaSignInAlt} />}
                       >
                         {t('auth.signIn.title')}
                       </Button>
@@ -140,7 +134,7 @@ const MenuDrawer = ({
                 <Box>
                   <LanguageSwitcher />
                 </Box>
-              </VStack>
+              </Flex>
             ) : (
               <>
                 <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
@@ -149,20 +143,21 @@ const MenuDrawer = ({
                 <Text mb={6} color="gray.700">
                   {t('menu.about.description')}
                 </Text>
-                <HStack
+                <Flex
                   as="a"
                   href="https://github.com/jopppis/playgrounder"
                   target="_blank"
                   rel="noopener noreferrer"
-                  spacing={2}
+                  gap={2}
                   color="#4A90E2"
                   _hover={{ color: '#FF9F43' }}
                   transition="all 0.2s"
                   mb={6}
+                  alignItems="center"
                 >
                   <Icon as={FaGithub} boxSize={5} />
                   <Text>{t('menu.about.github')}</Text>
-                </HStack>
+                </Flex>
                 <Box flex={1} />
                 <Text fontSize="sm" color="gray.500" mb={4}>
                   {t('menu.about.acknowledgments')}
