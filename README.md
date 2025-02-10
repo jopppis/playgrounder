@@ -42,9 +42,15 @@ npm run dev
 ```
 
 ## TODO
+
+### Before deployment
+
 - Make ratings filter update real time after publishing a rating
 - Fetch playground info for popups on screen
 - Limit visible playgrounds to some max number
+
+### Before release
+
 - Add other Finnish cities
 
 
