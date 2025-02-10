@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "types": ["jest", "@testing-library/jest-dom"],
+    "paths": {
+      "@chakra-ui/react": ["./src/test/__mocks__/@chakra-ui/react"],
+      "@chakra-ui/transition": ["./src/test/__mocks__/@chakra-ui/transition"]
+    }
+  },
+  "include": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/setupTests.ts",
+    "src/test/__mocks__/**/*.ts",
+    "src/test/__mocks__/**/*.tsx"
+  ]
+}
