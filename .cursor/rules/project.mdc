@@ -10,6 +10,7 @@ globs:
 - The project is implemented in React, Chakra UI v3, Leaflet
 - The backend is supabase
 - Always use Chkra UI V3
+- Never use @chakra-ui/icons since it has been removed in V3 and will NOT work
 
 # Colors to use
 
