@@ -7,7 +7,6 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { Switch } from '@chakra-ui/switch'
-import { useToast } from '@chakra-ui/toast'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
@@ -28,7 +27,6 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
   const { user } = useAuth()
   const { visits, loading: visitsLoading } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating } = useRatings(playground.id)
-  const toast = useToast()
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
 
   // Use useEffect to update hasVisited when visits change
@@ -52,12 +50,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
   const handleVisit = async () => {
     if (!user) {
-      toast({
-        title: t('playground.loginRequired'),
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.warn(t('playground.loginRequired'))
       return
     }
 
@@ -74,22 +67,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
       setHasVisited(true)
       onVisitChange(true)
-
-      toast({
-        title: t('playground.visitMarked'),
-        description: t('playground.clickToRate'),
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.log(t('playground.visitMarked'), t('playground.clickToRate'))
     } catch (err) {
-      toast({
-        title: t('common.error'),
-        description: err instanceof Error ? err.message : t('common.unknownError'),
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
     }
   }
 
@@ -128,21 +108,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
       setHasVisited(false)
       onVisitChange(false)
       await refreshRating() // Refresh ratings to clear the old rating
-
-      toast({
-        title: t('playground.visitRemoved'),
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.log(t('playground.visitRemoved'))
     } catch (err) {
-      toast({
-        title: t('common.error'),
-        description: err instanceof Error ? err.message : t('common.unknownError'),
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
     }
   }
 
@@ -152,32 +120,15 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     e.stopPropagation()
 
     if (!user) {
-      toast({
-        title: t('playground.loginRequired'),
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.warn(t('playground.loginRequired'))
       return
     }
 
     try {
       await submitRating(value, rating?.isPublic || false)
-
-      toast({
-        title: t('playground.ratingSubmitted'),
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.log(t('playground.ratingSubmitted'))
     } catch (err) {
-      toast({
-        title: t('common.error'),
-        description: err instanceof Error ? err.message : t('common.unknownError'),
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
     }
   }
 
@@ -190,22 +141,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
     try {
       await togglePublic()
-      toast({
-        title: rating?.isPublic
-          ? t('playground.ratingPrivate')
-          : t('playground.ratingPublic'),
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.log(rating?.isPublic ? t('playground.ratingPrivate') : t('playground.ratingPublic'))
     } catch (err) {
-      toast({
-        title: t('common.error'),
-        description: err instanceof Error ? err.message : t('common.unknownError'),
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      })
+      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
     }
   }
 
@@ -227,12 +165,12 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
   return (
     <Box p={2} minW="300px" maxW="400px">
       {visitsLoading ? (
-        <VStack align="stretch" spacing={1.5} justify="center" minH="100px">
+        <VStack align="stretch" gap={1.5} justify="center" minH="100px">
           <Spinner size="md" color="#4A90E2" alignSelf="center" />
         </VStack>
       ) : (
-        <VStack align="stretch" spacing={1.5}>
-          <HStack justify="space-between" align="center" spacing={2}>
+        <VStack align="stretch" gap={1.5}>
+          <HStack justify="space-between" align="center" gap={2}>
             <Text fontWeight="bold" color="#2D3E50">{playground.name}</Text>
             {!ratingLoading && rating?.avgRating && (
               <Text fontSize="sm" color="#828282">
@@ -266,7 +204,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
               _hover={{ bg: '#3A7BC2' }}
               _active={{ bg: '#2A66A2' }}
               onClick={handleVisit}
-              isDisabled={!user}
+              disabled={!user}
               h="28px"
             >
               {t('playground.markVisited')}
@@ -276,12 +214,12 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
               size="sm"
               bg="#4A90E2"
               color="white"
-              leftIcon={<Text>✓</Text>}
               _hover={{ bg: '#3A7BC2' }}
               _active={{ bg: '#2A66A2' }}
               onClick={handleRemoveVisit}
               h="28px"
             >
+              <Text mr={2}>✓</Text>
               {t('playground.removeVisit')}
             </Button>
           )}
@@ -296,13 +234,13 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                 <Spinner size="sm" color="#4A90E2" />
               ) : (
                 <>
-                  <HStack spacing={0.5} mb={1} justify="space-between" align="center">
-                    <HStack spacing={0.5}>
+                  <HStack gap={0.5} mb={1} justify="space-between" align="center">
+                    <HStack gap={0.5}>
                       {[1, 2, 3, 4, 5].map((value) => (
                         <Box
                           key={value}
                           as="button"
-                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleRating(value, e)}
+                          onClick={(e) => handleRating(value, e as React.MouseEvent<HTMLButtonElement>)}
                           onMouseEnter={() => setHoveredRating(value)}
                           onMouseLeave={() => setHoveredRating(null)}
                           disabled={!user}
@@ -341,26 +279,25 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                       color={rating?.isPublic ? 'white' : '#4A90E2'}
                       borderColor="#4A90E2"
                       border="1px solid"
-                      leftIcon={
-                        <Switch
-                          size="sm"
-                          isChecked={rating?.isPublic}
-                          sx={{
-                            '& span[data-checked]': { bg: 'white !important' },
-                            '& span:not([data-checked])': { bg: '#4A90E2 !important' }
-                          }}
-                        />
-                      }
                       h="28px"
                       minH="28px"
                       _hover={{ bg: rating?.isPublic ? '#3A7BC2' : '#EDF2F7' }}
                       _active={{ bg: rating?.isPublic ? '#2A66A2' : '#E2E8F0' }}
-                      onClick={(e: React.MouseEvent) => {
+                      onClick={(e) => {
                         e.stopPropagation()
-                        handleTogglePublic()
+                        handleTogglePublic(e)
                       }}
-                      onMouseDown={(e: React.MouseEvent) => e.stopPropagation()}
+                      onMouseDown={(e) => e.stopPropagation()}
                     >
+                      <Switch
+                        size="sm"
+                        isChecked={rating?.isPublic}
+                        sx={{
+                          '& span[data-checked]': { bg: 'white !important' },
+                          '& span:not([data-checked])': { bg: '#4A90E2 !important' }
+                        }}
+                        mr={2}
+                      />
                       {t('playground.makePublic')}
                     </Button>
                   )}

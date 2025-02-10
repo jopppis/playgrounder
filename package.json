@@ -40,7 +40,6 @@
   "dependencies": {
     "@chakra-ui/react": "^3.7.0",
     "@chakra-ui/switch": "^2.1.2",
-    "@chakra-ui/toast": "^7.0.2",
     "@chakra-ui/transition": "^2.1.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
