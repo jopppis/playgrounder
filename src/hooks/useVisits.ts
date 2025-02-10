@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { Visit } from '../types/database.types'
 import { useAuth } from './useAuth'
@@ -9,7 +9,7 @@ export const useVisits = () => {
   const [error, setError] = useState<string | null>(null)
   const { user } = useAuth()
 
-  const fetchVisits = async () => {
+  const fetchVisits = useCallback(async () => {
     setLoading(true)
     if (!user) {
       setVisits([])
@@ -31,14 +31,33 @@ export const useVisits = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [user])
+
+  // Function to update visits state immediately
+  const updateVisitsState = useCallback((playgroundId: string, isVisited: boolean) => {
+    if (!user) return
+
+    if (isVisited) {
+      const newVisit: Visit = {
+        id: crypto.randomUUID(),
+        playground_id: playgroundId,
+        user_id: user.id,
+        visited_at: new Date().toISOString(),
+        notes: null
+      }
+      setVisits(current => [...current, newVisit])
+    } else {
+      setVisits(current =>
+        current.filter(visit => visit.playground_id !== playgroundId)
+      )
+    }
+  }, [user])
 
   useEffect(() => {
     fetchVisits()
 
     // Set up real-time subscription
-    const subscription = supabase
-      .channel('visits_changes')
+    const channel = supabase.channel('visits_changes')
       .on('postgres_changes',
         {
           event: '*',
@@ -53,9 +72,9 @@ export const useVisits = () => {
       .subscribe()
 
     return () => {
-      subscription.unsubscribe()
+      channel.unsubscribe()
     }
-  }, [user])
+  }, [user, fetchVisits])
 
-  return { visits, loading, error, refresh: fetchVisits }
+  return { visits, loading, error, refresh: fetchVisits, updateVisitsState }
 }

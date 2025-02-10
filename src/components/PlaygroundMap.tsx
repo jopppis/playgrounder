@@ -38,13 +38,17 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
   visitsLoading: boolean
   onVisitChange: (playgroundId: string, isVisited: boolean) => void
 }) => {
+  const hasVisited = useMemo(() =>
+    visits.some(visit => visit.playground_id === playground.id),
+    [visits, playground.id]
+  )
+
   const icon = useMemo(() => {
     if (!user || visitsLoading) {
       return bluePlaygroundIcon
     }
-    const hasVisited = visits.some(visit => visit.playground_id === playground.id)
     return hasVisited ? greenPlaygroundIcon : redPlaygroundIcon
-  }, [playground.id, visits, user, visitsLoading])
+  }, [user, visitsLoading, hasVisited])
 
   const popupRef = useRef<L.Popup>(null)
 
@@ -53,6 +57,11 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
       popupRef.current.update()
     }
   }, [])
+
+  // Update popup when visit status changes
+  useEffect(() => {
+    updatePopup()
+  }, [hasVisited, updatePopup])
 
   return (
     <Marker
@@ -222,7 +231,7 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
-  const { visits, loading: visitsLoading } = useVisits()
+  const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
   const [ratings, setRatings] = useState<PlaygroundRating[]>([])
   const [filters, setFilters] = useState<FilterOptions>({
     visitStatus: 'all',
@@ -336,6 +345,9 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
     if (!user) return
 
     try {
+      // Update state immediately for better UX
+      updateVisitsState(playgroundId, isVisited)
+
       if (isVisited) {
         const { error } = await supabase
           .from('visits')
@@ -355,6 +367,8 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
       }
     } catch (err) {
       console.error('Error updating visit:', err)
+      // Revert the state change on error
+      updateVisitsState(playgroundId, !isVisited)
     }
   }
 
