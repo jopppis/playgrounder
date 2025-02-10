@@ -9,7 +9,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
-import { HiBars3, HiChevronDown } from 'react-icons/hi2'
+import { HiBars3 } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 
 export interface FilterOptions {
@@ -76,9 +76,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     <Box position="absolute" top={2} left="80px" zIndex={1000} ref={filterRef}>
       <Box bg="#F9F9F9" borderRadius="md" boxShadow="base" width="250px">
         <Button
-          leftIcon={<HiBars3 />}
-          rightIcon={isOpen ? null : <HiChevronDown />}
-          bg="#F9F9F9"
+          bg="transparent"
           color="#2D3E50"
           _hover={{ bg: 'gray.50' }}
           _active={{ bg: 'gray.100' }}
@@ -86,10 +84,14 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
           size="sm"
           onClick={() => setIsOpen(!isOpen)}
           width="100%"
-          justifyContent="space-between"
+          px={3}
         >
-          {t('filterPlaygrounds')}
+          <HStack width="100%" justify="space-between">
+            <Text>{t('filterPlaygrounds')}</Text>
+            <HiBars3 size={20} />
+          </HStack>
         </Button>
+
         {isOpen && (
           <VStack align="stretch" p={2} spacing={1.5} bg="#F9F9F9" width="100%">
             <Box>
