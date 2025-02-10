@@ -52,6 +52,10 @@ npm run dev
 ### Before release
 
 - Add other Finnish cities
+- Publish on Github
+- Review code
+- Security audit
+- Find bugs
 
 
 ## Contributing
