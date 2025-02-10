@@ -248,45 +248,32 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
       // Zoom to last visited playground
       mapRef.current.setView(
         [lastVisitedPlayground.latitude, lastVisitedPlayground.longitude],
-        13.5
+        13.5,
+        { animate: false }
       )
       initialPositionSet.current = true
     } else {
-      // Start with Helsinki center
-      mapRef.current.setView(helsinkiCenter, 13.5)
+      // Keep the initial Helsinki center view
+      initialPositionSet.current = true
 
-      // Try to get user location with timeout
+      // Try to get user location in background
       if ('geolocation' in navigator) {
-        const timeoutId = setTimeout(() => {
-          // If location not obtained within 5s, do nothing (keep Helsinki center)
-          mapRef.current?.off('locationfound')
-          mapRef.current?.off('locationerror')
-          initialPositionSet.current = true
-        }, 5000)
-
-        const handleLocationFound = (e: L.LocationEvent) => {
-          clearTimeout(timeoutId)
-          const { lat, lng } = e.latlng
-          mapRef.current?.setView([lat, lng], 13.5)
-          // Use custom event instead of locationfound
-          mapRef.current?.fire('initialLocationFound', { detail: { lat, lng } })
-          mapRef.current?.off('locationfound', handleLocationFound)
-          mapRef.current?.off('locationerror', handleLocationError)
-          initialPositionSet.current = true
-        }
-
-        const handleLocationError = () => {
-          clearTimeout(timeoutId)
-          mapRef.current?.off('locationfound', handleLocationFound)
-          mapRef.current?.off('locationerror', handleLocationError)
-          initialPositionSet.current = true
-        }
-
-        mapRef.current.on('locationfound', handleLocationFound)
-        mapRef.current.on('locationerror', handleLocationError)
-        mapRef.current.locate()
-      } else {
-        initialPositionSet.current = true
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords
+            // Only move to user location if they're in the Helsinki region (roughly)
+            const inHelsinki = latitude > 60.1 && latitude < 60.3 &&
+                             longitude > 24.8 && longitude < 25.1
+            if (inHelsinki && mapRef.current) {
+              mapRef.current.setView([latitude, longitude], 13.5, { animate: true })
+              mapRef.current?.fire('initialLocationFound', {
+                detail: { lat: latitude, lng: longitude }
+              })
+            }
+          },
+          () => {}, // Silently fail if location access is denied
+          { timeout: 5000 }
+        )
       }
     }
   }, [playgrounds, visits, playgroundsLoading, visitsLoading])
@@ -329,7 +316,7 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
     <Box position="relative" height="100vh">
       <MapContainer
         center={helsinkiCenter}
-        zoom={11}
+        zoom={13.5}
         style={{ height: '100%', width: '100%' }}
         ref={mapRef}
       >
