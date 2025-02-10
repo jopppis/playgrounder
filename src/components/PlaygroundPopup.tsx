@@ -67,7 +67,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
       setHasVisited(true)
       onVisitChange(true)
-      console.log(t('playground.visitMarked'), t('playground.clickToRate'))
+      console.log(t('playground.visitMarked'))
     } catch (err) {
       console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
     }

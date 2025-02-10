@@ -47,8 +47,8 @@ describe('LanguageSwitcher', () => {
     const englishButton = screen.getByText('English')
     const finnishButton = screen.getByText('Suomi')
 
-    expect(englishButton).toHaveStyle({ opacity: '1' })
-    expect(finnishButton).toHaveStyle({ opacity: '0.5' })
+    expect(englishButton).toHaveStyle({ opacity: 1 })
+    expect(finnishButton).toHaveStyle({ opacity: 0.5 })
   })
 
   it('shows Finnish as active when Finnish is selected', () => {
@@ -58,8 +58,8 @@ describe('LanguageSwitcher', () => {
     const englishButton = screen.getByText('English')
     const finnishButton = screen.getByText('Suomi')
 
-    expect(englishButton).toHaveStyle({ opacity: '0.5' })
-    expect(finnishButton).toHaveStyle({ opacity: '1' })
+    expect(englishButton).toHaveStyle({ opacity: 0.5 })
+    expect(finnishButton).toHaveStyle({ opacity: 1 })
   })
 
   it('changes language when clicking on language buttons', () => {
@@ -83,10 +83,10 @@ describe('LanguageSwitcher', () => {
 
     // Active button (English) should maintain its color on hover
     fireEvent.mouseEnter(englishButton)
-    expect(englishButton).toHaveStyle({ opacity: '1' })
+    expect(englishButton).toHaveStyle({ opacity: 1 })
 
     // Inactive button (Finnish) should have hover styles
     fireEvent.mouseEnter(finnishButton)
-    expect(finnishButton).toHaveStyle({ opacity: '1' })
+    expect(finnishButton).toHaveStyle({ opacity: 1 })
   })
 })

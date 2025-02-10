@@ -7,7 +7,7 @@ interface ChakraProps {
   p?: number
   bg?: string
   width?: string
-  onClick?: () => void
+  onClick?: (event: React.MouseEvent<any>) => void
   'data-testid'?: string
   style?: React.CSSProperties
   className?: string
