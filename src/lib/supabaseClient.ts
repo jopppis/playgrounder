@@ -23,8 +23,3 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     }
   }
 })
-
-// Log environment in development
-if (environment === 'development') {
-  console.log(`🔌 Supabase client initialized in ${environment} mode`)
-}
