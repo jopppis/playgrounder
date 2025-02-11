@@ -1,5 +1,3 @@
-/// <reference types="vitest" />
-import '@testing-library/jest-dom/vitest'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'

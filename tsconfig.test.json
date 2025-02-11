@@ -5,7 +5,13 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
 
-    "types": ["vitest/globals", "@testing-library/jest-dom", "node"],
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "node",
+      "@testing-library/react",
+      "@testing-library/dom"
+    ],
     "paths": {
       "@chakra-ui/react": ["./src/test/__mocks__/@chakra-ui/react"],
       "@chakra-ui/transition": ["./src/test/__mocks__/@chakra-ui/transition"]
@@ -19,6 +25,7 @@
     "src/**/*.test.tsx",
     "src/setupTests.ts",
     "src/test/__mocks__/**/*.ts",
-    "src/test/__mocks__/**/*.tsx"
+    "src/test/__mocks__/**/*.tsx",
+    "src/test/setup.ts"
   ]
 }

@@ -1,5 +1,3 @@
-/// <reference types="vitest" />
-import '@testing-library/jest-dom/vitest'
 import { fireEvent, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { i18n, render } from '../test/testUtils'
