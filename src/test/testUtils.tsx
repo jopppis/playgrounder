@@ -4,7 +4,6 @@ import i18next from 'i18next'
 import { ReactElement } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import { MemoryRouter } from 'react-router-dom'
-import { EmotionCacheProvider } from './emotionSetup'
 
 // Create a mock i18n instance for tests
 export const i18n = i18next.createInstance()
@@ -57,9 +56,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <MemoryRouter>
       <I18nextProvider i18n={i18n}>
-        <EmotionCacheProvider>
-          <ChakraProvider value={defaultSystem}>{children}</ChakraProvider>
-        </EmotionCacheProvider>
+        <ChakraProvider value={defaultSystem}>{children}</ChakraProvider>
       </I18nextProvider>
     </MemoryRouter>
   )
