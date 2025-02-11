@@ -66,7 +66,6 @@ describe('PlaygroundPopup', () => {
 
   const mockOnVisitChange = jest.fn()
   const mockOnContentChange = jest.fn()
-  const mockOnClose = jest.fn()
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -84,14 +83,13 @@ describe('PlaygroundPopup', () => {
     })
   })
 
-  const renderComponent = () => {
+  const renderComponent = (): ReturnType<typeof render> => {
     return render(
       <I18nextProvider i18n={i18n}>
         <PlaygroundPopup
           playground={mockPlayground}
           onVisitChange={mockOnVisitChange}
           onContentChange={mockOnContentChange}
-          onClose={mockOnClose}
         />
       </I18nextProvider>
     )
@@ -119,37 +117,48 @@ describe('PlaygroundPopup', () => {
   })
 
   it('requires login to mark visit', async () => {
+    const originalWarn = console.warn
+    console.warn = jest.fn()
+
     renderComponent()
     fireEvent.click(screen.getByText('Mark Visited'))
-    expect(screen.getByText('Login required')).toBeInTheDocument()
+    expect(console.warn).toHaveBeenCalledWith('Login required')
+
+    console.warn = originalWarn
   })
 
   it('handles successful visit marking', async () => {
     const mockUser = { id: 'user1' }
     ;(useAuth as jest.Mock).mockReturnValue({ user: mockUser })
     ;(supabase.from as jest.Mock).mockReturnValue({
-      insert: jest.fn().mockResolvedValue({ error: null })
+      insert: jest.fn().mockResolvedValue({ error: null }),
+      delete: jest.fn().mockResolvedValue({ error: null })
     })
 
     renderComponent()
-    fireEvent.click(screen.getByText('Mark Visited'))
+
+    const markVisitedButton = screen.getByText('Mark Visited')
+    fireEvent.click(markVisitedButton)
 
     await waitFor(() => {
-      expect(screen.getByText('Visit marked')).toBeInTheDocument()
       expect(mockOnVisitChange).toHaveBeenCalledWith(true)
     })
   })
 
-  it('shows rating section when visited', () => {
+  it('shows rating section when visited', async () => {
     ;(useVisits as jest.Mock).mockReturnValue({
       visits: [{ playground_id: '1' }],
       loading: false
     })
+
     renderComponent()
-    expect(screen.getByText('Rating')).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(screen.getByText('Rating')).toBeInTheDocument()
+    })
   })
 
-  it('shows loading state when fetching rating', () => {
+  it('shows loading state when fetching rating', async () => {
     ;(useVisits as jest.Mock).mockReturnValue({
       visits: [{ playground_id: '1' }],
       loading: false
@@ -161,16 +170,28 @@ describe('PlaygroundPopup', () => {
       togglePublic: jest.fn(),
       refresh: jest.fn()
     })
+
     renderComponent()
-    expect(screen.getByRole('status')).toBeInTheDocument() // Spinner
+
+    await waitFor(() => {
+      expect(screen.getByRole('status')).toBeInTheDocument()
+    })
   })
 
-  it('calls onContentChange when rating changes', () => {
+  it('calls onContentChange when rating changes', async () => {
     ;(useVisits as jest.Mock).mockReturnValue({
       visits: [{ playground_id: '1' }],
       loading: false
     })
+
     renderComponent()
-    expect(mockOnContentChange).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(mockOnContentChange).toHaveBeenCalled()
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 })

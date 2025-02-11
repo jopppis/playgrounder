@@ -33,7 +33,7 @@ describe('Header', () => {
     ;(useAuth as jest.Mock).mockReturnValue({ user: null })
   })
 
-  const renderComponent = () => {
+  const renderComponent = (): ReturnType<typeof render> => {
     return render(
       <I18nextProvider i18n={i18n}>
         <Header />

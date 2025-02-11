@@ -23,7 +23,7 @@ i18n.init({
 })
 
 describe('LanguageSwitcher', () => {
-  const renderComponent = () => {
+  const renderComponent = (): ReturnType<typeof render> => {
     return render(
       <I18nextProvider i18n={i18n}>
         <LanguageSwitcher />
@@ -81,12 +81,15 @@ describe('LanguageSwitcher', () => {
     const englishButton = screen.getByText('English')
     const finnishButton = screen.getByText('Suomi')
 
-    // Active button (English) should maintain its color on hover
+    // Both buttons should have opacity 1 on hover
     fireEvent.mouseEnter(englishButton)
     expect(englishButton).toHaveStyle({ opacity: 1 })
 
-    // Inactive button (Finnish) should have hover styles
     fireEvent.mouseEnter(finnishButton)
     expect(finnishButton).toHaveStyle({ opacity: 1 })
+
+    // Opacity should return to normal when not hovering
+    fireEvent.mouseLeave(finnishButton)
+    expect(finnishButton).toHaveStyle({ opacity: 0.5 })
   })
 })

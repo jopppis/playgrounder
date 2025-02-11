@@ -44,7 +44,7 @@ describe('PlaygroundFilter', () => {
     ;(useAuth as jest.Mock).mockReturnValue({ user: null })
   })
 
-  const renderComponent = (filters = defaultFilters) => {
+  const renderComponent = (filters = defaultFilters): ReturnType<typeof render> => {
     return render(
       <I18nextProvider i18n={i18n}>
         <PlaygroundFilter filters={filters} onChange={mockOnChange} />
