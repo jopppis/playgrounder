@@ -48,7 +48,6 @@ npm run dev
 - Make ratings filter update real time after publishing a rating
 - Fetch playground info for popups on screen
 - Limit visible playgrounds to some max number
-- Remove autojump if user does something
 
 ### Before release
 
