@@ -235,7 +235,6 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
     serviceLevel: selectedServiceLevel ?? null
   })
   const mapRef = useRef<L.Map | null>(null)
-  const initialPositionSet = useRef(false)
 
   // Fetch ratings when playgrounds change
   useEffect(() => {
@@ -290,52 +289,6 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
       return true
     })
   }, [playgrounds, filters, user, visits, ratings])
-
-  // Handle initial map position
-  useEffect(() => {
-    if (!mapRef.current || playgroundsLoading || visitsLoading || initialPositionSet.current) return
-
-    // Find last visited playground
-    const lastVisit = visits
-      .sort((a, b) => new Date(b.visited_at).getTime() - new Date(a.visited_at).getTime())[0]
-
-    const lastVisitedPlayground = lastVisit
-      ? playgrounds.find(p => p.id === lastVisit.playground_id)
-      : null
-
-    if (lastVisitedPlayground) {
-      // Zoom to last visited playground
-      mapRef.current.setView(
-        [lastVisitedPlayground.latitude, lastVisitedPlayground.longitude],
-        13.5,
-        { animate: false }
-      )
-      initialPositionSet.current = true
-    } else {
-      // Keep the initial Helsinki center view
-      initialPositionSet.current = true
-
-      // Try to get user location in background
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords
-            // Only move to user location if they're in the Helsinki region (roughly)
-            const inHelsinki = latitude > 60.1 && latitude < 60.3 &&
-                             longitude > 24.8 && longitude < 25.1
-            if (inHelsinki && mapRef.current) {
-              mapRef.current.setView([latitude, longitude], 13.5, { animate: true })
-              mapRef.current?.fire('initialLocationFound', {
-                detail: { lat: latitude, lng: longitude }
-              })
-            }
-          },
-          () => {}, // Silently fail if location access is denied
-          { timeout: 5000 }
-        )
-      }
-    }
-  }, [playgrounds, visits, playgroundsLoading, visitsLoading])
 
   const handleVisitChange = async (playgroundId: string, isVisited: boolean) => {
     if (!user) return
