@@ -1,95 +1,114 @@
-import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from '@testing-library/react'
-import i18next from 'i18next'
-import { I18nextProvider } from 'react-i18next'
+/// <reference types="vitest" />
+import '@testing-library/jest-dom/vitest'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { useLocation } from 'react-router-dom'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
+import { render } from '../test/testUtils'
 import Header from './Header'
 
 // Mock the useAuth hook
-jest.mock('../hooks/useAuth', () => ({
-  useAuth: jest.fn()
+vi.mock('../hooks/useAuth', () => ({
+  useAuth: vi.fn()
 }))
 
-// Create a mock i18n instance
-const i18n = i18next.createInstance()
-i18n.init({
-  lng: 'en',
-  resources: {
-    en: {
-      translation: {
-        'menu.title': 'Playgrounder',
-        'menu.signIn': 'Sign In',
-        'menu.signUp': 'Sign Up',
-        'menu.signOut': 'Sign Out',
-        'menu.settings': 'Settings'
-      }
-    }
+// Mock react-router-dom
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom')
+  const mockUseLocation = vi.fn()
+  mockUseLocation.mockReturnValue({
+    pathname: '/',
+    search: '',
+    hash: '',
+    state: null,
+    key: 'default'
+  })
+  return {
+    ...actual,
+    useLocation: mockUseLocation,
+    MemoryRouter: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    useNavigate: () => vi.fn()
   }
 })
 
 describe('Header', () => {
+  const mockSetShowSignIn = vi.fn()
+
   beforeEach(() => {
-    jest.clearAllMocks()
-    ;(useAuth as jest.Mock).mockReturnValue({ user: null })
+    vi.clearAllMocks()
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: null })
   })
 
-  const renderComponent = (): ReturnType<typeof render> => {
+  const renderComponent = (showSignIn = false) => {
     return render(
-      <I18nextProvider i18n={i18n}>
-        <Header />
-      </I18nextProvider>
+      <Header showSignIn={showSignIn} setShowSignIn={mockSetShowSignIn} />
     )
   }
 
-  it('renders title', () => {
+  it('renders menu button', () => {
     renderComponent()
-    expect(screen.getByText('Playgrounder')).toBeInTheDocument()
-  })
-
-  it('shows sign in and sign up buttons when user is not logged in', () => {
-    renderComponent()
-    expect(screen.getByText('Sign In')).toBeInTheDocument()
-    expect(screen.getByText('Sign Up')).toBeInTheDocument()
-    expect(screen.queryByText('Sign Out')).not.toBeInTheDocument()
-  })
-
-  it('shows sign out button when user is logged in', () => {
-    ;(useAuth as jest.Mock).mockReturnValue({ user: { id: '1' } })
-    renderComponent()
-    expect(screen.getByText('Sign Out')).toBeInTheDocument()
-    expect(screen.queryByText('Sign In')).not.toBeInTheDocument()
-    expect(screen.queryByText('Sign Up')).not.toBeInTheDocument()
+    expect(screen.getByRole('button')).toBeInTheDocument()
+    expect(screen.getByText('≡')).toBeInTheDocument()
   })
 
   it('opens menu drawer when menu button is clicked', () => {
     renderComponent()
-    const menuButton = screen.getByRole('button', { name: /menu/i })
+    const menuButton = screen.getByRole('button')
     fireEvent.click(menuButton)
-    expect(screen.getByText('Settings')).toBeInTheDocument()
+    expect(screen.getByText('Language')).toBeInTheDocument()
   })
 
-  it('closes menu drawer when clicking outside', () => {
+  it('closes menu drawer when clicking outside', async () => {
     renderComponent()
-    const menuButton = screen.getByRole('button', { name: /menu/i })
+    const menuButton = screen.getByRole('button')
     fireEvent.click(menuButton)
 
-    // Click outside the drawer
-    fireEvent.mouseDown(document.body)
+    // Create a div outside the menu
+    const outsideElement = document.createElement('div')
+    document.body.appendChild(outsideElement)
 
-    // Settings should no longer be visible
-    expect(screen.queryByText('Settings')).not.toBeInTheDocument()
-  })
+    fireEvent.mouseDown(outsideElement)
 
-  it('handles sign out', () => {
-    const mockSignOut = jest.fn()
-    ;(useAuth as jest.Mock).mockReturnValue({
-      user: { id: '1' },
-      signOut: mockSignOut
+    await waitFor(() => {
+      expect(screen.queryByText('Language')).not.toBeInTheDocument()
     })
 
+    document.body.removeChild(outsideElement)
+  })
+
+  it('shows sign in modal when URL has email_confirm parameter', async () => {
+    const mockUseLocation = vi.fn()
+    mockUseLocation.mockReturnValue({
+      pathname: '/',
+      search: '?email_confirm=true',
+      hash: '',
+      state: null,
+      key: 'default'
+    })
+    vi.mocked(useLocation).mockImplementation(mockUseLocation)
+
     renderComponent()
-    const signOutButton = screen.getByText('Sign Out')
-    fireEvent.click(signOutButton)
-    expect(mockSignOut).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(mockSetShowSignIn).toHaveBeenCalledWith(true)
+    })
+  })
+
+  it('shows sign in modal when on signin path', async () => {
+    const mockUseLocation = vi.fn()
+    mockUseLocation.mockReturnValue({
+      pathname: '/signin',
+      search: '',
+      hash: '',
+      state: null,
+      key: 'default'
+    })
+    vi.mocked(useLocation).mockImplementation(mockUseLocation)
+
+    renderComponent()
+
+    await waitFor(() => {
+      expect(mockSetShowSignIn).toHaveBeenCalledWith(true)
+    })
   })
 })

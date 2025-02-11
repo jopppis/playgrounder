@@ -50,7 +50,6 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
   const handleVisit = async () => {
     if (!user) {
-      console.warn(t('playground.loginRequired'))
       return
     }
 
@@ -67,9 +66,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
       setHasVisited(true)
       onVisitChange(true)
-      console.log(t('playground.visitMarked'))
+      onContentChange?.()
     } catch (err) {
-      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
+      console.error('Error in PlaygroundPopup:', err instanceof Error ? err.message : err)
     }
   }
 
@@ -108,6 +107,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
       setHasVisited(false)
       onVisitChange(false)
       await refreshRating() // Refresh ratings to clear the old rating
+      onContentChange?.()
       console.log(t('playground.visitRemoved'))
     } catch (err) {
       console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
@@ -119,16 +119,14 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     e.preventDefault()
     e.stopPropagation()
 
-    if (!user) {
-      console.warn(t('playground.loginRequired'))
-      return
-    }
+    if (!user) return
 
     try {
       await submitRating(value, rating?.isPublic || false)
-      console.log(t('playground.ratingSubmitted'))
+      onContentChange?.()
     } catch (err) {
-      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
+      // Log error for debugging purposes
+      console.error('Error in PlaygroundPopup:', err instanceof Error ? err.message : err)
     }
   }
 
@@ -141,9 +139,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
     try {
       await togglePublic()
-      console.log(rating?.isPublic ? t('playground.ratingPrivate') : t('playground.ratingPublic'))
     } catch (err) {
-      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
+      // Log error for debugging purposes
+      console.error('Error in PlaygroundPopup:', err instanceof Error ? err.message : err)
     }
   }
 
@@ -231,7 +229,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                 {t('playground.rating')}
               </Text>
               {ratingLoading ? (
-                <Spinner size="sm" color="#4A90E2" />
+                <Spinner size="sm" color="#4A90E2" role="status" aria-label="Loading rating" />
               ) : (
                 <>
                   <HStack gap={0.5} mb={1} justify="space-between" align="center">
@@ -240,10 +238,16 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                         <Box
                           key={value}
                           as="button"
-                          onClick={(e) => handleRating(value, e as React.MouseEvent<HTMLButtonElement>)}
+                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleRating(value, e as unknown as React.MouseEvent<HTMLButtonElement>);
+                          }}
                           onMouseEnter={() => setHoveredRating(value)}
                           onMouseLeave={() => setHoveredRating(null)}
-                          disabled={!user}
+                          aria-disabled={!user}
+                          aria-label={`Rate ${value} star${value !== 1 ? 's' : ''}`}
+                          role="button"
                           cursor={user ? 'pointer' : 'not-allowed'}
                           opacity={!user ? 0.5 : 1}
                           transition="all 0.2s"

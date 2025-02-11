@@ -1,38 +1,18 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import i18next from 'i18next'
-import { I18nextProvider } from 'react-i18next'
+/// <reference types="vitest" />
+import '@testing-library/jest-dom/vitest'
+import { fireEvent, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
+import { render } from '../test/testUtils'
 import { FilterOptions, PlaygroundFilter } from './PlaygroundFilter'
 
 // Mock the useAuth hook
-jest.mock('../hooks/useAuth', () => ({
-  useAuth: jest.fn()
+vi.mock('../hooks/useAuth', () => ({
+  useAuth: vi.fn()
 }))
 
-// Create a mock i18n instance
-const i18n = i18next.createInstance()
-i18n.init({
-  lng: 'en',
-  resources: {
-    en: {
-      translation: {
-        filterPlaygrounds: 'Filter Playgrounds',
-        'playground.serviceLevel': 'Service Level',
-        'playground.level1': 'Level 1',
-        'playground.level2': 'Level 2',
-        visitStatus: 'Visit Status',
-        visited: 'Visited',
-        unvisited: 'Unvisited',
-        minStars: 'Minimum Stars',
-        showMore: 'Show More',
-        showLess: 'Show Less'
-      }
-    }
-  }
-})
-
 describe('PlaygroundFilter', () => {
-  const mockOnChange = jest.fn()
+  const mockOnChange = vi.fn()
   const defaultFilters: FilterOptions = {
     visitStatus: 'all',
     minStars: null,
@@ -40,15 +20,13 @@ describe('PlaygroundFilter', () => {
   }
 
   beforeEach(() => {
-    jest.clearAllMocks()
-    ;(useAuth as jest.Mock).mockReturnValue({ user: null })
+    vi.clearAllMocks()
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: null })
   })
 
   const renderComponent = (filters = defaultFilters): ReturnType<typeof render> => {
     return render(
-      <I18nextProvider i18n={i18n}>
-        <PlaygroundFilter filters={filters} onChange={mockOnChange} />
-      </I18nextProvider>
+      <PlaygroundFilter filters={filters} onChange={mockOnChange} />
     )
   }
 
@@ -71,7 +49,7 @@ describe('PlaygroundFilter', () => {
   })
 
   it('shows visit status filters when user is logged in', () => {
-    ;(useAuth as jest.Mock).mockReturnValue({ user: { id: '1' } })
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
     fireEvent.click(screen.getByText('Filter Playgrounds'))
     expect(screen.getByText('Visit Status')).toBeInTheDocument()
@@ -102,5 +80,13 @@ describe('PlaygroundFilter', () => {
     fireEvent.click(screen.getByText('Filter Playgrounds'))
     fireEvent.click(screen.getByText('Show More'))
     expect(screen.getByText('Show Less')).toBeInTheDocument()
+  })
+
+  it('shows visited filter when user is logged in', () => {
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
+    renderComponent()
+    fireEvent.click(screen.getByText('Filter Playgrounds'))
+    expect(screen.getByText('Visit Status')).toBeInTheDocument()
+    expect(screen.getByText('Visited')).toBeInTheDocument()
   })
 })

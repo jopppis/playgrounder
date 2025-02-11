@@ -1,5 +1,5 @@
 import { Box, Button } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import MenuDrawer from './MenuDrawer'
 
@@ -11,6 +11,7 @@ interface HeaderProps {
 const Header = ({ showSignIn = false, setShowSignIn = () => {} }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Check for email confirmation redirect
@@ -20,9 +21,22 @@ const Header = ({ showSignIn = false, setShowSignIn = () => {} }: HeaderProps) =
     }
   }, [location, setShowSignIn])
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   return (
     <>
-      <Box position="fixed" top={2} right={4} zIndex={2200}>
+      <Box position="fixed" top={2} right={4} zIndex={2200} ref={menuRef}>
         <Button
           size="md"
           variant="solid"

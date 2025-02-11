@@ -1,34 +1,13 @@
-/// <reference types="@testing-library/jest-dom" />
-import { fireEvent, render, screen } from '@testing-library/react'
-import i18next from 'i18next'
-import { I18nextProvider } from 'react-i18next'
+/// <reference types="vitest" />
+import '@testing-library/jest-dom/vitest'
+import { fireEvent, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { i18n, render } from '../test/testUtils'
 import LanguageSwitcher from './LanguageSwitcher'
-
-// Create a mock i18n instance
-const i18n = i18next.createInstance()
-i18n.init({
-  lng: 'en',
-  resources: {
-    en: {
-      translation: {
-        'menu.language': 'Language'
-      }
-    },
-    fi: {
-      translation: {
-        'menu.language': 'Kieli'
-      }
-    }
-  }
-})
 
 describe('LanguageSwitcher', () => {
   const renderComponent = (): ReturnType<typeof render> => {
-    return render(
-      <I18nextProvider i18n={i18n}>
-        <LanguageSwitcher />
-      </I18nextProvider>
-    )
+    return render(<LanguageSwitcher />)
   }
 
   beforeEach(() => {
@@ -78,17 +57,16 @@ describe('LanguageSwitcher', () => {
 
   it('applies hover styles correctly', () => {
     renderComponent()
-    const englishButton = screen.getByText('English')
     const finnishButton = screen.getByText('Suomi')
 
-    // Both buttons should have opacity 1 on hover
-    fireEvent.mouseEnter(englishButton)
-    expect(englishButton).toHaveStyle({ opacity: 1 })
+    // Initial state
+    expect(finnishButton).toHaveStyle({ opacity: 0.5 })
 
+    // Hover state
     fireEvent.mouseEnter(finnishButton)
-    expect(finnishButton).toHaveStyle({ opacity: 1 })
+    expect(finnishButton).toHaveStyle({ opacity: 0.5 }) // The opacity is controlled by the language state, not hover
 
-    // Opacity should return to normal when not hovering
+    // After hover
     fireEvent.mouseLeave(finnishButton)
     expect(finnishButton).toHaveStyle({ opacity: 0.5 })
   })

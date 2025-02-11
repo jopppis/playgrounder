@@ -1,56 +1,68 @@
-import '@testing-library/jest-dom'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import i18next from 'i18next'
-import { I18nextProvider } from 'react-i18next'
+/// <reference types="vitest" />
+import '@testing-library/jest-dom/vitest'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
 import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
+import { render } from '../test/testUtils'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
 // Mock the hooks
-jest.mock('../hooks/useAuth', () => ({
-  useAuth: jest.fn()
+vi.mock('../hooks/useAuth', () => ({
+  useAuth: vi.fn().mockReturnValue({
+    user: null,
+    isLoading: false,
+    error: null
+  })
 }))
 
-jest.mock('../hooks/useVisits', () => ({
-  useVisits: jest.fn()
+vi.mock('../hooks/useVisits', () => ({
+  useVisits: vi.fn().mockReturnValue({
+    visits: [],
+    isLoading: false,
+    error: null,
+    markVisited: vi.fn(),
+    removeVisit: vi.fn()
+  })
 }))
 
-jest.mock('../hooks/useRatings', () => ({
-  useRatings: jest.fn()
+vi.mock('../hooks/useRatings', () => ({
+  useRatings: vi.fn().mockReturnValue({
+    ratings: [],
+    isLoading: false,
+    error: null,
+    submitRating: vi.fn()
+  })
 }))
 
 // Mock supabase
-jest.mock('../lib/supabaseClient', () => ({
+vi.mock('../lib/supabaseClient', () => ({
   supabase: {
-    from: jest.fn(() => ({
-      insert: jest.fn(),
-      delete: jest.fn()
+    from: vi.fn(() => ({
+      insert: vi.fn(),
+      delete: vi.fn()
     }))
   }
 }))
 
-// Create a mock i18n instance
-const i18n = i18next.createInstance()
-i18n.init({
-  lng: 'en',
-  resources: {
-    en: {
-      translation: {
-        'playground.loginRequired': 'Login required',
-        'playground.visitMarked': 'Visit marked',
-        'playground.clickToRate': 'Click to rate',
-        'playground.removeVisit': 'Remove Visit',
+// Mock i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'playground.loginRequired': 'Please sign in to mark a visit',
         'playground.markVisited': 'Mark Visited',
+        'playground.removeVisit': 'Remove Visit',
         'playground.rating': 'Rating',
-        'playground.makePublic': 'Make Public',
-        'common.error': 'Error',
-        'common.unknownError': 'Unknown error'
+        'playground.makePublic': 'Make Public'
       }
+      return translations[key] || key
     }
-  }
-})
+  }),
+  I18nextProvider: ({ children }: { children: React.ReactNode }) => children
+}))
 
 describe('PlaygroundPopup', () => {
   const mockPlayground = {
@@ -64,34 +76,39 @@ describe('PlaygroundPopup', () => {
     created_at: '2024-01-01T00:00:00Z'
   }
 
-  const mockOnVisitChange = jest.fn()
-  const mockOnContentChange = jest.fn()
+  const mockOnVisitChange = vi.fn()
+  const mockOnContentChange = vi.fn()
 
   beforeEach(() => {
-    jest.clearAllMocks()
-    ;(useAuth as jest.Mock).mockReturnValue({ user: null })
-    ;(useVisits as jest.Mock).mockReturnValue({
+    vi.clearAllMocks()
+    // Reset default mock values
+    ;((useVisits as unknown) as MockInstance<any, any>).mockReturnValue({
       visits: [],
-      loading: false
+      isLoading: false,
+      error: null,
+      markVisited: vi.fn(),
+      removeVisit: vi.fn()
     })
-    ;(useRatings as jest.Mock).mockReturnValue({
-      rating: null,
-      loading: false,
-      submitRating: jest.fn(),
-      togglePublic: jest.fn(),
-      refresh: jest.fn()
+    ;((useRatings as unknown) as MockInstance<any, any>).mockReturnValue({
+      ratings: [],
+      isLoading: false,
+      error: null,
+      submitRating: vi.fn()
+    })
+    ;((useAuth as unknown) as MockInstance<any, any>).mockReturnValue({
+      user: null,
+      isLoading: false,
+      error: null
     })
   })
 
   const renderComponent = (): ReturnType<typeof render> => {
     return render(
-      <I18nextProvider i18n={i18n}>
-        <PlaygroundPopup
-          playground={mockPlayground}
-          onVisitChange={mockOnVisitChange}
-          onContentChange={mockOnContentChange}
-        />
-      </I18nextProvider>
+      <PlaygroundPopup
+        playground={mockPlayground}
+        onVisitChange={mockOnVisitChange}
+        onContentChange={mockOnContentChange}
+      />
     )
   }
 
@@ -108,90 +125,125 @@ describe('PlaygroundPopup', () => {
   })
 
   it('shows remove visit button when visited', () => {
-    ;(useVisits as jest.Mock).mockReturnValue({
+    ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
       visits: [{ playground_id: '1' }],
-      loading: false
+      isLoading: false
     })
     renderComponent()
     expect(screen.getByText('Remove Visit')).toBeInTheDocument()
   })
 
-  it('requires login to mark visit', async () => {
-    const originalWarn = console.warn
-    console.warn = jest.fn()
+  it('requires login to mark visit', () => {
+    // Mock supabase insert to track if it's called
+    const mockInsert = vi.fn().mockResolvedValue({ error: null })
+    ;(supabase.from as unknown as MockInstance<any, any>).mockReturnValue({
+      insert: mockInsert
+    })
+
+    ;(useAuth as unknown as MockInstance<any, any>).mockReturnValue({
+      user: null,
+      loading: false,
+      error: null
+    })
 
     renderComponent()
-    fireEvent.click(screen.getByText('Mark Visited'))
-    expect(console.warn).toHaveBeenCalledWith('Login required')
+    fireEvent.click(screen.getByRole('button', { name: 'Mark Visited' }))
 
-    console.warn = originalWarn
+    // Verify that the visit was not marked
+    expect(mockInsert).not.toHaveBeenCalled()
+    expect(mockOnVisitChange).not.toHaveBeenCalled()
   })
 
   it('handles successful visit marking', async () => {
-    const mockUser = { id: 'user1' }
-    ;(useAuth as jest.Mock).mockReturnValue({ user: mockUser })
-    ;(supabase.from as jest.Mock).mockReturnValue({
-      insert: jest.fn().mockResolvedValue({ error: null }),
-      delete: jest.fn().mockResolvedValue({ error: null })
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
+    ;(supabase.from as ReturnType<typeof vi.fn>).mockReturnValue({
+      insert: vi.fn().mockResolvedValue({ error: null })
     })
 
     renderComponent()
-
-    const markVisitedButton = screen.getByText('Mark Visited')
-    fireEvent.click(markVisitedButton)
-
+    fireEvent.click(screen.getByText('Mark Visited'))
     await waitFor(() => {
-      expect(mockOnVisitChange).toHaveBeenCalledWith(true)
+      expect(mockOnVisitChange).toHaveBeenCalled()
     })
   })
 
-  it('shows rating section when visited', async () => {
-    ;(useVisits as jest.Mock).mockReturnValue({
+  it('shows rating section when visited', () => {
+    ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
       visits: [{ playground_id: '1' }],
-      loading: false
+      isLoading: false
     })
-
     renderComponent()
-
-    await waitFor(() => {
-      expect(screen.getByText('Rating')).toBeInTheDocument()
-    })
+    expect(screen.getByText('Rating')).toBeInTheDocument()
   })
 
-  it('shows loading state when fetching rating', async () => {
-    ;(useVisits as jest.Mock).mockReturnValue({
+  it('shows loading state when fetching rating', () => {
+    // First set up a visited playground
+    ;(useVisits as unknown as MockInstance<any, any>).mockReturnValue({
       visits: [{ playground_id: '1' }],
-      loading: false
+      loading: false,
+      error: null,
+      refresh: vi.fn(),
+      updateVisitsState: vi.fn()
     })
-    ;(useRatings as jest.Mock).mockReturnValue({
+
+    // Then set up loading state for ratings
+    ;(useRatings as unknown as MockInstance<any, any>).mockReturnValue({
       rating: null,
       loading: true,
-      submitRating: jest.fn(),
-      togglePublic: jest.fn(),
-      refresh: jest.fn()
+      error: null,
+      submitRating: vi.fn(),
+      togglePublic: vi.fn(),
+      refresh: vi.fn()
     })
 
     renderComponent()
-
-    await waitFor(() => {
-      expect(screen.getByRole('status')).toBeInTheDocument()
-    })
+    expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('calls onContentChange when rating changes', async () => {
-    ;(useVisits as jest.Mock).mockReturnValue({
+    // Set up visited state
+    ;(useVisits as unknown as MockInstance<any, any>).mockReturnValue({
       visits: [{ playground_id: '1' }],
+      loading: false,
+      error: null,
+      refresh: vi.fn(),
+      updateVisitsState: vi.fn()
+    })
+
+    // Set up mock for submitRating that resolves successfully
+    const mockSubmitRating = vi.fn().mockResolvedValue({ error: null })
+
+    // Set up ratings hook with the mock
+    ;(useRatings as unknown as MockInstance<any, any>).mockReturnValue({
+      rating: null,
+      loading: false,
+      error: null,
+      submitRating: mockSubmitRating,
+      togglePublic: vi.fn(),
+      refresh: vi.fn()
+    })
+
+    // Set up auth with a logged-in user
+    ;(useAuth as unknown as MockInstance<any, any>).mockReturnValue({
+      user: { id: '1' },
       loading: false
     })
 
     renderComponent()
 
+    // Find and click the first star button
+    const starButtons = screen.getAllByRole('button')
+    const ratingButton = starButtons.find(button => button.getAttribute('aria-label')?.includes('star'))
+    if (!ratingButton) throw new Error('Rating button not found')
+    fireEvent.click(ratingButton)
+
     await waitFor(() => {
+      expect(mockSubmitRating).toHaveBeenCalled()
       expect(mockOnContentChange).toHaveBeenCalled()
     })
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 })

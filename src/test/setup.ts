@@ -1,17 +1,18 @@
-import '@testing-library/jest-dom'
+/// <reference types="vitest" />
+import '@testing-library/jest-dom/vitest'
 import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
+import { vi } from 'vitest'
 
-declare global {
-  namespace jest {
-    interface Matchers<R> extends TestingLibraryMatchers<typeof expect.stringContaining, R> {}
-  }
-  interface Window {
-    process: any
-  }
+declare module 'vitest' {
+  interface Assertion<T = any> extends TestingLibraryMatchers<typeof expect.stringContaining, T> {}
+}
+
+interface Window {
+  process: any
 }
 
 // Configure longer timeout for async operations
-jest.setTimeout(5000)
+vi.setConfig({ testTimeout: 5000 })
 
 // Add TextEncoder polyfill
 if (typeof TextEncoder === 'undefined') {
@@ -35,6 +36,5 @@ if (typeof TextDecoder === 'undefined') {
   }
   ;(globalThis as any).TextDecoder = TextDecoderPolyfill
 }
-
 
 export {}
