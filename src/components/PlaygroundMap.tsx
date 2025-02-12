@@ -118,9 +118,6 @@ const LocationControl = () => {
     map.on('locationfound', handleLocationFound)
     map.on('locationerror', handleLocationError)
 
-    // Request location immediately
-    map.locate({ setView: false, watch: false })
-
     // Clean up
     return () => {
       map.off('locationfound', handleLocationFound)
