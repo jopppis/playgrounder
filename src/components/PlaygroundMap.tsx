@@ -210,17 +210,13 @@ const LocationControl = () => {
   ) : null
 }
 
-interface PlaygroundMapProps {
-  selectedServiceLevel?: number | null  // Make it optional since we'll use filters
-}
-
 interface PlaygroundRating {
   playground_id: string
   avg_rating: number | null
   total_ratings: number
 }
 
-const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
+const PlaygroundMap = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
@@ -229,7 +225,7 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
   const [filters, setFilters] = useState<FilterOptions>({
     visitStatus: 'all',
     minStars: null,
-    serviceLevel: selectedServiceLevel ?? null
+    serviceLevel: null
   })
   const mapRef = useRef<L.Map | null>(null)
 
@@ -247,13 +243,6 @@ const PlaygroundMap = ({ selectedServiceLevel }: PlaygroundMapProps) => {
 
     fetchRatings()
   }, [playgrounds])
-
-  // Update filters when selectedServiceLevel prop changes
-  useEffect(() => {
-    if (selectedServiceLevel !== undefined) {
-      setFilters(prev => ({ ...prev, serviceLevel: selectedServiceLevel }))
-    }
-  }, [selectedServiceLevel])
 
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
