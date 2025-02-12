@@ -153,10 +153,10 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     const lines = processedText.split('\n')
 
     return lines.map((line, lineIndex) => (
-      <Box key={lineIndex} display="inline">
+      <Text as="span" key={lineIndex} display="inline">
         {line}
         {lineIndex < lines.length - 1 && '\n'}
-      </Box>
+      </Text>
     ))
   }
 

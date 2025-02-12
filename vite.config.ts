@@ -14,7 +14,11 @@ export default defineConfig({
     },
     include: ['src/**/*.test.{ts,tsx}'],
     deps: {
-      inline: ['@testing-library/jest-dom']
+      optimizer: {
+        web: {
+          include: ['@testing-library/jest-dom']
+        }
+      }
     }
   },
 })

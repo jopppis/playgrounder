@@ -81,5 +81,14 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 })
 
+// Mock JSDOM's CSS parser to suppress CSS parsing errors
+const originalConsoleError = console.error
+console.error = (...args) => {
+  if (args[0]?.includes?.('Could not parse CSS stylesheet')) {
+    return
+  }
+  originalConsoleError(...args)
+}
+
 // Export empty object to make this a module
 export {}
