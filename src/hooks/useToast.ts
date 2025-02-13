@@ -13,41 +13,45 @@ interface ToastOptions {
 
 export const useToast = () => {
   const showSuccess = (options: ToastOptions) => {
+    const { closable, ...rest } = options
     toaster.create({
-      ...options,
+      ...rest,
       type: 'success',
       meta: {
-        closable: options.closable ?? true
+        closable: closable ?? true
       }
     })
   }
 
   const showError = (options: ToastOptions) => {
+    const { closable, ...rest } = options
     toaster.create({
-      ...options,
+      ...rest,
       type: 'error',
       meta: {
-        closable: options.closable ?? true
+        closable: closable ?? true
       }
     })
   }
 
   const showLoading = (options: ToastOptions) => {
+    const { closable, ...rest } = options
     toaster.create({
-      ...options,
+      ...rest,
       type: 'loading',
       meta: {
-        closable: options.closable ?? false
+        closable: closable ?? false
       }
     })
   }
 
   const showInfo = (options: ToastOptions) => {
+    const { closable, ...rest } = options
     toaster.create({
-      ...options,
+      ...rest,
       type: 'info',
       meta: {
-        closable: options.closable ?? true
+        closable: closable ?? true
       }
     })
   }
