@@ -3,6 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import Router from './Router'
+import { Toaster } from './components/ui/toaster'
 import './i18n/config'
 import './index.css'
 
@@ -13,6 +14,7 @@ root.render(
     <ChakraProvider value={defaultSystem}>
       <BrowserRouter>
         <Router />
+        <Toaster />
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>

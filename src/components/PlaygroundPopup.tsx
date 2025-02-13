@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
+import { useToast } from '../hooks/useToast'
 import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates } from '../types/database.types'
@@ -25,6 +26,7 @@ interface PlaygroundPopupProps {
 export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
+  const toast = useToast()
   const { visits, loading: visitsLoading } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating } = useRatings(playground.id)
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
@@ -108,14 +110,19 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
       onVisitChange(false)
       await refreshRating() // Refresh ratings to clear the old rating
       onContentChange?.()
-      console.log(t('playground.visitRemoved'))
+      toast.showSuccess({
+        title: t('playground.removeVisit.title'),
+        description: t('playground.removeVisit.message')
+      })
     } catch (err) {
-      console.error(t('common.error'), err instanceof Error ? err.message : t('common.unknownError'))
+      toast.showError({
+        title: t('common.error'),
+        description: err instanceof Error ? err.message : t('common.unknownError')
+      })
     }
   }
 
   const handleRating = async (value: number, e: React.MouseEvent<HTMLButtonElement>) => {
-    // Prevent the click event from bubbling up and closing the popup
     e.preventDefault()
     e.stopPropagation()
 
@@ -124,14 +131,19 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     try {
       await submitRating(value, rating?.isPublic || false)
       onContentChange?.()
+      toast.showSuccess({
+        title: t('playground.rating.success.title'),
+        description: t('playground.rating.success.message')
+      })
     } catch (err) {
-      // Log error for debugging purposes
-      console.error('Error in PlaygroundPopup:', err instanceof Error ? err.message : err)
+      toast.showError({
+        title: t('playground.rating.error.title'),
+        description: err instanceof Error ? err.message : t('common.unknownError')
+      })
     }
   }
 
   const handleTogglePublic = async (e?: React.SyntheticEvent) => {
-    // Prevent the click event from bubbling up and closing the popup
     if (e) {
       e.preventDefault()
       e.stopPropagation()
@@ -139,9 +151,17 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
     try {
       await togglePublic()
+      toast.showSuccess({
+        title: t('playground.rating.visibility.success.title'),
+        description: rating?.isPublic
+          ? t('playground.rating.visibility.success.public')
+          : t('playground.rating.visibility.success.private')
+      })
     } catch (err) {
-      // Log error for debugging purposes
-      console.error('Error in PlaygroundPopup:', err instanceof Error ? err.message : err)
+      toast.showError({
+        title: t('playground.rating.visibility.error.title'),
+        description: err instanceof Error ? err.message : t('common.unknownError')
+      })
     }
   }
 

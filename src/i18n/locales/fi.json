@@ -7,11 +7,12 @@
       "password": "Salasana",
       "passwordPlaceholder": "Luo salasanasi",
       "error": {
-        "title": "Virhe"
+        "title": "Rekisteröityminen epäonnistui",
+        "message": "Tilin luominen epäonnistui"
       },
       "success": {
-        "title": "Onnistui!",
-        "message": "Tarkista sähköpostisi vahvistuslinkistä. Suljetaan hetken kuluttua..."
+        "title": "Tili luotu",
+        "message": "Tarkista sähköpostisi vahvistuslinkistä"
       },
       "button": {
         "loading": "Rekisteröidään...",
@@ -25,7 +26,12 @@
       "password": "Salasana",
       "passwordPlaceholder": "Syötä salasanasi",
       "error": {
-        "title": "Virhe"
+        "title": "Kirjautuminen epäonnistui",
+        "message": "Kirjautuminen epäonnistui"
+      },
+      "success": {
+        "title": "Tervetuloa takaisin",
+        "message": "Kirjautuminen onnistui"
       },
       "button": {
         "loading": "Kirjaudutaan...",
@@ -77,20 +83,37 @@
     "address": "Osoite",
     "markVisited": "Merkitse vierailluksi",
     "visited": "✓ Vierailtu",
-    "removeVisit": "Poista vierailu",
-    "visitRemoved": "Vierailu poistettu",
-    "rating": "Arviosi",
+    "removeVisit": {
+      "title": "Vierailu poistettu",
+      "message": "Leikkipuisto on poistettu vierailtujen listalta"
+    },
+    "rating": {
+      "title": "Arvio",
+      "success": {
+        "title": "Arvio lähetetty",
+        "message": "Kiitos leikkipuiston arvioinnista"
+      },
+      "error": {
+        "title": "Arviointi epäonnistui",
+        "message": "Arvion lähettäminen epäonnistui"
+      },
+      "visibility": {
+        "success": {
+          "title": "Arvion näkyvyys päivitetty",
+          "public": "Arviosi on nyt julkinen",
+          "private": "Arviosi on nyt yksityinen"
+        },
+        "error": {
+          "title": "Päivitys epäonnistui",
+          "message": "Arvion näkyvyyden päivitys epäonnistui"
+        }
+      }
+    },
     "avgRating": "{{rating}} ★ ({{count}} arviota)",
     "makePublic": "Julkaise arvio",
     "loginRequired": "Kirjautuminen vaaditaan",
     "visitMarked": "Vierailu merkitty",
     "clickToRate": "Klikkaa tähtiä arvioidaksesi leikkipuiston",
-    "ratingSubmitted": "Arvio lähetetty",
-    "ratingPublic": "Arvio on nyt julkinen",
-    "ratingPrivate": "Arvio on nyt yksityinen",
-    "yourRating": "Arviosi",
-    "publicRating": "Julkinen arvio",
-    "makePrivate": "Tee arviosta yksityinen",
     "serviceLevel": "Palvelutaso",
     "level1": "Taso 1 (Ohjattu)",
     "level2": "Taso 2 (Ei ohjattua toimintaa)",
@@ -110,5 +133,9 @@
   "showLess": "Näytä vähemmän",
   "app": {
     "name": "Leikkipuistokartta"
+  },
+  "common": {
+    "error": "Virhe",
+    "unknownError": "Tuntematon virhe tapahtui"
   }
 }

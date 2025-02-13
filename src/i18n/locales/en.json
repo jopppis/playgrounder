@@ -7,11 +7,12 @@
       "password": "Password",
       "passwordPlaceholder": "Create your password",
       "error": {
-        "title": "Error"
+        "title": "Sign Up Failed",
+        "message": "Failed to create account"
       },
       "success": {
-        "title": "Success!",
-        "message": "Please check your email for the confirmation link. Closing in a moment..."
+        "title": "Account Created",
+        "message": "Please check your email for the confirmation link"
       },
       "button": {
         "loading": "Signing up...",
@@ -25,7 +26,12 @@
       "password": "Password",
       "passwordPlaceholder": "Enter your password",
       "error": {
-        "title": "Error"
+        "title": "Sign In Failed",
+        "message": "Failed to sign in"
+      },
+      "success": {
+        "title": "Welcome Back",
+        "message": "Successfully signed in"
       },
       "button": {
         "loading": "Signing in...",
@@ -75,9 +81,32 @@
     "address": "Address",
     "markVisited": "Mark as visited",
     "visited": "✓ Visited",
-    "removeVisit": "Remove visit",
-    "visitRemoved": "Visit removed",
-    "rating": "Your Rating",
+    "removeVisit": {
+      "title": "Visit Removed",
+      "message": "Playground has been removed from your visited list"
+    },
+    "rating": {
+      "title": "Rating",
+      "success": {
+        "title": "Rating Submitted",
+        "message": "Thank you for rating this playground"
+      },
+      "error": {
+        "title": "Rating Failed",
+        "message": "Failed to submit rating"
+      },
+      "visibility": {
+        "success": {
+          "title": "Rating Visibility Updated",
+          "public": "Your rating is now public",
+          "private": "Your rating is now private"
+        },
+        "error": {
+          "title": "Update Failed",
+          "message": "Failed to update rating visibility"
+        }
+      }
+    },
     "avgRating": "{{rating}} ★ ({{count}} ratings)",
     "makePublic": "Publish rating",
     "loginRequired": "Login required",

@@ -1,16 +1,17 @@
 import {
-    Box,
-    Button,
-    Heading,
-    Icon,
-    Input,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Heading,
+  Icon,
+  Input,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
+import { useToast } from '../../hooks/useToast'
 import { supabase } from '../../lib/supabaseClient'
 
 interface SignUpProps {
@@ -24,6 +25,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const toast = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,28 +34,27 @@ export default function SignUp({ onSuccess }: SignUpProps) {
     setSuccess(false)
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          emailRedirectTo: window.location.origin + '/signin'
-        }
       })
 
-      if (error) throw error
+      if (signUpError) throw signUpError
 
-      if (data) {
-        setSuccess(true)
-        setTimeout(() => {
-          onSuccess?.()
-        }, 3000)
-      }
-    } catch (error) {
-      if (error instanceof AuthError) {
-        setError(error.message)
-      } else {
-        setError(t('auth.signUp.error.unknown'))
-      }
+      setSuccess(true)
+      toast.showSuccess({
+        title: t('auth.signUp.success.title'),
+        description: t('auth.signUp.success.message')
+      })
+
+      onSuccess?.()
+    } catch (err) {
+      const authError = err as AuthError
+      setError(authError.message)
+      toast.showError({
+        title: t('auth.signUp.error.title'),
+        description: t('auth.signUp.error.message')
+      })
     } finally {
       setLoading(false)
     }

@@ -1,17 +1,18 @@
 import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  Input,
-  Stack,
-  Text,
+    Box,
+    Button,
+    Heading,
+    Icon,
+    Input,
+    Stack,
+    Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '../../hooks/useToast'
 import { supabase } from '../../lib/supabaseClient'
 
 interface SignInProps {
@@ -25,6 +26,7 @@ export default function SignIn({ onSuccess }: SignInProps) {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const toast = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,23 +34,27 @@ export default function SignIn({ onSuccess }: SignInProps) {
     setError(null)
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) throw error
+      if (signInError) throw signInError
 
-      if (data) {
-        navigate('/')
-        onSuccess?.()
-      }
-    } catch (error) {
-      if (error instanceof AuthError) {
-        setError(error.message)
-      } else {
-        setError(t('auth.signIn.error.unknown'))
-      }
+      toast.showSuccess({
+        title: t('auth.signIn.success.title'),
+        description: t('auth.signIn.success.message')
+      })
+
+      navigate('/')
+      onSuccess?.()
+    } catch (err) {
+      const authError = err as AuthError
+      setError(authError.message)
+      toast.showError({
+        title: t('auth.signIn.error.title'),
+        description: t('auth.signIn.error.message')
+      })
     } finally {
       setLoading(false)
     }
