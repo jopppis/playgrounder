@@ -112,6 +112,13 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 required
                 bg="white"
                 _placeholder={{ color: 'gray.400' }}
+                borderColor="brand.200"
+                _hover={{ borderColor: 'brand.300' }}
+                _focus={{
+                  borderColor: 'brand.500',
+                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                  outline: 'none'
+                }}
               />
             </Box>
             <Box>
@@ -125,6 +132,13 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 minLength={6}
                 bg="white"
                 _placeholder={{ color: 'gray.400' }}
+                borderColor="brand.200"
+                _hover={{ borderColor: 'brand.300' }}
+                _focus={{
+                  borderColor: 'brand.500',
+                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                  outline: 'none'
+                }}
               />
             </Box>
             <Button

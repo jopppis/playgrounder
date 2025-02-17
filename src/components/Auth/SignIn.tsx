@@ -1,11 +1,11 @@
 import {
-    Box,
-    Button,
-    Heading,
-    Icon,
-    Input,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Heading,
+  Icon,
+  Input,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
@@ -105,6 +105,13 @@ export default function SignIn({ onSuccess }: SignInProps) {
                 placeholder={t('auth.signIn.emailPlaceholder')}
                 required
                 _placeholder={{ color: 'gray.400' }}
+                borderColor="brand.200"
+                _hover={{ borderColor: 'brand.300' }}
+                _focus={{
+                  borderColor: 'brand.500',
+                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                  outline: 'none'
+                }}
               />
             </Box>
             <Box>
@@ -116,6 +123,13 @@ export default function SignIn({ onSuccess }: SignInProps) {
                 placeholder={t('auth.signIn.passwordPlaceholder')}
                 required
                 _placeholder={{ color: 'gray.400' }}
+                borderColor="brand.200"
+                _hover={{ borderColor: 'brand.300' }}
+                _focus={{
+                  borderColor: 'brand.500',
+                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                  outline: 'none'
+                }}
               />
             </Box>
             <Button
