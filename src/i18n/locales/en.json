@@ -61,7 +61,7 @@
   "menu": {
     "about": {
       "title": "About PlayGrounder",
-      "description": "A community-driven app to help parents and caregivers find and share local playgrounds. Track your visits, rate playgrounds, and discover new places for your children to play.",
+      "description": "PlayGrounder is meant to help families find good local playgrounds. On PlayGrounder you can find new playgrounds, rate them and track your visits, without fees, ads or tracking.",
       "backButton": "Back to Menu"
     },
     "buttons": {

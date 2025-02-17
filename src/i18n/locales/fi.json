@@ -61,7 +61,7 @@
   "menu": {
     "about": {
       "title": "Tietoa Leikkipuistokartasta",
-      "description": "Yhteisöllinen sovellus, joka auttaa vanhempia ja hoitajia löytämään ja jakamaan paikallisia leikkipaikkoja. Seuraa käyntejäsi, arvioi leikkipaikkoja ja löydä uusia paikkoja lasten leikkeihin.",
+      "description": "Leikkipuistokartta on tarkoitettu tarkoitettu auttamaan perheitä löytämään hyviä leikkipaikkoja. Leikkipuistokartalta voit löytää uusia leikkipaikkoja, arvostella niitä sekä seurata käytejäsi, ilman maksuja, mainoksia tai seurantaa.",
       "acknowledgments": "Kartta-aineisto © OpenStreetMap contributors. Ikonit FontAwesome. Toteutettu React, Chakra UI ja Supabase -teknologioilla.",
       "github": "Katso GitHubissa",
       "backButton": "Takaisin valikkoon"
