@@ -13,7 +13,7 @@ export default function LanguageSwitcher() {
       <Text fontSize="sm" color="gray.500" mb={2}>
         {t('menu.language')}
       </Text>
-      <HStack spacing={2}>
+      <HStack gap={2}>
         <Button
           size="sm"
           variant={i18n.language === 'en' ? 'solid' : 'solid'}

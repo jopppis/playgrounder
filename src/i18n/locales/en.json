@@ -118,12 +118,11 @@
     "yourRating": "Your rating",
     "publicRating": "Public rating",
     "makePrivate": "Make rating private",
-    "serviceLevel": "Service Level",
-    "level1": "Supervised Activities",
-    "level2": "No Supervised Activities",
-    "allLevels": "All",
-    "level1Short": "Supervised",
-    "level2Short": "Unsupervised"
+    "supervision": {
+      "label": "Supervision",
+      "supervised": "Supervised Activities",
+      "unsupervised": "No Supervised Activities"
+    }
   },
   "common": {
     "error": "Error",
@@ -138,7 +137,6 @@
   "filters": "Filters",
   "filterPlaygrounds": "Filter playgrounds",
   "visitStatus": "Visit Status",
-  "showAll": "Show All",
   "visited": "Visited",
   "unvisited": "Unvisited",
   "minStars": "Rating",

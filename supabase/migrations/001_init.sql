@@ -8,7 +8,7 @@ CREATE TABLE playgrounds (
     location GEOMETRY(Point, 4326) NOT NULL, -- SRID 4326 is for WGS84 (standard GPS coordinates)
     description TEXT,
     address TEXT,
-    service_level INTEGER DEFAULT 2,
+    has_supervised_activities BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 

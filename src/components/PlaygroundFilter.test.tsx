@@ -14,7 +14,7 @@ describe('PlaygroundFilter', () => {
   const defaultFilters: FilterOptions = {
     visitStatus: 'all',
     minStars: null,
-    serviceLevel: null
+    hasSupervised: null
   }
 
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe('PlaygroundFilter', () => {
   it('shows filter options when clicked', () => {
     renderComponent()
     fireEvent.click(screen.getByText('Filter Playgrounds'))
-    expect(screen.getByText('Service Level')).toBeInTheDocument()
+    expect(screen.getByText('Supervision')).toBeInTheDocument()
     expect(screen.getByText('Minimum Stars')).toBeInTheDocument()
   })
 
@@ -53,23 +53,23 @@ describe('PlaygroundFilter', () => {
     expect(screen.getByText('Visit Status')).toBeInTheDocument()
   })
 
-  it('calls onChange when service level filter is clicked', () => {
+  it('calls onChange when supervision filter is clicked', () => {
     renderComponent()
     fireEvent.click(screen.getByText('Filter Playgrounds'))
-    fireEvent.click(screen.getByText('Level 1'))
+    fireEvent.click(screen.getByText('Supervised Activities'))
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
-      serviceLevel: 1
+      hasSupervised: true
     })
   })
 
-  it('toggles service level filter when clicked twice', () => {
-    renderComponent({ ...defaultFilters, serviceLevel: 1 })
+  it('toggles supervision filter when clicked twice', () => {
+    renderComponent({ ...defaultFilters, hasSupervised: true })
     fireEvent.click(screen.getByText('Filter Playgrounds'))
-    fireEvent.click(screen.getByText('Level 1'))
+    fireEvent.click(screen.getByText('Supervised Activities'))
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
-      serviceLevel: null
+      hasSupervised: null
     })
   })
 

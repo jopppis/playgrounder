@@ -225,7 +225,7 @@ const PlaygroundMap = () => {
   const [filters, setFilters] = useState<FilterOptions>({
     visitStatus: 'all',
     minStars: null,
-    serviceLevel: null
+    hasSupervised: null
   })
   const mapRef = useRef<L.Map | null>(null)
 
@@ -251,8 +251,8 @@ const PlaygroundMap = () => {
     if (!playgrounds) return []
 
     return playgrounds.filter(playground => {
-      // Filter by service level
-      if (filters.serviceLevel !== null && playground.service_level !== filters.serviceLevel) {
+      // Filter by supervised activities
+      if (filters.hasSupervised !== null && playground.has_supervised_activities !== filters.hasSupervised) {
         return false
       }
 

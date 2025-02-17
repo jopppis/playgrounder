@@ -5,7 +5,7 @@ export interface Playground {
   description: string | null
   created_at: string
   address: string | null
-  service_level: number
+  has_supervised_activities: boolean
 }
 
 export interface PlaygroundWithCoordinates extends Omit<Playground, 'location'> {

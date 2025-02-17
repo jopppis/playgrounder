@@ -200,7 +200,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
             )}
           </HStack>
           <Text fontSize="sm" color="gray.600">
-            {t('playground.serviceLevel')}: {playground.service_level === 1 ? t('playground.level1') : t('playground.level2')}
+            {t('playground.supervision.label')}: {playground.has_supervised_activities ? t('playground.supervision.supervised') : t('playground.supervision.unsupervised')}
           </Text>
           {playground.description && (
             <Text fontSize="sm" color="#2D3E50" lineHeight="short" whiteSpace="pre-wrap">

@@ -79,7 +79,7 @@ describe('PlaygroundPopup', () => {
     name: 'Test Playground',
     description: 'A test playground',
     address: '123 Test St',
-    service_level: 1,
+    has_supervised_activities: true,
     created_at: '2024-01-01T00:00:00Z',
     latitude: 60.1699,
     longitude: 24.9384

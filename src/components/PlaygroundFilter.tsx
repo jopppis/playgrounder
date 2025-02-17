@@ -16,7 +16,7 @@ import { useAuth } from '../hooks/useAuth'
 export interface FilterOptions {
   visitStatus: 'all' | 'visited' | 'unvisited'
   minStars: number | null
-  serviceLevel: number | null
+  hasSupervised: boolean | null
 }
 
 interface PlaygroundFilterProps {
@@ -95,37 +95,37 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
         </Button>
 
         {isOpen && (
-          <VStack align="stretch" p={2} spacing={1.5} bg="#F9F9F9" width="100%">
+          <VStack align="stretch" p={2} gap={1.5} bg="#F9F9F9" width="100%">
             <Box>
               <Text fontSize="sm" fontWeight="medium" color="#2D3E50" mb={1}>
-                {t('playground.serviceLevel')}
+                {t('playground.supervision.label')}
               </Text>
-              <Stack spacing={0.5}>
+              <Stack gap={0.5}>
                 <FilterButton
-                  value={t('playground.level1')}
-                  isSelected={filters.serviceLevel === 1}
+                  value={t('playground.supervision.supervised')}
+                  isSelected={filters.hasSupervised === true}
                   onClick={() => onChange({
                     ...filters,
-                    serviceLevel: filters.serviceLevel === 1 ? null : 1
+                    hasSupervised: filters.hasSupervised === true ? null : true
                   })}
                 />
                 <FilterButton
-                  value={t('playground.level2')}
-                  isSelected={filters.serviceLevel === 2}
+                  value={t('playground.supervision.unsupervised')}
+                  isSelected={filters.hasSupervised === false}
                   onClick={() => onChange({
                     ...filters,
-                    serviceLevel: filters.serviceLevel === 2 ? null : 2
+                    hasSupervised: filters.hasSupervised === false ? null : false
                   })}
                 />
               </Stack>
             </Box>
 
             {user && (
-              <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
+              <Box>
                 <Text fontSize="sm" fontWeight="medium" color="#2D3E50" mb={1}>
                   {t('visitStatus')}
                 </Text>
-                <Stack spacing={0.5}>
+                <Stack gap={0.5}>
                   <FilterButton
                     value={t('visited')}
                     isSelected={filters.visitStatus === 'visited'}
@@ -150,12 +150,12 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
               <Text fontSize="sm" fontWeight="medium" color="#2D3E50" mb={1}>
                 {t('minStars')}
               </Text>
-              <Stack spacing={0.5}>
+              <Stack gap={0.5}>
                 {[5, 4].map((stars) => (
                   <FilterButton
                     key={stars}
                     value={
-                      <HStack spacing={0.5}>
+                      <HStack gap={0.5}>
                         {[...Array(stars)].map((_, i) => (
                           <FaStar key={i} color="#FF9F43" size={14} />
                         ))}
@@ -196,12 +196,12 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                 )}
 
                 <Collapse in={showAllStars}>
-                  <Stack spacing={0.5}>
+                  <Stack gap={0.5}>
                     {[3, 2, 1].map((stars) => (
                       <FilterButton
                         key={stars}
                         value={
-                          <HStack spacing={0.5}>
+                          <HStack gap={0.5}>
                             {[...Array(stars)].map((_, i) => (
                               <FaStar key={i} color="#FF9F43" size={14} />
                             ))}

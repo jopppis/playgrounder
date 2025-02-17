@@ -12,7 +12,7 @@ export const usePlaygrounds = () => {
       try {
         const { data, error } = await supabase
           .from('playgrounds')
-          .select('id, name, description, address, created_at, location, service_level')
+          .select('id, name, description, address, created_at, location, has_supervised_activities')
 
         if (error) throw error
 

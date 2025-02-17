@@ -114,17 +114,15 @@
     "loginRequired": "Kirjautuminen vaaditaan",
     "visitMarked": "Vierailu merkitty",
     "clickToRate": "Klikkaa tähtiä arvioidaksesi leikkipuiston",
-    "serviceLevel": "Palvelutaso",
-    "level1": "Ohjattua toimintaa",
-    "level2": "Ei ohjattua toimintaa",
-    "allLevels": "Kaikki",
-    "level1Short": "Ohjattua toimintaa",
-    "level2Short": "Ei ohjattua toimintaa"
+    "supervision": {
+      "label": "Ohjattu toiminta",
+      "supervised": "Ohjattua toimintaa",
+      "unsupervised": "Ei ohjattua toimintaa"
+    }
   },
   "filters": "Suodattimet",
   "filterPlaygrounds": "Suodata leikkipaikkoja",
   "visitStatus": "Vierailutila",
-  "showAll": "Näytä kaikki",
   "visited": "Vierailtu",
   "unvisited": "Ei vierailtu",
   "minStars": "Arvio",

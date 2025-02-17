@@ -10,7 +10,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 TRUNCATE TABLE playgrounds CASCADE;
 
 -- Import playgrounds
-INSERT INTO playgrounds (name, address, location, description, service_level)
+INSERT INTO playgrounds (name, address, location, description, has_supervised_activities)
 VALUES
 """
 
@@ -25,18 +25,16 @@ VALUES
 
             x, y = coords.groups()
             description = ""
-            # Determine service level based on name
+            # Determine if has supervised activities based on name
             name = row["Name_fi"]
-            service_level = (
-                1 if "Ohjattu leikkipuistotoiminta" in row["Selite_fi"] else 2
-            )
+            has_supervised = "Ohjattu leikkipuistotoiminta" in row["Selite_fi"]
 
             value = f"""    (
         {repr(name)},
         {repr(row["Address_fi"] or "")},
         ST_Transform(ST_SetSRID(ST_MakePoint({x}, {y}), 3879), 4326),
         E{repr(description)},
-        {service_level}
+        {str(has_supervised).lower()}
     )"""
             values.append(value)
 
