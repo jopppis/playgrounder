@@ -73,8 +73,7 @@
   },
   "playground": {
     "address": "Address",
-    "markVisited": "Mark as visited",
-    "visited": "✓ Visited",
+    "markVisited": "Visited",
     "removeVisit": {
       "title": "Visit Removed",
       "message": "Playground has been removed from your visited list"

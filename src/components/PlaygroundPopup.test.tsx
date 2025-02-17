@@ -130,10 +130,11 @@ describe('PlaygroundPopup', () => {
 
   it('shows mark visited button when not visited', () => {
     renderComponent()
-    expect(screen.getByText(enTranslations.playground.markVisited)).toBeInTheDocument()
+    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    expect(switchElement).toBeInTheDocument()
   })
 
-  it('shows remove visit button when visited', () => {
+  it('shows visited state when visited', () => {
     ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
       visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
       loading: false,
@@ -144,7 +145,9 @@ describe('PlaygroundPopup', () => {
       updateVisitsState: vi.fn()
     })
     renderComponent()
-    expect(screen.getByText(enTranslations.playground.visited)).toBeInTheDocument()
+    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    expect(switchElement).toBeInTheDocument()
+    expect(switchElement).toBeChecked()
   })
 
   it('requires login to mark visit', () => {
@@ -169,9 +172,9 @@ describe('PlaygroundPopup', () => {
     })
 
     renderComponent()
-    const markVisitedButton = screen.getByText(enTranslations.playground.markVisited)
-    expect(markVisitedButton).toBeDisabled()
-    fireEvent.click(markVisitedButton)
+    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    expect(switchElement).toBeDisabled()
+    fireEvent.click(switchElement)
 
     expect(mockInsert).not.toHaveBeenCalled()
     expect(mockHandleVisited).not.toHaveBeenCalled()
@@ -194,7 +197,8 @@ describe('PlaygroundPopup', () => {
     })
 
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.playground.markVisited))
+    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    fireEvent.click(switchElement)
 
     await waitFor(() => {
       expect(mockHandleVisited).toHaveBeenCalledWith(true)

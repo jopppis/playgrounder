@@ -1,12 +1,10 @@
 import {
   Box,
-  Button,
   HStack,
   Spinner,
   Text,
   VStack
 } from '@chakra-ui/react'
-import { Switch } from '@chakra-ui/switch'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
@@ -16,6 +14,7 @@ import { useToast } from '../hooks/useToast'
 import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates } from '../types/database.types'
+import { Switch } from './ui/switch'
 
 interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates
@@ -213,34 +212,26 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
             </Text>
           )}
 
-          {/* Visit button */}
-          {!hasVisited ? (
-            <Button
-              size="sm"
-              bg="#4A90E2"
-              color="white"
-              _hover={{ bg: '#3A7BC2' }}
-              _active={{ bg: '#2A66A2' }}
-              onClick={handleVisit}
-              disabled={!user}
-              h="28px"
-            >
-              {t('playground.markVisited')}
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              bg="#4A90E2"
-              color="white"
-              _hover={{ bg: '#3A7BC2' }}
-              _active={{ bg: '#2A66A2' }}
-              onClick={handleRemoveVisit}
-              h="28px"
-            >
-              <Text mr={2}>✓</Text>
-              {t('playground.visited')}
-            </Button>
-          )}
+          {/* Visit switch */}
+          <HStack justify="space-between" align="center">
+            <Text fontSize="sm">{t('playground.markVisited')}</Text>
+            <Switch
+              size="md"
+              inputProps={{
+                onChange: (e) => {
+                  e.stopPropagation()
+                  if (hasVisited) {
+                    handleRemoveVisit(e as unknown as React.MouseEvent<HTMLButtonElement>)
+                  } else {
+                    handleVisit()
+                  }
+                },
+                disabled: !user,
+                'aria-label': t('playground.markVisited'),
+                checked: hasVisited
+              }}
+            />
+          </HStack>
 
           {/* Rating section */}
           {hasVisited && (
@@ -294,36 +285,22 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                     </HStack>
                   </HStack>
 
-                  {/* Public rating toggle */}
+                  {/* Public rating switch */}
                   {rating?.userRating !== null && (
-                    <Button
-                      mt={1}
-                      size="sm"
-                      bg={rating?.isPublic ? '#4A90E2' : 'white'}
-                      color={rating?.isPublic ? 'white' : '#4A90E2'}
-                      borderColor="#4A90E2"
-                      border="1px solid"
-                      h="28px"
-                      minH="28px"
-                      _hover={{ bg: rating?.isPublic ? '#3A7BC2' : '#EDF2F7' }}
-                      _active={{ bg: rating?.isPublic ? '#2A66A2' : '#E2E8F0' }}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleTogglePublic(e)
-                      }}
-                      onMouseDown={(e) => e.stopPropagation()}
-                    >
+                    <HStack justify="space-between" align="center" mt={2}>
+                      <Text fontSize="sm">{t('playground.makePublic')}</Text>
                       <Switch
-                        size="sm"
-                        isChecked={rating?.isPublic}
-                        sx={{
-                          '& span[data-checked]': { bg: 'white !important' },
-                          '& span:not([data-checked])': { bg: '#4A90E2 !important' }
+                        size="md"
+                        inputProps={{
+                          onChange: (e) => {
+                            e.stopPropagation()
+                            handleTogglePublic(e)
+                          },
+                          'aria-label': t('playground.makePublic'),
+                          checked: rating?.isPublic
                         }}
-                        mr={2}
                       />
-                      {t('playground.makePublic')}
-                    </Button>
+                    </HStack>
                   )}
                 </>
               )}

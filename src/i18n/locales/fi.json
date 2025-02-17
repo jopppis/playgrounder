@@ -73,8 +73,7 @@
   },
   "playground": {
     "address": "Osoite",
-    "markVisited": "Merkitse vierailluksi",
-    "visited": "✓ Vierailtu",
+    "markVisited": "Vierailtu",
     "removeVisit": {
       "title": "Vierailu poistettu",
       "message": "Leikkipuisto on poistettu vierailtujen listalta"
