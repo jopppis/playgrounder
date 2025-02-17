@@ -63,7 +63,13 @@ const MenuDrawer = ({
     borderColor: "#4A90E2",
     _hover: { bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' },
     _active: { bg: '#4A90E2', transform: 'translateY(0)' },
-    transition: "all 0.2s"
+    transition: "all 0.2s",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    px: 3,
+    h: "36px",
+    gap: 2
   }
 
   return (
@@ -111,23 +117,35 @@ const MenuDrawer = ({
                     </Button>
                   </>
                 ) : (
-                  <Grid templateColumns="repeat(2, 1fr)" gap={2} w="100%">
-                    <GridItem>
+                  <Grid
+                    templateColumns={{ base: "1fr", sm: "repeat(2, minmax(0, 1fr))" }}
+                    gap={2}
+                    w="100%"
+                  >
+                    <GridItem w="100%">
                       <Button
                         {...buttonProps}
                         onClick={(e) => handleClick(e, () => setShowSignUp(true))}
+                        minW={0}
+                        whiteSpace="nowrap"
                       >
-                        <Icon as={FaUserPlus} mr={2} />
-                        {t('auth.signUp.title')}
+                        <Icon as={FaUserPlus} boxSize={4} flexShrink={0} />
+                        <Box as="span" overflow="hidden" textOverflow="ellipsis">
+                          {t('auth.signUp.title')}
+                        </Box>
                       </Button>
                     </GridItem>
-                    <GridItem>
+                    <GridItem w="100%">
                       <Button
                         {...buttonProps}
                         onClick={(e) => handleClick(e, () => setShowSignIn(true))}
+                        minW={0}
+                        whiteSpace="nowrap"
                       >
-                        <Icon as={FaSignInAlt} mr={2} />
-                        {t('auth.signIn.title')}
+                        <Icon as={FaSignInAlt} boxSize={4} flexShrink={0} />
+                        <Box as="span" overflow="hidden" textOverflow="ellipsis">
+                          {t('auth.signIn.title')}
+                        </Box>
                       </Button>
                     </GridItem>
                   </Grid>
