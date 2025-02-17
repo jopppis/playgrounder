@@ -104,11 +104,6 @@ export default function SignIn({ onSuccess }: SignInProps) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 placeholder={t('auth.signIn.emailPlaceholder')}
                 required
-                bg="white"
-                color="gray.700"
-                borderColor="brand.500"
-                _hover={{ borderColor: 'secondary.500' }}
-                _focus={{ borderColor: 'green.500', boxShadow: '0 0 0 1px green.500' }}
                 _placeholder={{ color: 'gray.400' }}
               />
             </Box>
@@ -120,11 +115,6 @@ export default function SignIn({ onSuccess }: SignInProps) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 placeholder={t('auth.signIn.passwordPlaceholder')}
                 required
-                bg="white"
-                color="gray.700"
-                borderColor="brand.500"
-                _hover={{ borderColor: 'secondary.500' }}
-                _focus={{ borderColor: 'green.500', boxShadow: '0 0 0 1px green.500' }}
                 _placeholder={{ color: 'gray.400' }}
               />
             </Box>
