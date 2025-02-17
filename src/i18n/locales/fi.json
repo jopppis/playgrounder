@@ -115,11 +115,11 @@
     "visitMarked": "Vierailu merkitty",
     "clickToRate": "Klikkaa tähtiä arvioidaksesi leikkipuiston",
     "serviceLevel": "Palvelutaso",
-    "level1": "Taso 1 (Ohjattu)",
-    "level2": "Taso 2 (Ei ohjattua toimintaa)",
+    "level1": "Ohjattua toimintaa",
+    "level2": "Ei ohjattua toimintaa",
     "allLevels": "Kaikki",
-    "level1Short": "Taso 1",
-    "level2Short": "Taso 2"
+    "level1Short": "Ohjattua toimintaa",
+    "level2Short": "Ei ohjattua toimintaa"
   },
   "filters": "Suodattimet",
   "filterPlaygrounds": "Suodata leikkipaikkoja",

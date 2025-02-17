@@ -119,11 +119,11 @@
     "publicRating": "Public rating",
     "makePrivate": "Make rating private",
     "serviceLevel": "Service Level",
-    "level1": "Level 1 (Supervised)",
-    "level2": "Level 2 (Unsupervised)",
+    "level1": "Supervised Activities",
+    "level2": "No Supervised Activities",
     "allLevels": "All",
-    "level1Short": "Level 1",
-    "level2Short": "Level 2"
+    "level1Short": "Supervised",
+    "level2Short": "Unsupervised"
   },
   "common": {
     "error": "Error",
