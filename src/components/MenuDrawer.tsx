@@ -69,7 +69,8 @@ const MenuDrawer = ({
     justifyContent: "center",
     px: 3,
     h: "36px",
-    gap: 2
+    gap: 2,
+    fontSize: "sm"
   }
 
   return (
@@ -127,10 +128,9 @@ const MenuDrawer = ({
                         {...buttonProps}
                         onClick={(e) => handleClick(e, () => setShowSignUp(true))}
                         minW={0}
-                        whiteSpace="nowrap"
                       >
-                        <Icon as={FaUserPlus} boxSize={4} flexShrink={0} />
-                        <Box as="span" overflow="hidden" textOverflow="ellipsis">
+                        <Icon as={FaUserPlus} boxSize={3.5} flexShrink={0} />
+                        <Box as="span">
                           {t('auth.signUp.title')}
                         </Box>
                       </Button>
@@ -140,10 +140,9 @@ const MenuDrawer = ({
                         {...buttonProps}
                         onClick={(e) => handleClick(e, () => setShowSignIn(true))}
                         minW={0}
-                        whiteSpace="nowrap"
                       >
-                        <Icon as={FaSignInAlt} boxSize={4} flexShrink={0} />
-                        <Box as="span" overflow="hidden" textOverflow="ellipsis">
+                        <Icon as={FaSignInAlt} boxSize={3.5} flexShrink={0} />
+                        <Box as="span">
                           {t('auth.signIn.title')}
                         </Box>
                       </Button>
