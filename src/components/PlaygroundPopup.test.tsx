@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
 import { useVisits } from '../hooks/useVisits'
+import enTranslations from '../i18n/locales/en.json'
 import { supabase } from '../lib/supabaseClient'
 import { render } from '../test/testUtils'
 import type { PlaygroundWithCoordinates } from '../types/database.types'
@@ -56,18 +57,28 @@ vi.mock('../lib/supabaseClient', () => ({
   }
 }))
 
-// Mock i18next
+// Mock i18next to use actual English translations
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'playground.loginRequired': 'Please sign in to mark a visit',
-        'playground.markVisited': 'Mark Visited',
-        'playground.removeVisit': 'Remove Visit',
-        'playground.rating': 'Rating',
-        'playground.makePublic': 'Make Public'
+    t: (key: string, options?: Record<string, unknown>) => {
+      // Split the key by dots to traverse the translations object
+      const keys = key.split('.')
+      const value = keys.reduce((obj: Record<string, unknown>, key: string) => {
+        if (typeof obj === 'object' && obj !== null) {
+          return obj[key] as Record<string, unknown>
+        }
+        return {}
+      }, enTranslations as Record<string, unknown>)
+
+      // Handle interpolation if options are provided
+      let result = typeof value === 'string' ? value : key
+      if (typeof result === 'string' && options) {
+        Object.entries(options).forEach(([key, val]) => {
+          result = result.replace(`{{${key}}}`, String(val))
+        })
       }
-      return translations[key] || key
+
+      return result
     }
   }),
   I18nextProvider: ({ children }: { children: React.ReactNode }) => children
@@ -119,7 +130,7 @@ describe('PlaygroundPopup', () => {
 
   it('shows mark visited button when not visited', () => {
     renderComponent()
-    expect(screen.getByText('Mark Visited')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.playground.markVisited)).toBeInTheDocument()
   })
 
   it('shows remove visit button when visited', () => {
@@ -133,7 +144,7 @@ describe('PlaygroundPopup', () => {
       updateVisitsState: vi.fn()
     })
     renderComponent()
-    expect(screen.getByText('Remove Visit')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.playground.visited)).toBeInTheDocument()
   })
 
   it('requires login to mark visit', () => {
@@ -158,7 +169,7 @@ describe('PlaygroundPopup', () => {
     })
 
     renderComponent()
-    const markVisitedButton = screen.getByText('Mark Visited')
+    const markVisitedButton = screen.getByText(enTranslations.playground.markVisited)
     expect(markVisitedButton).toBeDisabled()
     fireEvent.click(markVisitedButton)
 
@@ -183,7 +194,7 @@ describe('PlaygroundPopup', () => {
     })
 
     renderComponent()
-    fireEvent.click(screen.getByText('Mark Visited'))
+    fireEvent.click(screen.getByText(enTranslations.playground.markVisited))
 
     await waitFor(() => {
       expect(mockHandleVisited).toHaveBeenCalledWith(true)

@@ -42,16 +42,8 @@
       "button": "Sign Out"
     },
     "user": {
-      "welcome": "Welcome",
       "email": "Signed in as"
     },
-    "confirmPassword": "Confirm Password",
-    "passwordsDontMatch": "Passwords don't match",
-    "invalidEmail": "Invalid email address",
-    "weakPassword": "Password is too weak",
-    "signUpSuccess": "Successfully signed up!",
-    "signInSuccess": "Successfully signed in!",
-    "signOutSuccess": "Successfully signed out!",
     "error": {
       "emailTaken": "Email is already taken",
       "invalidCredentials": "Invalid email or password",
@@ -62,6 +54,8 @@
     "about": {
       "title": "About PlayGrounder",
       "description": "PlayGrounder is meant to help families find good local playgrounds. On PlayGrounder you can find new playgrounds, rate them and track your visits, without fees, ads or tracking.",
+      "acknowledgments": "Map data © OpenStreetMap contributors. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
+      "github": "View on GitHub",
       "backButton": "Back to Menu"
     },
     "buttons": {
@@ -109,30 +103,11 @@
     },
     "avgRating": "{{rating}} ★ ({{count}} ratings)",
     "makePublic": "Publish rating",
-    "loginRequired": "Login required",
-    "visitMarked": "Visit marked",
-    "clickToRate": "Click the stars to rate this playground",
-    "ratingSubmitted": "Rating submitted successfully",
-    "ratingPublic": "Rating is now public",
-    "ratingPrivate": "Rating is now private",
-    "yourRating": "Your rating",
-    "publicRating": "Public rating",
-    "makePrivate": "Make rating private",
     "supervision": {
       "label": "Supervision",
-      "supervised": "Supervised Activities",
-      "unsupervised": "No Supervised Activities"
+      "supervised": "Supervised activities",
+      "unsupervised": "No supervised activities"
     }
-  },
-  "common": {
-    "error": "Error",
-    "unknownError": "An unknown error occurred"
-  },
-  "about": {
-    "title": "About PlayGrounder",
-    "description": "PlayGrounder is an interactive map application that helps you discover and track playgrounds in your area. Mark playgrounds as visited, rate them, and share your experiences with others!",
-    "acknowledgments": "Map data © OpenStreetMap contributors. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
-    "github": "View on GitHub"
   },
   "filters": "Filters",
   "filterPlaygrounds": "Filter playgrounds",
@@ -145,5 +120,9 @@
   "showLess": "Show less",
   "app": {
     "name": "PlayGrounder"
+  },
+  "common": {
+    "error": "Error",
+    "unknownError": "An unknown error occurred"
   }
 }

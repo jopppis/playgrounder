@@ -56,7 +56,7 @@ describe('PlaygroundFilter', () => {
   it('calls onChange when supervision filter is clicked', () => {
     renderComponent()
     fireEvent.click(screen.getByText('Filter Playgrounds'))
-    fireEvent.click(screen.getByText('Supervised Activities'))
+    fireEvent.click(screen.getByText('Supervised activities'))
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
       hasSupervised: true
@@ -66,7 +66,7 @@ describe('PlaygroundFilter', () => {
   it('toggles supervision filter when clicked twice', () => {
     renderComponent({ ...defaultFilters, hasSupervised: true })
     fireEvent.click(screen.getByText('Filter Playgrounds'))
-    fireEvent.click(screen.getByText('Supervised Activities'))
+    fireEvent.click(screen.getByText('Supervised activities'))
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
       hasSupervised: null

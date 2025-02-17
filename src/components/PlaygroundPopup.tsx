@@ -238,15 +238,15 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
               h="28px"
             >
               <Text mr={2}>✓</Text>
-              {t('playground.removeVisit')}
+              {t('playground.visited')}
             </Button>
           )}
 
           {/* Rating section */}
           {hasVisited && (
             <Box>
-              <Text fontSize="sm" mb={0.5} color="#2D3E50" lineHeight="short">
-                {t('playground.rating')}
+              <Text fontWeight="bold" mb={2}>
+                {t('playground.rating.title')}
               </Text>
               {ratingLoading ? (
                 <Spinner size="sm" color="#4A90E2" role="status" aria-label="Loading rating" />

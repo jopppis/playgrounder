@@ -11,6 +11,7 @@ globs:
 - The backend is supabase
 - Always use Chkra UI V3
 - Never use @chakra-ui/icons since it has been removed in V3 and will NOT work
+- Never edit src/components/ui/switch.tsx or src/components/ui/toaster.tsx. These are snippets generated with Chakra UI CLI and you do not have the skills to make them better.
 
 # Colors to use
 

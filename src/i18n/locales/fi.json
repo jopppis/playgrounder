@@ -42,16 +42,8 @@
       "button": "Kirjaudu ulos"
     },
     "user": {
-      "welcome": "Tervetuloa",
       "email": "Kirjautunut käyttäjänä"
     },
-    "confirmPassword": "Vahvista salasana",
-    "passwordsDontMatch": "Salasanat eivät täsmää",
-    "invalidEmail": "Virheellinen sähköpostiosoite",
-    "weakPassword": "Salasana on liian heikko",
-    "signUpSuccess": "Rekisteröityminen onnistui!",
-    "signInSuccess": "Kirjautuminen onnistui!",
-    "signOutSuccess": "Uloskirjautuminen onnistui!",
     "error": {
       "emailTaken": "Sähköpostiosoite on jo käytössä",
       "invalidCredentials": "Virheellinen sähköposti tai salasana",
@@ -111,9 +103,6 @@
     },
     "avgRating": "{{rating}} ★ ({{count}} arviota)",
     "makePublic": "Julkaise arvio",
-    "loginRequired": "Kirjautuminen vaaditaan",
-    "visitMarked": "Vierailu merkitty",
-    "clickToRate": "Klikkaa tähtiä arvioidaksesi leikkipuiston",
     "supervision": {
       "label": "Ohjattu toiminta",
       "supervised": "Ohjattua toimintaa",
