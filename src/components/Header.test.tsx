@@ -10,6 +10,15 @@ vi.mock('../hooks/useAuth', () => ({
   useAuth: vi.fn()
 }))
 
+// Mock supabase client
+vi.mock('../lib/supabaseClient', () => ({
+  supabase: {
+    auth: {
+      signOut: vi.fn()
+    }
+  }
+}))
+
 // Mock react-router-dom
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
@@ -72,6 +81,51 @@ describe('Header', () => {
     })
 
     document.body.removeChild(outsideElement)
+  })
+
+  it('keeps menu drawer open when clicking inside', async () => {
+    renderComponent()
+    const menuButton = screen.getByRole('button')
+    fireEvent.click(menuButton)
+
+    const languageText = screen.getByText('Language')
+    fireEvent.mouseDown(languageText)
+
+    // Menu should still be open
+    expect(languageText).toBeInTheDocument()
+  })
+
+  it('keeps menu drawer open when clicking buttons inside', async () => {
+    renderComponent()
+    const menuButton = screen.getByRole('button')
+    fireEvent.click(menuButton)
+
+    // Click the sign up button
+    const signUpButton = screen.getByText('auth.signUp.title')
+    fireEvent.click(signUpButton)
+
+    // Menu should still be open and sign up modal should be visible
+    expect(screen.getByText('Language')).toBeInTheDocument()
+    expect(signUpButton).toBeInTheDocument()
+  })
+
+  it('handles sign out correctly', async () => {
+    // Mock authenticated user
+    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+      user: { email: 'test@example.com' }
+    })
+
+    renderComponent()
+    const menuButton = screen.getByRole('button')
+    fireEvent.click(menuButton)
+
+    const signOutButton = screen.getByText('auth.signOut.button')
+    fireEvent.click(signOutButton)
+
+    // Menu should be closed after sign out
+    await waitFor(() => {
+      expect(screen.queryByText('Language')).not.toBeInTheDocument()
+    })
   })
 
   it('shows sign in modal when URL has email_confirm parameter', async () => {

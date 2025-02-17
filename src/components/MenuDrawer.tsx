@@ -1,10 +1,12 @@
 import {
   Box,
   Button,
+  ButtonProps,
   Flex,
   Grid,
   GridItem,
   Icon,
+  Link,
   Text,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
@@ -40,9 +42,28 @@ const MenuDrawer = ({
     }
   }, [isOpen])
 
-  const handleSignOut = async () => {
+  const handleSignOut = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     await supabase.auth.signOut()
     onClose()
+
+  }
+
+  const handleClick = (e: React.MouseEvent, action: () => void) => {
+    e.stopPropagation()
+    action()
+  }
+
+  const buttonProps: ButtonProps = {
+    w: "100%",
+    variant: "solid",
+    bg: "#4A90E2",
+    color: "white",
+    border: "1px solid",
+    borderColor: "#4A90E2",
+    _hover: { bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' },
+    _active: { bg: '#4A90E2', transform: 'translateY(0)' },
+    transition: "all 0.2s"
   }
 
   return (
@@ -63,6 +84,11 @@ const MenuDrawer = ({
           borderColor="purple.100"
           display="flex"
           flexDirection="column"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+          data-testid="menu-drawer"
         >
           <Box pt={14} flex={1}>
             {!showAbout ? (
@@ -78,15 +104,7 @@ const MenuDrawer = ({
                       </Text>
                     </Box>
                     <Button
-                      w="100%"
-                      variant="solid"
-                      bg="#4A90E2"
-                      color="white"
-                      border="1px solid"
-                      borderColor="#4A90E2"
-                      _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
-                      _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
-                      transition="all 0.2s"
+                      {...buttonProps}
                       onClick={handleSignOut}
                     >
                       {t('auth.signOut.button')}
@@ -96,35 +114,19 @@ const MenuDrawer = ({
                   <Grid templateColumns="repeat(2, 1fr)" gap={2} w="100%">
                     <GridItem>
                       <Button
-                        w="100%"
-                        variant="solid"
-                        bg="#4A90E2"
-                        color="white"
-                        border="1px solid"
-                        borderColor="#4A90E2"
-                        _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
-                        _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
-                        transition="all 0.2s"
-                        onClick={() => setShowSignUp(true)}
-                        leftIcon={<Icon as={FaUserPlus} />}
+                        {...buttonProps}
+                        onClick={(e) => handleClick(e, () => setShowSignUp(true))}
                       >
+                        <Icon as={FaUserPlus} mr={2} />
                         {t('auth.signUp.title')}
                       </Button>
                     </GridItem>
                     <GridItem>
                       <Button
-                        w="100%"
-                        variant="solid"
-                        bg="#4A90E2"
-                        color="white"
-                        border="1px solid"
-                        borderColor="#4A90E2"
-                        _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
-                        _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
-                        transition="all 0.2s"
-                        onClick={() => setShowSignIn(true)}
-                        leftIcon={<Icon as={FaSignInAlt} />}
+                        {...buttonProps}
+                        onClick={(e) => handleClick(e, () => setShowSignIn(true))}
                       >
+                        <Icon as={FaSignInAlt} mr={2} />
                         {t('auth.signIn.title')}
                       </Button>
                     </GridItem>
@@ -143,36 +145,29 @@ const MenuDrawer = ({
                 <Text mb={6} color="gray.700">
                   {t('menu.about.description')}
                 </Text>
-                <Flex
-                  as="a"
+                <Link
                   href="https://github.com/jopppis/playgrounder"
                   target="_blank"
                   rel="noopener noreferrer"
+                  display="flex"
                   gap={2}
                   color="#4A90E2"
                   _hover={{ color: '#FF9F43' }}
                   transition="all 0.2s"
                   mb={6}
                   alignItems="center"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <Icon as={FaGithub} boxSize={5} />
                   <Text>{t('menu.about.github')}</Text>
-                </Flex>
+                </Link>
                 <Box flex={1} />
                 <Text fontSize="sm" color="gray.500" mb={4}>
                   {t('menu.about.acknowledgments')}
                 </Text>
                 <Button
-                  w="100%"
-                  variant="solid"
-                  bg="#4A90E2"
-                  color="white"
-                  border="1px solid"
-                  borderColor="#4A90E2"
-                  _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
-                  _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
-                  transition="all 0.2s"
-                  onClick={() => setShowAbout(false)}
+                  {...buttonProps}
+                  onClick={(e) => handleClick(e, () => setShowAbout(false))}
                 >
                   {t('menu.about.backButton')}
                 </Button>
@@ -182,16 +177,8 @@ const MenuDrawer = ({
           {!showAbout && (
             <Box pt={4} borderTop="1px solid" borderColor="purple.100">
               <Button
-                w="100%"
-                variant="solid"
-                bg="#4A90E2"
-                color="white"
-                border="1px solid"
-                borderColor="#4A90E2"
-                _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' }}
-                _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
-                transition="all 0.2s"
-                onClick={() => setShowAbout(true)}
+                {...buttonProps}
+                onClick={(e) => handleClick(e, () => setShowAbout(true))}
               >
                 {t('menu.buttons.about')}
               </Button>
@@ -212,14 +199,18 @@ const MenuDrawer = ({
           display="flex"
           alignItems="center"
           justifyContent="center"
-          onClick={() => setShowSignUp(false)}
+          onClick={(e) => {
+            e.stopPropagation()
+            setShowSignUp(false)
+          }}
+          data-testid="sign-up-modal"
         >
           <Box
             bg="white"
             borderRadius="md"
             maxW="md"
             w="90%"
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <SignUp onSuccess={() => setShowSignUp(false)} />
           </Box>

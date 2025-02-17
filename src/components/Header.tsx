@@ -28,15 +28,17 @@ const Header = ({ showSignIn = false, setShowSignIn = () => {} }: HeaderProps) =
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
     }
-  }, [])
+  }, [isMenuOpen])
 
   return (
-    <>
-      <Box position="fixed" top={2} right={4} zIndex={2200} ref={menuRef}>
+    <Box ref={menuRef}>
+      <Box position="fixed" top={2} right={4} zIndex={2200}>
         <Button
           size="md"
           variant="solid"
@@ -68,7 +70,7 @@ const Header = ({ showSignIn = false, setShowSignIn = () => {} }: HeaderProps) =
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
       />
-    </>
+    </Box>
   )
 }
 
