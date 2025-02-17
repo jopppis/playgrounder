@@ -183,12 +183,12 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     <Box p={2} minW="300px" maxW="400px">
       {visitsLoading ? (
         <VStack align="stretch" gap={1.5} justify="center" minH="100px">
-          <Spinner size="md" color="#4A90E2" alignSelf="center" />
+          <Spinner size="md" color="brand.500" alignSelf="center" />
         </VStack>
       ) : (
         <VStack align="stretch" gap={1.5}>
           <HStack justify="space-between" align="center" gap={2}>
-            <Text fontWeight="bold" color="#2D3E50">{playground.name}</Text>
+            <Text fontWeight="bold" color="gray.700">{playground.name}</Text>
             {!ratingLoading && rating?.avgRating && (
               <Text fontSize="sm" color="#828282">
                 {t('playground.avgRating', {
@@ -198,16 +198,16 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
               </Text>
             )}
           </HStack>
-          <Text fontSize="sm" color="gray.600">
+          <Text fontSize="sm" color="gray.500">
             {t('playground.supervision.label')}: {playground.has_supervised_activities ? t('playground.supervision.supervised') : t('playground.supervision.unsupervised')}
           </Text>
           {playground.description && (
-            <Text fontSize="sm" color="#2D3E50" lineHeight="short" whiteSpace="pre-wrap">
+            <Text fontSize="sm" color="gray.700" lineHeight="short" whiteSpace="pre-wrap">
               {renderFormattedDescription(playground.description)}
             </Text>
           )}
           {playground.address && (
-            <Text fontSize="sm" color="#828282" lineHeight="short">
+            <Text fontSize="sm" color="gray.500" lineHeight="short">
               {playground.address}
             </Text>
           )}
@@ -240,7 +240,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                 {t('playground.rating.title')}
               </Text>
               {ratingLoading ? (
-                <Spinner size="sm" color="#4A90E2" role="status" aria-label="Loading rating" />
+                <Spinner size="sm" color="brand.500" role="status" aria-label="Loading rating" />
               ) : (
                 <>
                   <HStack gap={0.5} mb={1} justify="space-between" align="center">
@@ -264,7 +264,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                           transition="all 0.2s"
                           _hover={user ? {
                             transform: 'scale(1.2)',
-                            '& > *': { color: '#FF9F43' }
+                            '& > *': { color: 'secondary.500' }
                           } : undefined}
                           display="flex"
                           alignItems="center"
@@ -276,9 +276,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                           _focus={{ outline: 'none' }}
                         >
                           {value <= (hoveredRating || rating?.userRating || 0) ? (
-                            <FaStar color="#FF9F43" size={20} />
+                            <FaStar color="var(--chakra-colors-secondary-500)" size={20} />
                           ) : (
-                            <FaRegStar color="#828282" size={20} />
+                            <FaRegStar color="var(--chakra-colors-gray-400)" size={20} />
                           )}
                         </Box>
                       ))}

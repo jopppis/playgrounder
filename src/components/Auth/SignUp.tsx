@@ -1,11 +1,11 @@
 import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  Input,
-  Stack,
-  Text,
+    Box,
+    Button,
+    Heading,
+    Icon,
+    Input,
+    Stack,
+    Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
@@ -64,19 +64,19 @@ export default function SignUp({ onSuccess }: SignUpProps) {
     <Box
       position="relative"
       p={6}
-      bg="#F9F9F9"
-      color="#2D3E50"
+      bg="gray.50"
+      color="gray.700"
       borderRadius="xl"
       boxShadow="xl"
       border="1px solid"
-      borderColor="#4A90E2"
+      borderColor="brand.500"
     >
       <Box position="absolute" right={2} top={2}>
         <Button
           onClick={onSuccess}
           color="white"
-          bg="#4A90E2"
-          _hover={{ bg: '#FF9F43' }}
+          bg="brand.500"
+          _hover={{ bg: 'secondary.500' }}
           size="sm"
           minW="24px"
           h="24px"
@@ -87,15 +87,15 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         </Button>
       </Box>
       <Stack gap={8}>
-        <Heading size="lg" color="#4A90E2">{t('auth.signUp.title')}</Heading>
+        <Heading size="lg" color="brand.500">{t('auth.signUp.title')}</Heading>
         {error && (
-          <Box p={4} bg="#FF6B6B20" color="#FF6B6B" borderRadius="md" w="100%">
+          <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
             <Text fontWeight="bold">{t('auth.signUp.error.title')}</Text>
             <Text>{error}</Text>
           </Box>
         )}
         {success && (
-          <Box p={4} bg="#6FCF9720" color="#6FCF97" borderRadius="md" w="100%">
+          <Box p={4} bg="green.50" color="green.500" borderRadius="md" w="100%">
             <Text fontWeight="bold">{t('auth.signUp.success.title')}</Text>
             <Text>{t('auth.signUp.success.message')}</Text>
           </Box>
@@ -103,7 +103,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         <Box as="form" onSubmit={handleSubmit}>
           <Stack gap={4}>
             <Box>
-              <Text mb={2} color="#2D3E50">{t('auth.signUp.email')}</Text>
+              <Text mb={2} color="gray.700">{t('auth.signUp.email')}</Text>
               <Input
                 type="email"
                 value={email}
@@ -111,15 +111,15 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 placeholder={t('auth.signUp.emailPlaceholder')}
                 required
                 bg="white"
-                color="#2D3E50"
-                borderColor="#4A90E2"
-                _hover={{ borderColor: '#FF9F43' }}
-                _focus={{ borderColor: '#6FCF97', boxShadow: '0 0 0 1px #6FCF97' }}
-                _placeholder={{ color: '#82828280' }}
+                color="gray.700"
+                borderColor="brand.500"
+                _hover={{ borderColor: 'secondary.500' }}
+                _focus={{ borderColor: 'green.500', boxShadow: '0 0 0 1px green.500' }}
+                _placeholder={{ color: 'gray.400' }}
               />
             </Box>
             <Box>
-              <Text mb={2} color="#2D3E50">{t('auth.signUp.password')}</Text>
+              <Text mb={2} color="gray.700">{t('auth.signUp.password')}</Text>
               <Input
                 type="password"
                 value={password}
@@ -128,22 +128,22 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 required
                 minLength={6}
                 bg="white"
-                color="#2D3E50"
-                borderColor="#4A90E2"
-                _hover={{ borderColor: '#FF9F43' }}
-                _focus={{ borderColor: '#6FCF97', boxShadow: '0 0 0 1px #6FCF97' }}
-                _placeholder={{ color: '#82828280' }}
+                color="gray.700"
+                borderColor="brand.500"
+                _hover={{ borderColor: 'secondary.500' }}
+                _focus={{ borderColor: 'green.500', boxShadow: '0 0 0 1px green.500' }}
+                _placeholder={{ color: 'gray.400' }}
               />
             </Box>
             <Button
               type="submit"
-              bg="#4A90E2"
+              bg="brand.500"
               color="white"
               w="100%"
               disabled={loading}
               size="lg"
-              _hover={{ bg: '#FF9F43', transform: 'translateY(-2px)' }}
-              _active={{ bg: '#4A90E2', transform: 'translateY(0)' }}
+              _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
+              _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
               transition="all 0.2s"
             >
               {loading ? t('auth.signUp.button.loading') : t('auth.signUp.button.default')}

@@ -53,14 +53,14 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       size="xs"
       height="28px"
       variant="ghost"
-      bg={isSelected ? '#4A90E2' : 'transparent'}
-      color={isSelected ? 'white' : '#2D3E50'}
+      bg={isSelected ? 'brand.500' : 'transparent'}
+      color={isSelected ? 'white' : 'gray.700'}
       _hover={{
-        bg: isSelected ? '#4A90E2' : 'gray.50',
-        color: isSelected ? 'white' : '#2D3E50'
+        bg: isSelected ? 'brand.500' : 'gray.50',
+        color: isSelected ? 'white' : 'gray.700'
       }}
       _active={{
-        bg: '#4A90E2',
+        bg: 'brand.500',
         color: 'white',
         transform: 'scale(0.98)'
       }}
@@ -76,10 +76,10 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
   return (
     <Box position="absolute" top={2} left="80px" zIndex={1000} ref={filterRef}>
-      <Box bg="#F9F9F9" borderRadius="md" boxShadow="base" width="250px">
+      <Box bg="gray.50" borderRadius="md" boxShadow="base" width="250px">
         <Button
           bg="transparent"
-          color="#2D3E50"
+          color="gray.700"
           _hover={{ bg: 'gray.50' }}
           _active={{ bg: 'gray.100' }}
           fontSize="sm"
@@ -95,9 +95,9 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
         </Button>
 
         {isOpen && (
-          <VStack align="stretch" p={2} gap={1.5} bg="#F9F9F9" width="100%">
+          <VStack align="stretch" p={2} gap={1.5} bg="gray.50" width="100%">
             <Box>
-              <Text fontSize="sm" fontWeight="medium" color="#2D3E50" mb={1}>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                 {t('playground.supervision.label')}
               </Text>
               <Stack gap={0.5}>
@@ -122,7 +122,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
             {user && (
               <Box>
-                <Text fontSize="sm" fontWeight="medium" color="#2D3E50" mb={1}>
+                <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                   {t('visitStatus')}
                 </Text>
                 <Stack gap={0.5}>
@@ -147,7 +147,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
             )}
 
             <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
-              <Text fontSize="sm" fontWeight="medium" color="#2D3E50" mb={1}>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                 {t('minStars')}
               </Text>
               <Stack gap={0.5}>
@@ -157,7 +157,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     value={
                       <HStack gap={0.5}>
                         {[...Array(stars)].map((_, i) => (
-                          <FaStar key={i} color="#FF9F43" size={14} />
+                          <FaStar key={i} color="secondary.500" size={14} />
                         ))}
                       </HStack>
                     }
@@ -175,13 +175,13 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     height="28px"
                     variant="ghost"
                     bg="transparent"
-                    color="#2D3E50"
+                    color="gray.700"
                     _hover={{
                       bg: 'gray.50',
-                      color: '#2D3E50'
+                      color: 'gray.700'
                     }}
                     _active={{
-                      bg: '#4A90E2',
+                      bg: 'brand.500',
                       color: 'white',
                       transform: 'scale(0.98)'
                     }}
@@ -203,7 +203,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                         value={
                           <HStack gap={0.5}>
                             {[...Array(stars)].map((_, i) => (
-                              <FaStar key={i} color="#FF9F43" size={14} />
+                              <FaStar key={i} color="secondary.500" size={14} />
                             ))}
                           </HStack>
                         }
@@ -219,13 +219,13 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                       height="28px"
                       variant="ghost"
                       bg="transparent"
-                      color="#2D3E50"
+                      color="gray.700"
                       _hover={{
                         bg: 'gray.50',
-                        color: '#2D3E50'
+                        color: 'gray.700'
                       }}
                       _active={{
-                        bg: '#4A90E2',
+                        bg: 'brand.500',
                         color: 'white',
                         transform: 'scale(0.98)'
                       }}

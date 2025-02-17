@@ -18,20 +18,20 @@ export default function LanguageSwitcher() {
           size="sm"
           variant={i18n.language === 'en' ? 'solid' : 'solid'}
           onClick={() => changeLanguage('en')}
-          bg="#4A90E2"
+          bg="brand.500"
           color="white"
           border="1px solid"
-          borderColor="#4A90E2"
+          borderColor="brand.500"
           opacity={i18n.language === 'en' ? 1 : 0.5}
           fontWeight={i18n.language === 'en' ? 'bold' : 'normal'}
           _hover={{
-            bg: i18n.language === 'en' ? '#4A90E2' : '#FF9F43',
+            bg: i18n.language === 'en' ? 'brand.500' : 'secondary.500',
             opacity: 1,
             transform: 'translateY(-2px)',
-            borderColor: i18n.language === 'en' ? '#4A90E2' : '#FF9F43'
+            borderColor: i18n.language === 'en' ? 'brand.500' : 'secondary.500'
           }}
           _active={{
-            bg: i18n.language === 'en' ? '#4A90E2' : '#4A90E2',
+            bg: i18n.language === 'en' ? 'brand.500' : 'brand.500',
             transform: 'translateY(0)'
           }}
           transition="all 0.2s"
@@ -42,20 +42,20 @@ export default function LanguageSwitcher() {
           size="sm"
           variant={i18n.language === 'fi' ? 'solid' : 'solid'}
           onClick={() => changeLanguage('fi')}
-          bg="#4A90E2"
+          bg="brand.500"
           color="white"
           border="1px solid"
-          borderColor="#4A90E2"
+          borderColor="brand.500"
           opacity={i18n.language === 'fi' ? 1 : 0.5}
           fontWeight={i18n.language === 'fi' ? 'bold' : 'normal'}
           _hover={{
-            bg: i18n.language === 'fi' ? '#4A90E2' : '#FF9F43',
+            bg: i18n.language === 'fi' ? 'brand.500' : 'secondary.500',
             opacity: 1,
             transform: 'translateY(-2px)',
-            borderColor: i18n.language === 'fi' ? '#4A90E2' : '#FF9F43'
+            borderColor: i18n.language === 'fi' ? 'brand.500' : 'secondary.500'
           }}
           _active={{
-            bg: i18n.language === 'fi' ? '#4A90E2' : '#4A90E2',
+            bg: i18n.language === 'fi' ? 'brand.500' : 'brand.500',
             transform: 'translateY(0)'
           }}
           transition="all 0.2s"

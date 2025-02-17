@@ -1,6 +1,6 @@
 ---
 description: Explanation of the project
-globs: 
+globs:
 ---
 
 # Project description
@@ -13,19 +13,6 @@ globs:
 - Never use @chakra-ui/icons since it has been removed in V3 and will NOT work
 - Never edit src/components/ui/switch.tsx or src/components/ui/toaster.tsx. These are snippets generated with Chakra UI CLI and you do not have the skills to make them better.
 
-# Colors to use
+# Theming
 
-## Primary Colors (Bright & Playful)
-- Sky Blue (#4A90E2) – Fun, trustworthy, and energetic.
-- Sunshine Yellow (#FEC601) – Happy, warm, and inviting.
-- Lively Green (#6FCF97) – Represents nature and activity.
-
-## Secondary Colors (Soft & Balanced)
- Coral Red (#FF6B6B) – Playful and engaging.
-- Lavender Purple (#A29BFE) – Adds a fun and creative touch.
-- Soft Orange (#FF9F43) – Warm and friendly without being overwhelming.
-
-## Neutral Background & Text Colors
-- Soft White (#F9F9F9) – Clean and bright background.
-- Warm Gray (#828282) – For text, subtle but readable.
-- Deep Navy (#2D3E50) – Great for contrast in headers.
+The project theming is defined in theme.ts file. Please use the brand and secondary colors for the project for all applicable uses.

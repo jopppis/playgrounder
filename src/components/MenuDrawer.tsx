@@ -1,13 +1,13 @@
 import {
-  Box,
-  Button,
-  ButtonProps,
-  Flex,
-  Grid,
-  GridItem,
-  Icon,
-  Link,
-  Text,
+    Box,
+    Button,
+    ButtonProps,
+    Flex,
+    Grid,
+    GridItem,
+    Icon,
+    Link,
+    Text,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -57,12 +57,12 @@ const MenuDrawer = ({
   const buttonProps: ButtonProps = {
     w: "100%",
     variant: "solid",
-    bg: "#4A90E2",
+    bg: "brand.500",
     color: "white",
     border: "1px solid",
-    borderColor: "#4A90E2",
-    _hover: { bg: '#FF9F43', transform: 'translateY(-2px)', borderColor: '#FF9F43' },
-    _active: { bg: '#4A90E2', transform: 'translateY(0)' },
+    borderColor: "brand.500",
+    _hover: { bg: 'secondary.500', transform: 'translateY(-2px)', borderColor: 'secondary.500' },
+    _active: { bg: 'brand.500', transform: 'translateY(0)' },
     transition: "all 0.2s",
     display: "flex",
     alignItems: "center",
@@ -88,7 +88,7 @@ const MenuDrawer = ({
           zIndex={2000}
           color="gray.700"
           borderLeft="1px solid"
-          borderColor="purple.100"
+          borderColor="brand.100"
           display="flex"
           flexDirection="column"
           onClick={(e) => {
@@ -168,8 +168,8 @@ const MenuDrawer = ({
                   rel="noopener noreferrer"
                   display="flex"
                   gap={2}
-                  color="#4A90E2"
-                  _hover={{ color: '#FF9F43' }}
+                  color="brand.500"
+                  _hover={{ color: 'secondary.500' }}
                   transition="all 0.2s"
                   mb={6}
                   alignItems="center"

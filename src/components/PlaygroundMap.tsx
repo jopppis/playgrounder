@@ -158,7 +158,7 @@ const LocationControl = () => {
       button.style.display = 'flex'
       button.style.alignItems = 'center'
       button.style.justifyContent = 'center'
-      button.style.color = '#444'
+      button.style.color = 'gray.600'
       button.style.backgroundColor = 'white'
       button.style.fontSize = '18px'
       button.innerHTML = `
@@ -193,7 +193,7 @@ const LocationControl = () => {
       icon={L.divIcon({
         html: `
           <div style="
-            background-color: #4A90E2;
+            background-color: var(--chakra-colors-brand-500);
             width: 18px;
             height: 18px;
             border-radius: 50%;
@@ -310,7 +310,7 @@ const PlaygroundMap = () => {
   if (playgroundsLoading || visitsLoading) {
     return (
       <Box height="100vh" display="flex" alignItems="center" justifyContent="center">
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" color="brand.500" />
       </Box>
     )
   }

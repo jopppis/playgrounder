@@ -43,17 +43,17 @@ const Header = ({ showSignIn = false, setShowSignIn = () => {} }: HeaderProps) =
           size="md"
           variant="solid"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          bg="#4A90E2"
+          bg="brand.500"
           color="white"
           border="1px solid"
-          borderColor="#4A90E2"
+          borderColor="brand.500"
           _hover={{
-            bg: '#FF9F43',
+            bg: 'secondary.500',
             transform: 'translateY(-2px)',
-            borderColor: '#FF9F43'
+            borderColor: 'secondary.500'
           }}
           _active={{
-            bg: '#4A90E2',
+            bg: 'brand.500',
             transform: 'translateY(0)'
           }}
           transition="all 0.2s"
