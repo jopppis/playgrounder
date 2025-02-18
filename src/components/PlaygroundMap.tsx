@@ -75,10 +75,6 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading }: {
       >
         <PlaygroundPopup
           playground={playground}
-          onClose={() => {
-            const map = document.querySelector('.leaflet-popup-close-button') as HTMLElement
-            map?.click()
-          }}
           onContentChange={updatePopup}
         />
       </Popup>
