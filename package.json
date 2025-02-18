@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "prepare": "husky"
+    "prepare": "husky",
+    "validate-translations": "tsx src/i18n/validateTranslations.ts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -41,6 +42,8 @@
     "identity-obj-proxy": "^3.0.0",
     "jsdom": "^24.1.3",
     "lint-staged": "^15.4.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
     "vite": "^6.1.0",
