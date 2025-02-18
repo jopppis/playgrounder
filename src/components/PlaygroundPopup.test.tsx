@@ -1,6 +1,6 @@
 import type { User } from '@supabase/supabase-js'
 import '@testing-library/jest-dom/vitest'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
@@ -24,10 +24,9 @@ vi.mock('../hooks/useVisits', () => ({
     visits: [],
     loading: false,
     error: null,
-    markVisited: vi.fn(),
+    addVisit: vi.fn(),
     removeVisit: vi.fn(),
-    refresh: vi.fn(),
-    updateVisitsState: vi.fn()
+    refresh: vi.fn()
   })
 }))
 
@@ -96,21 +95,9 @@ describe('PlaygroundPopup', () => {
     longitude: 24.9384
   }
 
-  const mockSetShowPopup = vi.fn()
-  const mockSetSelectedPlayground = vi.fn()
-  const mockHandleSubmit = vi.fn()
-  const mockHandleDelete = vi.fn()
-  const mockHandleVisited = vi.fn()
-
   const defaultProps = {
-    showPopup: true,
-    setShowPopup: mockSetShowPopup,
-    selectedPlayground: mockPlayground,
-    setSelectedPlayground: mockSetSelectedPlayground,
-    onSubmit: mockHandleSubmit,
-    onDelete: mockHandleDelete,
-    onVisitChange: mockHandleVisited,
-    playground: mockPlayground
+    playground: mockPlayground,
+    onContentChange: vi.fn()
   }
 
   beforeEach(() => {
@@ -130,24 +117,25 @@ describe('PlaygroundPopup', () => {
 
   it('shows mark visited button when not visited', () => {
     renderComponent()
-    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeInTheDocument()
   })
 
-  it('shows visited state when visited', () => {
+  it('shows visited state when visited', async () => {
     ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
       visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
       loading: false,
       error: null,
-      markVisited: vi.fn(),
+      addVisit: vi.fn(),
       removeVisit: vi.fn(),
-      refresh: vi.fn(),
-      updateVisitsState: vi.fn()
+      refresh: vi.fn()
     })
-    renderComponent()
-    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    await act(async () => {
+      renderComponent()
+    })
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeInTheDocument()
-    expect(switchElement).toBeChecked()
+    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked')
   })
 
   it('requires login to mark visit', () => {
@@ -165,23 +153,21 @@ describe('PlaygroundPopup', () => {
       visits: [],
       loading: false,
       error: null,
-      markVisited: vi.fn(),
+      addVisit: vi.fn(),
       removeVisit: vi.fn(),
-      refresh: vi.fn(),
-      updateVisitsState: vi.fn()
+      refresh: vi.fn()
     })
 
     renderComponent()
-    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeDisabled()
     fireEvent.click(switchElement)
 
     expect(mockInsert).not.toHaveBeenCalled()
-    expect(mockHandleVisited).not.toHaveBeenCalled()
   })
 
   it('handles successful visit marking', async () => {
-    const mockMarkVisited = vi.fn().mockResolvedValue({ error: null })
+    const mockAddVisit = vi.fn().mockResolvedValue({ error: null })
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
       loading: false
@@ -190,18 +176,17 @@ describe('PlaygroundPopup', () => {
       visits: [],
       loading: false,
       error: null,
-      markVisited: mockMarkVisited,
+      addVisit: mockAddVisit,
       removeVisit: vi.fn(),
-      refresh: vi.fn(),
-      updateVisitsState: vi.fn()
+      refresh: vi.fn()
     })
 
     renderComponent()
-    const switchElement = screen.getByRole('checkbox', { name: enTranslations.playground.markVisited })
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     fireEvent.click(switchElement)
 
     await waitFor(() => {
-      expect(mockHandleVisited).toHaveBeenCalledWith(true)
+      expect(mockAddVisit).toHaveBeenCalledWith(mockPlayground.id)
     })
   })
 
@@ -234,18 +219,18 @@ describe('PlaygroundPopup', () => {
 
   it('calls onContentChange when rating changes', async () => {
     const mockSubmitRating = vi.fn().mockResolvedValue({ error: null })
+    const mockVisitData = { id: '1', user_id: '1', playground_id: '1', visited_at: new Date().toISOString(), notes: null }
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
       loading: false
     })
     ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
-      visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
+      visits: [mockVisitData],
       loading: false,
       error: null,
-      markVisited: vi.fn(),
+      addVisit: vi.fn(),
       removeVisit: vi.fn(),
-      refresh: vi.fn(),
-      updateVisitsState: vi.fn()
+      refresh: vi.fn()
     })
     ;(useRatings as ReturnType<typeof vi.fn>).mockReturnValue({
       rating: {
@@ -260,17 +245,24 @@ describe('PlaygroundPopup', () => {
       togglePublic: vi.fn(),
       refresh: vi.fn()
     })
-
-    renderComponent()
-
-    const ratingButton = screen.getByRole('button', { name: /Rate 1 star/ })
-    fireEvent.click(ratingButton, {
-      preventDefault: () => {},
-      stopPropagation: () => {}
+    ;(supabase.from as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({ data: mockVisitData, error: null })
+          })
+        })
+      })
     })
 
+    const mockOnContentChange = vi.fn()
+    renderComponent({ onContentChange: mockOnContentChange })
+
+    const ratingButton = screen.getByRole('button', { name: enTranslations.playground.rating.buttonLabel.replace('{{count}}', '1') })
+    fireEvent.click(ratingButton)
+
     await waitFor(() => {
-      expect(mockSubmitRating).toHaveBeenCalledWith(1, false)
+      expect(mockSubmitRating).toHaveBeenCalledWith(1, false, mockVisitData.id)
     })
   })
 

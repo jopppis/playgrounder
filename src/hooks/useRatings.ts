@@ -66,40 +66,23 @@ export const useRatings = (playgroundId: string) => {
     fetchRatings()
   }, [fetchRatings])
 
-  const submitRating = async (newRating: number, isPublic: boolean) => {
+  const submitRating = async (rating: number, isPublic: boolean, visitId: string) => {
     if (!user) return
 
     try {
-      // First check if a rating exists
-      const { data: existingRating } = await supabase
+      const { error } = await supabase
         .from('ratings')
-        .select('id, is_public')
-        .eq('playground_id', playgroundId)
-        .eq('user_id', user.id)
-        .single()
-
-      let error
-      if (existingRating) {
-        const result = await supabase
-          .from('ratings')
-          .update({
-            rating: newRating,
-            is_public: isPublic
-          })
-          .eq('playground_id', playgroundId)
-          .eq('user_id', user.id)
-        error = result.error
-      } else {
-        const result = await supabase
-          .from('ratings')
-          .insert({
-            playground_id: playgroundId,
-            user_id: user.id,
-            rating: newRating,
-            is_public: isPublic
-          })
-        error = result.error
-      }
+        .upsert({
+          playground_id: playgroundId,
+          user_id: user.id,
+          rating: rating,
+          is_public: isPublic,
+          visit_id: visitId
+        },
+        {
+          onConflict: 'visit_id'
+        }
+      )
 
       if (error) throw error
 

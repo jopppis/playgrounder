@@ -19,7 +19,7 @@ CREATE TABLE visits (
     user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     visited_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
     notes TEXT,
-    UNIQUE(playground_id, user_id, visited_at)
+    UNIQUE(playground_id, user_id)
 );
 
 -- Create ratings table
@@ -27,11 +27,12 @@ CREATE TABLE ratings (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     playground_id UUID REFERENCES playgrounds(id) ON DELETE CASCADE,
     user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    visit_id UUID REFERENCES visits(id) ON DELETE CASCADE,
     rating INTEGER CHECK (rating >= 1 AND rating <= 5),
     is_public BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
-    UNIQUE(playground_id, user_id)
+    UNIQUE(visit_id)
 );
 
 -- Create spatial index for better geospatial query performance

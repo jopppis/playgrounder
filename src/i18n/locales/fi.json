@@ -17,7 +17,8 @@
       "button": {
         "loading": "Rekisteröidään...",
         "default": "Rekisteröidy"
-      }
+      },
+      "close": "Sulje rekisteröitymisikkuna"
     },
     "signIn": {
       "title": "Kirjaudu",
@@ -36,7 +37,8 @@
       "button": {
         "loading": "Kirjaudutaan...",
         "default": "Kirjaudu"
-      }
+      },
+      "close": "Sulje kirjautumisikkuna"
     },
     "signOut": {
       "button": "Kirjaudu ulos"
@@ -80,6 +82,9 @@
     },
     "rating": {
       "title": "Arvio",
+      "buttonLabel": "Anna {{count}} tähti",
+      "buttonLabel_plural": "Anna {{count}} tähteä",
+      "loading": "Ladataan arviota",
       "success": {
         "title": "Arvio lähetetty",
         "message": "Kiitos leikkipuiston arvioinnista"

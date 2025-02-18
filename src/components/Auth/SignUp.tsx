@@ -1,11 +1,11 @@
 import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  Input,
-  Stack,
-  Text,
+    Box,
+    Button,
+    Heading,
+    Icon,
+    Input,
+    Stack,
+    Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
@@ -81,7 +81,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
           minW="24px"
           h="24px"
           p={0}
-          aria-label="Close"
+          aria-label={t('auth.signUp.close')}
         >
           <Icon as={FaTimes} boxSize={3} />
         </Button>

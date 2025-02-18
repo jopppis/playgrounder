@@ -18,15 +18,14 @@ import { Switch } from './ui/switch'
 
 interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates
-  onVisitChange: (isVisited: boolean) => void
   onContentChange?: () => void
 }
 
-export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
+export const PlaygroundPopup = ({ playground, onContentChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const toast = useToast()
-  const { visits, loading: visitsLoading } = useVisits()
+  const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating } = useRatings(playground.id)
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
 
@@ -54,71 +53,39 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
       return
     }
 
-    try {
-      const { error } = await supabase
-        .from('visits')
-        .insert({
-          playground_id: playground.id,
-          user_id: user.id,
-          visited_at: new Date().toISOString(),
-        })
-
-      if (error) throw error
-
-      setHasVisited(true)
-      onVisitChange(true)
-      onContentChange?.()
-    } catch (err) {
-      console.error('Error in PlaygroundPopup:', err instanceof Error ? err.message : err)
-    }
-  }
-
-  const handleRemoveVisit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
-
-    if (!user) return
-
-    try {
-      // First delete any existing ratings
-      const { error: ratingError } = await supabase
-        .from('ratings')
-        .delete()
-        .match({
-          playground_id: playground.id,
-          user_id: user.id
-        })
-
-      if (ratingError) throw ratingError
-
-      // Then delete the visit
-      const { error: visitError } = await supabase
-        .from('visits')
-        .delete()
-        .match({
-          playground_id: playground.id,
-          user_id: user.id
-        })
-
-      if (visitError) throw visitError
-
-      // Reset local state
-      setHasVisited(false)
-      onVisitChange(false)
-      await refreshRating() // Refresh ratings to clear the old rating
-      onContentChange?.()
-      toast.showSuccess({
-        title: t('playground.removeVisit.title'),
-        description: t('playground.removeVisit.message')
-      })
-    } catch (err) {
+    const result = await addVisit(playground.id)
+    if (result.error) {
       toast.showError({
         title: t('common.error'),
-        description: err instanceof Error ? err.message : t('common.unknownError')
+        description: result.error
       })
+      return
     }
+
+    setHasVisited(true)
+    onContentChange?.()
+  }
+
+  const handleRemoveVisit = async () => {
+    if (!user) return
+
+    const result = await removeVisit(playground.id)
+    if (result.error) {
+      toast.showError({
+        title: t('common.error'),
+        description: result.error
+      })
+      return
+    }
+
+    // Reset local state
+    setHasVisited(false)
+    await refreshRating() // Refresh ratings to clear the old rating
+    onContentChange?.()
+    toast.showSuccess({
+      title: t('playground.removeVisit.title'),
+      description: t('playground.removeVisit.message')
+    })
   }
 
   const handleRating = async (value: number, e: React.MouseEvent<HTMLButtonElement>) => {
@@ -128,7 +95,21 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     if (!user) return
 
     try {
-      await submitRating(value, rating?.isPublic || false)
+      // First ensure there's a visit record
+      const { data: visitData, error: visitError } = await supabase
+        .from('visits')
+        .select('id')
+        .eq('playground_id', playground.id)
+        .eq('user_id', user.id)
+        .single()
+
+      if (visitError) throw visitError
+      if (!visitData?.id) {
+        throw new Error(t('playground.rating.error.noVisit'))
+      }
+
+      // Now submit the rating with the visit_id
+      await submitRating(value, rating?.isPublic || false, visitData.id)
       onContentChange?.()
       toast.showSuccess({
         title: t('playground.rating.success.title'),
@@ -142,12 +123,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     }
   }
 
-  const handleTogglePublic = async (e?: React.SyntheticEvent) => {
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
-
+  const handleTogglePublic = async () => {
     try {
       await togglePublic()
       toast.showSuccess({
@@ -217,19 +193,17 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
             <Text fontSize="sm">{t('playground.markVisited')}</Text>
             <Switch
               size="md"
-              inputProps={{
-                onChange: (e) => {
-                  e.stopPropagation()
-                  if (hasVisited) {
-                    handleRemoveVisit(e as unknown as React.MouseEvent<HTMLButtonElement>)
-                  } else {
-                    handleVisit()
-                  }
-                },
-                disabled: !user,
-                'aria-label': t('playground.markVisited'),
-                checked: hasVisited
+              checked={hasVisited}
+              onCheckedChange={async () => {
+                if (!user) return;
+                if (hasVisited) {
+                  await handleRemoveVisit();
+                } else {
+                  await handleVisit();
+                }
               }}
+              disabled={!user}
+              aria-label={t('playground.markVisited')}
             />
           </HStack>
 
@@ -240,7 +214,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                 {t('playground.rating.title')}
               </Text>
               {ratingLoading ? (
-                <Spinner size="sm" color="brand.500" role="status" aria-label="Loading rating" />
+                <Spinner size="sm" color="brand.500" role="status" aria-label={t('playground.rating.loading')} />
               ) : (
                 <>
                   <HStack gap={0.5} mb={1} justify="space-between" align="center">
@@ -257,7 +231,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                           onMouseEnter={() => setHoveredRating(value)}
                           onMouseLeave={() => setHoveredRating(null)}
                           aria-disabled={!user}
-                          aria-label={`Rate ${value} star${value !== 1 ? 's' : ''}`}
+                          aria-label={t('playground.rating.buttonLabel', { count: value })}
                           role="button"
                           cursor={user ? 'pointer' : 'not-allowed'}
                           opacity={!user ? 0.5 : 1}
@@ -286,22 +260,19 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                   </HStack>
 
                   {/* Public rating switch */}
-                  {rating?.userRating !== null && (
-                    <HStack justify="space-between" align="center" mt={2}>
-                      <Text fontSize="sm">{t('playground.makePublic')}</Text>
-                      <Switch
-                        size="md"
-                        inputProps={{
-                          onChange: (e) => {
-                            e.stopPropagation()
-                            handleTogglePublic(e)
-                          },
-                          'aria-label': t('playground.makePublic'),
-                          checked: rating?.isPublic
-                        }}
-                      />
-                    </HStack>
-                  )}
+                  <HStack justify="space-between" align="center" mt={2}>
+                    <Text fontSize="sm">{t('playground.makePublic')}</Text>
+                    <Switch
+                      size="md"
+                      checked={rating?.isPublic}
+                      onCheckedChange={async () => {
+                        if (!user) return;
+                        await handleTogglePublic();
+                      }}
+                      disabled={!user || rating?.userRating === null}
+                      aria-label={t('playground.makePublic')}
+                    />
+                  </HStack>
                 </>
               )}
             </Box>

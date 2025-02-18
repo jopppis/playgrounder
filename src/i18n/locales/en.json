@@ -17,7 +17,8 @@
       "button": {
         "loading": "Signing up...",
         "default": "Sign Up"
-      }
+      },
+      "close": "Close sign up dialog"
     },
     "signIn": {
       "title": "Sign In",
@@ -36,7 +37,8 @@
       "button": {
         "loading": "Signing in...",
         "default": "Sign In"
-      }
+      },
+      "close": "Close sign in dialog"
     },
     "signOut": {
       "button": "Sign Out"
@@ -80,6 +82,9 @@
     },
     "rating": {
       "title": "Rating",
+      "buttonLabel": "Rate {{count}} star",
+      "buttonLabel_plural": "Rate {{count}} stars",
+      "loading": "Loading rating",
       "success": {
         "title": "Rating Submitted",
         "message": "Thank you for rating this playground"

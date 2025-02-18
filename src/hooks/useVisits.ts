@@ -33,25 +33,6 @@ export const useVisits = () => {
     }
   }, [user])
 
-  // Function to update visits state immediately
-  const updateVisitsState = useCallback((playgroundId: string, isVisited: boolean) => {
-    if (!user) return
-
-    if (isVisited) {
-      const newVisit: Visit = {
-        id: crypto.randomUUID(),
-        playground_id: playgroundId,
-        user_id: user.id,
-        visited_at: new Date().toISOString(),
-        notes: null
-      }
-      setVisits(current => [...current, newVisit])
-    } else {
-      setVisits(current =>
-        current.filter(visit => visit.playground_id !== playgroundId)
-      )
-    }
-  }, [user])
 
   useEffect(() => {
     fetchVisits()
@@ -76,5 +57,47 @@ export const useVisits = () => {
     }
   }, [user, fetchVisits])
 
-  return { visits, loading, error, refresh: fetchVisits, updateVisitsState }
+  const addVisit = async (playgroundId: string): Promise<{ error: string | null }> => {
+    if (!user) return { error: 'User not authenticated' }
+
+    try {
+      const { error } = await supabase
+        .from('visits')
+        .upsert({
+          playground_id: playgroundId,
+          user_id: user.id,
+          visited_at: new Date().toISOString(),
+        }, {
+          onConflict: 'playground_id,user_id'
+        })
+
+      if (error) throw error
+      await fetchVisits()
+      return { error: null }
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : 'An error occurred' }
+    }
+  }
+
+  const removeVisit = async (playgroundId: string): Promise<{ error: string | null }> => {
+    if (!user) return { error: 'User not authenticated' }
+
+    try {
+      const { error } = await supabase
+        .from('visits')
+        .delete()
+        .match({
+          playground_id: playgroundId,
+          user_id: user.id
+        })
+
+      if (error) throw error
+      await fetchVisits()
+      return { error: null }
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : 'An error occurred' }
+    }
+  }
+
+  return { visits, loading, error, refresh: fetchVisits, addVisit, removeVisit }
 }

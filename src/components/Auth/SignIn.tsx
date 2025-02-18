@@ -81,7 +81,7 @@ export default function SignIn({ onSuccess }: SignInProps) {
           minW="24px"
           h="24px"
           p={0}
-          aria-label="Close"
+          aria-label={t('auth.signIn.close')}
         >
           <Icon as={FaTimes} boxSize={3} />
         </Button>

@@ -32,12 +32,11 @@ const greenPlaygroundIcon = createPlaygroundIcon(greenIcon)
 const redPlaygroundIcon = createPlaygroundIcon(redIcon)
 
 // Separate component for playground markers
-const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange }: {
+const PlaygroundMarker = ({ playground, visits, user, visitsLoading }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
   visitsLoading: boolean
-  onVisitChange: (playgroundId: string, isVisited: boolean) => void
 }) => {
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
@@ -80,7 +79,6 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
             const map = document.querySelector('.leaflet-popup-close-button') as HTMLElement
             map?.click()
           }}
-          onVisitChange={(isVisited) => onVisitChange(playground.id, isVisited)}
           onContentChange={updatePopup}
         />
       </Popup>
@@ -109,10 +107,8 @@ const LocationControl = () => {
 
   const handleLocationError = useCallback((e: L.ErrorEvent) => {
     console.error('Location error:', e.message)
-    isInitialized.current = true
   }, [])
 
-  // Request location immediately on mount
   useEffect(() => {
     isInitialized.current = false
     map.on('locationfound', handleLocationFound)
@@ -220,7 +216,7 @@ const PlaygroundMap = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
-  const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
+  const { visits, loading: visitsLoading } = useVisits()
   const [ratings, setRatings] = useState<PlaygroundRating[]>([])
   const [filters, setFilters] = useState<FilterOptions>({
     visitStatus: 'all',
@@ -276,37 +272,6 @@ const PlaygroundMap = () => {
     })
   }, [playgrounds, filters, user, visits, ratings])
 
-  const handleVisitChange = async (playgroundId: string, isVisited: boolean) => {
-    if (!user) return
-
-    try {
-      // Update state immediately for better UX
-      updateVisitsState(playgroundId, isVisited)
-
-      if (isVisited) {
-        const { error } = await supabase
-          .from('visits')
-          .insert([{
-            playground_id: playgroundId,
-            user_id: user.id,
-            visited_at: new Date().toISOString(),
-          }])
-        if (error) throw error
-      } else {
-        const { error } = await supabase
-          .from('visits')
-          .delete()
-          .eq('playground_id', playgroundId)
-          .eq('user_id', user.id)
-        if (error) throw error
-      }
-    } catch (err) {
-      console.error('Error updating visit:', err)
-      // Revert the state change on error
-      updateVisitsState(playgroundId, !isVisited)
-    }
-  }
-
   if (playgroundsLoading || visitsLoading) {
     return (
       <Box height="100vh" display="flex" alignItems="center" justifyContent="center">
@@ -336,7 +301,6 @@ const PlaygroundMap = () => {
             visits={visits}
             user={user}
             visitsLoading={visitsLoading}
-            onVisitChange={handleVisitChange}
           />
         ))}
       </MapContainer>
