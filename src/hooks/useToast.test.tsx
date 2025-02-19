@@ -24,7 +24,7 @@ describe('useToast', () => {
       description: 'Operation completed',
       type: 'success',
       meta: {
-        closable: true
+        closable: false
       }
     })
   })
@@ -42,7 +42,7 @@ describe('useToast', () => {
       description: 'Something went wrong',
       type: 'error',
       meta: {
-        closable: true
+        closable: false
       }
     })
   })
@@ -78,18 +78,18 @@ describe('useToast', () => {
       description: 'For your information',
       type: 'info',
       meta: {
-        closable: true
+        closable: false
       }
     })
   })
 
-  it('respects custom closable option', () => {
+  it('respects custom closable option when set to true', () => {
     const { result } = renderHook(() => useToast())
 
     result.current.showSuccess({
       title: 'Success',
       description: 'Operation completed',
-      closable: false
+      closable: true
     })
 
     expect(toaster.create).toHaveBeenCalledWith({
@@ -97,7 +97,7 @@ describe('useToast', () => {
       description: 'Operation completed',
       type: 'success',
       meta: {
-        closable: false
+        closable: true
       }
     })
   })
@@ -117,7 +117,7 @@ describe('useToast', () => {
       duration: 2000,
       type: 'info',
       meta: {
-        closable: true
+        closable: false
       }
     })
   })
@@ -144,7 +144,7 @@ describe('useToast', () => {
         onClick: mockAction
       },
       meta: {
-        closable: true
+        closable: false
       }
     })
   })

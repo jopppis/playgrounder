@@ -18,7 +18,7 @@ export const useToast = () => {
       ...rest,
       type: 'success',
       meta: {
-        closable: closable ?? true
+        closable: closable ?? false
       }
     })
   }
@@ -29,7 +29,7 @@ export const useToast = () => {
       ...rest,
       type: 'error',
       meta: {
-        closable: closable ?? true
+        closable: closable ?? false
       }
     })
   }
@@ -51,7 +51,7 @@ export const useToast = () => {
       ...rest,
       type: 'info',
       meta: {
-        closable: closable ?? true
+        closable: closable ?? false
       }
     })
   }
