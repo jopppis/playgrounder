@@ -18,10 +18,11 @@ import { Switch } from './ui/switch'
 
 interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates
+  onVisitChange: (isVisited: boolean) => void
   onContentChange?: () => void
 }
 
-export const PlaygroundPopup = ({ playground, onContentChange }: PlaygroundPopupProps) => {
+export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const toast = useToast()
@@ -63,6 +64,7 @@ export const PlaygroundPopup = ({ playground, onContentChange }: PlaygroundPopup
     }
 
     setHasVisited(true)
+    onVisitChange(true)
     onContentChange?.()
   }
 
@@ -80,6 +82,7 @@ export const PlaygroundPopup = ({ playground, onContentChange }: PlaygroundPopup
 
     // Reset local state
     setHasVisited(false)
+    onVisitChange(false)
     await refreshRating() // Refresh ratings to clear the old rating
     onContentChange?.()
     toast.showSuccess({

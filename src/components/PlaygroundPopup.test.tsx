@@ -97,7 +97,8 @@ describe('PlaygroundPopup', () => {
 
   const defaultProps = {
     playground: mockPlayground,
-    onContentChange: vi.fn()
+    onContentChange: vi.fn(),
+    onVisitChange: vi.fn()
   }
 
   beforeEach(() => {
@@ -181,16 +182,21 @@ describe('PlaygroundPopup', () => {
       refresh: vi.fn()
     })
 
+    const { onVisitChange } = defaultProps
     renderComponent()
+
     const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
-    fireEvent.click(switchElement)
+    await act(async () => {
+      fireEvent.click(switchElement)
+    })
 
     await waitFor(() => {
       expect(mockAddVisit).toHaveBeenCalledWith(mockPlayground.id)
+      expect(onVisitChange).toHaveBeenCalledWith(true)
     })
   })
 
-  it('shows loading state when fetching rating', () => {
+  it('shows loading state when fetching rating', async () => {
     ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
       visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
       loading: false,
@@ -213,7 +219,10 @@ describe('PlaygroundPopup', () => {
       refresh: vi.fn()
     })
 
-    renderComponent()
+    await act(async () => {
+      renderComponent()
+    })
+
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
 

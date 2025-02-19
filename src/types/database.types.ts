@@ -71,19 +71,6 @@ export interface Database {
         }
         Returns: Playground[]
       }
-      get_playground_ratings: {
-        Args: {
-          playground_id_param: string
-          user_id_param?: string
-        }
-        Returns: PlaygroundRatings
-      }
-      get_public_ratings: {
-        Args: {
-          playground_id_param: string
-        }
-        Returns: PublicRating[]
-      }
     }
   }
 }

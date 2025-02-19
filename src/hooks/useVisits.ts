@@ -33,6 +33,25 @@ export const useVisits = () => {
     }
   }, [user])
 
+  // Function to update visits state immediately
+  const updateVisitsState = useCallback((playgroundId: string, isVisited: boolean) => {
+    if (!user) return
+
+    if (isVisited) {
+      const newVisit: Visit = {
+        id: crypto.randomUUID(),
+        playground_id: playgroundId,
+        user_id: user.id,
+        visited_at: new Date().toISOString(),
+        notes: null
+      }
+      setVisits(current => [...current, newVisit])
+    } else {
+      setVisits(current =>
+        current.filter(visit => visit.playground_id !== playgroundId)
+      )
+    }
+  }, [user])
 
   useEffect(() => {
     fetchVisits()
@@ -99,5 +118,5 @@ export const useVisits = () => {
     }
   }
 
-  return { visits, loading, error, refresh: fetchVisits, addVisit, removeVisit }
+  return { visits, loading, error, refresh: fetchVisits, addVisit, removeVisit, updateVisitsState }
 }

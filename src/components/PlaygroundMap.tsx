@@ -32,11 +32,12 @@ const greenPlaygroundIcon = createPlaygroundIcon(greenIcon)
 const redPlaygroundIcon = createPlaygroundIcon(redIcon)
 
 // Separate component for playground markers
-const PlaygroundMarker = ({ playground, visits, user, visitsLoading }: {
+const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
   visitsLoading: boolean
+  onVisitChange: (playgroundId: string, isVisited: boolean) => void
 }) => {
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
@@ -75,6 +76,7 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading }: {
       >
         <PlaygroundPopup
           playground={playground}
+          onVisitChange={(isVisited) => onVisitChange(playground.id, isVisited)}
           onContentChange={updatePopup}
         />
       </Popup>
@@ -212,7 +214,7 @@ const PlaygroundMap = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
-  const { visits, loading: visitsLoading } = useVisits()
+  const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
   const [ratings, setRatings] = useState<PlaygroundRating[]>([])
   const [filters, setFilters] = useState<FilterOptions>({
     visitStatus: 'all',
@@ -297,6 +299,7 @@ const PlaygroundMap = () => {
             visits={visits}
             user={user}
             visitsLoading={visitsLoading}
+            onVisitChange={updateVisitsState}
           />
         ))}
       </MapContainer>
