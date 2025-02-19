@@ -15,7 +15,11 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
       props
 
     return (
-      <ChakraSwitch.Root ref={rootRef} {...rest}>
+      <ChakraSwitch.Root
+        ref={rootRef}
+        colorPalette="brand"
+        {...rest}
+      >
         <ChakraSwitch.HiddenInput ref={ref} {...inputProps} aria-label={ariaLabel} />
         <ChakraSwitch.Control>
           <ChakraSwitch.Thumb>
