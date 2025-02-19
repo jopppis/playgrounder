@@ -1,11 +1,19 @@
 import { Box, Button, HStack, Text } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
+import { useToast } from '../hooks/useToast'
 
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation()
+  const toast = useToast()
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng)
+
+    // Show success toast in the new language
+    toast.showSuccess({
+      title: t('menu.language.changed.title'),
+      description: t('menu.language.changed.message')
+    })
   }
 
   return (

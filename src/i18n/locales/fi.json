@@ -41,7 +41,11 @@
       "close": "Sulje kirjautumisikkuna"
     },
     "signOut": {
-      "button": "Kirjaudu ulos"
+      "button": "Kirjaudu ulos",
+      "success": {
+        "title": "Kirjauduttu ulos",
+        "message": "Olet kirjautunut ulos onnistuneesti"
+      }
     },
     "user": {
       "email": "Kirjautunut käyttäjänä"
@@ -65,6 +69,10 @@
       "close": "×"
     },
     "language": "Kieli",
+    "language.changed": {
+      "title": "Kieli vaihdettu",
+      "message": "Sovelluksen kieli on päivitetty"
+    },
     "fi": "Suomi",
     "en": "Englanti"
   },
@@ -76,6 +84,10 @@
   "playground": {
     "address": "Osoite",
     "markVisited": "Vierailtu",
+    "addVisit": {
+      "title": "Vierailu lisätty",
+      "message": "Leikkipuisto on lisätty vierailtujen listalle"
+    },
     "removeVisit": {
       "title": "Vierailu poistettu",
       "message": "Leikkipuisto on poistettu vierailtujen listalta"

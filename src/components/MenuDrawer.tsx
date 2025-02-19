@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaGithub, FaSignInAlt, FaUserPlus } from 'react-icons/fa'
 import { useAuth } from '../hooks/useAuth'
+import { useToast } from '../hooks/useToast'
 import { supabase } from '../lib/supabaseClient'
 import SignInModal from './Auth/SignInModal'
 import SignUp from './Auth/SignUp'
@@ -35,6 +36,7 @@ const MenuDrawer = ({
   const { user } = useAuth()
   const [showAbout, setShowAbout] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
+  const toast = useToast()
 
   useEffect(() => {
     if (!isOpen) {
@@ -46,7 +48,10 @@ const MenuDrawer = ({
     e.stopPropagation()
     await supabase.auth.signOut()
     onClose()
-
+    toast.showSuccess({
+      title: t('auth.signOut.success.title'),
+      description: t('auth.signOut.success.message')
+    })
   }
 
   const handleClick = (e: React.MouseEvent, action: () => void) => {

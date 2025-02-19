@@ -66,6 +66,10 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     setHasVisited(true)
     onVisitChange(true)
     onContentChange?.()
+    toast.showSuccess({
+      title: t('playground.addVisit.title'),
+      description: t('playground.addVisit.message')
+    })
   }
 
   const handleRemoveVisit = async () => {

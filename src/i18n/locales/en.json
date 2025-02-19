@@ -41,7 +41,11 @@
       "close": "Close sign in dialog"
     },
     "signOut": {
-      "button": "Sign Out"
+      "button": "Sign Out",
+      "success": {
+        "title": "Signed Out",
+        "message": "You have been successfully signed out"
+      }
     },
     "user": {
       "email": "Signed in as"
@@ -65,6 +69,10 @@
       "close": "×"
     },
     "language": "Language",
+    "language.changed": {
+      "title": "Language Changed",
+      "message": "Application language has been updated"
+    },
     "fi": "Finnish",
     "en": "English"
   },
@@ -76,6 +84,10 @@
   "playground": {
     "address": "Address",
     "markVisited": "Visited",
+    "addVisit": {
+      "title": "Visit Added",
+      "message": "Playground has been added to your visited list"
+    },
     "removeVisit": {
       "title": "Visit Removed",
       "message": "Playground has been removed from your visited list"
