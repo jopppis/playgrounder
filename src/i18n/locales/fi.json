@@ -129,6 +129,8 @@
   "unvisited": "Ei vierailtu",
   "minStars": "Arvio",
   "minStars_plural": "Arvio",
+  "minUserStars": "Oma arvio",
+  "minUserStars_plural": "Oma arvio",
   "showMore": "Näytä lisää",
   "showLess": "Näytä vähemmän",
   "app": {

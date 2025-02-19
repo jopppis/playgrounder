@@ -16,6 +16,7 @@ import { useAuth } from '../hooks/useAuth'
 export interface FilterOptions {
   visitStatus: 'all' | 'visited' | 'unvisited'
   minStars: number | null
+  minUserStars: number | null
   hasSupervised: boolean | null
 }
 
@@ -44,10 +45,11 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     }
   }, [])
 
-  const FilterButton = ({ value, isSelected, onClick }: {
+  const FilterButton = ({ value, isSelected, onClick, ...props }: {
     value: string | React.ReactElement,
     isSelected: boolean,
-    onClick: () => void
+    onClick: () => void,
+    [key: string]: unknown
   }) => (
     <Button
       size="xs"
@@ -69,6 +71,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       width="full"
       fontSize="sm"
       justifyContent="flex-start"
+      {...props}
     >
       {value}
     </Button>
@@ -214,6 +217,36 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                         })}
                       />
                     ))}
+
+                    {/* User ratings filter */}
+                    {user && (
+                      <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
+                        <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                          {t('minUserStars')}
+                        </Text>
+                        <Stack gap={0.5}>
+                          {[5, 4, 3, 2, 1].map((stars) => (
+                            <FilterButton
+                              key={`user-${stars}`}
+                              value={
+                                <HStack gap={0.5}>
+                                  {[...Array(stars)].map((_, i) => (
+                                    <FaStar key={i} color="secondary.500" size={14} />
+                                  ))}
+                                </HStack>
+                              }
+                              isSelected={filters.minUserStars === stars}
+                              onClick={() => onChange({
+                                ...filters,
+                                minUserStars: filters.minUserStars === stars ? null : stars
+                              })}
+                              data-testid={`user-rating-${stars}`}
+                            />
+                          ))}
+                        </Stack>
+                      </Box>
+                    )}
+
                     <Button
                       size="xs"
                       height="28px"

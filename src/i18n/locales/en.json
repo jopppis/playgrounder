@@ -129,6 +129,8 @@
   "unvisited": "Unvisited",
   "minStars": "Rating",
   "minStars_plural": "Rating",
+  "minUserStars": "My Rating",
+  "minUserStars_plural": "My Rating",
   "showMore": "Show more",
   "showLess": "Show less",
   "app": {

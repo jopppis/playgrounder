@@ -208,6 +208,7 @@ interface PlaygroundRating {
   playground_id: string
   avg_rating: number | null
   total_ratings: number
+  user_rating: number | null
 }
 
 const PlaygroundMap = () => {
@@ -219,6 +220,7 @@ const PlaygroundMap = () => {
   const [filters, setFilters] = useState<FilterOptions>({
     visitStatus: 'all',
     minStars: null,
+    minUserStars: null,
     hasSupervised: null
   })
   const mapRef = useRef<L.Map | null>(null)
@@ -231,12 +233,31 @@ const PlaygroundMap = () => {
         .select('playground_id, avg_rating, total_ratings')
 
       if (!error && data) {
-        setRatings(data)
+        // If user is logged in, fetch their ratings
+        let userRatings: { [key: string]: number } = {}
+        if (user) {
+          const { data: userRatingsData } = await supabase
+            .from('ratings')
+            .select('playground_id, rating')
+            .eq('user_id', user.id)
+
+          if (userRatingsData) {
+            userRatings = Object.fromEntries(
+              userRatingsData.map(r => [r.playground_id, r.rating])
+            )
+          }
+        }
+
+        // Combine public ratings with user ratings
+        setRatings(data.map(r => ({
+          ...r,
+          user_rating: userRatings[r.playground_id] || null
+        })))
       }
     }
 
     fetchRatings()
-  }, [playgrounds])
+  }, [playgrounds, user])
 
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
@@ -257,11 +278,20 @@ const PlaygroundMap = () => {
         if (filters.visitStatus === 'unvisited' && hasVisited) return false
       }
 
-      // Filter by star rating
+      // Filter by public star rating
       if (filters.minStars !== null) {
         const rating = ratings.find(r => r.playground_id === playground.id)
         // Hide unrated playgrounds or those with rating below the minimum
         if (!rating?.avg_rating || rating.avg_rating < filters.minStars) {
+          return false
+        }
+      }
+
+      // Filter by user's own rating
+      if (user && filters.minUserStars !== null) {
+        const userRating = ratings.find(r => r.playground_id === playground.id)?.user_rating
+        // Hide unrated playgrounds or those with user rating below the minimum
+        if (!userRating || userRating < filters.minUserStars) {
           return false
         }
       }
