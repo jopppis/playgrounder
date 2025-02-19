@@ -129,12 +129,13 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
   const handleTogglePublic = async () => {
     try {
+      const wasPublic = rating?.isPublic
       await togglePublic()
       toast.showSuccess({
         title: t('playground.rating.visibility.success.title'),
-        description: rating?.isPublic
-          ? t('playground.rating.visibility.success.public')
-          : t('playground.rating.visibility.success.private')
+        description: wasPublic
+          ? t('playground.rating.visibility.success.private')
+          : t('playground.rating.visibility.success.public')
       })
     } catch (err) {
       toast.showError({
