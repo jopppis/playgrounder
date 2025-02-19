@@ -85,12 +85,10 @@
     "address": "Address",
     "markVisited": "Visited",
     "addVisit": {
-      "title": "Visit Added",
-      "message": "Playground has been added to your visited list"
+      "title": "Visit Added"
     },
     "removeVisit": {
-      "title": "Visit Removed",
-      "message": "Playground has been removed from your visited list"
+      "title": "Visit Removed"
     },
     "rating": {
       "title": "Rating",
@@ -98,8 +96,7 @@
       "buttonLabel_plural": "Rate {{count}} stars",
       "loading": "Loading rating",
       "success": {
-        "title": "Rating Submitted",
-        "message": "Thank you for rating this playground"
+        "title": "Rating Submitted"
       },
       "error": {
         "title": "Rating Failed",

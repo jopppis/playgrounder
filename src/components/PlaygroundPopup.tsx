@@ -67,8 +67,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     onVisitChange(true)
     onContentChange?.()
     toast.showSuccess({
-      title: t('playground.addVisit.title'),
-      description: t('playground.addVisit.message')
+      title: t('playground.addVisit.title')
     })
   }
 
@@ -91,7 +90,6 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     onContentChange?.()
     toast.showSuccess({
       title: t('playground.removeVisit.title'),
-      description: t('playground.removeVisit.message')
     })
   }
 
@@ -119,8 +117,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
       await submitRating(value, rating?.isPublic || false, visitData.id)
       onContentChange?.()
       toast.showSuccess({
-        title: t('playground.rating.success.title'),
-        description: t('playground.rating.success.message')
+        title: t('playground.rating.success.title')
       })
     } catch (err) {
       toast.showError({

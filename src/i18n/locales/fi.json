@@ -85,12 +85,10 @@
     "address": "Osoite",
     "markVisited": "Vierailtu",
     "addVisit": {
-      "title": "Vierailu lisätty",
-      "message": "Leikkipuisto on lisätty vierailtujen listalle"
+      "title": "Vierailu lisätty"
     },
     "removeVisit": {
-      "title": "Vierailu poistettu",
-      "message": "Leikkipuisto on poistettu vierailtujen listalta"
+      "title": "Vierailu poistettu"
     },
     "rating": {
       "title": "Arvio",
@@ -98,8 +96,7 @@
       "buttonLabel_plural": "Anna {{count}} tähteä",
       "loading": "Ladataan arviota",
       "success": {
-        "title": "Arvio lähetetty",
-        "message": "Kiitos leikkipuiston arvioinnista"
+        "title": "Arvio lisätty"
       },
       "error": {
         "title": "Arviointi epäonnistui",
