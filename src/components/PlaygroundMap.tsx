@@ -5,9 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
-import blueIcon from '../assets/playground-icon-blue.svg'
-import greenIcon from '../assets/playground-icon-green.svg'
-import redIcon from '../assets/playground-icon-red.svg'
+import playgroundIcon from '../assets/playground-icon.png'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useVisits } from '../hooks/useVisits'
@@ -16,20 +14,66 @@ import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import { FilterOptions, PlaygroundFilter } from './PlaygroundFilter'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
-// Create icons for different states
-const createPlaygroundIcon = (iconUrl: string) => {
-  return L.icon({
-    iconUrl,
+// Add styles to head
+const style = document.createElement('style')
+style.textContent = `
+  .playground-marker {
+    position: relative;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    background: white;
+    padding: 2px;
+  }
+  .playground-marker.unvisited {
+    border: 2px solid var(--chakra-colors-gray-300);
+  }
+  .playground-marker.visited {
+    border: 2px solid var(--chakra-colors-green-500);
+  }
+  .playground-marker img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  .playground-marker .badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background-color: var(--chakra-colors-green-500);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    box-shadow: 0 0 0 1.5px white;
+  }
+`
+document.head.appendChild(style)
+
+// Create the base playground icon
+const createBaseIcon = (isVisited = false) => {
+  return L.divIcon({
+    html: `
+      <div class="playground-marker ${isVisited ? 'visited' : 'unvisited'}">
+        <img src="${playgroundIcon}" alt="playground" />
+        ${isVisited ? '<div class="badge">✓</div>' : ''}
+      </div>
+    `,
+    className: '',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [0, -40]
   })
 }
 
-// Create the three icon variants
-const bluePlaygroundIcon = createPlaygroundIcon(blueIcon)
-const greenPlaygroundIcon = createPlaygroundIcon(greenIcon)
-const redPlaygroundIcon = createPlaygroundIcon(redIcon)
+// Create the icon instances
+const basePlaygroundIcon = createBaseIcon(false)
+const visitedPlaygroundIcon = createBaseIcon(true)
 
 // Separate component for playground markers
 const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange }: {
@@ -46,9 +90,9 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
 
   const icon = useMemo(() => {
     if (!user || visitsLoading) {
-      return bluePlaygroundIcon
+      return basePlaygroundIcon
     }
-    return hasVisited ? greenPlaygroundIcon : redPlaygroundIcon
+    return hasVisited ? visitedPlaygroundIcon : basePlaygroundIcon
   }, [user, visitsLoading, hasVisited])
 
   const popupRef = useRef<L.Popup>(null)
