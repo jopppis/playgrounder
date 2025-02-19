@@ -55,7 +55,6 @@ npm run dev
 - Publish on Github
 - Review code
 - Security audit
-- Find bugs
 
 
 ## Contributing
