@@ -5,14 +5,20 @@ globs:
 
 # Project description
 
-- The project is known as Playgrounder
-- The project is an interactive playground map for tracking visited playgrounds nearby
-- The project is implemented in React, Chakra UI v3, Leaflet
-- The backend is supabase
-- Always use Chkra UI V3
-- Never use @chakra-ui/icons since it has been removed in V3 and will NOT work
-- Never edit src/components/ui/switch.tsx or src/components/ui/toaster.tsx. These are snippets generated with Chakra UI CLI and you do not have the skills to make them better.
+- The project is known as Playgrounder in English and Leikkipuistokartta in Finnish.
+- The project is an interactive playground map for tracking visited playgrounds nearby, rating the playgrounds and sharing the ratings.
+- The project is implemented in React, Chakra UI v3, Leaflet.
+- The backend is supabase.
+- Always use Chakra UI V3 components.
+- Never use @chakra-ui/icons since it has been removed in V3 and will NOT work.
+- Be hesitant to edit src/components/ui/switch.tsx or src/components/ui/toaster.tsx. These are snippets generated with Chakra UI CLI and you do not have the skills to make them better.
 
 # Theming
 
 The project theming is defined in theme.ts file. Please use the brand and secondary colors for the project for all applicable uses.
+
+# How to do your work
+
+- When adding features, add also tests for the feature
+- When fixing bugs, add a test for the bug
+- When adding tests, run the tests with `npm test`. It might be better to filter to only the new test file.
