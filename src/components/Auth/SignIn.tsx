@@ -156,6 +156,7 @@ export default function SignIn({ onSuccess }: SignInProps) {
                   onSuccess={(token) => setCaptchaToken(token)}
                   onError={() => setCaptchaToken(null)}
                   onExpire={() => setCaptchaToken(null)}
+                  theme="light"
                 />
               )}
             </Box>
