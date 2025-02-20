@@ -71,7 +71,8 @@ describe('PlaygroundPopup', () => {
   const defaultProps = {
     playground: mockPlayground,
     onContentChange: vi.fn(),
-    onVisitChange: vi.fn()
+    onVisitChange: vi.fn(),
+    onRatingChange: vi.fn()
   }
 
   beforeEach(() => {
