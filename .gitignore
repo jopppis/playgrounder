@@ -38,3 +38,5 @@ dist-ssr
 
 # Test coverage
 coverage
+
+.release-notes.md

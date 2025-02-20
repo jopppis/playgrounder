@@ -15,7 +15,7 @@
     "prepare": "husky",
     "validate-translations": "tsx src/i18n/validateTranslations.ts",
     "version": "npm run changelog && git add CHANGELOG.md",
-    "postversion": "git push && git push --tags && gh release create \"v$npm_package_version\" --title \"Release v$npm_package_version\" --notes-file <(awk -v ver=\"$npm_package_version\" 'BEGIN{p=0}/^## \\['{if(p){exit}if($0~ver){p=1;next}}p{print}' CHANGELOG.md)",
+    "postversion": "git push && git push --tags && awk -v ver=\"$npm_package_version\" 'BEGIN{p=0}/^## \\[/{if(p){exit}if($0~ver){p=1;next}}p{print}' CHANGELOG.md > .release-notes.md && gh release create \"v$npm_package_version\" --title \"Release v$npm_package_version\" --notes-file .release-notes.md && rm .release-notes.md",
     "changelog": "tsx scripts/update-changelog.ts"
   },
   "lint-staged": {
