@@ -1,6 +1,3 @@
--- Create extension if not exists
-CREATE EXTENSION IF NOT EXISTS postgis;
-
 -- Clear existing data
 TRUNCATE TABLE playgrounds CASCADE;
 
