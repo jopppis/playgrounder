@@ -11,6 +11,7 @@ import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
+import Turnstile from 'react-turnstile'
 import { useToast } from '../../hooks/useToast'
 import { supabase } from '../../lib/supabaseClient'
 
@@ -27,6 +28,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
   const [success, setSuccess] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const toast = useToast()
+  const isProduction = import.meta.env.VITE_APP_ENV === 'production'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,7 +36,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
     setError(null)
     setSuccess(false)
 
-    if (!captchaToken) {
+    if (isProduction && !captchaToken) {
       setError(t('auth.signUp.error.captchaRequired'))
       setLoading(false)
       return
@@ -44,9 +46,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          captchaToken
-        }
+        options: isProduction && captchaToken ? { captchaToken } : undefined
       })
 
       if (signUpError) throw signUpError
@@ -159,20 +159,21 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               />
             </Box>
             <Box>
-              <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-              <div
-                className="cf-turnstile"
-                data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                data-callback={(token: string) => setCaptchaToken(token)}
-                data-expired-callback={() => setCaptchaToken(null)}
-              />
+              {isProduction && (
+                <Turnstile
+                  sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                  onSuccess={(token) => setCaptchaToken(token)}
+                  onError={() => setCaptchaToken(null)}
+                  onExpire={() => setCaptchaToken(null)}
+                />
+              )}
             </Box>
             <Button
               type="submit"
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading || !captchaToken}
+              disabled={loading || (isProduction && !captchaToken)}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}

@@ -1,17 +1,18 @@
 import {
-    Box,
-    Button,
-    Heading,
-    Icon,
-    Input,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Heading,
+  Icon,
+  Input,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import Turnstile from 'react-turnstile'
 import { useToast } from '../../hooks/useToast'
 import { supabase } from '../../lib/supabaseClient'
 
@@ -26,17 +27,26 @@ export default function SignIn({ onSuccess }: SignInProps) {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const toast = useToast()
+  const isProduction = import.meta.env.VITE_APP_ENV === 'production'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
+    if (isProduction && !captchaToken) {
+      setError(t('auth.signIn.error.captchaRequired'))
+      setLoading(false)
+      return
+    }
+
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
+        options: isProduction && captchaToken ? { captchaToken } : undefined
       })
 
       if (signInError) throw signInError
@@ -55,6 +65,8 @@ export default function SignIn({ onSuccess }: SignInProps) {
         title: t('auth.signIn.error.title'),
         description: t('auth.signIn.error.message')
       })
+      // Reset captcha on error
+      setCaptchaToken(null)
     } finally {
       setLoading(false)
     }
@@ -137,12 +149,22 @@ export default function SignIn({ onSuccess }: SignInProps) {
                 }}
               />
             </Box>
+            <Box>
+              {isProduction && (
+                <Turnstile
+                  sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                  onSuccess={(token) => setCaptchaToken(token)}
+                  onError={() => setCaptchaToken(null)}
+                  onExpire={() => setCaptchaToken(null)}
+                />
+              )}
+            </Box>
             <Button
               type="submit"
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading}
+              disabled={loading || (isProduction && !captchaToken)}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
