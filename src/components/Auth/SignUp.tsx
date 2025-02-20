@@ -106,6 +106,8 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               <Text mb={2} color="gray.700">{t('auth.signUp.email')}</Text>
               <Input
                 type="email"
+                name="email"
+                autoComplete="username"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 placeholder={t('auth.signUp.emailPlaceholder')}
@@ -125,6 +127,9 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               <Text mb={2} color="gray.700">{t('auth.signUp.password')}</Text>
               <Input
                 type="password"
+                name="password"
+                autoComplete="new-password"
+                data-form-type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 placeholder={t('auth.signUp.passwordPlaceholder')}

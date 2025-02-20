@@ -1,11 +1,11 @@
 import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  Input,
-  Stack,
-  Text,
+    Box,
+    Button,
+    Heading,
+    Icon,
+    Input,
+    Stack,
+    Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
@@ -100,6 +100,8 @@ export default function SignIn({ onSuccess }: SignInProps) {
               <Text mb={2} color="gray.700">{t('auth.signIn.email')}</Text>
               <Input
                 type="email"
+                name="email"
+                autoComplete="username"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 placeholder={t('auth.signIn.emailPlaceholder')}
@@ -118,6 +120,9 @@ export default function SignIn({ onSuccess }: SignInProps) {
               <Text mb={2} color="gray.700">{t('auth.signIn.password')}</Text>
               <Input
                 type="password"
+                name="password"
+                autoComplete="current-password"
+                data-form-type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 placeholder={t('auth.signIn.passwordPlaceholder')}
