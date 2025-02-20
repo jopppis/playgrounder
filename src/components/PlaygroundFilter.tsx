@@ -35,8 +35,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
   const filterPosition = useBreakpointValue({
     base: { top: '60px', left: '4px', width: '250px', maxWidth: 'calc(100% - 8px)', right: 'auto' },
-    sm: { top: '2', left: '4px', width: '250px', maxWidth: '250px', right: 'auto' },
-    md: { top: '2', left: '4px', width: '250px', maxWidth: '250px', right: 'auto' }
+    sm: { top: '2', left: '24px', width: '250px', maxWidth: '250px', right: 'auto' },
+    md: { top: '2', left: '24px', width: '250px', maxWidth: '250px', right: 'auto' }
   })
 
   useEffect(() => {
