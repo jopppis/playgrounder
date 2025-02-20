@@ -84,6 +84,9 @@
   "playground": {
     "address": "Osoite",
     "markVisited": "Vierailtu",
+    "login": {
+      "required": "Kirjaudu sisään merkitäksesi vierailluksi"
+    },
     "addVisit": {
       "title": "Vierailu lisätty"
     },

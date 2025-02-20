@@ -84,6 +84,9 @@
   "playground": {
     "address": "Address",
     "markVisited": "Visited",
+    "login": {
+      "required": "Login required to mark as visited"
+    },
     "addVisit": {
       "title": "Visit Added"
     },

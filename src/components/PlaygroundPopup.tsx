@@ -1,11 +1,11 @@
 import {
-    Box,
-    HStack,
-    Icon,
-    Link,
-    Spinner,
-    Text,
-    VStack
+  Box,
+  HStack,
+  Icon,
+  Link,
+  Spinner,
+  Text,
+  VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -222,20 +222,41 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
 
             <HStack gap={2} align="center">
               <Text fontSize="sm">{t('playground.markVisited')}</Text>
-              <Switch
-                size="md"
-                checked={hasVisited}
-                onCheckedChange={async () => {
-                  if (!user) return;
-                  if (hasVisited) {
-                    await handleRemoveVisit();
-                  } else {
-                    await handleVisit();
-                  }
-                }}
-                disabled={!user}
-                aria-label={t('playground.markVisited')}
-              />
+              {!user ? (
+                <Tooltip content={t('playground.login.required')}>
+                  <Box>
+                    <Switch
+                      size="md"
+                      checked={hasVisited}
+                      onCheckedChange={async () => {
+                        if (!user) return;
+                        if (hasVisited) {
+                          await handleRemoveVisit();
+                        } else {
+                          await handleVisit();
+                        }
+                      }}
+                      disabled={!user}
+                      aria-label={t('playground.markVisited')}
+                    />
+                  </Box>
+                </Tooltip>
+              ) : (
+                <Switch
+                  size="md"
+                  checked={hasVisited}
+                  onCheckedChange={async () => {
+                    if (!user) return;
+                    if (hasVisited) {
+                      await handleRemoveVisit();
+                    } else {
+                      await handleVisit();
+                    }
+                  }}
+                  disabled={!user}
+                  aria-label={t('playground.markVisited')}
+                />
+              )}
             </HStack>
           </HStack>
 
