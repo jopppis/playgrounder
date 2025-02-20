@@ -8,7 +8,8 @@
       "passwordPlaceholder": "Luo salasanasi",
       "error": {
         "title": "Rekisteröityminen epäonnistui",
-        "message": "Tilin luominen epäonnistui"
+        "message": "Tilin luominen epäonnistui",
+        "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
       },
       "success": {
         "title": "Tili luotu",

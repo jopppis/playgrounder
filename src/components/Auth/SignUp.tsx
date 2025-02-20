@@ -1,14 +1,15 @@
 import {
-    Box,
-    Button,
-    Heading,
-    Icon,
-    Input,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Heading,
+  Icon,
+  Input,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { AuthError } from '@supabase/supabase-js'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 import { useToast } from '../../hooks/useToast'
@@ -25,6 +26,8 @@ export default function SignUp({ onSuccess }: SignUpProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const captchaRef = useRef<HCaptcha>(null)
   const toast = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,10 +36,19 @@ export default function SignUp({ onSuccess }: SignUpProps) {
     setError(null)
     setSuccess(false)
 
+    if (!captchaToken) {
+      setError(t('auth.signUp.error.captchaRequired'))
+      setLoading(false)
+      return
+    }
+
     try {
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          captchaToken
+        }
       })
 
       if (signUpError) throw signUpError
@@ -55,6 +67,9 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         title: t('auth.signUp.error.title'),
         description: t('auth.signUp.error.message')
       })
+      // Reset captcha on error
+      captchaRef.current?.resetCaptcha()
+      setCaptchaToken(null)
     } finally {
       setLoading(false)
     }
@@ -146,12 +161,20 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 }}
               />
             </Box>
+            <Box>
+              <HCaptcha
+                ref={captchaRef}
+                sitekey={import.meta.env.VITE_HCAPTCHA_SITE_KEY}
+                onVerify={(token) => setCaptchaToken(token)}
+                onExpire={() => setCaptchaToken(null)}
+              />
+            </Box>
             <Button
               type="submit"
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading}
+              disabled={loading || !captchaToken}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
