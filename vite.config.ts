@@ -4,6 +4,18 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'chakra': ['@chakra-ui/react', '@chakra-ui/switch', '@chakra-ui/transition', 'framer-motion'],
+          'map': ['leaflet', 'react-leaflet'],
+          'supabase': ['@supabase/supabase-js']
+        }
+      }
+    }
+  },
   test: {
     globals: true,
     environment: 'jsdom',
