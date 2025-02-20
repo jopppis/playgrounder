@@ -1,16 +1,16 @@
 import {
-  Box,
-  HStack,
-  Icon,
-  Link,
-  Spinner,
-  Text,
-  VStack
+    Box,
+    HStack,
+    Icon,
+    Link,
+    Spinner,
+    Text,
+    VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
-import { MdLocationOn, MdSupervisedUserCircle, MdSupervisorAccount } from 'react-icons/md'
+import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
 import { useToast } from '../hooks/useToast'
@@ -191,7 +191,8 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                 <Tooltip content={playground.address}>
                   <Link
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(playground.address)}`}
-                    isExternal
+                    target="_blank"
+                    rel="noopener noreferrer"
                     display="flex"
                     alignItems="center"
                     _hover={{ color: 'brand.500' }}
@@ -206,17 +207,17 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                   </Link>
                 </Tooltip>
               )}
-              <Tooltip content={playground.has_supervised_activities
-                ? t('playground.supervision.supervised')
-                : t('playground.supervision.unsupervised')}>
-                <Box as="span">
-                  <Icon
-                    as={playground.has_supervised_activities ? MdSupervisorAccount : MdSupervisedUserCircle}
-                    boxSize={5}
-                    color="gray.600"
-                  />
-                </Box>
-              </Tooltip>
+              {playground.has_supervised_activities && (
+                <Tooltip content={t('playground.supervision.supervised')}>
+                  <Box as="span">
+                    <Icon
+                      as={MdSupervisorAccount}
+                      boxSize={5}
+                      color="gray.600"
+                    />
+                  </Box>
+                </Tooltip>
+              )}
             </HStack>
 
             <HStack gap={2} align="center">
