@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- HCaptcha support
+- Cloudflare Turnstile support for bot protection
 
 ### Changed
 - By minumum require 8 characters for password

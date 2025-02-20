@@ -7,9 +7,8 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { AuthError } from '@supabase/supabase-js'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 import { useToast } from '../../hooks/useToast'
@@ -27,7 +26,6 @@ export default function SignUp({ onSuccess }: SignUpProps) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const captchaRef = useRef<HCaptcha>(null)
   const toast = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,7 +66,6 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         description: t('auth.signUp.error.message')
       })
       // Reset captcha on error
-      captchaRef.current?.resetCaptcha()
       setCaptchaToken(null)
     } finally {
       setLoading(false)
@@ -162,11 +159,12 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               />
             </Box>
             <Box>
-              <HCaptcha
-                ref={captchaRef}
-                sitekey={import.meta.env.VITE_HCAPTCHA_SITE_KEY}
-                onVerify={(token) => setCaptchaToken(token)}
-                onExpire={() => setCaptchaToken(null)}
+              <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+              <div
+                className="cf-turnstile"
+                data-sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                data-callback={(token: string) => setCaptchaToken(token)}
+                data-expired-callback={() => setCaptchaToken(null)}
               />
             </Box>
             <Button

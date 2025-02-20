@@ -1,6 +1,6 @@
 ---
 description: Explanation of the project
-globs: 
+globs:
 ---
 
 # Project description
@@ -19,6 +19,7 @@ The project theming is defined in theme.ts file. Please use the brand and second
 
 # How to do your work
 
+- After changing something, add CHANGELOG.md entry.
 - When adding features, add also tests for the feature
 - When fixing bugs, add a test for the bug
 - When adding tests, run the tests with `npm test`. It might be better to filter to only the new test file.
