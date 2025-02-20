@@ -1,13 +1,9 @@
-import { createSystem, defineConfig, defaultConfig } from "@chakra-ui/react"
+import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react"
 
 const config = defineConfig({
-  ...defaultConfig,
   theme: {
-    ...defaultConfig.theme,
     tokens: {
-      ...defaultConfig.theme?.tokens,
       colors: {
-        ...defaultConfig.theme?.tokens?.colors,
         brand: {
           50: { value: "#f1f7fd" },
           100: { value: "#dfedfa" },
@@ -37,9 +33,7 @@ const config = defineConfig({
       },
     },
     semanticTokens: {
-      ...defaultConfig.theme?.semanticTokens,
       colors: {
-        ...defaultConfig.theme?.semanticTokens?.colors,
         brand: {
           solid: { value: "{colors.brand.500}" },
           contrast: { value: "{colors.brand.100}" },
@@ -60,125 +54,7 @@ const config = defineConfig({
         },
       },
     },
-    components: {
-      ...defaultConfig.theme?.components,
-      Button: {
-        baseStyle: {
-          fontWeight: "medium",
-        },
-        sizes: {
-          xs: {
-            fontSize: "xs",
-            px: 2,
-            py: 1,
-            height: "24px",
-          },
-          sm: {
-            fontSize: "sm",
-            px: 3,
-            py: 2,
-            height: "32px",
-          },
-          md: {
-            fontSize: "md",
-            px: 4,
-            py: 2,
-            height: "40px",
-          },
-          lg: {
-            fontSize: "lg",
-            px: 6,
-            py: 3,
-            height: "48px",
-          },
-        },
-        variants: {
-          solid: {
-            bg: "brand.500",
-            color: "white",
-            _hover: {
-              bg: "brand.600",
-            },
-            _active: {
-              bg: "brand.700",
-            },
-          },
-          ghost: {
-            bg: "transparent",
-            color: "gray.700",
-            _hover: {
-              bg: "gray.50",
-            },
-            _active: {
-              bg: "gray.100",
-            },
-          },
-        },
-        defaultProps: {
-          size: "md",
-          variant: "solid",
-        },
-      },
-      Text: {
-        baseStyle: {
-          color: "gray.700",
-        },
-        variants: {
-          body: {
-            fontSize: "md",
-          },
-          small: {
-            fontSize: "sm",
-          },
-        },
-        defaultProps: {
-          variant: "body",
-        },
-      },
-      Spinner: {
-        baseStyle: {
-          color: "brand.500",
-        },
-        sizes: {
-          xs: { width: "0.75rem", height: "0.75rem" },
-          sm: { width: "1rem", height: "1rem" },
-          md: { width: "1.5rem", height: "1.5rem" },
-          lg: { width: "2rem", height: "2rem" },
-          xl: { width: "3rem", height: "3rem" },
-        },
-        defaultProps: {
-          size: "md",
-        },
-      },
-      Box: {
-        baseStyle: {
-          color: "gray.700",
-        },
-      },
-      Stack: {
-        baseStyle: {
-          spacing: 4,
-        },
-      },
-      VStack: {
-        baseStyle: {
-          spacing: 4,
-          align: "stretch",
-        },
-      },
-      HStack: {
-        baseStyle: {
-          spacing: 4,
-          align: "center",
-        },
-      },
-      Icon: {
-        baseStyle: {
-          boxSize: 5,
-        },
-      },
-    },
   },
 })
 
-export const system = createSystem(config)
+export const system = createSystem(defaultConfig, config)

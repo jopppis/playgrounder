@@ -1,17 +1,9 @@
+import * as matchers from '@testing-library/jest-dom/matchers'
 import '@testing-library/jest-dom/vitest'
-import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
-import { vi } from 'vitest'
+import { expect, vi } from 'vitest'
 
-type CustomMatchers<R = unknown> = TestingLibraryMatchers<typeof expect.stringContaining, R>
-
-declare module 'vitest' {
-  interface Assertion<T> extends CustomMatchers<T> {
-    toBeDefined(): void;
-  }
-  interface AsymmetricMatchersContaining extends CustomMatchers<unknown> {
-    toBeDefined(): void;
-  }
-}
+// @ts-expect-error - jest-dom matchers are not perfectly typed for vitest
+expect.extend(matchers)
 
 // Configure longer timeout for async operations
 vi.setConfig({ testTimeout: 5000 })
@@ -50,9 +42,6 @@ declare global {
   interface Process {
     env: Record<string, string>
   }
-  interface Window {
-    matchMedia: (query: string) => MediaQueryList
-  }
 }
 
 interface MediaQueryList {
@@ -66,7 +55,7 @@ interface MediaQueryList {
   dispatchEvent: (event: Event) => boolean
 }
 
-// Mock matchMedia if it's not available in jsdom
+// Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query: string): MediaQueryList => ({
@@ -91,4 +80,4 @@ console.error = (...args) => {
 }
 
 // Export empty object to make this a module
-export {}
+export { }

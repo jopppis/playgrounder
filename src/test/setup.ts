@@ -1,6 +1,6 @@
 import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers'
-import { vi, expect } from 'vitest'
 import '@testing-library/jest-dom/vitest'
+import { expect, vi } from 'vitest'
 
 type CustomMatchers<R = unknown> = TestingLibraryMatchers<typeof expect.stringContaining, R>
 
@@ -48,7 +48,7 @@ declare global {
     env: Record<string, string>
   }
   interface Window {
-    matchMedia: (query: string) => MediaQueryList
+    matchMedia(query: string): MediaQueryList
   }
 }
 
@@ -79,4 +79,4 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // Export empty object to make this a module
-export {}
+export { }
