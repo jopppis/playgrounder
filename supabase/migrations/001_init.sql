@@ -1,5 +1,5 @@
 -- Enable PostGIS (includes raster)
-CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS postgis SCHEMA extensions;
 
 -- Create playgrounds table with geometry
 CREATE TABLE playgrounds (
