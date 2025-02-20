@@ -46,9 +46,7 @@ npm run dev
 ### Before deployment
 
 - Make ratings filter update real time after publishing a rating
-- Fetch playground info for popups on screen
 - Limit visible playgrounds to some max number
-- Remove unsupervised icon from popup
 - Make popup title not truncate
 
 ### Before release

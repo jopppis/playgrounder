@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
+import enTranslations from '../i18n/locales/en.json'
 import { render } from '../test/testUtils'
 import Header from './Header'
 
@@ -62,7 +63,7 @@ describe('Header', () => {
     renderComponent()
     const menuButton = screen.getByRole('button')
     fireEvent.click(menuButton)
-    expect(screen.getByText('Language')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.menu.language)).toBeInTheDocument()
   })
 
   it('closes menu drawer when clicking outside', async () => {
@@ -77,7 +78,7 @@ describe('Header', () => {
     fireEvent.mouseDown(outsideElement)
 
     await waitFor(() => {
-      expect(screen.queryByText('Language')).not.toBeInTheDocument()
+      expect(screen.queryByText(enTranslations.menu.language)).not.toBeInTheDocument()
     })
 
     document.body.removeChild(outsideElement)
@@ -88,7 +89,7 @@ describe('Header', () => {
     const menuButton = screen.getByRole('button')
     fireEvent.click(menuButton)
 
-    const languageText = screen.getByText('Language')
+    const languageText = screen.getByText(enTranslations.menu.language)
     fireEvent.mouseDown(languageText)
 
     // Menu should still be open
@@ -101,11 +102,11 @@ describe('Header', () => {
     fireEvent.click(menuButton)
 
     // Click the sign up button
-    const signUpButton = screen.getByText('auth.signUp.title')
+    const signUpButton = screen.getByText(enTranslations.auth.signUp.title)
     fireEvent.click(signUpButton)
 
     // Menu should still be open and sign up modal should be visible
-    expect(screen.getByText('Language')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.menu.language)).toBeInTheDocument()
     expect(signUpButton).toBeInTheDocument()
   })
 
@@ -119,12 +120,12 @@ describe('Header', () => {
     const menuButton = screen.getByRole('button')
     fireEvent.click(menuButton)
 
-    const signOutButton = screen.getByText('auth.signOut.button')
+    const signOutButton = screen.getByText(enTranslations.auth.signOut.button)
     fireEvent.click(signOutButton)
 
     // Menu should be closed after sign out
     await waitFor(() => {
-      expect(screen.queryByText('Language')).not.toBeInTheDocument()
+      expect(screen.queryByText(enTranslations.menu.language)).not.toBeInTheDocument()
     })
   })
 

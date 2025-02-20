@@ -56,33 +56,6 @@ vi.mock('../lib/supabaseClient', () => ({
   }
 }))
 
-// Mock i18next to use actual English translations
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, options?: Record<string, unknown>) => {
-      // Split the key by dots to traverse the translations object
-      const keys = key.split('.')
-      const value = keys.reduce((obj: Record<string, unknown>, key: string) => {
-        if (typeof obj === 'object' && obj !== null) {
-          return obj[key] as Record<string, unknown>
-        }
-        return {}
-      }, enTranslations as Record<string, unknown>)
-
-      // Handle interpolation if options are provided
-      let result = typeof value === 'string' ? value : key
-      if (typeof result === 'string' && options) {
-        Object.entries(options).forEach(([key, val]) => {
-          result = result.replace(`{{${key}}}`, String(val))
-        })
-      }
-
-      return result
-    }
-  }),
-  I18nextProvider: ({ children }: { children: React.ReactNode }) => children
-}))
-
 describe('PlaygroundPopup', () => {
   const mockPlayground: PlaygroundWithCoordinates = {
     id: '1',
@@ -227,7 +200,7 @@ describe('PlaygroundPopup', () => {
       renderComponent()
     })
 
-    expect(screen.getByRole('status')).toBeInTheDocument()
+    expect(screen.getByRole('status', { name: enTranslations.playground.rating.loading })).toBeInTheDocument()
   })
 
   it('calls onContentChange when rating changes', async () => {

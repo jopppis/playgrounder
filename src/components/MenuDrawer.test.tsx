@@ -1,6 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
+import enTranslations from '../i18n/locales/en.json'
 import { supabase } from '../lib/supabaseClient'
 import { render } from '../test/testUtils'
 import MenuDrawer from './MenuDrawer'
@@ -41,12 +42,12 @@ describe('MenuDrawer', () => {
 
   it('does not render when closed', () => {
     renderComponent(false)
-    expect(screen.queryByText('Language')).not.toBeInTheDocument()
+    expect(screen.queryByText(enTranslations.menu.language)).not.toBeInTheDocument()
   })
 
   it('renders when open', () => {
     renderComponent()
-    expect(screen.getByText('Language')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.menu.language)).toBeInTheDocument()
   })
 
   it('prevents event propagation when clicking the drawer', () => {
@@ -74,7 +75,7 @@ describe('MenuDrawer', () => {
 
   it('handles sign up button click correctly', () => {
     renderComponent()
-    const signUpButton = screen.getByText('auth.signUp.title')
+    const signUpButton = screen.getByText(enTranslations.auth.signUp.title)
 
     // Create a click event
     const clickEvent = new MouseEvent('click', {
@@ -95,7 +96,7 @@ describe('MenuDrawer', () => {
 
   it('handles sign in button click correctly', () => {
     renderComponent()
-    const signInButton = screen.getByText('auth.signIn.title')
+    const signInButton = screen.getByText(enTranslations.auth.signIn.title)
 
     // Create a click event
     const clickEvent = new MouseEvent('click', {
@@ -123,7 +124,7 @@ describe('MenuDrawer', () => {
     vi.mocked(supabase.auth.signOut).mockResolvedValue({ error: null })
 
     renderComponent()
-    const signOutButton = screen.getByText('auth.signOut.button')
+    const signOutButton = screen.getByText(enTranslations.auth.signOut.button)
 
     // Create a click event
     const clickEvent = new MouseEvent('click', {
@@ -149,29 +150,29 @@ describe('MenuDrawer', () => {
     renderComponent()
 
     // Click to show about section
-    const aboutButton = screen.getByText('menu.buttons.about')
+    const aboutButton = screen.getByText(enTranslations.menu.buttons.about)
     fireEvent.click(aboutButton)
 
     // About section should be visible
-    expect(screen.getByText('menu.about.title')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.menu.about.title)).toBeInTheDocument()
     expect(aboutButton).not.toBeInTheDocument()
 
     // Click to hide about section
-    const backButton = screen.getByText('menu.about.backButton')
+    const backButton = screen.getByText(enTranslations.menu.about.backButton)
     fireEvent.click(backButton)
 
     // About section should be hidden
-    expect(screen.queryByText('menu.about.title')).not.toBeInTheDocument()
-    expect(screen.getByText('menu.buttons.about')).toBeInTheDocument()
+    expect(screen.queryByText(enTranslations.menu.about.title)).not.toBeInTheDocument()
+    expect(screen.getByText(enTranslations.menu.buttons.about)).toBeInTheDocument()
   })
 
   it('closes about section when drawer is closed', () => {
     const { rerender } = renderComponent()
 
     // Show about section
-    const aboutButton = screen.getByText('menu.buttons.about')
+    const aboutButton = screen.getByText(enTranslations.menu.buttons.about)
     fireEvent.click(aboutButton)
-    expect(screen.getByText('menu.about.title')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.menu.about.title)).toBeInTheDocument()
 
     // Close drawer
     rerender(
@@ -194,7 +195,7 @@ describe('MenuDrawer', () => {
     )
 
     // About section should be hidden
-    expect(screen.queryByText('menu.about.title')).not.toBeInTheDocument()
-    expect(screen.getByText('menu.buttons.about')).toBeInTheDocument()
+    expect(screen.queryByText(enTranslations.menu.about.title)).not.toBeInTheDocument()
+    expect(screen.getByText(enTranslations.menu.buttons.about)).toBeInTheDocument()
   })
 })

@@ -44,7 +44,7 @@ export default function LanguageSwitcher() {
           }}
           transition="all 0.2s"
         >
-          English
+          {t('menu.en')}
         </Button>
         <Button
           size="sm"
@@ -68,7 +68,7 @@ export default function LanguageSwitcher() {
           }}
           transition="all 0.2s"
         >
-          Suomi
+          {t('menu.fi')}
         </Button>
       </HStack>
     </Box>

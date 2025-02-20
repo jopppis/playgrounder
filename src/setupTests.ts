@@ -2,7 +2,6 @@ import * as matchers from '@testing-library/jest-dom/matchers'
 import '@testing-library/jest-dom/vitest'
 import { expect, vi } from 'vitest'
 
-// @ts-expect-error - jest-dom matchers are not perfectly typed for vitest
 expect.extend(matchers)
 
 // Configure longer timeout for async operations
