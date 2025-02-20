@@ -119,7 +119,7 @@ CREATE TRIGGER update_ratings_updated_at
     EXECUTE FUNCTION update_updated_at_column();
 
 -- Create a view for playground ratings that includes both average and count
-CREATE OR REPLACE VIEW playground_ratings AS
+CREATE OR REPLACE VIEW playground_ratings WITH (security_invoker = on) AS
 SELECT
     p.id as playground_id,
     ROUND(AVG(CASE WHEN r.is_public THEN r.rating END)::numeric, 1) as avg_rating,
