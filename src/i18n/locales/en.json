@@ -58,8 +58,8 @@
   },
   "menu": {
     "about": {
-      "title": "About PlayGrounder",
-      "description": "PlayGrounder is meant to help families find good local playgrounds. On PlayGrounder you can find new playgrounds, rate them and track your visits, without fees, ads or tracking.",
+      "title": "About PlaygroundMap",
+      "description": "PlaygroundMap is meant to help families find good local playgrounds. On PlaygroundMap you can find new playgrounds, rate them and track your visits, without fees, ads or tracking.",
       "acknowledgments": "Map data © OpenStreetMap contributors. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
       "github": "View on GitHub",
       "backButton": "Back to Menu"
@@ -134,7 +134,7 @@
   "showMore": "Show more",
   "showLess": "Show less",
   "app": {
-    "name": "PlayGrounder"
+    "name": "PlaygroundMap"
   },
   "common": {
     "error": "Error",

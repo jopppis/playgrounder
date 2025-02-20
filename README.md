@@ -21,8 +21,8 @@ An interactive web application to help parents and caregivers find and share loc
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/jopppis/playgroundmap.git
-cd playgroundmap
+git clone https://github.com/jopppis/playgrounder.git
+cd playgrounder
 ```
 
 2. Install dependencies:
@@ -48,6 +48,8 @@ npm run dev
 - Make ratings filter update real time after publishing a rating
 - Fetch playground info for popups on screen
 - Limit visible playgrounds to some max number
+- Remove unsupervised icon from popup
+- Make popup title not truncate
 
 ### Before release
 

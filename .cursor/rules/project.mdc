@@ -1,11 +1,11 @@
 ---
 description: Explanation of the project
-globs:
+globs: 
 ---
 
 # Project description
 
-- The project is known as Playgrounder in English and Leikkipuistokartta in Finnish.
+- The project is known as PlaygroundMap in English and Leikkipuistokartta in Finnish.
 - The project is an interactive playground map for tracking visited playgrounds nearby, rating the playgrounds and sharing the ratings.
 - The project is implemented in React, Chakra UI v3, Leaflet.
 - The backend is supabase.
