@@ -13,7 +13,10 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "prepare": "husky",
-    "validate-translations": "tsx src/i18n/validateTranslations.ts"
+    "validate-translations": "tsx src/i18n/validateTranslations.ts",
+    "version": "npm run changelog && git add CHANGELOG.md",
+    "postversion": "git push && git push --tags",
+    "changelog": "tsx scripts/update-changelog.ts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
