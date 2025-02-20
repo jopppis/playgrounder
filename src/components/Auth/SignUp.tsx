@@ -149,7 +149,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 placeholder={t('auth.signUp.passwordPlaceholder')}
                 required
-                minLength={6}
+                minLength={8}
                 bg="white"
                 _placeholder={{ color: 'gray.400' }}
                 borderColor="brand.200"
