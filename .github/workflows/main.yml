@@ -10,12 +10,6 @@ jobs:
   test-and-build:
     runs-on: ubuntu-latest
 
-    env:
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-      VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-
     steps:
       - uses: actions/checkout@v4
 
@@ -36,9 +30,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      # Optional: Add deployment step here if needed
-      # - name: Deploy to production
-      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      #   run: |
-      #     # Add deployment commands here
