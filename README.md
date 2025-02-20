@@ -45,7 +45,6 @@ npm run dev
 
 ### Before deployment
 
-- Limit visible playgrounds to some max number
 - Make popup title not truncate
 - Remove account button
 

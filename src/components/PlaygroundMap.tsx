@@ -138,6 +138,16 @@ const LocationControl = () => {
   const lastKnownPosition = useRef<[number, number] | null>(null)
   const isInitialized = useRef(false)
 
+  // Add zoom control to bottom right
+  useEffect(() => {
+    const zoomControl = L.control.zoom({ position: 'bottomright' })
+    zoomControl.addTo(map)
+
+    return () => {
+      zoomControl.remove()
+    }
+  }, [map])
+
   const handleLocationFound = useCallback((e: L.LocationEvent) => {
     const { lat, lng } = e.latlng
     const newLocation: [number, number] = [lat, lng]
@@ -185,7 +195,7 @@ const LocationControl = () => {
 
   // Add location control button
   useEffect(() => {
-    const locationControl = new L.Control({ position: 'topleft' })
+    const locationControl = new L.Control({ position: 'bottomright' })
 
     locationControl.onAdd = () => {
       const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
@@ -363,6 +373,7 @@ const PlaygroundMap = () => {
         zoom={13.5}
         style={{ height: '100%', width: '100%' }}
         ref={mapRef}
+        zoomControl={false}
       >
         <TileLayer
           attribution={t('map.attribution')}

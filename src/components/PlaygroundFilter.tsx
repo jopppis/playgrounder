@@ -4,7 +4,8 @@ import {
   HStack,
   Stack,
   Text,
-  VStack
+  VStack,
+  useBreakpointValue
 } from '@chakra-ui/react'
 import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useRef, useState } from 'react'
@@ -31,6 +32,12 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const [showAllStars, setShowAllStars] = useState(false)
   const { user } = useAuth()
   const filterRef = useRef<HTMLDivElement>(null)
+
+  const filterPosition = useBreakpointValue({
+    base: { top: '60px', left: '4px', width: '250px', maxWidth: 'calc(100% - 8px)', right: 'auto' },
+    sm: { top: '2', left: '4px', width: '250px', maxWidth: '250px', right: 'auto' },
+    md: { top: '2', left: '4px', width: '250px', maxWidth: '250px', right: 'auto' }
+  })
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -78,8 +85,13 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   )
 
   return (
-    <Box position="absolute" top={2} left="80px" zIndex={1000} ref={filterRef}>
-      <Box bg="gray.50" borderRadius="md" boxShadow="base" width="250px">
+    <Box
+      position="absolute"
+      {...filterPosition}
+      zIndex={1000}
+      ref={filterRef}
+    >
+      <Box bg="gray.50" borderRadius="md" boxShadow="base" width="100%">
         <Button
           bg="transparent"
           color="gray.700"
