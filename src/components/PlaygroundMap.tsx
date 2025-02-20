@@ -76,12 +76,13 @@ const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
 // Separate component for playground markers
-const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange }: {
+const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
   visitsLoading: boolean
   onVisitChange: (playgroundId: string, isVisited: boolean) => void
+  onRatingChange: () => void
 }) => {
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
@@ -122,6 +123,7 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
           playground={playground}
           onVisitChange={(isVisited) => onVisitChange(playground.id, isVisited)}
           onContentChange={updatePopup}
+          onRatingChange={onRatingChange}
         />
       </Popup>
     </Marker>
@@ -269,39 +271,40 @@ const PlaygroundMap = () => {
   })
   const mapRef = useRef<L.Map | null>(null)
 
-  // Fetch ratings when playgrounds change
-  useEffect(() => {
-    const fetchRatings = async () => {
-      const { data, error } = await supabase
-        .from('playground_ratings')
-        .select('playground_id, avg_rating, total_ratings')
+  // Create a fetchRatings function that can be called from child components
+  const fetchRatings = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('playground_ratings')
+      .select('playground_id, avg_rating, total_ratings')
 
-      if (!error && data) {
-        // If user is logged in, fetch their ratings
-        let userRatings: { [key: string]: number } = {}
-        if (user) {
-          const { data: userRatingsData } = await supabase
-            .from('ratings')
-            .select('playground_id, rating')
-            .eq('user_id', user.id)
+    if (!error && data) {
+      // If user is logged in, fetch their ratings
+      let userRatings: { [key: string]: number } = {}
+      if (user) {
+        const { data: userRatingsData } = await supabase
+          .from('ratings')
+          .select('playground_id, rating')
+          .eq('user_id', user.id)
 
-          if (userRatingsData) {
-            userRatings = Object.fromEntries(
-              userRatingsData.map(r => [r.playground_id, r.rating])
-            )
-          }
+        if (userRatingsData) {
+          userRatings = Object.fromEntries(
+            userRatingsData.map(r => [r.playground_id, r.rating])
+          )
         }
-
-        // Combine public ratings with user ratings
-        setRatings(data.map(r => ({
-          ...r,
-          user_rating: userRatings[r.playground_id] || null
-        })))
       }
-    }
 
+      // Combine public ratings with user ratings
+      setRatings(data.map(r => ({
+        ...r,
+        user_rating: userRatings[r.playground_id] || null
+      })))
+    }
+  }, [user])
+
+  // Fetch ratings when playgrounds change or when explicitly requested
+  useEffect(() => {
     fetchRatings()
-  }, [playgrounds, user])
+  }, [fetchRatings, playgrounds])
 
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
@@ -374,6 +377,7 @@ const PlaygroundMap = () => {
             user={user}
             visitsLoading={visitsLoading}
             onVisitChange={updateVisitsState}
+            onRatingChange={fetchRatings}
           />
         ))}
       </MapContainer>

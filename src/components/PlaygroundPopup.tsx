@@ -24,9 +24,10 @@ interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates
   onVisitChange: (isVisited: boolean) => void
   onContentChange?: () => void
+  onRatingChange: () => void
 }
 
-export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: PlaygroundPopupProps) => {
+export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, onRatingChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const toast = useToast()
@@ -120,6 +121,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
       // Now submit the rating with the visit_id
       await submitRating(value, rating?.isPublic || false, visitData.id)
       onContentChange?.()
+      onRatingChange() // Call onRatingChange after submitting rating
       toast.showSuccess({
         title: t('playground.rating.success.title')
       })
@@ -135,6 +137,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
     try {
       const wasPublic = rating?.isPublic
       await togglePublic()
+      onRatingChange() // Call onRatingChange after toggling public status
       toast.showSuccess({
         title: t('playground.rating.visibility.success.title'),
         description: wasPublic

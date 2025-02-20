@@ -45,9 +45,9 @@ npm run dev
 
 ### Before deployment
 
-- Make ratings filter update real time after publishing a rating
 - Limit visible playgrounds to some max number
 - Make popup title not truncate
+- Remove account button
 
 ### Before release
 
