@@ -55,6 +55,75 @@
       "emailTaken": "Email is already taken",
       "invalidCredentials": "Invalid email or password",
       "unknown": "An unknown error occurred"
+    },
+    "removeAccount": {
+      "button": "Delete Account",
+      "confirmTitle": "Confirm Account Deletion",
+      "confirmMessage": "Are you sure you want to delete your account? This action cannot be undone.",
+      "confirmButton": "Yes, Delete My Account",
+      "cancelButton": "Cancel",
+      "success": {
+        "title": "Account Deleted",
+        "message": "Your account has been successfully deleted"
+      },
+      "error": {
+        "title": "Deletion Failed",
+        "message": "Failed to delete your account"
+      }
+    },
+    "forgotPassword": {
+      "button": "Forgot Password?",
+      "title": "Reset Password",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "success": {
+        "title": "Reset Email Sent",
+        "message": "Check your email for password reset instructions"
+      },
+      "error": {
+        "title": "Reset Failed",
+        "message": "Failed to send password reset email"
+      },
+      "submitButton": {
+        "loading": "Sending...",
+        "default": "Send Reset Link"
+      }
+    },
+    "resetPassword": {
+      "title": "Reset Your Password",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter your new password",
+      "success": {
+        "title": "Password Reset"
+      },
+      "error": {
+        "title": "Reset Failed"
+      },
+      "button": {
+        "loading": "Updating...",
+        "default": "Password updated"
+      }
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "currentPasswordPlaceholder": "Enter your current password",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter your new password",
+      "button": {
+        "loading": "Changing...",
+        "default": "Change Password"
+      },
+      "success": {
+        "title": "Password Changed",
+        "message": "Your password has been successfully changed"
+      },
+      "error": {
+        "title": "Change Failed",
+        "message": "Failed to change your password",
+        "incorrectPassword": "Current password is incorrect"
+      },
+      "close": "Close change password dialog"
     }
   },
   "menu": {

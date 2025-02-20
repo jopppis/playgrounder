@@ -46,12 +46,10 @@ npm run dev
 ### Before deployment
 
 - Make popup title not truncate
-- Remove account button
 
 ### Before release
 
 - Add other Finnish cities
-- Publish on Github
 - Review code
 - Security audit
 

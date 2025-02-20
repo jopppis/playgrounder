@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import App from './App'
 
 function LanguageRoute({ language }: { language: 'en' | 'fi' }) {
@@ -21,6 +21,7 @@ export default function Router() {
       <Route path="/" element={<App />} />
       <Route path="/en" element={<LanguageRoute language="en" />} />
       <Route path="/fi" element={<LanguageRoute language="fi" />} />
+      <Route path="/reset-password" element={<Navigate to="/?reset_password=true" replace />} />
     </Routes>
   )
 }

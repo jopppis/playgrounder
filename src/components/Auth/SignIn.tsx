@@ -4,6 +4,7 @@ import {
   Heading,
   Icon,
   Input,
+  Link,
   Stack,
   Text,
 } from '@chakra-ui/react'
@@ -15,6 +16,7 @@ import { useNavigate } from 'react-router-dom'
 import Turnstile from 'react-turnstile'
 import { useToast } from '../../hooks/useToast'
 import { supabase } from '../../lib/supabaseClient'
+import ForgotPasswordModal from './ForgotPasswordModal'
 
 interface SignInProps {
   onSuccess?: () => void
@@ -28,6 +30,7 @@ export default function SignIn({ onSuccess }: SignInProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
   const toast = useToast()
   const isProduction = import.meta.env.VITE_APP_ENV === 'production'
 
@@ -149,6 +152,16 @@ export default function SignIn({ onSuccess }: SignInProps) {
                 }}
               />
             </Box>
+            <Link
+              color="brand.500"
+              _hover={{ color: 'secondary.500' }}
+              onClick={() => setShowForgotPassword(true)}
+              alignSelf="flex-end"
+              fontSize="sm"
+              cursor="pointer"
+            >
+              {t('auth.forgotPassword.button')}
+            </Link>
             <Box>
               {isProduction && (
                 <Turnstile
@@ -176,6 +189,9 @@ export default function SignIn({ onSuccess }: SignInProps) {
           </Stack>
         </Box>
       </Stack>
+      {showForgotPassword && (
+        <ForgotPasswordModal onClose={() => setShowForgotPassword(false)} />
+      )}
     </Box>
   )
 }

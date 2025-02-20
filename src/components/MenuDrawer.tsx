@@ -15,6 +15,8 @@ import { FaGithub, FaSignInAlt, FaUserPlus } from 'react-icons/fa'
 import { useAuth } from '../hooks/useAuth'
 import { useToast } from '../hooks/useToast'
 import { supabase } from '../lib/supabaseClient'
+import ChangePasswordModal from './Auth/ChangePasswordModal'
+import RemoveAccount from './Auth/RemoveAccount'
 import SignInModal from './Auth/SignInModal'
 import SignUp from './Auth/SignUp'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -36,6 +38,8 @@ const MenuDrawer = ({
   const { user } = useAuth()
   const [showAbout, setShowAbout] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
+  const [showRemoveAccount, setShowRemoveAccount] = useState(false)
+  const [showChangePassword, setShowChangePassword] = useState(false)
   const toast = useToast()
 
   useEffect(() => {
@@ -120,6 +124,21 @@ const MenuDrawer = ({
                       onClick={handleSignOut}
                     >
                       {t('auth.signOut.button')}
+                    </Button>
+                    <Button
+                      {...buttonProps}
+                      onClick={() => setShowChangePassword(true)}
+                    >
+                      {t('auth.changePassword.button.default')}
+                    </Button>
+                    <Button
+                      {...buttonProps}
+                      bg="red.500"
+                      borderColor="red.500"
+                      _hover={{ bg: 'red.600', borderColor: 'red.600' }}
+                      onClick={() => setShowRemoveAccount(true)}
+                    >
+                      {t('auth.removeAccount.button')}
                     </Button>
                   </>
                 ) : (
@@ -240,6 +259,8 @@ const MenuDrawer = ({
       )}
 
       {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} />}
+      {showRemoveAccount && <RemoveAccount onClose={() => setShowRemoveAccount(false)} />}
+      {showChangePassword && <ChangePasswordModal onClose={() => setShowChangePassword(false)} />}
     </>
   )
 }

@@ -55,6 +55,75 @@
       "emailTaken": "Sähköpostiosoite on jo käytössä",
       "invalidCredentials": "Virheellinen sähköposti tai salasana",
       "unknown": "Tuntematon virhe tapahtui"
+    },
+    "removeAccount": {
+      "button": "Poista tili",
+      "confirmTitle": "Vahvista tilin poisto",
+      "confirmMessage": "Haluatko varmasti poistaa tilisi? Tätä toimintoa ei voi kumota.",
+      "confirmButton": "Kyllä, poista tilini",
+      "cancelButton": "Peruuta",
+      "success": {
+        "title": "Tili poistettu",
+        "message": "Tilisi on poistettu onnistuneesti"
+      },
+      "error": {
+        "title": "Poisto epäonnistui",
+        "message": "Tilin poistaminen epäonnistui"
+      }
+    },
+    "forgotPassword": {
+      "button": "Unohditko salasanan?",
+      "title": "Nollaa salasana",
+      "email": "Sähköposti",
+      "emailPlaceholder": "Syötä sähköpostiosoitteesi",
+      "success": {
+        "title": "Nollausviesti lähetetty",
+        "message": "Tarkista sähköpostisi salasanan nollausohjeiden osalta"
+      },
+      "error": {
+        "title": "Nollaus epäonnistui",
+        "message": "Salasanan nollausviestin lähetys epäonnistui"
+      },
+      "submitButton": {
+        "loading": "Lähetetään...",
+        "default": "Lähetä nollauslinkki"
+      }
+    },
+    "resetPassword": {
+      "title": "Aseta uusi salasana",
+      "newPassword": "Uusi salasana",
+      "newPasswordPlaceholder": "Syötä uusi salasanasi",
+      "success": {
+        "title": "Salasana vaihdettu"
+      },
+      "error": {
+        "title": "Salasanan vaihto epäonnistui"
+      },
+      "button": {
+        "loading": "Vaihdetaan...",
+        "default": "Vaihda salasana"
+      }
+    },
+    "changePassword": {
+      "title": "Vaihda salasana",
+      "currentPassword": "Nykyinen salasana",
+      "currentPasswordPlaceholder": "Syötä nykyinen salasanasi",
+      "newPassword": "Uusi salasana",
+      "newPasswordPlaceholder": "Syötä uusi salasanasi",
+      "button": {
+        "loading": "Vaihdetaan...",
+        "default": "Vaihda salasana"
+      },
+      "success": {
+        "title": "Salasana vaihdettu",
+        "message": "Salasanasi on vaihdettu onnistuneesti"
+      },
+      "error": {
+        "title": "Vaihto epäonnistui",
+        "message": "Salasanan vaihto epäonnistui",
+        "incorrectPassword": "Nykyinen salasana on virheellinen"
+      },
+      "close": "Sulje salasanan vaihtoikkuna"
     }
   },
   "menu": {
