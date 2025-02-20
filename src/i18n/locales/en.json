@@ -115,7 +115,7 @@
       }
     },
     "avgRating": "{{rating}} ★ ({{count}} ratings)",
-    "makePublic": "Publish rating",
+    "makePublic": "Public",
     "supervision": {
       "label": "Supervision",
       "supervised": "Supervised activities",

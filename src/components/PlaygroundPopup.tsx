@@ -1,6 +1,8 @@
 import {
   Box,
   HStack,
+  Icon,
+  Link,
   Spinner,
   Text,
   VStack
@@ -8,6 +10,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
+import { MdLocationOn, MdSupervisedUserCircle, MdSupervisorAccount } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
 import { useToast } from '../hooks/useToast'
@@ -15,6 +18,7 @@ import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates } from '../types/database.types'
 import { Switch } from './ui/switch'
+import { Tooltip } from './ui/tooltip'
 
 interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates
@@ -163,15 +167,15 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
   return (
     <Box p={2} minW="300px" maxW="400px">
       {visitsLoading ? (
-        <VStack align="stretch" gap={1.5} justify="center" minH="100px">
+        <VStack align="stretch" gap={1} justify="center" minH="100px">
           <Spinner size="md" color="brand.500" alignSelf="center" />
         </VStack>
       ) : (
-        <VStack align="stretch" gap={1.5}>
-          <HStack justify="space-between" align="center" gap={2}>
-            <Text fontWeight="bold" color="gray.700">{playground.name}</Text>
+        <VStack align="stretch" gap={1}>
+          <HStack justify="space-between" align="start" gap={2}>
+            <Text fontWeight="bold" color="gray.700" truncate flex={1}>{playground.name}</Text>
             {!ratingLoading && rating?.avgRating && (
-              <Text fontSize="sm" color="#828282">
+              <Text fontSize="sm" color="#828282" whiteSpace="nowrap">
                 {t('playground.avgRating', {
                   rating: Number(rating.avgRating).toFixed(1),
                   count: rating.totalRatings
@@ -179,93 +183,114 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
               </Text>
             )}
           </HStack>
-          <Text fontSize="sm" color="gray.500">
-            {t('playground.supervision.label')}: {playground.has_supervised_activities ? t('playground.supervision.supervised') : t('playground.supervision.unsupervised')}
-          </Text>
+
+          {/* Properties row with icons */}
+          <HStack justify="space-between" align="center">
+            <HStack gap={3}>
+              {playground.address && (
+                <Tooltip content={playground.address}>
+                  <Link
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(playground.address)}`}
+                    isExternal
+                    display="flex"
+                    alignItems="center"
+                    _hover={{ color: 'brand.500' }}
+                  >
+                    <Icon
+                      as={MdLocationOn}
+                      boxSize={5}
+                      color="gray.600"
+                      transition="color 0.2s"
+                      _hover={{ color: 'inherit' }}
+                    />
+                  </Link>
+                </Tooltip>
+              )}
+              <Tooltip content={playground.has_supervised_activities
+                ? t('playground.supervision.supervised')
+                : t('playground.supervision.unsupervised')}>
+                <Box as="span">
+                  <Icon
+                    as={playground.has_supervised_activities ? MdSupervisorAccount : MdSupervisedUserCircle}
+                    boxSize={5}
+                    color="gray.600"
+                  />
+                </Box>
+              </Tooltip>
+            </HStack>
+
+            <HStack gap={2} align="center">
+              <Text fontSize="sm">{t('playground.markVisited')}</Text>
+              <Switch
+                size="md"
+                checked={hasVisited}
+                onCheckedChange={async () => {
+                  if (!user) return;
+                  if (hasVisited) {
+                    await handleRemoveVisit();
+                  } else {
+                    await handleVisit();
+                  }
+                }}
+                disabled={!user}
+                aria-label={t('playground.markVisited')}
+              />
+            </HStack>
+          </HStack>
+
           {playground.description && (
             <Text fontSize="sm" color="gray.700" lineHeight="short" whiteSpace="pre-wrap">
               {renderFormattedDescription(playground.description)}
             </Text>
           )}
-          {playground.address && (
-            <Text fontSize="sm" color="gray.500" lineHeight="short">
-              {playground.address}
-            </Text>
-          )}
-
-          {/* Visit switch */}
-          <HStack justify="space-between" align="center">
-            <Text fontSize="sm">{t('playground.markVisited')}</Text>
-            <Switch
-              size="md"
-              checked={hasVisited}
-              onCheckedChange={async () => {
-                if (!user) return;
-                if (hasVisited) {
-                  await handleRemoveVisit();
-                } else {
-                  await handleVisit();
-                }
-              }}
-              disabled={!user}
-              aria-label={t('playground.markVisited')}
-            />
-          </HStack>
 
           {/* Rating section */}
           {hasVisited && (
             <Box>
-              <Text fontWeight="bold" mb={2}>
-                {t('playground.rating.title')}
-              </Text>
               {ratingLoading ? (
                 <Spinner size="sm" color="brand.500" role="status" aria-label={t('playground.rating.loading')} />
               ) : (
-                <>
-                  <HStack gap={0.5} mb={1} justify="space-between" align="center">
-                    <HStack gap={0.5}>
-                      {[1, 2, 3, 4, 5].map((value) => (
-                        <Box
-                          key={value}
-                          as="button"
-                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleRating(value, e as unknown as React.MouseEvent<HTMLButtonElement>);
-                          }}
-                          onMouseEnter={() => setHoveredRating(value)}
-                          onMouseLeave={() => setHoveredRating(null)}
-                          aria-disabled={!user}
-                          aria-label={t('playground.rating.buttonLabel', { count: value })}
-                          role="button"
-                          cursor={user ? 'pointer' : 'not-allowed'}
-                          opacity={!user ? 0.5 : 1}
-                          transition="all 0.2s"
-                          _hover={user ? {
-                            transform: 'scale(1.2)',
-                            '& > *': { color: 'secondary.500' }
-                          } : undefined}
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          p={0}
-                          bg="transparent"
-                          border="none"
-                          outline="none"
-                          _focus={{ outline: 'none' }}
-                        >
-                          {value <= (hoveredRating || rating?.userRating || 0) ? (
-                            <FaStar color="var(--chakra-colors-secondary-500)" size={20} />
-                          ) : (
-                            <FaRegStar color="var(--chakra-colors-gray-400)" size={20} />
-                          )}
-                        </Box>
-                      ))}
-                    </HStack>
+                <HStack gap={2} justify="space-between" align="center">
+                  <HStack gap={0.5}>
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <Box
+                        key={value}
+                        as="button"
+                        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleRating(value, e as unknown as React.MouseEvent<HTMLButtonElement>);
+                        }}
+                        onMouseEnter={() => setHoveredRating(value)}
+                        onMouseLeave={() => setHoveredRating(null)}
+                        aria-disabled={!user}
+                        aria-label={t('playground.rating.buttonLabel', { count: value })}
+                        role="button"
+                        cursor={user ? 'pointer' : 'not-allowed'}
+                        opacity={!user ? 0.5 : 1}
+                        transition="all 0.2s"
+                        _hover={user ? {
+                          transform: 'scale(1.2)',
+                          '& > *': { color: 'secondary.500' }
+                        } : undefined}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        p={0}
+                        bg="transparent"
+                        border="none"
+                        outline="none"
+                        _focus={{ outline: 'none' }}
+                      >
+                        {value <= (hoveredRating || rating?.userRating || 0) ? (
+                          <FaStar color="var(--chakra-colors-secondary-500)" size={20} />
+                        ) : (
+                          <FaRegStar color="var(--chakra-colors-gray-400)" size={20} />
+                        )}
+                      </Box>
+                    ))}
                   </HStack>
-
-                  {/* Public rating switch */}
-                  <HStack justify="space-between" align="center" mt={2}>
+                  <HStack gap={2} align="center">
                     <Text fontSize="sm">{t('playground.makePublic')}</Text>
                     <Switch
                       size="md"
@@ -278,7 +303,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange }: 
                       aria-label={t('playground.makePublic')}
                     />
                   </HStack>
-                </>
+                </HStack>
               )}
             </Box>
           )}

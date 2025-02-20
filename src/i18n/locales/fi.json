@@ -115,7 +115,7 @@
       }
     },
     "avgRating": "{{rating}} ★ ({{count}} arviota)",
-    "makePublic": "Julkaise arvio",
+    "makePublic": "Julkinen",
     "supervision": {
       "label": "Ohjattu toiminta",
       "supervised": "Ohjattua toimintaa",

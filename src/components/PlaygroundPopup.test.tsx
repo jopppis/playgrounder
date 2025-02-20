@@ -109,11 +109,15 @@ describe('PlaygroundPopup', () => {
     return render(<PlaygroundPopup {...defaultProps} {...props} />)
   }
 
-  it('renders playground information', () => {
+  it('renders playground information', async () => {
     renderComponent()
     expect(screen.getByText('Test Playground')).toBeInTheDocument()
     expect(screen.getByText('A test playground')).toBeInTheDocument()
-    expect(screen.getByText('123 Test St')).toBeInTheDocument()
+
+    // Check for location icon and link
+    const locationLink = screen.getByRole('link')
+    expect(locationLink).toHaveAttribute('href', 'https://www.google.com/maps/search/?api=1&query=123%20Test%20St')
+    expect(locationLink).toHaveAttribute('data-part', 'trigger')
   })
 
   it('shows mark visited button when not visited', () => {
