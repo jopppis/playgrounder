@@ -124,6 +124,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 placeholder={t('auth.signUp.emailPlaceholder')}
                 required
+                fontSize={{ base: "16px", sm: "inherit" }}
                 bg="white"
                 _placeholder={{ color: 'gray.400' }}
                 borderColor="brand.200"
@@ -147,6 +148,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
                 placeholder={t('auth.signUp.passwordPlaceholder')}
                 required
                 minLength={8}
+                fontSize={{ base: "16px", sm: "inherit" }}
                 bg="white"
                 _placeholder={{ color: 'gray.400' }}
                 borderColor="brand.200"
