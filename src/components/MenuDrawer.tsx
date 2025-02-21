@@ -278,7 +278,7 @@ const MenuDrawer = ({
         </Box>
       )}
 
-      {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} />}
+      {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
       {showRemoveAccount && <RemoveAccount onClose={() => setShowRemoveAccount(false)} />}
       {showChangePassword && <ChangePasswordModal onClose={() => setShowChangePassword(false)} />}
     </>

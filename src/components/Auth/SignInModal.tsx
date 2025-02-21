@@ -1,11 +1,17 @@
 import { Box } from '@chakra-ui/react'
 import SignIn from './SignIn'
 
-interface SignInModalProps {
+type SignInModalProps = {
   onClose: () => void
+  onMenuClose?: () => void
 }
 
-export default function SignInModal({ onClose }: SignInModalProps) {
+export default function SignInModal({ onClose, onMenuClose }: SignInModalProps) {
+  const handleSuccess = () => {
+    onClose()
+    onMenuClose?.()
+  }
+
   return (
     <Box
       position="fixed"
@@ -27,7 +33,7 @@ export default function SignInModal({ onClose }: SignInModalProps) {
         w="90%"
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
-        <SignIn onSuccess={onClose} />
+        <SignIn onSuccess={handleSuccess} />
       </Box>
     </Box>
   )
