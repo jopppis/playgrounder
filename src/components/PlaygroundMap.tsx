@@ -202,9 +202,9 @@ const LocationControl = () => {
       const button = L.DomUtil.create('a', '', div)
       button.href = '#'
       button.title = t('map.showMyLocation')
-      button.style.width = '34px'
-      button.style.height = '34px'
-      button.style.lineHeight = '34px'
+      button.style.width = '30px'
+      button.style.height = '30px'
+      button.style.lineHeight = '30px'
       button.style.display = 'flex'
       button.style.alignItems = 'center'
       button.style.justifyContent = 'center'
