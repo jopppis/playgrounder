@@ -89,8 +89,10 @@ const MenuDrawer = ({
           position="fixed"
           top={0}
           right={0}
-          h="100vh"
-          w="300px"
+          h="100%"
+          maxH="100%"
+          w={{ base: "85%", sm: "300px" }}
+          maxW="300px"
           bg="white"
           boxShadow="dark-lg"
           p={4}
@@ -100,6 +102,8 @@ const MenuDrawer = ({
           borderColor="brand.100"
           display="flex"
           flexDirection="column"
+          overflowY="auto"
+          overflowX="hidden"
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
