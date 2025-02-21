@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Menu drawer not working well on small screens
-
+- Added Turnstile captcha to forgot password
 ### Added
 - Optimistic rating update
 
