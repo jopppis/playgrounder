@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react-swc'
 import { execSync } from 'child_process'
 import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import { version } from './package.json'
 
 // Get Git commit hash for build ID
@@ -14,7 +15,33 @@ const getBuildId = () => {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['apple-touch-icon.png', 'favicon-*.png'],
+      manifest: false, // we already have site.webmanifest
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/.*\.tile\.openstreetmap\.org\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'map-tiles',
+              expiration: {
+                maxEntries: 1000,
+                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          }
+        ]
+      }
+    })
+  ],
   define: {
     'import.meta.env.APP_VERSION': JSON.stringify(version),
     'import.meta.env.BUILD_ID': JSON.stringify(getBuildId())
