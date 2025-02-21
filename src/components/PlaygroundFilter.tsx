@@ -11,7 +11,7 @@ import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
-import { HiBars3 } from 'react-icons/hi2'
+import { HiAdjustmentsHorizontal } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 
 export interface FilterOptions {
@@ -34,10 +34,41 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const filterRef = useRef<HTMLDivElement>(null)
 
   const filterPosition = useBreakpointValue({
-    base: { top: '60px', left: '4px', width: '250px', maxWidth: 'calc(100% - 8px)', right: 'auto' },
-    sm: { top: '2', left: '24px', width: '250px', maxWidth: '250px', right: 'auto' },
-    md: { top: '2', left: '24px', width: '250px', maxWidth: '250px', right: 'auto' }
+    base: {
+      top: '2',
+      left: '24px',
+      width: isOpen ? '250px' : '40px',
+      maxWidth: isOpen ? '250px' : '40px',
+      right: 'auto',
+      transition: 'width 0.2s, max-width 0.2s'
+    },
+    sm: { top: '2', left: '24px', width: '300px', maxWidth: '300px', right: 'auto' },
+    md: { top: '2', left: '24px', width: '350px', maxWidth: '350px', right: 'auto' }
   })
+
+  const buttonStyle = useBreakpointValue({
+    base: {
+      height: '40px',
+      width: isOpen ? '100%' : '40px',
+      padding: isOpen ? '0 12px' : 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: isOpen ? 'space-between' : 'center',
+      borderRadius: isOpen ? 'md md 0 0' : 'md',
+      transition: 'all 0.2s'
+    },
+    sm: {
+      height: '40px',
+      width: '100%',
+      padding: '0 12px',
+      borderRadius: isOpen ? 'md md 0 0' : 'md'
+    }
+  })
+
+  const showButtonText = useBreakpointValue({
+    base: isOpen,
+    sm: true
+  }) ?? true
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -91,26 +122,45 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       zIndex={1000}
       ref={filterRef}
     >
-      <Box bg="gray.50" borderRadius="md" boxShadow="base" width="100%">
+      <Box bg="gray.50" borderRadius="md" boxShadow="base" width="100%" position="relative">
         <Button
           bg="transparent"
           color="gray.700"
           _hover={{ bg: 'gray.50' }}
           _active={{ bg: 'gray.100' }}
           fontSize="sm"
-          size="sm"
           onClick={() => setIsOpen(!isOpen)}
-          width="100%"
-          px={3}
+          {...buttonStyle}
+          position="relative"
+          zIndex="2"
+          aria-label={t('filterPlaygrounds')}
         >
-          <HStack width="100%" justify="space-between">
-            <Text>{t('filterPlaygrounds')}</Text>
-            <HiBars3 size={20} />
-          </HStack>
+          {showButtonText ? (
+            <HStack width="100%" justify="space-between">
+              <Text>{t('filterPlaygrounds')}</Text>
+              <HiAdjustmentsHorizontal size={20} />
+            </HStack>
+          ) : (
+            <HiAdjustmentsHorizontal size={20} />
+          )}
         </Button>
 
         {isOpen && (
-          <VStack align="stretch" p={2} gap={1.5} bg="gray.50" width="100%">
+          <VStack
+            align="stretch"
+            p={2}
+            gap={1.5}
+            bg="gray.50"
+            width="100%"
+            position={{ base: 'absolute', sm: 'static' }}
+            left={{ base: '0', sm: 'auto' }}
+            top={{ base: '38px', sm: 'auto' }}
+            borderRadius="0 0 md md"
+            boxShadow="base"
+            borderTop="1px"
+            borderColor="gray.200"
+            zIndex="1"
+          >
             <Box>
               <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                 {t('playground.supervision.label')}

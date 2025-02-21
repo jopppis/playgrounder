@@ -10,6 +10,21 @@ vi.mock('../hooks/useAuth', () => ({
   useAuth: vi.fn()
 }))
 
+// Mock useBreakpointValue to always return desktop values
+vi.mock('@chakra-ui/react', async () => {
+  const actual = await vi.importActual('@chakra-ui/react')
+  return {
+    ...actual,
+    useBreakpointValue: vi.fn().mockImplementation((values) => {
+      // Always return the sm/desktop value if it exists
+      if (typeof values === 'object' && values !== null) {
+        return values.sm || values.base
+      }
+      return values
+    })
+  }
+})
+
 // Mock i18next to use actual English translations
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -57,34 +72,38 @@ describe('PlaygroundFilter', () => {
     )
   }
 
+  const getFilterButton = () => {
+    return screen.getByRole('button', { name: enTranslations.filterPlaygrounds })
+  }
+
   it('renders filter button', () => {
     renderComponent()
-    expect(screen.getByText(enTranslations.filterPlaygrounds)).toBeInTheDocument()
+    expect(getFilterButton()).toBeInTheDocument()
   })
 
   it('shows filter options when clicked', () => {
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     expect(screen.getByText(enTranslations.playground.supervision.label)).toBeInTheDocument()
     expect(screen.getByText(enTranslations.minStars)).toBeInTheDocument()
   })
 
   it('does not show visit status filters when user is not logged in', () => {
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     expect(screen.queryByText(enTranslations.visitStatus)).not.toBeInTheDocument()
   })
 
   it('shows visit status filters when user is logged in', () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     expect(screen.getByText(enTranslations.visitStatus)).toBeInTheDocument()
   })
 
   it('calls onChange when supervision filter is clicked', () => {
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     fireEvent.click(screen.getByText(enTranslations.playground.supervision.supervised))
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
@@ -94,7 +113,7 @@ describe('PlaygroundFilter', () => {
 
   it('toggles supervision filter when clicked twice', () => {
     renderComponent({ ...defaultFilters, hasSupervised: true })
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     fireEvent.click(screen.getByText(enTranslations.playground.supervision.supervised))
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
@@ -104,7 +123,7 @@ describe('PlaygroundFilter', () => {
 
   it('shows more star filters when "Show More" is clicked', () => {
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     fireEvent.click(screen.getByText(enTranslations.showMore))
     expect(screen.getByText(enTranslations.showLess)).toBeInTheDocument()
   })
@@ -112,7 +131,7 @@ describe('PlaygroundFilter', () => {
   it('shows visited filter when user is logged in', () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     expect(screen.getByText(enTranslations.visitStatus)).toBeInTheDocument()
     expect(screen.getByText(enTranslations.visited)).toBeInTheDocument()
   })
@@ -120,7 +139,7 @@ describe('PlaygroundFilter', () => {
   // New tests for user ratings filter
   it('does not show user ratings filter when user is not logged in', () => {
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     fireEvent.click(screen.getByText(enTranslations.showMore))
     expect(screen.queryByText(enTranslations.minUserStars)).not.toBeInTheDocument()
   })
@@ -128,7 +147,7 @@ describe('PlaygroundFilter', () => {
   it('shows user ratings filter when user is logged in', () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     fireEvent.click(screen.getByText(enTranslations.showMore))
     expect(screen.getByText(enTranslations.minUserStars)).toBeInTheDocument()
   })
@@ -136,7 +155,7 @@ describe('PlaygroundFilter', () => {
   it('calls onChange when user rating filter is clicked', () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     fireEvent.click(screen.getByText(enTranslations.showMore))
 
     // Click the 5-star rating button
@@ -152,7 +171,7 @@ describe('PlaygroundFilter', () => {
   it('toggles user rating filter when clicked twice', () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent({ ...defaultFilters, minUserStars: 5 })
-    fireEvent.click(screen.getByText(enTranslations.filterPlaygrounds))
+    fireEvent.click(getFilterButton())
     fireEvent.click(screen.getByText(enTranslations.showMore))
 
     // Click the 5-star rating button

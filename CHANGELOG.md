@@ -13,10 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Forgot password functionality
 - Change password functionality
 - Version number in About-section
+
 ### Changed
 - By minumum require 8 characters for password
 - Do not show mark visited switch if user is not logged in
 - Make location control button same size as other control buttons
+- Improve filter menu design on small screens
 
 ## [0.1.3] - 2025-02-20
 
