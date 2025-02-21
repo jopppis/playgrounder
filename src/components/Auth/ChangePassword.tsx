@@ -1,11 +1,11 @@
 import {
-    Box,
-    Button,
-    Heading,
-    Icon,
-    Input,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Heading,
+  Icon,
+  Input,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -74,8 +74,6 @@ export default function ChangePassword({ onSuccess }: ChangePasswordProps) {
       color="gray.700"
       borderRadius="xl"
       boxShadow="xl"
-      border="1px solid"
-      borderColor="brand.500"
     >
       <Box position="absolute" right={2} top={2}>
         <Button

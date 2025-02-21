@@ -83,8 +83,6 @@ export default function SignIn({ onSuccess }: SignInProps) {
       color="gray.700"
       borderRadius="xl"
       boxShadow="xl"
-      border="1px solid"
-      borderColor="brand.500"
     >
       <Box position="absolute" right={2} top={2}>
         <Button

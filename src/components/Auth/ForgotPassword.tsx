@@ -1,11 +1,11 @@
 import {
-    Box,
-    Button,
-    Heading,
-    Icon,
-    Input,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Heading,
+  Icon,
+  Input,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
@@ -75,8 +75,6 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
       color="gray.700"
       borderRadius="xl"
       boxShadow="xl"
-      border="1px solid"
-      borderColor="brand.500"
     >
       <Box position="absolute" right={2} top={2}>
         <Button
