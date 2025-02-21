@@ -221,7 +221,7 @@ const MenuDrawer = ({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Text>{t('menu.about.version')}:</Text>
-                  <Text>{import.meta.env.APP_VERSION}</Text>
+                  <Text>{import.meta.env.APP_VERSION}-{import.meta.env.BUILD_ID}</Text>
                 </Link>
                 <Text fontSize="sm" color="gray.500" mb={4}>
                   {t('menu.about.acknowledgments')}
