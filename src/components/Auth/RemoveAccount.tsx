@@ -81,13 +81,19 @@ export default function RemoveAccount({ onClose }: RemoveAccountProps) {
           </Text>
           <Stack direction="row" gap={4} justifyContent="flex-end">
             <Button
-              variant="outline"
+              variant="solid"
               onClick={onClose}
-              borderColor="brand.500"
-              color="brand.500"
+              bg="brand.500"
+              color="white"
               _hover={{
-                bg: 'brand.50'
+                bg: 'secondary.500',
+                transform: 'translateY(-2px)'
               }}
+              _active={{
+                bg: 'brand.500',
+                transform: 'translateY(0)'
+              }}
+              transition="all 0.2s"
             >
               {t('auth.removeAccount.cancelButton')}
             </Button>
