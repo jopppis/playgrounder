@@ -47,12 +47,6 @@ npm run dev
 
 ## TODO
 
-### Before deployment
-
-- Improve popup
-- Make modals not have weird outline
-
-
 ### Before release
 
 - Add other Finnish cities
