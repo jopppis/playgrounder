@@ -112,5 +112,10 @@ export const useRatings = (playgroundId: string) => {
     }
   }
 
-  return { rating, loading, error, submitRating, togglePublic, refresh: fetchRatings }
+  // Add a function to set optimistic rating
+  const setOptimisticRating = (optimisticRating: PlaygroundRating) => {
+    setRating(optimisticRating)
+  }
+
+  return { rating, loading, error, submitRating, togglePublic, refresh: fetchRatings, setOptimisticRating }
 }

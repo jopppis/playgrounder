@@ -34,7 +34,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   const { user } = useAuth()
   const toast = useToast()
   const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
-  const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating } = useRatings(playground.id)
+  const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating, setOptimisticRating } = useRatings(playground.id)
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
 
   // Use useEffect to update hasVisited when visits change
@@ -120,14 +120,34 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
         throw new Error(t('playground.rating.error.noVisit'))
       }
 
+      // Optimistically update the local state
+      const oldRating = rating
+      const isPublic = oldRating?.isPublic ?? false
+      const optimisticRating = {
+        ...rating,
+        userRating: value,
+        isPublic,
+        // Only update public stats if the rating is public
+        ...(isPublic && {
+          avgRating: oldRating?.userRating === null
+            ? (((oldRating?.avgRating || 0) * (oldRating?.totalRatings || 0) + value) / ((oldRating?.totalRatings || 0) + 1))
+            : ((((oldRating?.avgRating || 0) * (oldRating?.totalRatings || 0)) - (oldRating?.userRating || 0) + value) / (oldRating?.totalRatings || 1)),
+          totalRatings: oldRating?.userRating === null ? (oldRating?.totalRatings || 0) + 1 : oldRating?.totalRatings || 0
+        })
+      }
+      setHoveredRating(null)
+      setOptimisticRating(optimisticRating)
+
       // Now submit the rating with the visit_id
-      await submitRating(value, rating?.isPublic || false, visitData.id)
+      await submitRating(value, isPublic, visitData.id)
       onContentChange?.()
       onRatingChange() // Call onRatingChange after submitting rating
       toast.showSuccess({
         title: t('playground.rating.success.title')
       })
     } catch (err) {
+      // If there was an error, refresh the rating to get the correct state
+      await refreshRating()
       toast.showError({
         title: t('playground.rating.error.title'),
         description: err instanceof Error ? err.message : t('common.unknownError')

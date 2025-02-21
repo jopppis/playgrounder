@@ -187,6 +187,7 @@ describe('PlaygroundPopup', () => {
 
   it('calls onContentChange when rating changes', async () => {
     const mockSubmitRating = vi.fn().mockResolvedValue({ error: null })
+    const mockSetOptimisticRating = vi.fn()
     const mockVisitData = { id: '1', user_id: '1', playground_id: '1', visited_at: new Date().toISOString(), notes: null }
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
@@ -211,7 +212,8 @@ describe('PlaygroundPopup', () => {
       error: null,
       submitRating: mockSubmitRating,
       togglePublic: vi.fn(),
-      refresh: vi.fn()
+      refresh: vi.fn(),
+      setOptimisticRating: mockSetOptimisticRating
     })
     ;(supabase.from as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       select: vi.fn().mockReturnValue({
@@ -227,10 +229,16 @@ describe('PlaygroundPopup', () => {
     renderComponent({ onContentChange: mockOnContentChange })
 
     const ratingButton = screen.getByRole('button', { name: enTranslations.playground.rating.buttonLabel.replace('{{count}}', '1') })
-    fireEvent.click(ratingButton)
+    await act(async () => {
+      fireEvent.click(ratingButton)
+    })
 
     await waitFor(() => {
       expect(mockSubmitRating).toHaveBeenCalledWith(1, false, mockVisitData.id)
+      expect(mockSetOptimisticRating).toHaveBeenCalledWith(expect.objectContaining({
+        userRating: 1,
+        isPublic: false
+      }))
     })
   })
 
