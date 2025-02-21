@@ -132,7 +132,8 @@
       "description": "Leikkipuistokartta on tarkoitettu tarkoitettu auttamaan perheitä löytämään hyviä leikkipaikkoja. Leikkipuistokartalta voit löytää uusia leikkipaikkoja, arvostella niitä sekä seurata käytejäsi, ilman maksuja, mainoksia tai seurantaa.",
       "acknowledgments": "Kartta-aineisto © OpenStreetMap contributors. Ikonit FontAwesome. Toteutettu React, Chakra UI ja Supabase -teknologioilla.",
       "github": "Katso GitHubissa",
-      "backButton": "Takaisin valikkoon"
+      "backButton": "Takaisin valikkoon",
+      "version": "Versio"
     },
     "buttons": {
       "about": "Tietoa",

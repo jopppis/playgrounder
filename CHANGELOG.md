@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Delete account functionality
 - Forgot password functionality
 - Change password functionality
-
+- Version number in About-section
 ### Changed
 - By minumum require 8 characters for password
 - Do not show mark visited switch if user is not logged in

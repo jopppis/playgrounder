@@ -1,13 +1,13 @@
 import {
-    Box,
-    Button,
-    ButtonProps,
-    Flex,
-    Grid,
-    GridItem,
-    Icon,
-    Link,
-    Text,
+  Box,
+  Button,
+  ButtonProps,
+  Flex,
+  Grid,
+  GridItem,
+  Icon,
+  Link,
+  Text,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -203,6 +203,22 @@ const MenuDrawer = ({
                   <Text>{t('menu.about.github')}</Text>
                 </Link>
                 <Box flex={1} />
+                <Link
+                  href={`https://github.com/jopppis/playgrounder/releases/tag/v${import.meta.env.APP_VERSION}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  display="flex"
+                  gap={1}
+                  color="gray.500"
+                  _hover={{ color: 'secondary.500' }}
+                  transition="all 0.2s"
+                  mb={2}
+                  alignItems="center"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Text>{t('menu.about.version')}:</Text>
+                  <Text>{import.meta.env.APP_VERSION}</Text>
+                </Link>
                 <Text fontSize="sm" color="gray.500" mb={4}>
                   {t('menu.about.acknowledgments')}
                 </Text>

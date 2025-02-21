@@ -132,7 +132,8 @@
       "description": "PlaygroundMap is meant to help families find good local playgrounds. On PlaygroundMap you can find new playgrounds, rate them and track your visits, without fees, ads or tracking.",
       "acknowledgments": "Map data © OpenStreetMap contributors. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
       "github": "View on GitHub",
-      "backButton": "Back to Menu"
+      "backButton": "Back to Menu",
+      "version": "Version"
     },
     "buttons": {
       "about": "About",
