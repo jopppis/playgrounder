@@ -16,13 +16,14 @@ import { useNavigate } from 'react-router-dom'
 import Turnstile from 'react-turnstile'
 import { useToast } from '../../hooks/useToast'
 import { supabase } from '../../lib/supabaseClient'
-import ForgotPasswordModal from './ForgotPasswordModal'
 
 interface SignInProps {
   onSuccess?: () => void
+  onSignInSuccess?: () => void
+  onClose?: () => void
 }
 
-export default function SignIn({ onSuccess }: SignInProps) {
+export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -30,7 +31,6 @@ export default function SignIn({ onSuccess }: SignInProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [showForgotPassword, setShowForgotPassword] = useState(false)
   const toast = useToast()
   const isProduction = import.meta.env.VITE_APP_ENV === 'production'
 
@@ -60,7 +60,7 @@ export default function SignIn({ onSuccess }: SignInProps) {
       })
 
       navigate('/')
-      onSuccess?.()
+      onSignInSuccess?.()
     } catch (err) {
       const authError = err as AuthError
       setError(authError.message)
@@ -86,7 +86,7 @@ export default function SignIn({ onSuccess }: SignInProps) {
     >
       <Box position="absolute" right={2} top={2}>
         <Button
-          onClick={onSuccess}
+          onClick={onClose}
           color="white"
           bg="brand.500"
           _hover={{ bg: 'secondary.500' }}
@@ -155,7 +155,7 @@ export default function SignIn({ onSuccess }: SignInProps) {
             <Link
               color="brand.500"
               _hover={{ color: 'secondary.500' }}
-              onClick={() => setShowForgotPassword(true)}
+              onClick={onSuccess}
               alignSelf="flex-end"
               fontSize="sm"
               cursor="pointer"
@@ -189,9 +189,6 @@ export default function SignIn({ onSuccess }: SignInProps) {
           </Stack>
         </Box>
       </Stack>
-      {showForgotPassword && (
-        <ForgotPasswordModal onClose={() => setShowForgotPassword(false)} />
-      )}
     </Box>
   )
 }

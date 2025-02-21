@@ -1,4 +1,6 @@
 import { Box } from '@chakra-ui/react'
+import { useState } from 'react'
+import ForgotPasswordModal from './ForgotPasswordModal'
 import SignIn from './SignIn'
 
 type SignInModalProps = {
@@ -7,9 +9,15 @@ type SignInModalProps = {
 }
 
 export default function SignInModal({ onClose, onMenuClose }: SignInModalProps) {
-  const handleSuccess = () => {
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
+
+  const handleSignInSuccess = () => {
     onClose()
     onMenuClose?.()
+  }
+
+  const handleModalSwitch = () => {
+    setShowForgotPassword(true)
   }
 
   return (
@@ -33,7 +41,17 @@ export default function SignInModal({ onClose, onMenuClose }: SignInModalProps) 
         w="90%"
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
-        <SignIn onSuccess={handleSuccess} />
+        {showForgotPassword ? (
+          <ForgotPasswordModal
+            onClose={() => setShowForgotPassword(false)}
+          />
+        ) : (
+          <SignIn
+            onSuccess={handleModalSwitch}
+            onSignInSuccess={handleSignInSuccess}
+            onClose={onClose}
+          />
+        )}
       </Box>
     </Box>
   )
