@@ -95,8 +95,9 @@ CREATE OR REPLACE FUNCTION playgrounds_nearby(
     lng double precision,
     radius_meters double precision DEFAULT 1000
 ) RETURNS SETOF playgrounds AS $$
+    SET search_path TO public;
     SELECT *
-    FROM playgrounds
+    FROM public.playgrounds
     WHERE ST_DWithin(
         location,
         ST_SetSRID(ST_MakePoint(lng, lat), 4326)::geography,
