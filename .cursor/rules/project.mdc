@@ -11,7 +11,7 @@ globs:
 - The backend is supabase.
 - Always use Chakra UI V3 components.
 - Never use @chakra-ui/icons since it has been removed in V3 and will NOT work.
-- Be hesitant to edit src/components/ui/switch.tsx or src/components/ui/toaster.tsx. These are snippets generated with Chakra UI CLI and you do not have the skills to make them better.
+- Be hesitant to edit @src/components/ui/switch.tsx or @src/components/ui/toaster.tsx. These are snippets generated with Chakra UI CLI and you do not have the skills to make them better.
 
 # Theming
 
@@ -23,3 +23,4 @@ The project theming is defined in theme.ts file. Please use the brand and second
 - When adding features, add also tests for the feature
 - When fixing bugs, add a test for the bug
 - When adding tests, run the tests with `npm test`. It might be better to filter to only the new test file.
+- When adding translations always add them to @fi.json and @en.json.
