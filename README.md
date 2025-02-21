@@ -19,24 +19,28 @@ An interactive web application to help parents and caregivers find and share loc
 
 ## Development
 
-1. Clone the repository:
+Clone the repository:
 ```bash
 git clone https://github.com/jopppis/playgrounder.git
 cd playgrounder
 ```
 
-2. Install dependencies:
+Install dependencies:
 ```bash
 npm install
 ```
 
-3. Create a `.env` file with your Supabase credentials:
+Create a `.env` file with your Supabase credentials:
 ```bash
-VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_TURNSTILE_SITE_KEY=your-turnstile-site-key # not needed in development
+VITE_APP_ENV=development
 ```
 
-4. Start the development server:
+Creating a new Supabase project can be done by first creating an empty project and then running the migraitons followed by `seed.sql` that fills the playgrounds table.
+
+Start the development server:
 ```bash
 npm run dev
 ```
@@ -45,7 +49,9 @@ npm run dev
 
 ### Before deployment
 
-- Make popup title not truncate
+- Improve popup
+- Make modals not have weird outline
+
 
 ### Before release
 
@@ -53,6 +59,9 @@ npm run dev
 - Review code
 - Security audit
 
+### Later
+
+- Stats like 4/85 playgrounds in helsinki visited
 
 ## Contributing
 

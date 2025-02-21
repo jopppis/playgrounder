@@ -188,7 +188,6 @@
         }
       }
     },
-    "avgRating": "{{rating}} ★ ({{count}} ratings)",
     "makePublic": "Public",
     "supervision": {
       "label": "Supervision",

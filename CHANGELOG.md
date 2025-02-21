@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Improve popup layout
+
 ### Fixed
 - Menu drawer not working well on small screens
 

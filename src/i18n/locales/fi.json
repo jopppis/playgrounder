@@ -188,7 +188,6 @@
         }
       }
     },
-    "avgRating": "{{rating}} ★ ({{count}} arviota)",
     "makePublic": "Julkinen",
     "supervision": {
       "label": "Ohjattu toiminta",
