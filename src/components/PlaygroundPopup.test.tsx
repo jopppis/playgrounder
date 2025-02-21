@@ -94,13 +94,31 @@ describe('PlaygroundPopup', () => {
     expect(locationLink).toHaveAttribute('data-part', 'trigger')
   })
 
-  it('shows mark visited button when not visited', () => {
+  it('shows mark visited button when logged in', () => {
+    (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+      user: { id: '1' } as User,
+      loading: false
+    })
     renderComponent()
     const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeInTheDocument()
   })
 
-  it('shows visited state when visited', async () => {
+  it('hides mark visited button when not logged in', () => {
+    (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+      user: null,
+      loading: false
+    })
+    renderComponent()
+    const switchElement = screen.queryByLabelText(enTranslations.playground.markVisited)
+    expect(switchElement).not.toBeInTheDocument()
+  })
+
+  it('shows visited state when visited and logged in', async () => {
+    (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+      user: { id: '1' } as User,
+      loading: false
+    })
     ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
       visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
       loading: false,
@@ -117,61 +135,24 @@ describe('PlaygroundPopup', () => {
     expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked')
   })
 
-  it('requires login to mark visit', () => {
-    const mockInsert = vi.fn().mockResolvedValue({ error: null })
-    ;(supabase.from as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      insert: mockInsert
-    })
-
-    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+  it('does not show visited state when visited but not logged in', async () => {
+    (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       loading: false
     })
-
     ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
-      visits: [],
+      visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
       loading: false,
       error: null,
       addVisit: vi.fn(),
       removeVisit: vi.fn(),
       refresh: vi.fn()
     })
-
-    renderComponent()
-    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
-    expect(switchElement).toBeDisabled()
-    fireEvent.click(switchElement)
-
-    expect(mockInsert).not.toHaveBeenCalled()
-  })
-
-  it('handles successful visit marking', async () => {
-    const mockAddVisit = vi.fn().mockResolvedValue({ error: null })
-    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
-      user: { id: '1' } as User,
-      loading: false
-    })
-    ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
-      visits: [],
-      loading: false,
-      error: null,
-      addVisit: mockAddVisit,
-      removeVisit: vi.fn(),
-      refresh: vi.fn()
-    })
-
-    const { onVisitChange } = defaultProps
-    renderComponent()
-
-    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     await act(async () => {
-      fireEvent.click(switchElement)
+      renderComponent()
     })
-
-    await waitFor(() => {
-      expect(mockAddVisit).toHaveBeenCalledWith(mockPlayground.id)
-      expect(onVisitChange).toHaveBeenCalledWith(true)
-    })
+    const switchElement = screen.queryByLabelText(enTranslations.playground.markVisited)
+    expect(switchElement).not.toBeInTheDocument()
   })
 
   it('shows loading state when fetching rating', async () => {

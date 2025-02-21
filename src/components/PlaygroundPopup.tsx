@@ -223,28 +223,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
               )}
             </HStack>
 
-            <HStack gap={2} align="center">
-              <Text fontSize="sm">{t('playground.markVisited')}</Text>
-              {!user ? (
-                <Tooltip content={t('playground.login.required')}>
-                  <Box>
-                    <Switch
-                      size="md"
-                      checked={hasVisited}
-                      onCheckedChange={async () => {
-                        if (!user) return;
-                        if (hasVisited) {
-                          await handleRemoveVisit();
-                        } else {
-                          await handleVisit();
-                        }
-                      }}
-                      disabled={!user}
-                      aria-label={t('playground.markVisited')}
-                    />
-                  </Box>
-                </Tooltip>
-              ) : (
+            {user && (
+              <HStack gap={2} align="center">
+                <Text fontSize="sm">{t('playground.markVisited')}</Text>
                 <Switch
                   size="md"
                   checked={hasVisited}
@@ -259,8 +240,8 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                   disabled={!user}
                   aria-label={t('playground.markVisited')}
                 />
-              )}
-            </HStack>
+              </HStack>
+            )}
           </HStack>
 
           {playground.description && (
