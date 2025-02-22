@@ -193,7 +193,8 @@
       "label": "Ohjattu toiminta",
       "supervised": "Ohjattua toimintaa",
       "unsupervised": "Ei ohjattua toimintaa"
-    }
+    },
+    "loginToInteract": "Kirjaudu sisään merkitäksesi leikkipaikkoja vierailluiksi tai arvostellaksesi niitä"
   },
   "filters": "Suodattimet",
   "filterPlaygrounds": "Suodata leikkipaikkoja",
@@ -211,6 +212,7 @@
   },
   "common": {
     "error": "Virhe",
-    "unknownError": "Tuntematon virhe tapahtui"
+    "unknownError": "Tuntematon virhe tapahtui",
+    "loginRequired": "Kirjautuminen vaaditaan"
   }
 }

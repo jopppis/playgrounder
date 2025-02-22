@@ -9,7 +9,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar, FaTimes } from 'react-icons/fa'
 import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
@@ -36,6 +36,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating, setOptimisticRating } = useRatings(playground.id)
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
+  const hasShownLoginToast = useRef(false)
 
   // Use useEffect to update hasVisited when visits change
   const [hasVisited, setHasVisited] = useState(false)
@@ -55,6 +56,17 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   useEffect(() => {
     onContentChange?.()
   }, [hoveredRating, onContentChange])
+
+  // Show login toast when component mounts if user is not logged in
+  useEffect(() => {
+    if (!user && !hasShownLoginToast.current) {
+      hasShownLoginToast.current = true
+      toast.showInfo({
+        title: t('common.loginRequired'),
+        description: t('playground.loginToInteract')
+      })
+    }
+  }, [user, toast, t])
 
   const handleVisit = async () => {
     if (!user) {

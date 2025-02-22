@@ -193,7 +193,8 @@
       "label": "Supervision",
       "supervised": "Supervised activities",
       "unsupervised": "No supervised activities"
-    }
+    },
+    "loginToInteract": "Please log in to mark playgrounds as visited or rate them"
   },
   "filters": "Filters",
   "filterPlaygrounds": "Filter playgrounds",
@@ -211,6 +212,7 @@
   },
   "common": {
     "error": "Error",
-    "unknownError": "An unknown error occurred"
+    "unknownError": "An unknown error occurred",
+    "loginRequired": "Login Required"
   }
 }
