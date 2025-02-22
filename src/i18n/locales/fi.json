@@ -186,7 +186,8 @@
           "title": "Päivitys epäonnistui",
           "message": "Arvion näkyvyyden päivitys epäonnistui"
         }
-      }
+      },
+      "requiredForPublic": "Sinun täytyy arvioida leikkipaikka ennen kuin voit tehdä siitä julkisen"
     },
     "makePublic": "Julkinen",
     "supervision": {

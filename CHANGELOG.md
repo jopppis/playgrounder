@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PWA support
 - Toast when user is not logged in and opens popup
 
+### Changed
+- Improve popup when not logged in
+
 ## [0.3.0] - 2025-02-21
 
 ### Changed

@@ -38,6 +38,14 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
   const hasShownLoginToast = useRef(false)
 
+  // Add showLoginToast helper function
+  const showLoginToast = () => {
+    toast.showInfo({
+      title: t('common.loginRequired'),
+      description: t('playground.loginToInteract')
+    })
+  }
+
   // Use useEffect to update hasVisited when visits change
   const [hasVisited, setHasVisited] = useState(false)
   useEffect(() => {
@@ -61,10 +69,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   useEffect(() => {
     if (!user && !hasShownLoginToast.current) {
       hasShownLoginToast.current = true
-      toast.showInfo({
-        title: t('common.loginRequired'),
-        description: t('playground.loginToInteract')
-      })
+      showLoginToast()
     }
   }, [user, toast, t])
 
@@ -315,25 +320,36 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
               </HStack>
             )}
 
-            {user && (
+            <Box>
               <HStack gap={2} align="center">
-                <Text fontSize="sm">{t('playground.markVisited')}</Text>
-                <Switch
-                  size="md"
-                  checked={hasVisited}
-                  onCheckedChange={async () => {
-                    if (!user) return;
-                    if (hasVisited) {
-                      await handleRemoveVisit();
-                    } else {
-                      await handleVisit();
+                <Text fontSize="sm" color={!user ? "gray.400" : "gray.600"}>{t('playground.markVisited')}</Text>
+                <Box
+                  onClick={() => {
+                    if (!user) {
+                      showLoginToast()
                     }
                   }}
-                  disabled={!user}
-                  aria-label={t('playground.markVisited')}
-                />
+                  cursor={!user ? "pointer" : "default"}
+                >
+                  <Switch
+                    size="md"
+                    checked={hasVisited}
+                    onCheckedChange={async () => {
+                      if (!user) {
+                        return
+                      }
+                      if (hasVisited) {
+                        await handleRemoveVisit();
+                      } else {
+                        await handleVisit();
+                      }
+                    }}
+                    disabled={!user}
+                    aria-label={t('playground.markVisited')}
+                  />
+                </Box>
               </HStack>
-            )}
+            </Box>
           </Flex>
 
           {playground.description && (
@@ -362,7 +378,10 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                       onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
                         e.preventDefault()
                         e.stopPropagation()
-                        if (!user) return
+                        if (!user) {
+                          showLoginToast()
+                          return
+                        }
 
                         // If not visited, mark as visited first
                         if (!hasVisited) {
@@ -403,7 +422,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                       _focus={{ outline: 'none' }}
                     >
                       {value <= (hoveredRating || rating?.userRating || 0) ? (
-                        <FaStar color="var(--chakra-colors-secondary-500)" size={20} />
+                        <FaStar color={!user ? "var(--chakra-colors-gray-400)" : "var(--chakra-colors-secondary-500)"} size={20} />
                       ) : (
                         <FaRegStar color="var(--chakra-colors-gray-400)" size={20} />
                       )}
@@ -417,13 +436,29 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                   >
                     {t('playground.makePublic')}
                   </Text>
-                  <Switch
-                    size="md"
-                    checked={rating?.isPublic}
-                    onCheckedChange={handleTogglePublic}
-                    disabled={!user || !rating?.userRating}
-                    aria-label={t('playground.makePublic')}
-                  />
+                  <Box
+                    onClick={() => {
+                      if (!user) {
+                        showLoginToast()
+                        return
+                      }
+                      if (!rating?.userRating) {
+                        toast.showInfo({
+                          title: t('playground.rating.title'),
+                          description: t('playground.rating.requiredForPublic')
+                        })
+                      }
+                    }}
+                    cursor={(!user || !rating?.userRating) ? "pointer" : "default"}
+                  >
+                    <Switch
+                      size="md"
+                      checked={rating?.isPublic}
+                      onCheckedChange={handleTogglePublic}
+                      disabled={!user || !rating?.userRating}
+                      aria-label={t('playground.makePublic')}
+                    />
+                  </Box>
                 </HStack>
               </HStack>
             )}

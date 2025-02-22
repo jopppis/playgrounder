@@ -186,7 +186,8 @@
           "title": "Update Failed",
           "message": "Failed to update rating visibility"
         }
-      }
+      },
+      "requiredForPublic": "You need to rate the playground before making it public"
     },
     "makePublic": "Public",
     "supervision": {

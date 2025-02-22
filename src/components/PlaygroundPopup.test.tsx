@@ -102,16 +102,18 @@ describe('PlaygroundPopup', () => {
     renderComponent()
     const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeInTheDocument()
+    expect(switchElement).not.toBeDisabled()
   })
 
-  it('hides mark visited button when not logged in', () => {
+  it('shows disabled mark visited button when not logged in', () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       loading: false
     })
     renderComponent()
-    const switchElement = screen.queryByLabelText(enTranslations.playground.markVisited)
-    expect(switchElement).not.toBeInTheDocument()
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
+    expect(switchElement).toBeInTheDocument()
+    expect(switchElement).toBeDisabled()
   })
 
   it('shows visited state when visited and logged in', async () => {
@@ -133,9 +135,10 @@ describe('PlaygroundPopup', () => {
     const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeInTheDocument()
     expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked')
+    expect(switchElement).not.toBeDisabled()
   })
 
-  it('does not show visited state when visited but not logged in', async () => {
+  it('shows disabled visited state when visited but not logged in', async () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       loading: false
@@ -151,8 +154,10 @@ describe('PlaygroundPopup', () => {
     await act(async () => {
       renderComponent()
     })
-    const switchElement = screen.queryByLabelText(enTranslations.playground.markVisited)
-    expect(switchElement).not.toBeInTheDocument()
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
+    expect(switchElement).toBeInTheDocument()
+    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked')
+    expect(switchElement).toBeDisabled()
   })
 
   it('shows loading state when fetching rating', async () => {
