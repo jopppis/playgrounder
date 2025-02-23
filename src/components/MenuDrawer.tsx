@@ -8,12 +8,16 @@ import {
   Icon,
   Link,
   Text,
+  VStack,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaGithub, FaSignInAlt, FaUserPlus } from 'react-icons/fa'
+import { HiChartBar } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
+import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
+import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import ChangePasswordModal from './Auth/ChangePasswordModal'
 import RemoveAccount from './Auth/RemoveAccount'
@@ -26,25 +30,48 @@ type MenuDrawerProps = {
   onClose: () => void
   showSignIn: boolean
   setShowSignIn: (show: boolean) => void
+  filters?: {
+    visitStatus: 'all' | 'visited' | 'unvisited'
+    minStars: number | null
+    minUserStars: number | null
+    hasSupervised: boolean | null
+  }
+  filteredPlaygroundCount?: number
 }
 
 const MenuDrawer = ({
   isOpen,
   onClose,
   showSignIn,
-  setShowSignIn
+  setShowSignIn,
+  filters,
+  filteredPlaygroundCount
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
+  const { playgrounds } = usePlaygrounds()
+  const { visits } = useVisits()
   const [showAbout, setShowAbout] = useState(false)
+  const [showStats, setShowStats] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
   const toast = useToast()
 
+  const hasActiveFilters = (filters: MenuDrawerProps['filters']) => {
+    if (!filters) return false
+    return (
+      filters.visitStatus !== 'all' ||
+      filters.minStars !== null ||
+      filters.minUserStars !== null ||
+      filters.hasSupervised !== null
+    )
+  }
+
   useEffect(() => {
     if (!isOpen) {
       setShowAbout(false)
+      setShowStats(false)
     }
   }, [isOpen])
 
@@ -82,6 +109,24 @@ const MenuDrawer = ({
     fontSize: "sm"
   }
 
+  const StatBox = ({ label, value }: { label: string, value: number | string }) => (
+    <Box
+      bg="gray.50"
+      p={4}
+      borderRadius="md"
+      border="1px solid"
+      borderColor="gray.200"
+      textAlign="center"
+    >
+      <Text fontSize="2xl" fontWeight="bold" color="brand.500">
+        {value}
+      </Text>
+      <Text fontSize="sm" color="gray.600">
+        {label}
+      </Text>
+    </Box>
+  )
+
   return (
     <>
       {isOpen && (
@@ -111,7 +156,7 @@ const MenuDrawer = ({
           data-testid="menu-drawer"
         >
           <Box pt={14} flex={1}>
-            {!showAbout ? (
+            {!showAbout && !showStats ? (
               <Flex direction="column" gap={4} h="100%">
                 {user ? (
                   <>
@@ -182,6 +227,36 @@ const MenuDrawer = ({
                   <LanguageSwitcher />
                 </Box>
               </Flex>
+            ) : showStats ? (
+              <>
+                <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
+                  {t('stats.title')}
+                </Text>
+                <VStack gap={4} align="stretch" mb={6}>
+                  <StatBox
+                    label={t('stats.total')}
+                    value={playgrounds?.length || 0}
+                  />
+                  {user && (
+                    <StatBox
+                      label={t('stats.visited')}
+                      value={visits?.length || 0}
+                    />
+                  )}
+                  {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
+                    <StatBox
+                      label={t('stats.filtered')}
+                      value={filteredPlaygroundCount}
+                    />
+                  )}
+                </VStack>
+                <Button
+                  {...buttonProps}
+                  onClick={(e) => handleClick(e, () => setShowStats(false))}
+                >
+                  {t('stats.backButton')}
+                </Button>
+              </>
             ) : (
               <>
                 <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
@@ -235,14 +310,23 @@ const MenuDrawer = ({
               </>
             )}
           </Box>
-          {!showAbout && (
+          {!showAbout && !showStats && (
             <Box pt={4} borderTop="1px solid" borderColor="purple.100">
-              <Button
-                {...buttonProps}
-                onClick={(e) => handleClick(e, () => setShowAbout(true))}
-              >
-                {t('menu.buttons.about')}
-              </Button>
+              <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                <Button
+                  {...buttonProps}
+                  onClick={(e) => handleClick(e, () => setShowStats(true))}
+                >
+                  <Icon as={HiChartBar} boxSize={4} />
+                  <Text>{t('stats.title')}</Text>
+                </Button>
+                <Button
+                  {...buttonProps}
+                  onClick={(e) => handleClick(e, () => setShowAbout(true))}
+                >
+                  {t('menu.buttons.about')}
+                </Button>
+              </Grid>
             </Box>
           )}
         </Box>

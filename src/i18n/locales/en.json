@@ -215,5 +215,12 @@
     "error": "Error",
     "unknownError": "An unknown error occurred",
     "loginRequired": "Login Required"
+  },
+  "stats": {
+    "title": "Statistics",
+    "total": "Total Playgrounds",
+    "visited": "Visited Playgrounds",
+    "filtered": "Filtered Playgrounds",
+    "backButton": "Back to Menu"
   }
 }

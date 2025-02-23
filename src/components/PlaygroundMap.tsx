@@ -1,16 +1,18 @@
-import { Box, Spinner } from '@chakra-ui/react'
+import { Box, Button, Spinner } from '@chakra-ui/react'
 import { User } from '@supabase/supabase-js'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
+import MenuDrawer from './MenuDrawer'
 import { FilterOptions, PlaygroundFilter } from './PlaygroundFilter'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
@@ -279,7 +281,18 @@ const PlaygroundMap = () => {
     minUserStars: null,
     hasSupervised: null
   })
+  const [showSignIn, setShowSignIn] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const mapRef = useRef<L.Map | null>(null)
+  const location = useLocation()
+
+  useEffect(() => {
+    // Check for email confirmation redirect
+    const searchParams = new URLSearchParams(location.search)
+    if (searchParams.has('email_confirm') || location.pathname === '/signin') {
+      setShowSignIn(true)
+    }
+  }, [location])
 
   // Create a fetchRatings function that can be called from child components
   const fetchRatings = useCallback(async () => {
@@ -368,6 +381,40 @@ const PlaygroundMap = () => {
   return (
     <Box position="relative" height="100%" width="100%">
       <PlaygroundFilter filters={filters} onChange={setFilters} />
+      <Box position="fixed" top={2} right={4} zIndex={2200}>
+        <Button
+          size="md"
+          variant="solid"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          bg="brand.500"
+          color="white"
+          border="1px solid"
+          borderColor="brand.500"
+          _hover={{
+            bg: 'secondary.500',
+            transform: 'translateY(-2px)',
+            borderColor: 'secondary.500'
+          }}
+          _active={{
+            bg: 'brand.500',
+            transform: 'translateY(0)'
+          }}
+          transition="all 0.2s"
+          boxShadow="md"
+          borderRadius="md"
+          fontSize="xl"
+        >
+          ≡
+        </Button>
+      </Box>
+      <MenuDrawer
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        showSignIn={showSignIn}
+        setShowSignIn={setShowSignIn}
+        filters={filters}
+        filteredPlaygroundCount={filteredPlaygrounds.length}
+      />
       <MapContainer
         center={helsinkiCenter}
         zoom={13.5}

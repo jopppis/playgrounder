@@ -215,5 +215,12 @@
     "error": "Virhe",
     "unknownError": "Tuntematon virhe tapahtui",
     "loginRequired": "Kirjautuminen vaaditaan"
+  },
+  "stats": {
+    "title": "Tilastot",
+    "total": "Leikkipuistoja yhteensä",
+    "visited": "Vieraillut leikkipuistot",
+    "filtered": "Suodatetut leikkipuistot",
+    "backButton": "Takaisin valikkoon"
   }
 }

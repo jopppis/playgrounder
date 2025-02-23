@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
 import enTranslations from '../i18n/locales/en.json'
@@ -16,7 +16,18 @@ vi.mock('../lib/supabaseClient', () => ({
   supabase: {
     auth: {
       signOut: vi.fn()
-    }
+    },
+    channel: vi.fn(() => ({
+      on: vi.fn().mockReturnThis(),
+      subscribe: vi.fn().mockReturnThis(),
+      unsubscribe: vi.fn()
+    })),
+    from: vi.fn(() => ({
+      select: vi.fn().mockResolvedValue({ data: [], error: null }),
+      upsert: vi.fn().mockResolvedValue({ error: null }),
+      delete: vi.fn().mockResolvedValue({ error: null }),
+      eq: vi.fn().mockResolvedValue({ data: [], error: null })
+    }))
   }
 }))
 
@@ -40,18 +51,24 @@ describe('MenuDrawer', () => {
     )
   }
 
-  it('does not render when closed', () => {
-    renderComponent(false)
+  it('does not render when closed', async () => {
+    await act(async () => {
+      renderComponent(false)
+    })
     expect(screen.queryByText(enTranslations.menu.language)).not.toBeInTheDocument()
   })
 
-  it('renders when open', () => {
-    renderComponent()
+  it('renders when open', async () => {
+    await act(async () => {
+      renderComponent()
+    })
     expect(screen.getByText(enTranslations.menu.language)).toBeInTheDocument()
   })
 
-  it('prevents event propagation when clicking the drawer', () => {
-    renderComponent()
+  it('prevents event propagation when clicking the drawer', async () => {
+    await act(async () => {
+      renderComponent()
+    })
     // Find the drawer container
     const drawer = screen.getByTestId('menu-drawer')
     expect(drawer).toBeInTheDocument()
@@ -67,14 +84,18 @@ describe('MenuDrawer', () => {
     Object.defineProperty(clickEvent, 'preventDefault', { value: vi.fn() })
 
     // Fire the event
-    fireEvent(drawer, clickEvent)
+    await act(async () => {
+      fireEvent(drawer, clickEvent)
+    })
 
     expect(clickEvent.stopPropagation).toHaveBeenCalled()
     expect(clickEvent.preventDefault).toHaveBeenCalled()
   })
 
-  it('handles sign up button click correctly', () => {
-    renderComponent()
+  it('handles sign up button click correctly', async () => {
+    await act(async () => {
+      renderComponent()
+    })
     const signUpButton = screen.getByText(enTranslations.auth.signUp.title)
 
     // Create a click event
@@ -87,15 +108,19 @@ describe('MenuDrawer', () => {
     Object.defineProperty(clickEvent, 'stopPropagation', { value: vi.fn() })
 
     // Fire the event
-    fireEvent(signUpButton, clickEvent)
+    await act(async () => {
+      fireEvent(signUpButton, clickEvent)
+    })
 
     expect(clickEvent.stopPropagation).toHaveBeenCalled()
     // The sign up modal should be visible
     expect(screen.getByTestId('sign-up-modal')).toBeInTheDocument()
   })
 
-  it('handles sign in button click correctly', () => {
-    renderComponent()
+  it('handles sign in button click correctly', async () => {
+    await act(async () => {
+      renderComponent()
+    })
     const signInButton = screen.getByText(enTranslations.auth.signIn.title)
 
     // Create a click event
@@ -108,7 +133,9 @@ describe('MenuDrawer', () => {
     Object.defineProperty(clickEvent, 'stopPropagation', { value: vi.fn() })
 
     // Fire the event
-    fireEvent(signInButton, clickEvent)
+    await act(async () => {
+      fireEvent(signInButton, clickEvent)
+    })
 
     expect(clickEvent.stopPropagation).toHaveBeenCalled()
     expect(mockSetShowSignIn).toHaveBeenCalledWith(true)
@@ -123,7 +150,9 @@ describe('MenuDrawer', () => {
     // Mock successful sign out
     vi.mocked(supabase.auth.signOut).mockResolvedValue({ error: null })
 
-    renderComponent()
+    await act(async () => {
+      renderComponent()
+    })
     const signOutButton = screen.getByText(enTranslations.auth.signOut.button)
 
     // Create a click event
@@ -136,7 +165,9 @@ describe('MenuDrawer', () => {
     Object.defineProperty(clickEvent, 'stopPropagation', { value: vi.fn() })
 
     // Fire the event
-    fireEvent(signOutButton, clickEvent)
+    await act(async () => {
+      fireEvent(signOutButton, clickEvent)
+    })
 
     // Wait for the async operation to complete
     await vi.waitFor(() => {
@@ -146,12 +177,16 @@ describe('MenuDrawer', () => {
     })
   })
 
-  it('handles about section toggle correctly', () => {
-    renderComponent()
+  it('handles about section toggle correctly', async () => {
+    await act(async () => {
+      renderComponent()
+    })
 
     // Click to show about section
     const aboutButton = screen.getByText(enTranslations.menu.buttons.about)
-    fireEvent.click(aboutButton)
+    await act(async () => {
+      fireEvent.click(aboutButton)
+    })
 
     // About section should be visible
     expect(screen.getByText(enTranslations.menu.about.title)).toBeInTheDocument()
@@ -159,40 +194,48 @@ describe('MenuDrawer', () => {
 
     // Click to hide about section
     const backButton = screen.getByText(enTranslations.menu.about.backButton)
-    fireEvent.click(backButton)
+    await act(async () => {
+      fireEvent.click(backButton)
+    })
 
     // About section should be hidden
     expect(screen.queryByText(enTranslations.menu.about.title)).not.toBeInTheDocument()
     expect(screen.getByText(enTranslations.menu.buttons.about)).toBeInTheDocument()
   })
 
-  it('closes about section when drawer is closed', () => {
+  it('closes about section when drawer is closed', async () => {
     const { rerender } = renderComponent()
 
     // Show about section
     const aboutButton = screen.getByText(enTranslations.menu.buttons.about)
-    fireEvent.click(aboutButton)
+    await act(async () => {
+      fireEvent.click(aboutButton)
+    })
     expect(screen.getByText(enTranslations.menu.about.title)).toBeInTheDocument()
 
     // Close drawer
-    rerender(
-      <MenuDrawer
-        isOpen={false}
-        onClose={mockOnClose}
-        showSignIn={false}
-        setShowSignIn={mockSetShowSignIn}
-      />
-    )
+    await act(async () => {
+      rerender(
+        <MenuDrawer
+          isOpen={false}
+          onClose={mockOnClose}
+          showSignIn={false}
+          setShowSignIn={mockSetShowSignIn}
+        />
+      )
+    })
 
     // Reopen drawer
-    rerender(
-      <MenuDrawer
-        isOpen={true}
-        onClose={mockOnClose}
-        showSignIn={false}
-        setShowSignIn={mockSetShowSignIn}
-      />
-    )
+    await act(async () => {
+      rerender(
+        <MenuDrawer
+          isOpen={true}
+          onClose={mockOnClose}
+          showSignIn={false}
+          setShowSignIn={mockSetShowSignIn}
+        />
+      )
+    })
 
     // About section should be hidden
     expect(screen.queryByText(enTranslations.menu.about.title)).not.toBeInTheDocument()
