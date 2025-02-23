@@ -199,6 +199,8 @@
   },
   "filters": "Suodattimet",
   "filterPlaygrounds": "Suodata leikkipaikkoja",
+  "city": "Kaupunki",
+  "allCities": "Kaikki",
   "visitStatus": "Vierailutila",
   "visited": "Vierailtu",
   "unvisited": "Ei vierailtu",

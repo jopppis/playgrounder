@@ -10,6 +10,30 @@ vi.mock('../hooks/useAuth', () => ({
   useAuth: vi.fn()
 }))
 
+// Mock the usePlaygrounds hook
+vi.mock('../hooks/usePlaygrounds', () => ({
+  usePlaygrounds: vi.fn().mockReturnValue({
+    playgrounds: [
+      { id: 1, city: 'Helsinki' },
+      { id: 2, city: 'Espoo' }
+    ],
+    loading: false,
+    error: null
+  })
+}))
+
+// Mock Supabase client
+vi.mock('../lib/supabaseClient', () => ({
+  supabase: {
+    from: vi.fn().mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        data: [],
+        error: null
+      })
+    })
+  }
+}))
+
 // Mock useBreakpointValue to always return desktop values
 vi.mock('@chakra-ui/react', async () => {
   const actual = await vi.importActual('@chakra-ui/react')
@@ -58,7 +82,8 @@ describe('PlaygroundFilter', () => {
     visitStatus: 'all',
     minStars: null,
     minUserStars: null,
-    hasSupervised: null
+    hasSupervised: null,
+    city: null
   }
 
   beforeEach(() => {

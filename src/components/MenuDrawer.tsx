@@ -35,6 +35,7 @@ type MenuDrawerProps = {
     minStars: number | null
     minUserStars: number | null
     hasSupervised: boolean | null
+    city: string | null
   }
   filteredPlaygroundCount?: number
 }
@@ -64,7 +65,8 @@ const MenuDrawer = ({
       filters.visitStatus !== 'all' ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
-      filters.hasSupervised !== null
+      filters.hasSupervised !== null ||
+      filters.city !== null
     )
   }
 

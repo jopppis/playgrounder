@@ -279,7 +279,8 @@ const PlaygroundMap = () => {
     visitStatus: 'all',
     minStars: null,
     minUserStars: null,
-    hasSupervised: null
+    hasSupervised: null,
+    city: null
   })
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -336,6 +337,11 @@ const PlaygroundMap = () => {
     if (!playgrounds) return []
 
     return playgrounds.filter(playground => {
+      // Filter by city
+      if (filters.city !== null && playground.city?.toLowerCase() !== filters.city) {
+        return false
+      }
+
       // Filter by supervised activities
       if (filters.hasSupervised !== null && playground.has_supervised_activities !== filters.hasSupervised) {
         return false

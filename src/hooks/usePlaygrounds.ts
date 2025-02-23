@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import type { PlaygroundWithCoordinates } from '../types/database.types'
 
@@ -12,7 +12,7 @@ export const usePlaygrounds = () => {
       try {
         const { data, error } = await supabase
           .from('playgrounds')
-          .select('id, name, description, address, created_at, location, has_supervised_activities')
+          .select('id, name, description, address, created_at, location, has_supervised_activities, city')
 
         if (error) throw error
 

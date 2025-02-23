@@ -2,23 +2,26 @@ import {
   Box,
   Button,
   HStack,
+  NativeSelect,
   Stack,
   Text,
   VStack,
   useBreakpointValue
 } from '@chakra-ui/react'
 import { Collapse } from '@chakra-ui/transition'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
 import { HiAdjustmentsHorizontal } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
+import { usePlaygrounds } from '../hooks/usePlaygrounds'
 
 export interface FilterOptions {
   visitStatus: 'all' | 'visited' | 'unvisited'
   minStars: number | null
   minUserStars: number | null
   hasSupervised: boolean | null
+  city: string | null
 }
 
 interface PlaygroundFilterProps {
@@ -32,6 +35,28 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const [showAllStars, setShowAllStars] = useState(false)
   const { user } = useAuth()
   const filterRef = useRef<HTMLDivElement>(null)
+  const { playgrounds } = usePlaygrounds()
+
+  // Extract unique cities from playgrounds and sort them alphabetically
+  const cities = useMemo(() => {
+    if (!playgrounds || playgrounds.length === 0) {
+      return [{ label: t('allCities'), value: null }]
+    }
+
+    const uniqueCities = Array.from(new Set(
+      playgrounds
+        .map(playground => playground.city)
+        .filter((city): city is string => city !== null && city !== undefined)
+    )).sort()
+
+    return [
+      { label: t('allCities'), value: null },
+      ...uniqueCities.map(city => ({
+        label: city,
+        value: city.toLowerCase()
+      }))
+    ]
+  }, [playgrounds, t])
 
   const filterPosition = useBreakpointValue({
     base: {
@@ -161,6 +186,40 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
             borderColor="gray.200"
             zIndex="1"
           >
+            <Box>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                {t('city')}
+              </Text>
+              <Box position="relative">
+                <NativeSelect.Root
+                  size="sm"
+                  variant="outline"
+                  colorPalette="brand"
+                  color="gray.700"
+                >
+                  <NativeSelect.Field
+                    value={filters.city ?? ''}
+                    onChange={(e) => onChange({
+                      ...filters,
+                      city: e.target.value || null
+                    })}
+                    height="28px"
+                    fontSize="sm"
+                  >
+                    {cities.map((city) => (
+                      <option
+                        key={city.value ?? 'all'}
+                        value={city.value ?? ''}
+                      >
+                        {city.label}
+                      </option>
+                    ))}
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator/>
+                </NativeSelect.Root>
+              </Box>
+            </Box>
+
             <Box>
               <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                 {t('playground.supervision.label')}
