@@ -7,8 +7,7 @@ import {
   GridItem,
   Icon,
   Link,
-  Text,
-  VStack,
+  Text
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -24,8 +23,9 @@ import RemoveAccount from './Auth/RemoveAccount'
 import SignInModal from './Auth/SignInModal'
 import SignUp from './Auth/SignUp'
 import LanguageSwitcher from './LanguageSwitcher'
+import Stats from './Stats'
 
-type MenuDrawerProps = {
+export type MenuDrawerProps = {
   isOpen: boolean
   onClose: () => void
   showSignIn: boolean
@@ -58,17 +58,6 @@ const MenuDrawer = ({
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
   const toast = useToast()
-
-  const hasActiveFilters = (filters: MenuDrawerProps['filters']) => {
-    if (!filters) return false
-    return (
-      filters.visitStatus !== 'all' ||
-      filters.minStars !== null ||
-      filters.minUserStars !== null ||
-      filters.hasSupervised !== null ||
-      filters.city !== null
-    )
-  }
 
   useEffect(() => {
     if (!isOpen) {
@@ -110,24 +99,6 @@ const MenuDrawer = ({
     gap: 2,
     fontSize: "sm"
   }
-
-  const StatBox = ({ label, value }: { label: string, value: number | string }) => (
-    <Box
-      bg="gray.50"
-      p={4}
-      borderRadius="md"
-      border="1px solid"
-      borderColor="gray.200"
-      textAlign="center"
-    >
-      <Text fontSize="2xl" fontWeight="bold" color="brand.500">
-        {value}
-      </Text>
-      <Text fontSize="sm" color="gray.600">
-        {label}
-      </Text>
-    </Box>
-  )
 
   return (
     <>
@@ -227,35 +198,13 @@ const MenuDrawer = ({
                 <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
               </Flex>
             ) : showStats ? (
-              <>
-                <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
-                  {t('stats.title')}
-                </Text>
-                <VStack gap={4} align="stretch" mb={6}>
-                  <StatBox
-                    label={t('stats.total')}
-                    value={playgrounds?.length || 0}
-                  />
-                  {user && (
-                    <StatBox
-                      label={t('stats.visited')}
-                      value={visits?.length || 0}
-                    />
-                  )}
-                  {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
-                    <StatBox
-                      label={t('stats.filtered')}
-                      value={filteredPlaygroundCount}
-                    />
-                  )}
-                </VStack>
-                <Button
-                  {...buttonProps}
-                  onClick={(e) => handleClick(e, () => setShowStats(false))}
-                >
-                  {t('stats.backButton')}
-                </Button>
-              </>
+              <Stats
+                playgrounds={playgrounds}
+                visits={visits}
+                filters={filters}
+                filteredPlaygroundCount={filteredPlaygroundCount}
+                onBack={() => setShowStats(false)}
+              />
             ) : (
               <>
                 <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
