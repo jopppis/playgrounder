@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaGithub, FaSignInAlt, FaUserPlus } from 'react-icons/fa'
-import { HiChartBar } from 'react-icons/hi2'
+import { HiChartBar, HiLanguage } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
@@ -223,9 +223,6 @@ const MenuDrawer = ({
                   </Grid>
                 )}
                 <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
-                <Box>
-                  <LanguageSwitcher />
-                </Box>
               </Flex>
             ) : showStats ? (
               <>
@@ -311,8 +308,8 @@ const MenuDrawer = ({
             )}
           </Box>
           {!showAbout && !showStats && (
-            <Box pt={4} borderTop="1px solid" borderColor="purple.100">
-              <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+            <Box pt={4} borderTop="1px solid" borderColor="brand.100">
+              <Grid templateColumns="repeat(2, 1fr)" gap={2} mb={4}>
                 <Button
                   {...buttonProps}
                   onClick={(e) => handleClick(e, () => setShowStats(true))}
@@ -327,6 +324,14 @@ const MenuDrawer = ({
                   {t('menu.buttons.about')}
                 </Button>
               </Grid>
+              <Box borderTop="1px solid" borderColor="brand.100" pt={4}>
+                <Flex align="center" gap={2}>
+                  <Icon as={HiLanguage} boxSize={5} color="brand.500" />
+                  <Box flex={1}>
+                    <LanguageSwitcher />
+                  </Box>
+                </Flex>
+              </Box>
             </Box>
           )}
         </Box>

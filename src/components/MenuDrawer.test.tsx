@@ -55,14 +55,14 @@ describe('MenuDrawer', () => {
     await act(async () => {
       renderComponent(false)
     })
-    expect(screen.queryByText(enTranslations.menu.language)).not.toBeInTheDocument()
+    expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
   })
 
   it('renders when open', async () => {
     await act(async () => {
       renderComponent()
     })
-    expect(screen.getByText(enTranslations.menu.language)).toBeInTheDocument()
+    expect(screen.getByRole('combobox')).toBeInTheDocument()
   })
 
   it('prevents event propagation when clicking the drawer', async () => {

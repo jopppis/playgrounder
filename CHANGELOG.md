@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Stats section in menu drawer
 
+### Changed
+- Language switcher design
+
 ## [0.4.1] - 2025-02-22
 
 ## [0.4.0] - 2025-02-21

@@ -1,7 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import enTranslations from '../i18n/locales/en.json'
-import fiTranslations from '../i18n/locales/fi.json'
 import { i18n, render } from '../test/testUtils'
 import LanguageSwitcher from './LanguageSwitcher'
 
@@ -16,58 +15,35 @@ describe('LanguageSwitcher', () => {
 
   it('renders language options', () => {
     renderComponent()
-    expect(screen.getByText(enTranslations.menu.language)).toBeInTheDocument()
+    const select = screen.getByRole('combobox')
+    expect(select).toBeInTheDocument()
     expect(screen.getByText(enTranslations.menu.en)).toBeInTheDocument()
     expect(screen.getByText(enTranslations.menu.fi)).toBeInTheDocument()
   })
 
-  it('shows English as active when English is selected', () => {
+  it('shows English as selected when English is active', () => {
     renderComponent()
-    const englishButton = screen.getByText(enTranslations.menu.en)
-    const finnishButton = screen.getByText(enTranslations.menu.fi)
-
-    expect(englishButton).toHaveStyle({ opacity: 1 })
-    expect(finnishButton).toHaveStyle({ opacity: 0.5 })
+    const select = screen.getByRole('combobox') as HTMLSelectElement
+    expect(select.value).toBe('en')
   })
 
-  it('shows Finnish as active when Finnish is selected', () => {
+  it('shows Finnish as selected when Finnish is active', () => {
     i18n.changeLanguage('fi')
     renderComponent()
-
-    const englishButton = screen.getByText(fiTranslations.menu.en)
-    const finnishButton = screen.getByText(fiTranslations.menu.fi)
-
-    expect(englishButton).toHaveStyle({ opacity: 0.5 })
-    expect(finnishButton).toHaveStyle({ opacity: 1 })
+    const select = screen.getByRole('combobox') as HTMLSelectElement
+    expect(select.value).toBe('fi')
   })
 
-  it('changes language when clicking on language buttons', () => {
+  it('changes language when selecting a different option', () => {
     renderComponent()
+    const select = screen.getByRole('combobox')
 
     // Change to Finnish
-    fireEvent.click(screen.getByText(enTranslations.menu.fi))
+    fireEvent.change(select, { target: { value: 'fi' } })
     expect(i18n.language).toBe('fi')
-    expect(screen.getByText(fiTranslations.menu.language)).toBeInTheDocument()
 
     // Change back to English
-    fireEvent.click(screen.getByText(fiTranslations.menu.en))
+    fireEvent.change(select, { target: { value: 'en' } })
     expect(i18n.language).toBe('en')
-    expect(screen.getByText(enTranslations.menu.language)).toBeInTheDocument()
-  })
-
-  it('applies hover styles correctly', () => {
-    renderComponent()
-    const finnishButton = screen.getByText(enTranslations.menu.fi)
-
-    // Initial state
-    expect(finnishButton).toHaveStyle({ opacity: 0.5 })
-
-    // Hover state
-    fireEvent.mouseEnter(finnishButton)
-    expect(finnishButton).toHaveStyle({ opacity: 0.5 }) // The opacity is controlled by the language state, not hover
-
-    // After hover
-    fireEvent.mouseLeave(finnishButton)
-    expect(finnishButton).toHaveStyle({ opacity: 0.5 })
   })
 })

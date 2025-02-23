@@ -52,6 +52,7 @@ npm run dev
 - Add other Finnish cities
 - Review code
 - Security audit
+- Run coverage and improve it
 
 ### Later
 
