@@ -223,6 +223,7 @@
     "total": "Leikkipuistoja yhteensä",
     "visited": "Vieraillut leikkipuistot",
     "filtered": "Suodatetut leikkipuistot",
+    "filteredVisited": "Vieraillut suodatetut leikkipuistot",
     "backButton": "Takaisin valikkoon"
   }
 }

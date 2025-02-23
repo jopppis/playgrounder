@@ -1,4 +1,5 @@
 import { Box, Button, ButtonProps, Text, VStack } from '@chakra-ui/react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type Filters = {
@@ -68,6 +69,31 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack }
     )
   }
 
+  // Calculate filtered visited count
+  const filteredVisitedCount = useMemo(() => {
+    if (!visits || !playgrounds || !filters || !filteredPlaygroundCount) return undefined
+
+    return playgrounds.filter(playground => {
+      // Check if playground is visited
+      const isVisited = visits.some(visit => visit.playground_id === playground.id)
+      if (!isVisited) return false
+
+      // Apply all filters
+      if (filters.city !== null && playground.city?.toLowerCase() !== filters.city) {
+        return false
+      }
+
+      if (filters.hasSupervised !== null && playground.has_supervised_activities !== filters.hasSupervised) {
+        return false
+      }
+
+      if (filters.visitStatus === 'unvisited') return false
+      if (filters.visitStatus === 'visited') return true
+
+      return true
+    }).length
+  }, [visits, playgrounds, filters, filteredPlaygroundCount])
+
   return (
     <>
       <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
@@ -85,10 +111,18 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack }
           />
         )}
         {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
-          <StatBox
-            label={t('stats.filtered')}
-            value={filteredPlaygroundCount}
-          />
+          <>
+            <StatBox
+              label={t('stats.filtered')}
+              value={filteredPlaygroundCount}
+            />
+            {visits && filteredVisitedCount !== undefined && (
+              <StatBox
+                label={t('stats.filteredVisited')}
+                value={filteredVisitedCount}
+              />
+            )}
+          </>
         )}
       </VStack>
       <Button

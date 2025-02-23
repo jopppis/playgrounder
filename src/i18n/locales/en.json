@@ -223,6 +223,7 @@
     "total": "Total Playgrounds",
     "visited": "Visited Playgrounds",
     "filtered": "Filtered Playgrounds",
+    "filteredVisited": "Visited Filtered Playgrounds",
     "backButton": "Back to Menu"
   }
 }
