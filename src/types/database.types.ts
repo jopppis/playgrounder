@@ -6,6 +6,7 @@ export interface Playground {
   created_at: string
   address: string | null
   has_supervised_activities: boolean
+  city: string | null
 }
 
 export interface PlaygroundWithCoordinates extends Omit<Playground, 'location'> {
