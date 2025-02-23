@@ -19,3 +19,8 @@ UPDATE playgrounds
 SET city = 'Vantaa'
 WHERE address LIKE '%Vantaa%'
   AND city IS NULL;
+
+UPDATE playgrounds
+SET city = 'Kauniainen'
+WHERE address LIKE '%Kauniainen%'
+  AND city IS NULL;
