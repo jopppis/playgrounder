@@ -31,7 +31,7 @@ interface PlaygroundPopupProps {
 
 export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, onRatingChange }: PlaygroundPopupProps) => {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const toast = useToast()
   const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating, setOptimisticRating } = useRatings(playground.id)
@@ -67,11 +67,11 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
 
   // Show login toast when component mounts if user is not logged in
   useEffect(() => {
-    if (!user && !hasShownLoginToast.current) {
+    if (!authLoading && !user && !hasShownLoginToast.current) {
       hasShownLoginToast.current = true
       showLoginToast()
     }
-  }, [user, toast, t])
+  }, [user, authLoading, toast, t])
 
   const handleVisit = async () => {
     if (!user) {
