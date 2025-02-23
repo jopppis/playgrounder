@@ -4,7 +4,6 @@ interface ToastOptions {
   title?: string
   description?: string
   duration?: number
-  closable?: boolean
   action?: {
     label: string
     onClick: () => void
@@ -13,46 +12,30 @@ interface ToastOptions {
 
 export const useToast = () => {
   const showSuccess = (options: ToastOptions) => {
-    const { closable, ...rest } = options
     toaster.create({
-      ...rest,
-      type: 'success',
-      meta: {
-        closable: closable ?? false
-      }
+      ...options,
+      type: 'success'
     })
   }
 
   const showError = (options: ToastOptions) => {
-    const { closable, ...rest } = options
     toaster.create({
-      ...rest,
-      type: 'error',
-      meta: {
-        closable: closable ?? false
-      }
+      ...options,
+      type: 'error'
     })
   }
 
   const showLoading = (options: ToastOptions) => {
-    const { closable, ...rest } = options
     toaster.create({
-      ...rest,
-      type: 'loading',
-      meta: {
-        closable: closable ?? false
-      }
+      ...options,
+      type: 'loading'
     })
   }
 
   const showInfo = (options: ToastOptions) => {
-    const { closable, ...rest } = options
     toaster.create({
-      ...rest,
-      type: 'info',
-      meta: {
-        closable: closable ?? false
-      }
+      ...options,
+      type: 'info'
     })
   }
 

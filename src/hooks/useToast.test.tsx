@@ -22,10 +22,7 @@ describe('useToast', () => {
     expect(toaster.create).toHaveBeenCalledWith({
       title: 'Success',
       description: 'Operation completed',
-      type: 'success',
-      meta: {
-        closable: false
-      }
+      type: 'success'
     })
   })
 
@@ -40,10 +37,7 @@ describe('useToast', () => {
     expect(toaster.create).toHaveBeenCalledWith({
       title: 'Error',
       description: 'Something went wrong',
-      type: 'error',
-      meta: {
-        closable: false
-      }
+      type: 'error'
     })
   })
 
@@ -58,10 +52,7 @@ describe('useToast', () => {
     expect(toaster.create).toHaveBeenCalledWith({
       title: 'Loading',
       description: 'Please wait',
-      type: 'loading',
-      meta: {
-        closable: false
-      }
+      type: 'loading'
     })
   })
 
@@ -76,29 +67,7 @@ describe('useToast', () => {
     expect(toaster.create).toHaveBeenCalledWith({
       title: 'Info',
       description: 'For your information',
-      type: 'info',
-      meta: {
-        closable: false
-      }
-    })
-  })
-
-  it('respects custom closable option when set to true', () => {
-    const { result } = renderHook(() => useToast())
-
-    result.current.showSuccess({
-      title: 'Success',
-      description: 'Operation completed',
-      closable: true
-    })
-
-    expect(toaster.create).toHaveBeenCalledWith({
-      title: 'Success',
-      description: 'Operation completed',
-      type: 'success',
-      meta: {
-        closable: true
-      }
+      type: 'info'
     })
   })
 
@@ -115,10 +84,7 @@ describe('useToast', () => {
       title: 'Quick Info',
       description: 'This will disappear soon',
       duration: 2000,
-      type: 'info',
-      meta: {
-        closable: false
-      }
+      type: 'info'
     })
   })
 
@@ -142,9 +108,6 @@ describe('useToast', () => {
       action: {
         label: 'Click me',
         onClick: mockAction
-      },
-      meta: {
-        closable: false
       }
     })
   })
