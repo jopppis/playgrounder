@@ -1,6 +1,7 @@
 import { Box, Button, ButtonProps, Text, VStack } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 
 type Filters = {
   visitStatus: 'all' | 'visited' | 'unvisited'
@@ -11,8 +12,8 @@ type Filters = {
 }
 
 type StatsProps = {
-  playgrounds?: { id: string }[]
-  visits?: { id: string }[]
+  playgrounds?: PlaygroundWithCoordinates[]
+  visits?: Visit[]
   filters?: Filters
   filteredPlaygroundCount?: number
   onBack: () => void

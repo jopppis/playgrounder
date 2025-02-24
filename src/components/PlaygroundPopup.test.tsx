@@ -63,9 +63,10 @@ describe('PlaygroundPopup', () => {
     description: 'A test playground',
     address: '123 Test St',
     has_supervised_activities: true,
-    created_at: '2024-01-01T00:00:00Z',
-    latitude: 60.1699,
-    longitude: 24.9384
+    created_at: new Date().toISOString(),
+    latitude: 0,
+    longitude: 0,
+    city: 'Test City'
   }
 
   const defaultProps = {
