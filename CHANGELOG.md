@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Increased filter bar size
+
 ## [0.7.2] - 2025-02-24
 
 ### Changed

@@ -98,19 +98,19 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     base: {
       top: '4',
       left: '24px',
-      width: isOpen ? '250px' : '40px',
-      maxWidth: isOpen ? '250px' : '40px',
+      width: isOpen ? '280px' : '40px',
+      maxWidth: isOpen ? '280px' : '40px',
       right: 'auto',
       transition: 'width 0.2s, max-width 0.2s'
     },
-    sm: { top: '4', left: '24px', width: '300px', maxWidth: '300px', right: 'auto' },
-    md: { top: '4', left: '24px', width: '350px', maxWidth: '350px', right: 'auto' }
+    sm: { top: '4', left: '24px', width: '350px', maxWidth: '350px', right: 'auto' },
+    md: { top: '4', left: '24px', width: '400px', maxWidth: '400px', right: 'auto' }
   })
 
   const buttonStyle = useBreakpointValue({
     base: {
-      height: '32px',
-      width: isOpen ? '100%' : '32px',
+      height: '40px',
+      width: isOpen ? '100%' : '40px',
       padding: isOpen ? '0 12px' : 0,
       display: 'flex',
       alignItems: 'center',
@@ -119,7 +119,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       transition: 'all 0.2s'
     },
     sm: {
-      height: '32px',
+      height: '40px',
       width: '100%',
       padding: '0 12px',
       borderRadius: isOpen ? 'md md 0 0' : 'md'
@@ -151,8 +151,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     [key: string]: unknown
   }) => (
     <Button
-      size="xs"
-      height="28px"
+      size="sm"
+      height="36px"
       variant="ghost"
       bg={isSelected ? 'brand.500' : 'transparent'}
       color={isSelected ? 'white' : 'gray.700'}
