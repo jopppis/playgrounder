@@ -221,12 +221,11 @@
   },
   "stats": {
     "title": "Statistics",
-    "total": "Total Playgrounds",
-    "visited": "Visited Playgrounds",
-    "filtered": "Filtered Playgrounds",
-    "filteredVisited": "Filtered Visited",
-    "backButton": "Back",
-    "currentCityTotal": "Playgrounds in {{city}}",
-    "currentCityVisited": "Visited in {{city}}"
+    "total": "Total",
+    "visited": "Visited",
+    "allPlaygrounds": "All",
+    "filteredPlaygrounds": "Filtered",
+    "currentCity": "{{city}}",
+    "backButton": "Back"
   }
 }

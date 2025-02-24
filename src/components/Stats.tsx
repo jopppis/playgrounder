@@ -1,4 +1,4 @@
-import { Box, Button, ButtonProps, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonProps, Heading, Text, VStack } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
@@ -108,47 +108,53 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, 
     }).length
   }, [visits, playgrounds, filters, filteredPlaygroundCount])
 
+  const StatSection = ({ title, totalCount, visitedCount }: { title: string, totalCount: number, visitedCount: number }) => (
+    <Box mb={6}>
+      <Heading size="lg" color="brand.500" mb={3}>
+        {title}
+      </Heading>
+      <Box display="grid" gridTemplateColumns="1fr 1fr" gap={4}>
+        <StatBox
+          label={t('stats.total')}
+          value={totalCount}
+        />
+        <StatBox
+          label={t('stats.visited')}
+          value={visitedCount}
+        />
+      </Box>
+    </Box>
+  )
+
   return (
     <>
-      <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
+      <Text fontSize="lg" fontWeight="bold" color="brand.500" mb={4}>
         {t('stats.title')}
       </Text>
       <VStack gap={4} align="stretch" mb={6}>
-        <StatBox
-          label={t('stats.total')}
-          value={playgrounds?.length || 0}
+        {/* All Playgrounds Section */}
+        <StatSection
+          title={t('stats.allPlaygrounds')}
+          totalCount={playgrounds?.length || 0}
+          visitedCount={visits?.length || 0}
         />
-        {visits && (
-          <StatBox
-            label={t('stats.visited')}
-            value={visits?.length || 0}
+
+        {/* Filtered Section */}
+        {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
+          <StatSection
+            title={t('stats.filteredPlaygrounds')}
+            totalCount={filteredPlaygroundCount}
+            visitedCount={filteredVisitedCount || 0}
           />
         )}
+
+        {/* City-specific Section */}
         {currentCityStats && (
-          <>
-            <StatBox
-              label={t('stats.currentCityTotal', { city: currentCity })}
-              value={currentCityStats.total}
-            />
-            <StatBox
-              label={t('stats.currentCityVisited', { city: currentCity })}
-              value={currentCityStats.visited}
-            />
-          </>
-        )}
-        {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
-          <>
-            <StatBox
-              label={t('stats.filtered')}
-              value={filteredPlaygroundCount}
-            />
-            {visits && filteredVisitedCount !== undefined && (
-              <StatBox
-                label={t('stats.filteredVisited')}
-                value={filteredVisitedCount}
-              />
-            )}
-          </>
+          <StatSection
+            title={t('stats.currentCity', { city: currentCity })}
+            totalCount={currentCityStats.total}
+            visitedCount={currentCityStats.visited}
+          />
         )}
       </VStack>
       <Button

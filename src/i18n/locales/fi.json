@@ -221,12 +221,11 @@
   },
   "stats": {
     "title": "Tilastot",
-    "total": "Leikkipaikat yhteensä",
-    "visited": "Vieraillut leikkipaikat",
-    "filtered": "Suodatetut leikkipaikat",
-    "filteredVisited": "Suodatetut vieraillut",
-    "backButton": "Takaisin",
-    "currentCityTotal": "Leikkipaikat {{city}}:ssa",
-    "currentCityVisited": "Vieraillut {{city}}:ssa"
+    "total": "Yhteensä",
+    "visited": "Vieraillut",
+    "allPlaygrounds": "Kaikki",
+    "filteredPlaygrounds": "Suodatetut",
+    "currentCity": "{{city}}",
+    "backButton": "Takaisin"
   }
 }

@@ -15,13 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Use canvas renderer for better performance
 - Improved popup design
-
+- Improved stats design
 ### Added
 - Request location on mount
 - Remove filter button
 - Save user filters to database
 - Visual cue of active filters
 - Statistics of current city
+
 ## [0.5.0] - 2025-02-23
 
 ### Added

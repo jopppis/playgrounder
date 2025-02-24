@@ -205,7 +205,7 @@ const MenuDrawer = ({
               />
             ) : (
               <>
-                <Text fontSize="lg" fontWeight="bold" color="purple.600" mb={4}>
+                <Text fontSize="lg" fontWeight="bold" color="brand.500" mb={4}>
                   {t('menu.about.title')}
                 </Text>
                 <Text mb={6} color="gray.700">
