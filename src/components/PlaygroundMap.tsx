@@ -437,6 +437,7 @@ const PlaygroundMap = () => {
         filters={filters}
         filteredPlaygroundCount={filteredPlaygrounds.length}
         currentCity={currentCity}
+        visits={visits}
       />
       <MapContainer
         center={helsinkiCenter}

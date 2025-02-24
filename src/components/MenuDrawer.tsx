@@ -16,8 +16,8 @@ import { HiChartBar, HiLanguage } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
-import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
+import { Visit } from '../types/database.types'
 import ChangePasswordModal from './Auth/ChangePasswordModal'
 import RemoveAccount from './Auth/RemoveAccount'
 import SignInModal from './Auth/SignInModal'
@@ -34,6 +34,7 @@ export type MenuDrawerProps = {
   filters: FilterOptions
   filteredPlaygroundCount: number
   currentCity: string | null
+  visits: Visit[]
 }
 
 const MenuDrawer = ({
@@ -43,12 +44,12 @@ const MenuDrawer = ({
   setShowSignIn,
   filters,
   filteredPlaygroundCount,
-  currentCity
+  currentCity,
+  visits
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { playgrounds } = usePlaygrounds()
-  const { visits } = useVisits()
   const [showAbout, setShowAbout] = useState(false)
   const [showStats, setShowStats] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)

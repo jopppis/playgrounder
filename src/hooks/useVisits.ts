@@ -79,6 +79,9 @@ export const useVisits = () => {
   const addVisit = async (playgroundId: string): Promise<{ error: string | null }> => {
     if (!user) return { error: 'User not authenticated' }
 
+    // Update state immediately for optimistic UI
+    updateVisitsState(playgroundId, true)
+
     try {
       const { error } = await supabase
         .from('visits')
@@ -90,8 +93,12 @@ export const useVisits = () => {
           onConflict: 'playground_id,user_id'
         })
 
-      if (error) throw error
-      await fetchVisits()
+      if (error) {
+        // Revert optimistic update on error
+        updateVisitsState(playgroundId, false)
+        throw error
+      }
+
       return { error: null }
     } catch (err) {
       return { error: err instanceof Error ? err.message : 'An error occurred' }
@@ -100,6 +107,9 @@ export const useVisits = () => {
 
   const removeVisit = async (playgroundId: string): Promise<{ error: string | null }> => {
     if (!user) return { error: 'User not authenticated' }
+
+    // Update state immediately for optimistic UI
+    updateVisitsState(playgroundId, false)
 
     try {
       const { error } = await supabase
@@ -110,8 +120,12 @@ export const useVisits = () => {
           user_id: user.id
         })
 
-      if (error) throw error
-      await fetchVisits()
+      if (error) {
+        // Revert optimistic update on error
+        updateVisitsState(playgroundId, true)
+        throw error
+      }
+
       return { error: null }
     } catch (err) {
       return { error: err instanceof Error ? err.message : 'An error occurred' }

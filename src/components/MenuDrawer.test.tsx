@@ -34,6 +34,18 @@ vi.mock('../lib/supabaseClient', () => ({
 describe('MenuDrawer', () => {
   const mockOnClose = vi.fn()
   const mockSetShowSignIn = vi.fn()
+  const defaultProps = {
+    filters: {
+      visitStatus: null,
+      minStars: null,
+      minUserStars: null,
+      hasSupervised: null,
+      city: null
+    },
+    filteredPlaygroundCount: 0,
+    currentCity: null,
+    visits: []
+  }
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -47,6 +59,7 @@ describe('MenuDrawer', () => {
         onClose={mockOnClose}
         showSignIn={false}
         setShowSignIn={mockSetShowSignIn}
+        {...defaultProps}
       />
     )
   }
@@ -221,6 +234,7 @@ describe('MenuDrawer', () => {
           onClose={mockOnClose}
           showSignIn={false}
           setShowSignIn={mockSetShowSignIn}
+          {...defaultProps}
         />
       )
     })
@@ -233,6 +247,7 @@ describe('MenuDrawer', () => {
           onClose={mockOnClose}
           showSignIn={false}
           setShowSignIn={mockSetShowSignIn}
+          {...defaultProps}
         />
       )
     })
