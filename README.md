@@ -47,16 +47,11 @@ npm run dev
 
 ## TODO
 
-### Before release
-
 - Add other Finnish cities
-- Review code
 - Security audit
 - Run coverage and improve it
-
-### Later
-
-- Stats like 4/85 playgrounds in helsinki visited
+- Linter warnings
+-
 
 ## Contributing
 

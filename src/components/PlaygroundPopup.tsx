@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   HStack,
   Icon,
@@ -11,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegStar, FaStar, FaTimes } from 'react-icons/fa'
+import { FaRegStar, FaStar } from 'react-icons/fa'
 import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
@@ -207,65 +206,36 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   }
 
   return (
-    <Box p={3} minW="300px" maxW="400px" className="custom-popup">
+    <Box p={3} minW="300px" maxW="700px">
       {visitsLoading ? (
         <VStack align="stretch" gap={1} justify="center" minH="100px">
           <Spinner size="md" color="brand.500" alignSelf="center" />
         </VStack>
       ) : (
-        <VStack align="stretch" gap={1}>
+        <VStack align="stretch" gap={0}>
           <Flex justify="space-between" align="center" gap={2}>
             <Text
               fontSize="md"
-              fontWeight="bold"
+              fontWeight="semibold"
               color="gray.700"
               truncate
               flex={1}
             >
               {playground.name}
             </Text>
-            <Button
-              color="white"
-              bg="brand.500"
-              _hover={{ bg: 'secondary.500' }}
-              size="sm"
-              minW="24px"
-              h="24px"
-              p={0}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                const popupElement = (e.target as HTMLElement).closest('.leaflet-popup')
-                if (popupElement) {
-                  const closeButton = popupElement.querySelector('.leaflet-popup-close-button') as HTMLElement
-                  if (closeButton) {
-                    closeButton.click()
-                  }
-                }
-              }}
-              aria-label={t('common.close')}
-            >
-              <Icon as={FaTimes} boxSize={3} />
-            </Button>
           </Flex>
 
           {/* Add style to hide Leaflet's default close button */}
           <style>
             {`
-              .leaflet-popup-content-wrapper .custom-popup {
-                margin-right: 0 !important;
-              }
               .leaflet-popup-close-button {
-                display: none !important;
+                color: var(--chakra-colors-brand-600) !important;
               }
               .leaflet-popup-content {
-                margin: 8px !important;
-              }
-              .leaflet-popup-content-wrapper {
-                padding: 0 !important;
-              }
-              .leaflet-popup-tip-container {
-                margin-top: -1px !important;
+                margin-top: 0px !important;
+                margin-bottom: 0px !important;
+                margin-left: 8px !important;
+                margin-right: 8px !important;
               }
             `}
           </style>
@@ -322,7 +292,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
 
             <Box>
               <HStack gap={2} align="center">
-                <Text fontSize="sm" color={!user ? "gray.400" : "gray.600"}>{t('playground.markVisited')}</Text>
+                <Text fontSize="sm" color={!user ? "gray.400" : "gray.600"}>
+                  {t('playground.markVisited')}
+                </Text>
                 <Box
                   onClick={() => {
                     if (!user) {
@@ -332,7 +304,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                   cursor={!user ? "pointer" : "default"}
                 >
                   <Switch
-                    size="md"
+                    size="sm"
                     checked={hasVisited}
                     onCheckedChange={async () => {
                       if (!user) {
@@ -355,6 +327,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
           {playground.description && (
             <Text
               fontSize="sm"
+              fontWeight="semibold"
               color="gray.700"
               lineHeight="tall"
               whiteSpace="pre-wrap"
@@ -452,7 +425,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                     cursor={(!user || !rating?.userRating) ? "pointer" : "default"}
                   >
                     <Switch
-                      size="md"
+                      size="sm"
                       checked={rating?.isPublic}
                       onCheckedChange={handleTogglePublic}
                       disabled={!user || !rating?.userRating}
