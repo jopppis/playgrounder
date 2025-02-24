@@ -450,7 +450,7 @@ const PlaygroundMap = () => {
       <MapContainer
         center={helsinkiCenter}
         zoom={13.5}
-        style={{ height: '100%', width: '100%', paddingBottom: 'env(safe-area-inset-bottom)' }}
+        style={{ height: '100%', width: '100%' }}
         ref={mapRef}
         zoomControl={false}
         preferCanvas={true}
