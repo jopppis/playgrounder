@@ -130,7 +130,7 @@
     "about": {
       "title": "Tietoa Leikkipuistokartasta",
       "description": "Leikkipuistokartta on tarkoitettu tarkoitettu auttamaan perheitä löytämään hyviä leikkipaikkoja. Leikkipuistokartalta voit löytää uusia leikkipaikkoja, arvostella niitä sekä seurata käytejäsi, ilman maksuja, mainoksia tai seurantaa.",
-      "acknowledgments": "Kartta-aineisto © OpenStreetMap contributors. Ikonit FontAwesome. Toteutettu React, Chakra UI ja Supabase -teknologioilla.",
+      "acknowledgments": "Kartta-aineisto © OpenStreetMap contributors. Karttatyylit CARTO (Voyager) ja OpenStreetMap. Ilmakuvat © Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, ja GIS User Community. Ikonit FontAwesome. Toteutettu React, Chakra UI ja Supabase -teknologioilla.",
       "github": "Katso GitHubissa",
       "backButton": "Takaisin valikkoon",
       "version": "Versio"
@@ -150,7 +150,10 @@
   "map": {
     "loading": "Ladataan...",
     "attribution": "© OpenStreetMap contributors",
-    "showMyLocation": "Näytä sijaintini"
+    "showMyLocation": "Näytä sijaintini",
+    "standard": "Oletus",
+    "osm": "OpenStreetMap",
+    "aerial": "Ilmakuva"
   },
   "playground": {
     "address": "Osoite",

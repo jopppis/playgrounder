@@ -4,7 +4,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
 import { useAuth } from '../hooks/useAuth'
@@ -55,6 +55,21 @@ style.textContent = `
     font-size: 10px;
     font-weight: bold;
     box-shadow: 0 0 0 1.5px white;
+  }
+
+  /* Make layer control match other controls */
+  .leaflet-control-layers {
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  }
+  .leaflet-control-layers-toggle {
+    width: 30px !important;
+    height: 30px !important;
+    background-size: 16px 16px;
+  }
+  .leaflet-touch .leaflet-control-layers-toggle {
+    width: 30px !important;
+    height: 30px !important;
   }
 `
 document.head.appendChild(style)
@@ -431,10 +446,28 @@ const PlaygroundMap = () => {
         zoomControl={false}
         preferCanvas={true}
       >
-        <TileLayer
-          attribution={t('map.attribution')}
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <LayersControl position="bottomright">
+          <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+              maxZoom={19}
+            />
+          </LayersControl.BaseLayer>
+          <LayersControl.BaseLayer name={t('map.osm') || 'OpenStreetMap'}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom={19}
+            />
+          </LayersControl.BaseLayer>
+          <LayersControl.BaseLayer name={t('map.aerial') || 'Aerial'}>
+            <TileLayer
+              attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            />
+          </LayersControl.BaseLayer>
+        </LayersControl>
         <LocationControl onLocationUpdate={updateCurrentCity} />
         {filteredPlaygrounds.map((playground) => (
           <PlaygroundMarker

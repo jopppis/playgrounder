@@ -130,7 +130,7 @@
     "about": {
       "title": "About PlaygroundMap",
       "description": "PlaygroundMap is meant to help families find good local playgrounds. On PlaygroundMap you can find new playgrounds, rate them and track your visits, without fees, ads or tracking.",
-      "acknowledgments": "Map data © OpenStreetMap contributors. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
+      "acknowledgments": "Map data © OpenStreetMap contributors. Map styles by CARTO (Voyager) and OpenStreetMap. Aerial imagery © Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
       "github": "View on GitHub",
       "backButton": "Back to Menu",
       "version": "Version"
@@ -150,7 +150,10 @@
   "map": {
     "loading": "Loading...",
     "attribution": "© OpenStreetMap contributors",
-    "showMyLocation": "Show my location"
+    "showMyLocation": "Show my location",
+    "standard": "Default",
+    "osm": "OpenStreetMap",
+    "aerial": "Aerial"
   },
   "playground": {
     "address": "Address",
