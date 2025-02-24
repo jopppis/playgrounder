@@ -253,7 +253,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                 mb={1.5}
                 px={0}
               >
-                <HStack width="100%" justify="space-between">
+                <HStack width="100%" justify="space-between" px={2}>
                   <Text>{t('removeFilters')}</Text>
                   <FaFilterCircleXmark size={14} />
                 </HStack>
