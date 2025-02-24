@@ -63,13 +63,21 @@ style.textContent = `
     box-shadow: 0 1px 5px rgba(0,0,0,0.4);
   }
   .leaflet-control-layers-toggle {
-    width: 30px !important;
-    height: 30px !important;
-    background-size: 16px 16px;
+    width: 40px !important;
+    height: 40px !important;
+    background-size: 20px 20px;
   }
   .leaflet-touch .leaflet-control-layers-toggle {
-    width: 30px !important;
-    height: 30px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  /* Increase zoom control size */
+  .leaflet-control-zoom a {
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 40px !important;
+    font-size: 18px !important;
   }
 `
 document.head.appendChild(style)
@@ -225,9 +233,9 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
       const button = L.DomUtil.create('a', '', div)
       button.href = '#'
       button.title = t('map.showMyLocation')
-      button.style.width = '30px'
-      button.style.height = '30px'
-      button.style.lineHeight = '30px'
+      button.style.width = '40px'
+      button.style.height = '40px'
+      button.style.lineHeight = '40px'
       button.style.display = 'flex'
       button.style.alignItems = 'center'
       button.style.justifyContent = 'center'
@@ -235,7 +243,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
       button.style.backgroundColor = 'white'
       button.style.fontSize = '18px'
       button.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
           <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
           <circle cx="12" cy="12" r="4" fill="currentColor"/>
           <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/>
