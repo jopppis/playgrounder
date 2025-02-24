@@ -402,7 +402,7 @@ const PlaygroundMap = () => {
 
   if (playgroundsLoading || visitsLoading || filtersLoading) {
     return (
-      <Box height="100vh" display="flex" alignItems="center" justifyContent="center">
+      <Box height="100dvh" display="flex" alignItems="center" justifyContent="center">
         <Spinner size="xl" color="brand.500" />
       </Box>
     )
@@ -450,7 +450,7 @@ const PlaygroundMap = () => {
       <MapContainer
         center={helsinkiCenter}
         zoom={13.5}
-        style={{ height: '100%', width: '100%', paddingBottom: 'env(safe-area-inset-bottom)' }}
+        style={{ height: '100%', width: '100%' }}
         ref={mapRef}
         zoomControl={false}
         preferCanvas={true}
