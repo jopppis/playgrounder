@@ -55,7 +55,11 @@ export const useUserFilters = () => {
   }, [user])
 
   const updateFilters = useCallback(async (newFilters: FilterOptions) => {
-    if (!user) return
+    // For non-logged in users, just update the filters locally
+    if (!user) {
+      setFilters(newFilters)
+      return
+    }
 
     try {
       const filterData: Omit<UserFilter, 'id' | 'created_at' | 'updated_at'> = {

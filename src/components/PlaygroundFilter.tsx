@@ -38,14 +38,32 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const { playgrounds } = usePlaygrounds()
 
   const hasActiveFilters = useMemo(() => {
+    // For non-logged in users, only check non-user-specific filters
+    if (!user) {
+      return filters.minStars !== null ||
+        filters.hasSupervised !== null ||
+        filters.city !== null
+    }
+    // For logged in users, check all filters
     return filters.visitStatus !== null ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
       filters.hasSupervised !== null ||
       filters.city !== null
-  }, [filters])
+  }, [filters, user])
 
   const resetFilters = () => {
+    // For non-logged in users, only reset non-user-specific filters
+    if (!user) {
+      onChange({
+        ...filters,
+        minStars: null,
+        hasSupervised: null,
+        city: null
+      })
+      return
+    }
+    // For logged in users, reset all filters
     onChange({
       visitStatus: null,
       minStars: null,
