@@ -21,7 +21,8 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
-      "vitest related --run"
+      "vitest related --run",
+      "tsc -b"
     ]
   },
   "devDependencies": {
