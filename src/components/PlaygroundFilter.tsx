@@ -167,9 +167,9 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     >
       <Box bg="gray.50" borderRadius="md" boxShadow="base" width="100%" position="relative">
         <Button
-          bg="transparent"
+          bg={hasActiveFilters ? 'gray.100' : 'transparent'}
           color="gray.700"
-          _hover={{ bg: 'gray.50' }}
+          _hover={{ bg: hasActiveFilters ? 'gray.200' : 'gray.50' }}
           _active={{ bg: 'gray.100' }}
           fontSize="sm"
           onClick={() => setIsOpen(!isOpen)}
@@ -181,10 +181,35 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
           {showButtonText ? (
             <HStack width="100%" justify="space-between">
               <Text>{t('filterPlaygrounds')}</Text>
-              <Box as={FaFilter} boxSize="14px" />
+              <Box display="flex" alignItems="center" gap={1}>
+                {hasActiveFilters && (
+                  <Box
+                    w="8px"
+                    h="8px"
+                    borderRadius="full"
+                    bg="brand.500"
+                    position="relative"
+                    top="-1px"
+                  />
+                )}
+                <Box as={FaFilter} boxSize="14px" />
+              </Box>
             </HStack>
           ) : (
-            <Box as={FaFilter} boxSize="14px" />
+            <Box position="relative">
+              {hasActiveFilters && (
+                <Box
+                  position="absolute"
+                  w="6px"
+                  h="6px"
+                  borderRadius="full"
+                  bg="brand.500"
+                  top="-1px"
+                  left="-1px"
+                />
+              )}
+              <Box as={FaFilter} boxSize="14px" />
+            </Box>
           )}
         </Button>
 

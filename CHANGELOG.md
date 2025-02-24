@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Request location on mount
 - Remove filter button
 - Save user filters to database
+- Visual cue of active filters
+
 ## [0.5.0] - 2025-02-23
 
 ### Added
