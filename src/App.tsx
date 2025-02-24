@@ -11,7 +11,7 @@ function App() {
   useDocumentTitle()
 
   return (
-    <Box position="relative" h="100dvh" w="100vw">
+    <Box position="relative" h="100vh" w="100vw">
       <PlaygroundMap />
       {showResetPassword && (
         <Box
