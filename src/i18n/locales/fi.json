@@ -210,6 +210,7 @@
   "minUserStars_plural": "Oma arvio",
   "showMore": "Näytä lisää",
   "showLess": "Näytä vähemmän",
+  "removeFilters": "Poista suodattimet",
   "app": {
     "name": "Leikkipuistokartta"
   },

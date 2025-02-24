@@ -12,7 +12,7 @@ import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
-import { HiAdjustmentsHorizontal } from 'react-icons/hi2'
+import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 
@@ -36,6 +36,24 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const { user } = useAuth()
   const filterRef = useRef<HTMLDivElement>(null)
   const { playgrounds } = usePlaygrounds()
+
+  const hasActiveFilters = useMemo(() => {
+    return filters.visitStatus !== 'all' ||
+      filters.minStars !== null ||
+      filters.minUserStars !== null ||
+      filters.hasSupervised !== null ||
+      filters.city !== null
+  }, [filters])
+
+  const resetFilters = () => {
+    onChange({
+      visitStatus: 'all',
+      minStars: null,
+      minUserStars: null,
+      hasSupervised: null,
+      city: null
+    })
+  }
 
   // Extract unique cities from playgrounds and sort them alphabetically
   const cities = useMemo(() => {
@@ -73,8 +91,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
   const buttonStyle = useBreakpointValue({
     base: {
-      height: '40px',
-      width: isOpen ? '100%' : '40px',
+      height: '32px',
+      width: isOpen ? '100%' : '32px',
       padding: isOpen ? '0 12px' : 0,
       display: 'flex',
       alignItems: 'center',
@@ -83,7 +101,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       transition: 'all 0.2s'
     },
     sm: {
-      height: '40px',
+      height: '32px',
       width: '100%',
       padding: '0 12px',
       borderRadius: isOpen ? 'md md 0 0' : 'md'
@@ -163,10 +181,10 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
           {showButtonText ? (
             <HStack width="100%" justify="space-between">
               <Text>{t('filterPlaygrounds')}</Text>
-              <HiAdjustmentsHorizontal size={20} />
+              <Box as={FaFilter} boxSize="14px" />
             </HStack>
           ) : (
-            <HiAdjustmentsHorizontal size={20} />
+            <Box as={FaFilter} boxSize="14px" />
           )}
         </Button>
 
@@ -186,6 +204,36 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
             borderColor="gray.200"
             zIndex="1"
           >
+            {hasActiveFilters && (
+              <Button
+                size="xs"
+                height="28px"
+                variant="ghost"
+                bg="transparent"
+                color="gray.700"
+                _hover={{
+                  bg: 'gray.50',
+                  color: 'gray.700'
+                }}
+                _active={{
+                  bg: 'brand.500',
+                  color: 'white',
+                  transform: 'scale(0.98)'
+                }}
+                onClick={resetFilters}
+                width="full"
+                fontSize="sm"
+                justifyContent="flex-start"
+                transition="all 0.2s"
+                mb={1.5}
+                px={0}
+              >
+                <HStack width="100%" justify="space-between">
+                  <Text>{t('removeFilters')}</Text>
+                  <FaFilterCircleXmark size={14} />
+                </HStack>
+              </Button>
+            )}
             <Box>
               <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                 {t('city')}

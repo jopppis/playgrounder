@@ -210,6 +210,7 @@
   "minUserStars_plural": "My Rating",
   "showMore": "Show more",
   "showLess": "Show less",
+  "removeFilters": "Clear filters",
   "app": {
     "name": "PlaygroundMap"
   },
