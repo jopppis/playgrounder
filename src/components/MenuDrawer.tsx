@@ -6,18 +6,18 @@ import {
   Grid,
   GridItem,
   Icon,
-  Link,
   Text
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaGithub, FaSignInAlt, FaUserPlus } from 'react-icons/fa'
+import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
 import { HiChartBar, HiLanguage } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
 import { supabase } from '../lib/supabaseClient'
 import { Visit } from '../types/database.types'
+import About from './About'
 import Account from './Account'
 import ChangePasswordModal from './Auth/ChangePasswordModal'
 import RemoveAccount from './Auth/RemoveAccount'
@@ -210,56 +210,7 @@ const MenuDrawer = ({
             ) : showAccount ? (
               <Account onBack={() => setShowAccount(false)} />
             ) : (
-              <>
-                <Text fontSize="lg" fontWeight="bold" color="brand.500" mb={4}>
-                  {t('menu.about.title')}
-                </Text>
-                <Text mb={6} color="gray.700">
-                  {t('menu.about.description')}
-                </Text>
-                <Link
-                  href="https://github.com/jopppis/playgrounder"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  display="flex"
-                  gap={2}
-                  color="brand.500"
-                  _hover={{ color: 'secondary.500' }}
-                  transition="all 0.2s"
-                  mb={6}
-                  alignItems="center"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Icon as={FaGithub} boxSize={5} />
-                  <Text>{t('menu.about.github')}</Text>
-                </Link>
-                <Box flex={1} />
-                <Link
-                  href={`https://github.com/jopppis/playgrounder/releases/tag/v${import.meta.env.APP_VERSION}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  display="flex"
-                  gap={1}
-                  color="gray.500"
-                  _hover={{ color: 'secondary.500' }}
-                  transition="all 0.2s"
-                  mb={2}
-                  alignItems="center"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Text>{t('menu.about.version')}:</Text>
-                  <Text>{import.meta.env.APP_VERSION}-{import.meta.env.BUILD_ID}</Text>
-                </Link>
-                <Text fontSize="sm" color="gray.500" mb={4}>
-                  {t('menu.about.acknowledgments')}
-                </Text>
-                <Button
-                  {...buttonProps}
-                  onClick={(e) => handleClick(e, () => setShowAbout(false))}
-                >
-                  {t('menu.about.backButton')}
-                </Button>
-              </>
+              <About onBack={() => setShowAbout(false)} />
             )}
           </Box>
           {!showAbout && !showStats && !showAccount && (
