@@ -170,6 +170,9 @@ const LocationControl = () => {
     map.on('locationfound', handleLocationFound)
     map.on('locationerror', handleLocationError)
 
+    // Request location on mount
+    map.locate({ setView: true, maxZoom: 14, watch: false })
+
     // Clean up
     return () => {
       map.off('locationfound', handleLocationFound)
