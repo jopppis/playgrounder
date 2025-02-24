@@ -221,10 +221,12 @@
   },
   "stats": {
     "title": "Tilastot",
-    "total": "Leikkipuistoja yhteensä",
-    "visited": "Vieraillut leikkipuistot",
-    "filtered": "Suodatetut leikkipuistot",
-    "filteredVisited": "Vieraillut suodatetut leikkipuistot",
-    "backButton": "Takaisin valikkoon"
+    "total": "Leikkipaikat yhteensä",
+    "visited": "Vieraillut leikkipaikat",
+    "filtered": "Suodatetut leikkipaikat",
+    "filteredVisited": "Suodatetut vieraillut",
+    "backButton": "Takaisin",
+    "currentCityTotal": "Leikkipaikat {{city}}:ssa",
+    "currentCityVisited": "Vieraillut {{city}}:ssa"
   }
 }

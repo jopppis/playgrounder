@@ -17,9 +17,10 @@ type StatsProps = {
   filters?: Filters
   filteredPlaygroundCount?: number
   onBack: () => void
+  currentCity?: string | null
 }
 
-const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack }: StatsProps) => {
+const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, currentCity }: StatsProps) => {
   const { t } = useTranslation()
 
   const buttonProps: ButtonProps = {
@@ -67,6 +68,21 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack }
       filters.city !== null
   }
 
+  // Calculate current city stats
+  const currentCityStats = useMemo(() => {
+    if (!currentCity || !playgrounds) return null
+
+    const cityPlaygrounds = playgrounds.filter(p => p.city?.toLowerCase() === currentCity.toLowerCase())
+    const cityVisits = visits?.filter(visit =>
+      cityPlaygrounds.some(p => p.id === visit.playground_id)
+    )
+
+    return {
+      total: cityPlaygrounds.length,
+      visited: cityVisits?.length || 0
+    }
+  }, [currentCity, playgrounds, visits])
+
   // Calculate filtered visited count
   const filteredVisitedCount = useMemo(() => {
     if (!visits || !playgrounds || !filters || !filteredPlaygroundCount) return undefined
@@ -107,6 +123,18 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack }
             label={t('stats.visited')}
             value={visits?.length || 0}
           />
+        )}
+        {currentCityStats && (
+          <>
+            <StatBox
+              label={t('stats.currentCityTotal', { city: currentCity })}
+              value={currentCityStats.total}
+            />
+            <StatBox
+              label={t('stats.currentCityVisited', { city: currentCity })}
+              value={currentCityStats.visited}
+            />
+          </>
         )}
         {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
           <>

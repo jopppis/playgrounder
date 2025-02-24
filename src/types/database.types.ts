@@ -89,6 +89,13 @@ export interface Database {
         }
         Returns: Playground[]
       }
+      get_closest_playground_city: {
+        Args: {
+          lat: number
+          lng: number
+        }
+        Returns: string | null
+      }
     }
   }
 }

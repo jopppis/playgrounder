@@ -8,6 +8,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
 import { useAuth } from '../hooks/useAuth'
+import { useCurrentCity } from '../hooks/useCurrentCity'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useUserFilters } from '../hooks/useUserFilters'
 import { useVisits } from '../hooks/useVisits'
@@ -134,7 +135,7 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
 }
 
 // Location control component
-const LocationControl = () => {
+const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number, lng: number) => void }) => {
   const map = useMap()
   const { t } = useTranslation()
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
@@ -156,11 +157,12 @@ const LocationControl = () => {
     const newLocation: [number, number] = [lat, lng]
     setUserLocation(newLocation)
     lastKnownPosition.current = newLocation
+    onLocationUpdate(lat, lng)
     if (!isInitialized.current) {
       map.setView(newLocation, 13.5)
       isInitialized.current = true
     }
-  }, [map])
+  }, [map, onLocationUpdate])
 
   const handleLocationError = useCallback((e: L.ErrorEvent) => {
     console.error('Location error:', e.message)
@@ -279,6 +281,7 @@ const PlaygroundMap = () => {
   const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
   const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
   const { filters, loading: filtersLoading, updateFilters } = useUserFilters()
+  const { currentCity, updateCurrentCity } = useCurrentCity()
   const [ratings, setRatings] = useState<PlaygroundRating[]>([])
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -418,6 +421,7 @@ const PlaygroundMap = () => {
         setShowSignIn={setShowSignIn}
         filters={filters}
         filteredPlaygroundCount={filteredPlaygrounds.length}
+        currentCity={currentCity}
       />
       <MapContainer
         center={helsinkiCenter}
@@ -431,7 +435,7 @@ const PlaygroundMap = () => {
           attribution={t('map.attribution')}
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <LocationControl />
+        <LocationControl onLocationUpdate={updateCurrentCity} />
         {filteredPlaygrounds.map((playground) => (
           <PlaygroundMarker
             key={playground.id}

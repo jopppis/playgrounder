@@ -224,7 +224,9 @@
     "total": "Total Playgrounds",
     "visited": "Visited Playgrounds",
     "filtered": "Filtered Playgrounds",
-    "filteredVisited": "Visited Filtered Playgrounds",
-    "backButton": "Back to Menu"
+    "filteredVisited": "Filtered Visited",
+    "backButton": "Back",
+    "currentCityTotal": "Playgrounds in {{city}}",
+    "currentCityVisited": "Visited in {{city}}"
   }
 }

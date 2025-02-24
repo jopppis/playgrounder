@@ -23,6 +23,7 @@ import RemoveAccount from './Auth/RemoveAccount'
 import SignInModal from './Auth/SignInModal'
 import SignUp from './Auth/SignUp'
 import LanguageSwitcher from './LanguageSwitcher'
+import { FilterOptions } from './PlaygroundFilter'
 import Stats from './Stats'
 
 export type MenuDrawerProps = {
@@ -30,14 +31,9 @@ export type MenuDrawerProps = {
   onClose: () => void
   showSignIn: boolean
   setShowSignIn: (show: boolean) => void
-  filters?: {
-    visitStatus: 'visited' | 'unvisited' | null
-    minStars: number | null
-    minUserStars: number | null
-    hasSupervised: boolean | null
-    city: string | null
-  }
-  filteredPlaygroundCount?: number
+  filters: FilterOptions
+  filteredPlaygroundCount: number
+  currentCity: string | null
 }
 
 const MenuDrawer = ({
@@ -46,7 +42,8 @@ const MenuDrawer = ({
   showSignIn,
   setShowSignIn,
   filters,
-  filteredPlaygroundCount
+  filteredPlaygroundCount,
+  currentCity
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -204,6 +201,7 @@ const MenuDrawer = ({
                 filters={filters}
                 filteredPlaygroundCount={filteredPlaygroundCount}
                 onBack={() => setShowStats(false)}
+                currentCity={currentCity}
               />
             ) : (
               <>
