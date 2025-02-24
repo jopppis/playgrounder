@@ -235,6 +235,9 @@
       "publicExplanation": "Public ratings will be included in the average score and rating count.\n\nOnly aggregated data is ever shown to other users."
     },
     "makePublic": "Public",
+    "defaultPublic": "Publish Ratings by Default",
+    "defaultPublicEnabled": "Your new ratings will be public by default",
+    "defaultPublicDisabled": "Your new ratings will be private by default",
     "supervision": {
       "label": "Supervision",
       "supervised": "Supervised activities",

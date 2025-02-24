@@ -5,6 +5,7 @@ import {
   Flex,
   Grid,
   GridItem,
+  HStack,
   Icon,
   Text
 } from '@chakra-ui/react'
@@ -15,6 +16,7 @@ import { HiChartBar, HiLanguage } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
+import { useUserPreferences } from '../hooks/useUserPreferences'
 import { supabase } from '../lib/supabaseClient'
 import { Visit } from '../types/database.types'
 import About from './About'
@@ -26,6 +28,7 @@ import SignUp from './Auth/SignUp'
 import LanguageSwitcher from './LanguageSwitcher'
 import { FilterOptions } from './PlaygroundFilter'
 import Stats from './Stats'
+import { Switch } from './ui/switch'
 
 export type MenuDrawerProps = {
   isOpen: boolean
@@ -51,6 +54,7 @@ const MenuDrawer = ({
   const { t } = useTranslation()
   const { user } = useAuth()
   const { playgrounds } = usePlaygrounds()
+  const { preferences, loading: preferencesLoading, updateDefaultPublicRatings } = useUserPreferences()
   const [showAbout, setShowAbout] = useState(false)
   const [showStats, setShowStats] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
@@ -154,6 +158,42 @@ const MenuDrawer = ({
                           {user.email}
                         </Text>
                       </Box>
+                      <HStack gap={2} align="center" justify="space-between" w="100%">
+                        <Text fontSize="sm" color="gray.600">
+                          {t('playground.defaultPublic')}
+                        </Text>
+                        <Box
+                          position="relative"
+                          zIndex={2001}
+                          cursor="pointer"
+                          onClick={async (e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if (!preferencesLoading) {
+                              try {
+                                const newValue = !preferences.defaultPublicRatings
+                                await updateDefaultPublicRatings(newValue)
+                                toast.showSuccess({
+                                  title: t('playground.defaultPublic'),
+                                  description: newValue
+                                    ? t('playground.defaultPublicEnabled')
+                                    : t('playground.defaultPublicDisabled')
+                                })
+                              } catch {
+                                // Error is handled in the hook
+                              }
+                            }
+                          }}
+                        >
+                          <Switch
+                            size="sm"
+                            checked={preferences.defaultPublicRatings}
+                            onCheckedChange={() => {}}
+                            disabled={preferencesLoading || !user}
+                            aria-label={t('playground.defaultPublic')}
+                          />
+                        </Box>
+                      </HStack>
                       <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                         <Button
                           {...buttonProps}

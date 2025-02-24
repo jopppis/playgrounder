@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix build
 
+### Added
+- Added default public ratings setting
+
 ## [0.7.5] - 2025-02-24
 
 ### Changed

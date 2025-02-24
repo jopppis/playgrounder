@@ -15,6 +15,7 @@ import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useRatings } from '../hooks/useRatings'
 import { useToast } from '../hooks/useToast'
+import { useUserPreferences } from '../hooks/useUserPreferences'
 import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates } from '../types/database.types'
@@ -35,6 +36,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   const toast = useToast()
   const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating, setOptimisticRating } = useRatings(playground.id)
+  const { preferences } = useUserPreferences()
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
   const hasShownLoginToast = useRef(false)
 
@@ -139,7 +141,8 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
 
       // Optimistically update the local state
       const oldRating = rating
-      const isPublic = oldRating?.isPublic ?? false
+      // Use default public setting for new ratings
+      const isPublic = oldRating?.userRating === null ? preferences.defaultPublicRatings : (oldRating?.isPublic ?? false)
       const optimisticRating = {
         ...rating,
         userRating: value,

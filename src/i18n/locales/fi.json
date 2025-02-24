@@ -235,6 +235,9 @@
       "publicExplanation": "Julkiset arviot lasketaan kaikille käyttäjille näkyvään keskiarvoon ja arvioiden määrään.\n\nKäyttäjäkohtaista tietoa ei julkaista."
     },
     "makePublic": "Julkinen",
+    "defaultPublic": "Julkaise arviot oletuksena",
+    "defaultPublicEnabled": "Uudet arviosi ovat nyt oletuksena julkisia",
+    "defaultPublicDisabled": "Uudet arviosi ovat nyt oletuksena yksityisiä",
     "supervision": {
       "label": "Ohjattu toiminta",
       "supervised": "Ohjattua toimintaa",

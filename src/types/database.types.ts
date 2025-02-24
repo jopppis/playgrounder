@@ -56,6 +56,14 @@ export interface UserFilter {
   updated_at: string
 }
 
+export interface UserPreferences {
+  id: string
+  user_id: string
+  default_public_ratings: boolean
+  created_at: string
+  updated_at: string
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -78,6 +86,11 @@ export interface Database {
         Row: UserFilter
         Insert: Omit<UserFilter, 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<UserFilter, 'id' | 'created_at' | 'updated_at'>>
+      }
+      user_preferences: {
+        Row: UserPreferences
+        Insert: Omit<UserPreferences, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<UserPreferences, 'id' | 'created_at' | 'updated_at'>>
       }
     }
     Functions: {
