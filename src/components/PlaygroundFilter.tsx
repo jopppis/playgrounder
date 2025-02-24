@@ -1,12 +1,12 @@
 import {
-  Box,
-  Button,
-  HStack,
-  NativeSelect,
-  Stack,
-  Text,
-  VStack,
-  useBreakpointValue
+    Box,
+    Button,
+    HStack,
+    NativeSelect,
+    Stack,
+    Text,
+    VStack,
+    useBreakpointValue
 } from '@chakra-ui/react'
 import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -185,9 +185,9 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     >
       <Box bg="white" borderRadius={isOpen ? "md md 0 0" : "md"} boxShadow={isOpen ? "none" : "xl"} width="100%" position="relative">
         <Button
-          bg={hasActiveFilters ? 'gray.100' : 'white'}
+          bg="white"
           color="gray.700"
-          _hover={{ bg: hasActiveFilters ? 'gray.100' : 'gray.50' }}
+          _hover={{ bg: 'gray.50' }}
           _active={{ bg: 'gray.100' }}
           fontSize="sm"
           onClick={() => setIsOpen(!isOpen)}
