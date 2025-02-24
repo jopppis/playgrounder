@@ -104,135 +104,148 @@ const MenuDrawer = ({
   return (
     <>
       {isOpen && (
-        <Box
-          position="fixed"
-          top={0}
-          right={0}
-          h="100%"
-          maxH="100%"
-          w={{ base: "85%", sm: "300px" }}
-          maxW="300px"
-          bg="white"
-          boxShadow="dark-lg"
-          p={4}
-          zIndex={2000}
-          color="gray.700"
-          borderLeft="1px solid"
-          borderColor="brand.100"
-          display="flex"
-          flexDirection="column"
-          overflowY="auto"
-          overflowX="hidden"
-          onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-          }}
-          data-testid="menu-drawer"
-        >
-          <Box pt={14} flex={1}>
-            {!showAbout && !showStats && !showAccount ? (
-              <Flex direction="column" gap={4} h="100%">
-                {user ? (
-                  <>
-                    <Box>
-                      <Text fontSize="sm" color="gray.500">
-                        {t('auth.user.email')}
-                      </Text>
-                      <Text fontSize="md" fontWeight="medium" color="gray.700">
-                        {user.email}
-                      </Text>
-                    </Box>
-                    <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                      <Button
-                        {...buttonProps}
-                        onClick={handleSignOut}
-                      >
-                        {t('auth.signOut.button')}
-                      </Button>
-                      <Button
-                        {...buttonProps}
-                        onClick={() => setShowAccount(true)}
-                      >
-                        {t('menu.buttons.account')}
-                      </Button>
+        <>
+          <Box
+            position="fixed"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="transparent"
+            zIndex={1999}
+            onClick={onClose}
+            data-testid="menu-drawer-overlay"
+          />
+          <Box
+            position="fixed"
+            top={0}
+            right={0}
+            h="100%"
+            maxH="100%"
+            w={{ base: "85%", sm: "300px" }}
+            maxW="300px"
+            bg="white"
+            boxShadow="dark-lg"
+            p={4}
+            zIndex={2000}
+            color="gray.700"
+            borderLeft="1px solid"
+            borderColor="brand.100"
+            display="flex"
+            flexDirection="column"
+            overflowY="auto"
+            overflowX="hidden"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
+            data-testid="menu-drawer"
+          >
+            <Box pt={14} flex={1}>
+              {!showAbout && !showStats && !showAccount ? (
+                <Flex direction="column" gap={4} h="100%">
+                  {user ? (
+                    <>
+                      <Box>
+                        <Text fontSize="sm" color="gray.500">
+                          {t('auth.user.email')}
+                        </Text>
+                        <Text fontSize="md" fontWeight="medium" color="gray.700">
+                          {user.email}
+                        </Text>
+                      </Box>
+                      <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                        <Button
+                          {...buttonProps}
+                          onClick={handleSignOut}
+                        >
+                          {t('auth.signOut.button')}
+                        </Button>
+                        <Button
+                          {...buttonProps}
+                          onClick={() => setShowAccount(true)}
+                        >
+                          {t('menu.buttons.account')}
+                        </Button>
+                      </Grid>
+                    </>
+                  ) : (
+                    <Grid
+                      templateColumns={{ base: "1fr", sm: "repeat(2, minmax(0, 1fr))" }}
+                      gap={2}
+                      w="100%"
+                    >
+                      <GridItem w="100%">
+                        <Button
+                          {...buttonProps}
+                          onClick={(e) => handleClick(e, () => setShowSignUp(true))}
+                          minW={0}
+                        >
+                          <Icon as={FaUserPlus} boxSize={3.5} flexShrink={0} />
+                          <Box as="span">
+                            {t('auth.signUp.title')}
+                          </Box>
+                        </Button>
+                      </GridItem>
+                      <GridItem w="100%">
+                        <Button
+                          {...buttonProps}
+                          onClick={(e) => handleClick(e, () => setShowSignIn(true))}
+                          minW={0}
+                        >
+                          <Icon as={FaSignInAlt} boxSize={3.5} flexShrink={0} />
+                          <Box as="span">
+                            {t('auth.signIn.title')}
+                          </Box>
+                        </Button>
+                      </GridItem>
                     </Grid>
-                  </>
-                ) : (
-                  <Grid
-                    templateColumns={{ base: "1fr", sm: "repeat(2, minmax(0, 1fr))" }}
-                    gap={2}
-                    w="100%"
+                  )}
+                  <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
+                  <Button
+                    {...buttonProps}
+                    onClick={(e) => handleClick(e, () => setShowStats(true))}
                   >
-                    <GridItem w="100%">
-                      <Button
-                        {...buttonProps}
-                        onClick={(e) => handleClick(e, () => setShowSignUp(true))}
-                        minW={0}
-                      >
-                        <Icon as={FaUserPlus} boxSize={3.5} flexShrink={0} />
-                        <Box as="span">
-                          {t('auth.signUp.title')}
-                        </Box>
-                      </Button>
-                    </GridItem>
-                    <GridItem w="100%">
-                      <Button
-                        {...buttonProps}
-                        onClick={(e) => handleClick(e, () => setShowSignIn(true))}
-                        minW={0}
-                      >
-                        <Icon as={FaSignInAlt} boxSize={3.5} flexShrink={0} />
-                        <Box as="span">
-                          {t('auth.signIn.title')}
-                        </Box>
-                      </Button>
-                    </GridItem>
-                  </Grid>
-                )}
-                <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
+                    <Icon as={HiChartBar} boxSize={4} />
+                    <Text>{t('stats.title')}</Text>
+                  </Button>
+                </Flex>
+              ) : showStats ? (
+                <Stats
+                  playgrounds={playgrounds}
+                  visits={visits}
+                  filters={filters}
+                  filteredPlaygroundCount={filteredPlaygroundCount}
+                  onBack={() => setShowStats(false)}
+                  currentCity={currentCity}
+                />
+              ) : showAccount ? (
+                <Account onBack={() => setShowAccount(false)} />
+              ) : (
+                <About onBack={() => setShowAbout(false)} />
+              )}
+            </Box>
+            {!showAbout && !showStats && !showAccount && (
+              <Box pt={4} borderTop="1px solid" borderColor="brand.100">
                 <Button
                   {...buttonProps}
-                  onClick={(e) => handleClick(e, () => setShowStats(true))}
+                  onClick={(e) => handleClick(e, () => setShowAbout(true))}
+                  mb={4}
                 >
-                  <Icon as={HiChartBar} boxSize={4} />
-                  <Text>{t('stats.title')}</Text>
+                  {t('menu.buttons.about')}
                 </Button>
-              </Flex>
-            ) : showStats ? (
-              <Stats
-                playgrounds={playgrounds}
-                visits={visits}
-                filters={filters}
-                filteredPlaygroundCount={filteredPlaygroundCount}
-                onBack={() => setShowStats(false)}
-                currentCity={currentCity}
-              />
-            ) : showAccount ? (
-              <Account onBack={() => setShowAccount(false)} />
-            ) : (
-              <About onBack={() => setShowAbout(false)} />
+                <Box borderTop="1px solid" borderColor="brand.100" pt={4}>
+                  <Flex align="center" gap={2}>
+                    <Icon as={HiLanguage} boxSize={5} color="brand.500" />
+                    <Box flex={1}>
+                      <LanguageSwitcher />
+                    </Box>
+                  </Flex>
+                </Box>
+              </Box>
             )}
           </Box>
-          {!showAbout && !showStats && !showAccount && (
-            <Box pt={4} borderTop="1px solid" borderColor="brand.100">
-              <Button
-                {...buttonProps}
-                onClick={(e) => handleClick(e, () => setShowAbout(true))}
-                mb={4}
-              >
-                {t('menu.buttons.about')}
-              </Button>
-              <Box borderTop="1px solid" borderColor="brand.100" pt={4}>
-                <Flex align="center" gap={2}>
-                  <Icon as={HiLanguage} boxSize={5} color="brand.500" />
-                  <Box flex={1}>
-                    <LanguageSwitcher />
-                  </Box>
-                </Flex>
-              </Box>
-            </Box>
-          )}
-        </Box>
+        </>
       )}
 
       {showSignUp && (

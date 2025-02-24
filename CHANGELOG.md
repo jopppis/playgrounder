@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Updated attributions and moved to separate component
+- Hide drawer when clicking outside it
 
 ## [0.7.4] - 2025-02-24
 
