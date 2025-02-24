@@ -137,7 +137,8 @@
     },
     "buttons": {
       "about": "About",
-      "close": "×"
+      "close": "×",
+      "account": "Account"
     },
     "language": "Language",
     "language.changed": {
@@ -145,7 +146,11 @@
       "message": "Application language has been updated"
     },
     "fi": "Suomi",
-    "en": "English"
+    "en": "English",
+    "account": {
+      "title": "Account Settings",
+      "backButton": "Back to Menu"
+    }
   },
   "map": {
     "loading": "Loading...",

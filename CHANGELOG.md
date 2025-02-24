@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Try to fix layer control falling off the screen on mobile Safari
+
+### Added
+- Added Account section to menu drawer
+
 ## [0.7.3] - 2025-02-24
 
 ### Changed

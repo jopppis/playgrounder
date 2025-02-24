@@ -1,13 +1,13 @@
 import {
-  Box,
-  Button,
-  ButtonProps,
-  Flex,
-  Grid,
-  GridItem,
-  Icon,
-  Link,
-  Text
+    Box,
+    Button,
+    ButtonProps,
+    Flex,
+    Grid,
+    GridItem,
+    Icon,
+    Link,
+    Text
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,7 @@ import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
 import { supabase } from '../lib/supabaseClient'
 import { Visit } from '../types/database.types'
+import Account from './Account'
 import ChangePasswordModal from './Auth/ChangePasswordModal'
 import RemoveAccount from './Auth/RemoveAccount'
 import SignInModal from './Auth/SignInModal'
@@ -53,6 +54,7 @@ const MenuDrawer = ({
   const [showAbout, setShowAbout] = useState(false)
   const [showStats, setShowStats] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
+  const [showAccount, setShowAccount] = useState(false)
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
   const toast = useToast()
@@ -61,6 +63,7 @@ const MenuDrawer = ({
     if (!isOpen) {
       setShowAbout(false)
       setShowStats(false)
+      setShowAccount(false)
     }
   }, [isOpen])
 
@@ -127,7 +130,7 @@ const MenuDrawer = ({
           data-testid="menu-drawer"
         >
           <Box pt={14} flex={1}>
-            {!showAbout && !showStats ? (
+            {!showAbout && !showStats && !showAccount ? (
               <Flex direction="column" gap={4} h="100%">
                 {user ? (
                   <>
@@ -139,27 +142,20 @@ const MenuDrawer = ({
                         {user.email}
                       </Text>
                     </Box>
-                    <Button
-                      {...buttonProps}
-                      onClick={handleSignOut}
-                    >
-                      {t('auth.signOut.button')}
-                    </Button>
-                    <Button
-                      {...buttonProps}
-                      onClick={() => setShowChangePassword(true)}
-                    >
-                      {t('auth.changePassword.button.default')}
-                    </Button>
-                    <Button
-                      {...buttonProps}
-                      bg="red.500"
-                      borderColor="red.500"
-                      _hover={{ bg: 'red.600', borderColor: 'red.600' }}
-                      onClick={() => setShowRemoveAccount(true)}
-                    >
-                      {t('auth.removeAccount.button')}
-                    </Button>
+                    <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                      <Button
+                        {...buttonProps}
+                        onClick={handleSignOut}
+                      >
+                        {t('auth.signOut.button')}
+                      </Button>
+                      <Button
+                        {...buttonProps}
+                        onClick={() => setShowAccount(true)}
+                      >
+                        {t('menu.buttons.account')}
+                      </Button>
+                    </Grid>
                   </>
                 ) : (
                   <Grid
@@ -204,6 +200,8 @@ const MenuDrawer = ({
                 onBack={() => setShowStats(false)}
                 currentCity={currentCity}
               />
+            ) : showAccount ? (
+              <Account onBack={() => setShowAccount(false)} />
             ) : (
               <>
                 <Text fontSize="lg" fontWeight="bold" color="brand.500" mb={4}>
@@ -257,7 +255,7 @@ const MenuDrawer = ({
               </>
             )}
           </Box>
-          {!showAbout && !showStats && (
+          {!showAbout && !showStats && !showAccount && (
             <Box pt={4} borderTop="1px solid" borderColor="brand.100">
               <Grid templateColumns="repeat(2, 1fr)" gap={2} mb={4}>
                 <Button

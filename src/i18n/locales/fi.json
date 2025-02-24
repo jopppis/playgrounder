@@ -137,7 +137,8 @@
     },
     "buttons": {
       "about": "Tietoa",
-      "close": "×"
+      "close": "×",
+      "account": "Tili"
     },
     "language": "Kieli",
     "language.changed": {
@@ -145,7 +146,11 @@
       "message": "Sovelluksen kieli on päivitetty"
     },
     "fi": "Suomi",
-    "en": "English"
+    "en": "English",
+    "account": {
+      "title": "Tilin asetukset",
+      "backButton": "Takaisin valikkoon"
+    }
   },
   "map": {
     "loading": "Ladataan...",
