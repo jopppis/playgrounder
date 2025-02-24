@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added Account section to menu drawer
-
+- Info tip for public rating explanation
 ### Changed
 - Move stats to own section in menu drawer
 

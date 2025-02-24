@@ -195,7 +195,8 @@
           "message": "Arvion näkyvyyden päivitys epäonnistui"
         }
       },
-      "requiredForPublic": "Sinun täytyy arvioida leikkipaikka ennen kuin voit tehdä siitä julkisen"
+      "requiredForPublic": "Sinun täytyy arvioida leikkipaikka ennen kuin voit tehdä siitä julkisen",
+      "publicExplanation": "Julkiset arviot lasketaan kaikille käyttäjille näkyvään keskiarvoon ja arvioiden määrään.\n\nKäyttäjäkohtaista tietoa ei julkaista."
     },
     "makePublic": "Julkinen",
     "supervision": {

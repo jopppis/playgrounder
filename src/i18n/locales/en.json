@@ -195,7 +195,8 @@
           "message": "Failed to update rating visibility"
         }
       },
-      "requiredForPublic": "You need to rate the playground before making it public"
+      "requiredForPublic": "You need to rate the playground before making it public",
+      "publicExplanation": "Public ratings will be included in the average score and rating count.\n\nOnly aggregated data is ever shown to other users."
     },
     "makePublic": "Public",
     "supervision": {

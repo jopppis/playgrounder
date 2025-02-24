@@ -19,6 +19,7 @@ import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates } from '../types/database.types'
 import { Switch } from './ui/switch'
+import { InfoTip } from './ui/toggle-tip'
 import { Tooltip } from './ui/tooltip'
 
 interface PlaygroundPopupProps {
@@ -409,6 +410,9 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                   >
                     {t('playground.makePublic')}
                   </Text>
+                  <InfoTip>
+                    {t('playground.rating.publicExplanation')}
+                  </InfoTip>
                   <Box
                     onClick={() => {
                       if (!user) {
