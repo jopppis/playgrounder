@@ -9,7 +9,7 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar, FaTimes } from 'react-icons/fa'
 import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
@@ -39,12 +39,12 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   const hasShownLoginToast = useRef(false)
 
   // Add showLoginToast helper function
-  const showLoginToast = () => {
+  const showLoginToast = useCallback(() => {
     toast.showInfo({
       title: t('common.loginRequired'),
       description: t('playground.loginToInteract')
     })
-  }
+  }, [toast, t])
 
   // Use useEffect to update hasVisited when visits change
   const [hasVisited, setHasVisited] = useState(false)
@@ -71,7 +71,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
       hasShownLoginToast.current = true
       showLoginToast()
     }
-  }, [user, authLoading, toast, t])
+  }, [user, authLoading, toast, t, showLoginToast])
 
   const handleVisit = async () => {
     if (!user) {
