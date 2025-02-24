@@ -7,23 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Use new icon
+
 ## [0.6.0] - 2025-02-24
-
-## [0.5.1] - 2025-02-24
-
-### Fixed
-- Build failing
 
 ### Changed
 - Use canvas renderer for better performance
 - Improved popup design
 - Improved stats design
+
 ### Added
 - Request location on mount
 - Remove filter button
 - Save user filters to database
 - Visual cue of active filters
 - Statistics of current city
+
+## [0.5.1] - 2025-02-24
+
+### Fixed
+- Build failing
 
 ## [0.5.0] - 2025-02-23
 
