@@ -31,7 +31,7 @@ export type MenuDrawerProps = {
   showSignIn: boolean
   setShowSignIn: (show: boolean) => void
   filters?: {
-    visitStatus: 'all' | 'visited' | 'unvisited'
+    visitStatus: 'visited' | 'unvisited' | null
     minStars: number | null
     minUserStars: number | null
     hasSupervised: boolean | null

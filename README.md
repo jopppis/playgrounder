@@ -51,7 +51,6 @@ npm run dev
 - Security audit
 - Run coverage and improve it
 - Linter warnings
--
 
 ## Contributing
 

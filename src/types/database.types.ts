@@ -44,6 +44,18 @@ export interface PublicRating {
   updated_at: string
 }
 
+export interface UserFilter {
+  id: string
+  user_id: string
+  visit_status: 'visited' | 'unvisited' | null
+  min_stars: number | null
+  min_user_stars: number | null
+  has_supervised_activities: boolean | null
+  city: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -61,6 +73,11 @@ export interface Database {
         Row: Rating
         Insert: Omit<Rating, 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<Rating, 'id' | 'created_at' | 'updated_at'>>
+      }
+      user_filters: {
+        Row: UserFilter
+        Insert: Omit<UserFilter, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<UserFilter, 'id' | 'created_at' | 'updated_at'>>
       }
     }
     Functions: {

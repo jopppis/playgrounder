@@ -9,11 +9,12 @@ import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
 import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
+import { useUserFilters } from '../hooks/useUserFilters'
 import { useVisits } from '../hooks/useVisits'
 import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import MenuDrawer from './MenuDrawer'
-import { FilterOptions, PlaygroundFilter } from './PlaygroundFilter'
+import { PlaygroundFilter } from './PlaygroundFilter'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
 // Add styles to head
@@ -277,14 +278,8 @@ const PlaygroundMap = () => {
   const { user } = useAuth()
   const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
   const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
+  const { filters, loading: filtersLoading, updateFilters } = useUserFilters()
   const [ratings, setRatings] = useState<PlaygroundRating[]>([])
-  const [filters, setFilters] = useState<FilterOptions>({
-    visitStatus: 'all',
-    minStars: null,
-    minUserStars: null,
-    hasSupervised: null,
-    city: null
-  })
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const mapRef = useRef<L.Map | null>(null)
@@ -351,7 +346,7 @@ const PlaygroundMap = () => {
       }
 
       // Filter by visit status
-      if (user && filters.visitStatus !== 'all') {
+      if (user && filters.visitStatus !== null) {
         const hasVisited = visits.some(visit => visit.playground_id === playground.id)
         if (filters.visitStatus === 'visited' && !hasVisited) return false
         if (filters.visitStatus === 'unvisited' && hasVisited) return false
@@ -379,7 +374,7 @@ const PlaygroundMap = () => {
     })
   }, [playgrounds, filters, user, visits, ratings])
 
-  if (playgroundsLoading || visitsLoading) {
+  if (playgroundsLoading || visitsLoading || filtersLoading) {
     return (
       <Box height="100vh" display="flex" alignItems="center" justifyContent="center">
         <Spinner size="xl" color="brand.500" />
@@ -389,7 +384,7 @@ const PlaygroundMap = () => {
 
   return (
     <Box position="relative" height="100%" width="100%">
-      <PlaygroundFilter filters={filters} onChange={setFilters} />
+      <PlaygroundFilter filters={filters} onChange={updateFilters} />
       <Box position="fixed" top={2} right={4} zIndex={2200}>
         <Button
           size="md"

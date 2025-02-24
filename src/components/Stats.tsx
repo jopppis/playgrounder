@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 
 type Filters = {
-  visitStatus: 'all' | 'visited' | 'unvisited'
+  visitStatus: 'visited' | 'unvisited' | null
   minStars: number | null
   minUserStars: number | null
   hasSupervised: boolean | null
@@ -59,15 +59,12 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack }
     </Box>
   )
 
-  const hasActiveFilters = (filters: Filters | undefined) => {
-    if (!filters) return false
-    return (
-      filters.visitStatus !== 'all' ||
+  const hasActiveFilters = (filters: Filters) => {
+    return filters.visitStatus !== null ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
       filters.hasSupervised !== null ||
       filters.city !== null
-    )
   }
 
   // Calculate filtered visited count

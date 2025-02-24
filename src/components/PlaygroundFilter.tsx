@@ -17,7 +17,7 @@ import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 
 export interface FilterOptions {
-  visitStatus: 'all' | 'visited' | 'unvisited'
+  visitStatus: 'visited' | 'unvisited' | null
   minStars: number | null
   minUserStars: number | null
   hasSupervised: boolean | null
@@ -38,7 +38,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const { playgrounds } = usePlaygrounds()
 
   const hasActiveFilters = useMemo(() => {
-    return filters.visitStatus !== 'all' ||
+    return filters.visitStatus !== null ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
       filters.hasSupervised !== null ||
@@ -47,7 +47,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
   const resetFilters = () => {
     onChange({
-      visitStatus: 'all',
+      visitStatus: null,
       minStars: null,
       minUserStars: null,
       hasSupervised: null,
@@ -303,7 +303,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     isSelected={filters.visitStatus === 'visited'}
                     onClick={() => onChange({
                       ...filters,
-                      visitStatus: filters.visitStatus === 'visited' ? 'all' : 'visited'
+                      visitStatus: filters.visitStatus === 'visited' ? null : 'visited'
                     })}
                   />
                   <FilterButton
@@ -311,7 +311,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     isSelected={filters.visitStatus === 'unvisited'}
                     onClick={() => onChange({
                       ...filters,
-                      visitStatus: filters.visitStatus === 'unvisited' ? 'all' : 'unvisited'
+                      visitStatus: filters.visitStatus === 'unvisited' ? null : 'unvisited'
                     })}
                   />
                 </Stack>
