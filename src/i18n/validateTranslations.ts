@@ -2,13 +2,13 @@ import en from './locales/en.json';
 import fi from './locales/fi.json';
 
 type TranslationObject = {
-  [key: string]: string | TranslationObject;
+  [key: string]: string | string[] | TranslationObject;
 };
 
 function getAllKeys(obj: TranslationObject, parentKey = ''): string[] {
   return Object.entries(obj).reduce((keys: string[], [key, value]) => {
     const currentKey = parentKey ? `${parentKey}.${key}` : key;
-    if (typeof value === 'object' && value !== null) {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       return [...keys, ...getAllKeys(value as TranslationObject, currentKey)];
     }
     return [...keys, currentKey];
