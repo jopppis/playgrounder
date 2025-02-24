@@ -427,6 +427,7 @@ const PlaygroundMap = () => {
         style={{ height: '100%', width: '100%' }}
         ref={mapRef}
         zoomControl={false}
+        preferCanvas={true}
       >
         <TileLayer
           attribution={t('map.attribution')}
