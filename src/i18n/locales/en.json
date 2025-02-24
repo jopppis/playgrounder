@@ -130,10 +130,46 @@
     "about": {
       "title": "About PlaygroundMap",
       "description": "PlaygroundMap is meant to help families find good local playgrounds. On PlaygroundMap you can find new playgrounds, rate them and track your visits, without fees, ads or tracking.",
-      "acknowledgments": "Map data © OpenStreetMap contributors. Map styles by CARTO (Voyager) and OpenStreetMap. Aerial imagery © Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community. Icons by FontAwesome. Built with React, Chakra UI, and Supabase.",
       "github": "View on GitHub",
       "backButton": "Back to Menu",
-      "version": "Version"
+      "version": "Version",
+      "attributionsButton": "View Attributions"
+    },
+    "attributions": {
+      "title": "Attributions",
+      "backButton": "Back to About",
+      "sections": {
+        "technologies": {
+          "title": "Technologies",
+          "content": [
+            "React - Web framework",
+            "Chakra UI - Component library",
+            "Supabase - Backend and authentication"
+          ]
+        },
+        "mapLayers": {
+          "title": "Map Layers",
+          "content": [
+            "Map data © OpenStreetMap contributors",
+            "Map style by CARTO (Voyager)",
+            "Map style by OpenStreetMap",
+            "Aerial imagery © Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+          ]
+        },
+        "playgroundInfo": {
+          "title": "Playground Information",
+          "content": [
+            "Pääkaupunkiseudun Palvelukartan rajapinnat. Aineiston ylläpitäjä on Helsingin kaupunginkanslia / Digitalisaatioyksikkö ja alkuperäinen tekijä Helsingin, Espoon, Vantaan ja Kauniaisten kaupungit. Aineisto on ladattu Helsinki Region Infoshare -palvelusta 24.02.2025 lisenssillä Creative Commons Attribution 4.0. "
+          ]
+        },
+        "icons": {
+          "title": "Icons",
+          "content": [
+            "FontAwesome",
+            "Heroicons"
+          ]
+        }
+      }
     },
     "buttons": {
       "about": "About",

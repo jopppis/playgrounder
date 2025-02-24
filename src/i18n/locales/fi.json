@@ -130,10 +130,46 @@
     "about": {
       "title": "Tietoa Leikkipuistokartasta",
       "description": "Leikkipuistokartta on tarkoitettu tarkoitettu auttamaan perheitä löytämään hyviä leikkipaikkoja. Leikkipuistokartalta voit löytää uusia leikkipaikkoja, arvostella niitä sekä seurata käytejäsi, ilman maksuja, mainoksia tai seurantaa.",
-      "acknowledgments": "Kartta-aineisto © OpenStreetMap contributors. Karttatyylit CARTO (Voyager) ja OpenStreetMap. Ilmakuvat © Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, ja GIS User Community. Ikonit FontAwesome. Toteutettu React, Chakra UI ja Supabase -teknologioilla.",
       "github": "Katso GitHubissa",
       "backButton": "Takaisin valikkoon",
-      "version": "Versio"
+      "version": "Versio",
+      "attributionsButton": "Näytä lähdeviittaukset"
+    },
+    "attributions": {
+      "title": "Lähdeviittaukset",
+      "backButton": "Takaisin tietoihin",
+      "sections": {
+        "technologies": {
+          "title": "Teknologiat",
+          "content": [
+            "React - Web-sovelluskehys",
+            "Chakra UI - Komponenttikirjasto",
+            "Supabase - Taustajärjestelmä ja tunnistautuminen"
+          ]
+        },
+        "mapLayers": {
+          "title": "Karttatasot",
+          "content": [
+            "Kartta-aineisto © OpenStreetMap contributors",
+            "Karttatyyli CARTO (Voyager)",
+            "Karttatyyli OpenStreetMap",
+            "Ilmakuvat © Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, ja GIS User Community"
+          ]
+        },
+        "playgroundInfo": {
+          "title": "Leikkipaikkatiedot",
+          "content": [
+            "Pääkaupunkiseudun Palvelukartan rajapinnat. Aineiston ylläpitäjä on Helsingin kaupunginkanslia / Digitalisaatioyksikkö ja alkuperäinen tekijä Helsingin, Espoon, Vantaan ja Kauniaisten kaupungit. Aineisto on ladattu Helsinki Region Infoshare -palvelusta 09.02.2025 lisenssillä Creative Commons Attribution 4.0."
+          ]
+        },
+        "icons": {
+          "title": "Ikonit",
+          "content": [
+            "FontAwesome",
+            "Heroicons"
+          ]
+        }
+      }
     },
     "buttons": {
       "about": "Tietoa",

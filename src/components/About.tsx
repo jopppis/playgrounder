@@ -1,6 +1,8 @@
 import { Box, Button, ButtonProps, Icon, Link, Text } from '@chakra-ui/react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaGithub } from 'react-icons/fa'
+import Attributions from './Attributions'
 
 type AboutProps = {
   onBack: () => void
@@ -8,6 +10,7 @@ type AboutProps = {
 
 const About = ({ onBack }: AboutProps) => {
   const { t } = useTranslation()
+  const [showAttributions, setShowAttributions] = useState(false)
 
   const buttonProps: ButtonProps = {
     w: "100%",
@@ -31,6 +34,10 @@ const About = ({ onBack }: AboutProps) => {
   const handleClick = (e: React.MouseEvent, action: () => void) => {
     e.stopPropagation()
     action()
+  }
+
+  if (showAttributions) {
+    return <Attributions onBack={() => setShowAttributions(false)} />
   }
 
   return (
@@ -74,9 +81,13 @@ const About = ({ onBack }: AboutProps) => {
         <Text>{t('menu.about.version')}:</Text>
         <Text>{import.meta.env.APP_VERSION}-{import.meta.env.BUILD_ID}</Text>
       </Link>
-      <Text fontSize="sm" color="gray.500" mb={4}>
-        {t('menu.about.acknowledgments')}
-      </Text>
+      <Button
+        {...buttonProps}
+        onClick={(e) => handleClick(e, () => setShowAttributions(true))}
+        mb={2}
+      >
+        {t('menu.about.attributionsButton')}
+      </Button>
       <Button
         {...buttonProps}
         onClick={(e) => handleClick(e, () => onBack())}
