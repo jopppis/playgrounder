@@ -308,7 +308,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                   cursor={!user ? "pointer" : "default"}
                 >
                   <Switch
-                    size="sm"
+                    size="md"
                     checked={hasVisited}
                     onCheckedChange={async () => {
                       if (!user) {
@@ -344,7 +344,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
           <Box>
             <Box borderBottom="1px solid" borderColor="gray.200" mb={2} />
             {ratingLoading ? (
-              <Spinner size="sm" color="brand.500" role="status" aria-label={t('playground.rating.loading')} />
+              <Spinner size="md" color="brand.500" role="status" aria-label={t('playground.rating.loading')} />
             ) : (
               <HStack gap={2} justify="space-between" align="center">
                 <HStack gap={0.5}>
@@ -432,7 +432,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                     cursor={(!user || !rating?.userRating) ? "pointer" : "default"}
                   >
                     <Switch
-                      size="sm"
+                      size="md"
                       checked={rating?.isPublic}
                       onCheckedChange={handleTogglePublic}
                       disabled={!user || !rating?.userRating}
