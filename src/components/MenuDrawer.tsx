@@ -1,13 +1,13 @@
 import {
-    Box,
-    Button,
-    ButtonProps,
-    Flex,
-    Grid,
-    GridItem,
-    Icon,
-    Link,
-    Text
+  Box,
+  Button,
+  ButtonProps,
+  Flex,
+  Grid,
+  GridItem,
+  Icon,
+  Link,
+  Text
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -190,6 +190,13 @@ const MenuDrawer = ({
                   </Grid>
                 )}
                 <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
+                <Button
+                  {...buttonProps}
+                  onClick={(e) => handleClick(e, () => setShowStats(true))}
+                >
+                  <Icon as={HiChartBar} boxSize={4} />
+                  <Text>{t('stats.title')}</Text>
+                </Button>
               </Flex>
             ) : showStats ? (
               <Stats
@@ -257,21 +264,13 @@ const MenuDrawer = ({
           </Box>
           {!showAbout && !showStats && !showAccount && (
             <Box pt={4} borderTop="1px solid" borderColor="brand.100">
-              <Grid templateColumns="repeat(2, 1fr)" gap={2} mb={4}>
-                <Button
-                  {...buttonProps}
-                  onClick={(e) => handleClick(e, () => setShowStats(true))}
-                >
-                  <Icon as={HiChartBar} boxSize={4} />
-                  <Text>{t('stats.title')}</Text>
-                </Button>
-                <Button
-                  {...buttonProps}
-                  onClick={(e) => handleClick(e, () => setShowAbout(true))}
-                >
-                  {t('menu.buttons.about')}
-                </Button>
-              </Grid>
+              <Button
+                {...buttonProps}
+                onClick={(e) => handleClick(e, () => setShowAbout(true))}
+                mb={4}
+              >
+                {t('menu.buttons.about')}
+              </Button>
               <Box borderTop="1px solid" borderColor="brand.100" pt={4}>
                 <Flex align="center" gap={2}>
                   <Icon as={HiLanguage} boxSize={5} color="brand.500" />

@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added Account section to menu drawer
 
+### Changed
+- Move stats to own section in menu drawer
+
 ## [0.7.3] - 2025-02-24
 
 ### Changed
