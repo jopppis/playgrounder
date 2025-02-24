@@ -78,15 +78,15 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
   const filterPosition = useBreakpointValue({
     base: {
-      top: '2',
+      top: '4',
       left: '24px',
       width: isOpen ? '250px' : '40px',
       maxWidth: isOpen ? '250px' : '40px',
       right: 'auto',
       transition: 'width 0.2s, max-width 0.2s'
     },
-    sm: { top: '2', left: '24px', width: '300px', maxWidth: '300px', right: 'auto' },
-    md: { top: '2', left: '24px', width: '350px', maxWidth: '350px', right: 'auto' }
+    sm: { top: '4', left: '24px', width: '300px', maxWidth: '300px', right: 'auto' },
+    md: { top: '4', left: '24px', width: '350px', maxWidth: '350px', right: 'auto' }
   })
 
   const buttonStyle = useBreakpointValue({
@@ -165,11 +165,11 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       zIndex={1000}
       ref={filterRef}
     >
-      <Box bg="gray.50" borderRadius="md" boxShadow="base" width="100%" position="relative">
+      <Box bg="white" borderRadius={isOpen ? "md md 0 0" : "md"} boxShadow={isOpen ? "none" : "xl"} width="100%" position="relative">
         <Button
-          bg={hasActiveFilters ? 'gray.100' : 'transparent'}
+          bg={hasActiveFilters ? 'gray.100' : 'white'}
           color="gray.700"
-          _hover={{ bg: hasActiveFilters ? 'gray.200' : 'gray.50' }}
+          _hover={{ bg: hasActiveFilters ? 'gray.100' : 'gray.50' }}
           _active={{ bg: 'gray.100' }}
           fontSize="sm"
           onClick={() => setIsOpen(!isOpen)}
@@ -177,6 +177,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
           position="relative"
           zIndex="2"
           aria-label={t('filterPlaygrounds')}
+          boxShadow="none"
         >
           {showButtonText ? (
             <HStack width="100%" justify="space-between">
@@ -218,15 +219,13 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
             align="stretch"
             p={2}
             gap={1.5}
-            bg="gray.50"
+            bg="white"
             width="100%"
             position={{ base: 'absolute', sm: 'static' }}
             left={{ base: '0', sm: 'auto' }}
-            top={{ base: '38px', sm: 'auto' }}
+            top={{ base: '32px', sm: 'auto' }}
             borderRadius="0 0 md md"
-            boxShadow="base"
-            borderTop="1px"
-            borderColor="gray.200"
+            boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
             zIndex="1"
           >
             {hasActiveFilters && (

@@ -403,7 +403,7 @@ const PlaygroundMap = () => {
   return (
     <Box position="relative" height="100%" width="100%">
       <PlaygroundFilter filters={filters} onChange={updateFilters} />
-      <Box position="fixed" top={2} right={4} zIndex={2200}>
+      <Box position="fixed" top={4} right={4} zIndex={2200}>
         <Button
           size="md"
           variant="solid"
