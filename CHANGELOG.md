@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added no ratings filter
 
+### Changed
+- Make filter menu scorllable
+
 ## [0.8.1] - 2025-02-24
 
 ### Changed
