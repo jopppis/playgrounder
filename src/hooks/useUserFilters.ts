@@ -10,7 +10,9 @@ export const useUserFilters = () => {
     minStars: null,
     minUserStars: null,
     hasSupervised: null,
-    city: null
+    city: null,
+    noRating: null,
+    noUserRating: null
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -23,7 +25,9 @@ export const useUserFilters = () => {
         minStars: null,
         minUserStars: null,
         hasSupervised: null,
-        city: null
+        city: null,
+        noRating: null,
+        noUserRating: null
       })
       setLoading(false)
       return
@@ -44,7 +48,9 @@ export const useUserFilters = () => {
           minStars: data.min_stars,
           minUserStars: data.min_user_stars,
           hasSupervised: data.has_supervised_activities,
-          city: data.city
+          city: data.city,
+          noRating: data.no_rating,
+          noUserRating: data.no_user_rating
         })
       }
     } catch (err) {
@@ -68,7 +74,9 @@ export const useUserFilters = () => {
         min_stars: newFilters.minStars,
         min_user_stars: newFilters.minUserStars,
         has_supervised_activities: newFilters.hasSupervised,
-        city: newFilters.city
+        city: newFilters.city,
+        no_rating: newFilters.noRating,
+        no_user_rating: newFilters.noUserRating
       }
 
       const { error } = await supabase

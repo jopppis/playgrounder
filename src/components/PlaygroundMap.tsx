@@ -387,11 +387,29 @@ const PlaygroundMap = () => {
         }
       }
 
+      // Filter for playgrounds with no rating
+      if (filters.noRating === true) {
+        const rating = ratings.find(r => r.playground_id === playground.id)
+        // Only show playgrounds with no rating
+        if (rating?.avg_rating) {
+          return false
+        }
+      }
+
       // Filter by user's own rating
       if (user && filters.minUserStars !== null) {
         const userRating = ratings.find(r => r.playground_id === playground.id)?.user_rating
         // Hide unrated playgrounds or those with user rating below the minimum
         if (!userRating || userRating < filters.minUserStars) {
+          return false
+        }
+      }
+
+      // Filter for playgrounds with no user rating
+      if (user && filters.noUserRating === true) {
+        const userRating = ratings.find(r => r.playground_id === playground.id)?.user_rating
+        // Only show playgrounds with no user rating
+        if (userRating) {
           return false
         }
       }

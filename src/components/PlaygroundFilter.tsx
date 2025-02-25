@@ -1,12 +1,12 @@
 import {
-    Box,
-    Button,
-    HStack,
-    NativeSelect,
-    Stack,
-    Text,
-    VStack,
-    useBreakpointValue
+  Box,
+  Button,
+  HStack,
+  NativeSelect,
+  Stack,
+  Text,
+  VStack,
+  useBreakpointValue
 } from '@chakra-ui/react'
 import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -22,6 +22,8 @@ export interface FilterOptions {
   minUserStars: number | null
   hasSupervised: boolean | null
   city: string | null
+  noRating: boolean | null
+  noUserRating: boolean | null
 }
 
 interface PlaygroundFilterProps {
@@ -42,14 +44,17 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     if (!user) {
       return filters.minStars !== null ||
         filters.hasSupervised !== null ||
-        filters.city !== null
+        filters.city !== null ||
+        filters.noRating !== null
     }
     // For logged in users, check all filters
     return filters.visitStatus !== null ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
       filters.hasSupervised !== null ||
-      filters.city !== null
+      filters.city !== null ||
+      filters.noRating !== null ||
+      filters.noUserRating !== null
   }, [filters, user])
 
   const resetFilters = () => {
@@ -59,7 +64,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
         ...filters,
         minStars: null,
         hasSupervised: null,
-        city: null
+        city: null,
+        noRating: null
       })
       return
     }
@@ -69,7 +75,9 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       minStars: null,
       minUserStars: null,
       hasSupervised: null,
-      city: null
+      city: null,
+      noRating: null,
+      noUserRating: null
     })
   }
 
@@ -378,7 +386,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     isSelected={filters.minStars === stars}
                     onClick={() => onChange({
                       ...filters,
-                      minStars: filters.minStars === stars ? null : stars
+                      minStars: filters.minStars === stars ? null : stars,
+                      noRating: null
                     })}
                   />
                 ))}
@@ -424,10 +433,21 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                         isSelected={filters.minStars === stars}
                         onClick={() => onChange({
                           ...filters,
-                          minStars: filters.minStars === stars ? null : stars
+                          minStars: filters.minStars === stars ? null : stars,
+                          noRating: null
                         })}
                       />
                     ))}
+
+                    <FilterButton
+                      value={t('noRating')}
+                      isSelected={filters.noRating === true}
+                      onClick={() => onChange({
+                        ...filters,
+                        noRating: filters.noRating === true ? null : true,
+                        minStars: null
+                      })}
+                    />
 
                     {/* User ratings filter */}
                     {user && (
@@ -449,11 +469,23 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                               isSelected={filters.minUserStars === stars}
                               onClick={() => onChange({
                                 ...filters,
-                                minUserStars: filters.minUserStars === stars ? null : stars
+                                minUserStars: filters.minUserStars === stars ? null : stars,
+                                noUserRating: null
                               })}
                               data-testid={`user-rating-${stars}`}
                             />
                           ))}
+
+                          <FilterButton
+                            value={t('noRating')}
+                            isSelected={filters.noUserRating === true}
+                            onClick={() => onChange({
+                              ...filters,
+                              noUserRating: filters.noUserRating === true ? null : true,
+                              minUserStars: null
+                            })}
+                            data-testid="user-rating-none"
+                          />
                         </Stack>
                       </Box>
                     )}

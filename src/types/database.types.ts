@@ -52,6 +52,8 @@ export interface UserFilter {
   min_user_stars: number | null
   has_supervised_activities: boolean | null
   city: string | null
+  no_rating: boolean | null
+  no_user_rating: boolean | null
   created_at: string
   updated_at: string
 }

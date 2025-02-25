@@ -83,7 +83,9 @@ describe('PlaygroundFilter', () => {
     minStars: null,
     minUserStars: null,
     hasSupervised: null,
-    city: null
+    city: null,
+    noRating: null,
+    noUserRating: null
   }
 
   beforeEach(() => {
