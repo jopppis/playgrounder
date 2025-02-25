@@ -244,6 +244,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
           <VStack
             align="stretch"
             p={2}
+            pt={2}
             gap={1.5}
             bg="white"
             width="100%"
@@ -277,7 +278,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                 fontSize="sm"
                 justifyContent="flex-start"
                 transition="all 0.2s"
-                mb={1.5}
+                mb={2}
                 px={0}
               >
                 <HStack width="100%" justify="space-between" px={2}>
