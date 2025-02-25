@@ -40,7 +40,9 @@ describe('MenuDrawer', () => {
       minStars: null,
       minUserStars: null,
       hasSupervised: null,
-      city: null
+      city: null,
+      noRating: null,
+      noUserRating: null
     },
     filteredPlaygroundCount: 0,
     currentCity: null,
