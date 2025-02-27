@@ -31,9 +31,17 @@ export default function ChangePassword({ onSuccess }: ChangePasswordProps) {
     setError(null)
 
     try {
-      // First verify the current password
+      // Get current user email
+      const { data: userData } = await supabase.auth.getUser()
+      const userEmail = userData.user?.email
+
+      if (!userEmail) {
+        throw new Error('Could not determine user email')
+      }
+
+      // First verify the current password by attempting to sign in
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: (await supabase.auth.getUser()).data.user?.email || '',
+        email: userEmail,
         password: currentPassword
       })
 
