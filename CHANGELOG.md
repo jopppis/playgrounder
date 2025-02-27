@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Added Turnstile support to ChangePassword component to fix password change failures when Turnstile is enabled
+- Reset Turnstile captcha on auth error
 
 ## [0.9.0] - 2025-02-27
 
