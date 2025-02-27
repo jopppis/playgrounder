@@ -15,11 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Prevent map from automatically moving to user position on page load when a popup is open
 
+### Fixed
+- Fixed change password functionality that was incorrectly reporting "Current password is incorrect" even with valid credentials
+
 ### Removed
 - Removed deprecated and unused dependencies
-
-### Fixed
-- Linter issues
 
 ## [0.8.4] - 2025-02-26
 
