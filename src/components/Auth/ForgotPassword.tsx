@@ -25,6 +25,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [resetCounter, setResetCounter] = useState(0)
   const toast = useToast()
   // Enable Turnstile in development and production, but not in local
   const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
@@ -66,6 +67,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
         window.turnstile.reset();
       }
       setCaptchaToken(null)
+      setResetCounter(prev => prev + 1)
     } finally {
       setLoading(false)
     }
@@ -129,7 +131,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
             {enableTurnstile && (
               <Box>
                 <Turnstile
-                  key={error ? `turnstile-${Date.now()}` : 'turnstile'}
+                  key={`turnstile-${resetCounter}`}
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
                   onError={() => setCaptchaToken(null)}
