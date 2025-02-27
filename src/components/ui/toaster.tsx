@@ -6,10 +6,8 @@ import {
   Spinner,
   Stack,
   Toast,
-} from "@chakra-ui/react"
-import { toaster } from "./toaster-instance"
-
-export { toaster }
+} from "@chakra-ui/react";
+import { toaster } from "./toaster-instance";
 
 export const Toaster = () => {
   return (
