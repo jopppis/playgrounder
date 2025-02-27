@@ -5,12 +5,13 @@ globs:
 
 # Project description
 
-- The project is known as PlaygroundMap in English and Leikkipuistokartta in Finnish.
+- The project is known as Leikkipuistokartta in Finnish or PlaygroundMap in English.
 - The project is an interactive playground map for tracking visited playgrounds nearby, rating the playgrounds and sharing the ratings.
 - The project is implemented in React, Chakra UI v3, Leaflet.
-- The backend is supabase.
+- The backend is Supabase.
+- The website is currently hosted on Vercel.
 - Always use Chakra UI V3 components.
-- Never use @chakra-ui/icons since it has been removed in V3 and will NOT work.
+- Never use @chakra-ui V2 components.
 
 # Theming
 
@@ -23,3 +24,5 @@ The project theming is defined in theme.ts file. Please use the brand and second
 - When fixing bugs, add a test for the bug
 - When adding tests, run the tests with `npm test`. It might be better to filter to only the new test file.
 - When adding translations always add them to @fi.json and @en.json.
+- When changing something that might break the build run `npm run build` to check if the build is successful.
+- For single command verification run `npm run lint && npm test && npm run build`
