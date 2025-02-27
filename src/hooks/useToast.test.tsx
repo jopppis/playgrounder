@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { toaster } from '../components/ui/toaster'
+import { toaster } from '../components/ui/toaster-exports'
 import { useToast } from './useToast'
 
 // Mock the toaster
-vi.mock('../components/ui/toaster', () => ({
+vi.mock('../components/ui/toaster-exports', () => ({
   toaster: {
     create: vi.fn()
   }

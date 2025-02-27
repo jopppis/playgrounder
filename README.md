@@ -49,7 +49,6 @@ npm run dev
 - Add more Finnish cities
 - Security audit
 - Run coverage and improve it
-- Linter warnings
 
 ## Contributing
 

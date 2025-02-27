@@ -1,20 +1,5 @@
-import type { ReactNode } from 'react'
-
-// Mock components with proper types
-interface ChakraProps {
-  children?: ReactNode
-  onClick?: () => void
-  'aria-label'?: string
-  isOpen?: boolean
-  [key: string]: unknown
-}
-
-// Component factory to avoid React hooks warning
-const createComponent = (name: string, render: (props: ChakraProps) => JSX.Element | null) => {
-  const Component = (props: ChakraProps) => render(props)
-  Component.displayName = name
-  return Component
-}
+/* eslint-disable react-refresh/only-export-components */
+import { createComponent } from './component-factory'
 
 // Basic components
 export const Button = createComponent('Button', ({ children, onClick, ...props }) => (
@@ -53,20 +38,8 @@ export const DrawerBody = createComponent('DrawerBody', ({ children, ...props })
 export const DrawerFooter = createComponent('DrawerFooter', ({ children, ...props }) => <div data-testid="drawer-footer" {...props}>{children}</div>)
 export const DrawerCloseButton = createComponent('DrawerCloseButton', (props) => <button data-testid="drawer-close" {...props}>×</button>)
 
-// Layout components
-const StyledComponent = createComponent('StyledComponent', ({ children, ...props }) => (
-  <div {...props}>{children}</div>
-))
+// Re-export layout components
+export * from './layout-components'
 
-export const Box = StyledComponent
-export const Flex = StyledComponent
-export const Stack = StyledComponent
-export const Text = StyledComponent
-export const VStack = StyledComponent
-export const HStack = StyledComponent
-export const Container = StyledComponent
-export const Center = StyledComponent
-export const Spinner = StyledComponent
-
-// Export hooks from a separate file to avoid fast-refresh warning
-export { useDisclosure } from './hooks.js'
+// Re-export hooks
+export * from './hooks-exports'
