@@ -588,7 +588,7 @@ const PlaygroundMap = () => {
             visitsLoading={visitsLoading}
             onVisitChange={updateVisitsState}
             onRatingChange={fetchRatings}
-            useCircle={zoomLevel < 14}
+            useCircle={zoomLevel < 12}
             zoomLevel={zoomLevel}
           />
         ))}
