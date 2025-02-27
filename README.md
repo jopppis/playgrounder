@@ -50,8 +50,6 @@ npm run dev
 - Security audit
 - Run coverage and improve it
 - Linter warnings
-- Check dependencies
-- Update deps
 
 ## Contributing
 

@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Login toast throttling
 
 ### Removed
-- Removed deprecated @types/i18next and @types/react-i18next.
+- Removed deprecated and unused dependencies
 
 ## [0.8.4] - 2025-02-26
 
