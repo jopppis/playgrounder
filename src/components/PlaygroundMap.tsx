@@ -162,8 +162,8 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
   const map = useMap()
   const { t } = useTranslation()
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
-  const lastKnownPosition = useRef<[number, number] | null>(null)
   const isInitialized = useRef(false)
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
 
   // Add zoom control to bottom right
   useEffect(() => {
@@ -175,17 +175,37 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
   }, [map])
 
+  // Track popup open/close state
+  useEffect(() => {
+    const handlePopupOpen = () => {
+      setIsPopupOpen(true)
+    }
+
+    const handlePopupClose = () => {
+      setIsPopupOpen(false)
+    }
+
+    map.on('popupopen', handlePopupOpen)
+    map.on('popupclose', handlePopupClose)
+
+    return () => {
+      map.off('popupopen', handlePopupOpen)
+      map.off('popupclose', handlePopupClose)
+    }
+  }, [map])
+
   const handleLocationFound = useCallback((e: L.LocationEvent) => {
     const { lat, lng } = e.latlng
     const newLocation: [number, number] = [lat, lng]
+
     setUserLocation(newLocation)
-    lastKnownPosition.current = newLocation
     onLocationUpdate(lat, lng)
-    if (!isInitialized.current) {
-      map.setView(newLocation, 13.5)
+
+    if (!isInitialized.current && !isPopupOpen) {
+      map.setView(newLocation, 14)
       isInitialized.current = true
     }
-  }, [map, onLocationUpdate])
+  }, [map, onLocationUpdate, isPopupOpen])
 
   const handleLocationError = useCallback((e: L.ErrorEvent) => {
     console.error('Location error:', e.message)
@@ -197,7 +217,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     map.on('locationerror', handleLocationError)
 
     // Request location on mount
-    map.locate({ setView: true, maxZoom: 14, watch: false })
+    map.locate({ setView: false, maxZoom: 10, watch: false })
 
     // Clean up
     return () => {
@@ -206,23 +226,6 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
   }, [map, handleLocationFound, handleLocationError])
 
-  // Handle initial location and custom events
-  useEffect(() => {
-    const handleInitialLocation = (e: CustomEvent<{ lat: number; lng: number }>) => {
-      const { lat, lng } = e.detail
-      setUserLocation([lat, lng])
-      lastKnownPosition.current = [lat, lng]
-      isInitialized.current = true
-    }
-
-    // @ts-expect-error Custom event type not recognized by leaflet types
-    map.on('initialLocationFound', handleInitialLocation)
-
-    return () => {
-      // @ts-expect-error Custom event type not recognized by leaflet types
-      map.off('initialLocationFound', handleInitialLocation)
-    }
-  }, [map])
 
   // Add location control button
   useEffect(() => {
@@ -255,6 +258,11 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
 
       L.DomEvent.on(button, 'click', (e) => {
         L.DomEvent.preventDefault(e)
+
+        // Always set view when user clicks the location button
+        if (userLocation) {
+          map.setView(userLocation, 14)
+        }
         map.locate({ setView: true, maxZoom: 14, watch: false })
       })
 
@@ -266,7 +274,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     return () => {
       locationControl.remove()
     }
-  }, [map, t])
+  }, [map, t, userLocation])
 
   return userLocation ? (
     <Marker

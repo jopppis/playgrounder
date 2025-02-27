@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Login toast throttling
 
+### Changed
+- Prevent map from automatically moving to user position on page load when a popup is open
+
 ### Removed
 - Removed deprecated and unused dependencies
 
