@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Login toast throttling
+- Security headers for both development and production environments
+- Vercel configuration file with security headers
 
 ### Changed
 - Prevent map from automatically moving to user position on page load when a popup is open

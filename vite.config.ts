@@ -74,6 +74,18 @@ export default defineConfig({
     'import.meta.env.APP_VERSION': JSON.stringify(version),
     'import.meta.env.BUILD_ID': JSON.stringify(getBuildId())
   },
+  server: {
+    headers: {
+      // Security headers
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com https://server.arcgisonline.com blob:; font-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com https://server.arcgisonline.com; frame-src 'self' https://challenges.cloudflare.com;",
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=()',
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
+    }
+  },
   build: {
     rollupOptions: {
       output: {
@@ -85,22 +97,24 @@ export default defineConfig({
         }
       }
     }
+  }
+})
+
+// Vitest configuration
+export const test = {
+  globals: true,
+  environment: 'jsdom',
+  setupFiles: ['./src/test/setup.ts', './src/setupTests.ts'],
+  coverage: {
+    provider: 'v8',
+    reporter: ['text', 'json', 'html'],
   },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts', './src/setupTests.ts'],
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-    },
-    include: ['src/**/*.test.{ts,tsx}'],
-    deps: {
-      optimizer: {
-        web: {
-          include: ['@testing-library/jest-dom']
-        }
+  include: ['src/**/*.test.{ts,tsx}'],
+  deps: {
+    optimizer: {
+      web: {
+        include: ['@testing-library/jest-dom']
       }
     }
-  },
-})
+  }
+}
