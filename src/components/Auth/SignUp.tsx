@@ -28,7 +28,8 @@ export default function SignUp({ onSuccess }: SignUpProps) {
   const [success, setSuccess] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const toast = useToast()
-  const isProduction = import.meta.env.VITE_APP_ENV === 'production'
+  // Enable Turnstile in development and production, but not in local
+  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,7 +37,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
     setError(null)
     setSuccess(false)
 
-    if (isProduction && !captchaToken) {
+    if (enableTurnstile && !captchaToken) {
       setError(t('auth.signUp.error.captchaRequired'))
       setLoading(false)
       return
@@ -46,7 +47,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
-        options: isProduction && captchaToken ? { captchaToken } : undefined
+        options: enableTurnstile && captchaToken ? { captchaToken } : undefined
       })
 
       if (signUpError) throw signUpError
@@ -159,7 +160,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               />
             </Box>
             <Box>
-              {isProduction && (
+              {enableTurnstile && (
                 <Turnstile
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
@@ -174,7 +175,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading || (isProduction && !captchaToken)}
+              disabled={loading || (enableTurnstile && !captchaToken)}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}

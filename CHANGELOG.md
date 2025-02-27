@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Enable Turnstile captcha in development
+
+## [0.9.0] - 2025-02-27
+
 ### Added
 - Login toast throttling
 - Security headers for both development and production environments

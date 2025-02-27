@@ -32,14 +32,15 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
   const [error, setError] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const toast = useToast()
-  const isProduction = import.meta.env.VITE_APP_ENV === 'production'
+  // Enable Turnstile in development and production, but not in local
+  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
-    if (isProduction && !captchaToken) {
+    if (enableTurnstile && !captchaToken) {
       setError(t('auth.signIn.error.captchaRequired'))
       setLoading(false)
       return
@@ -49,7 +50,7 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: isProduction && captchaToken ? { captchaToken } : undefined
+        options: enableTurnstile && captchaToken ? { captchaToken } : undefined
       })
 
       if (signInError) throw signInError
@@ -163,7 +164,7 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
               {t('auth.forgotPassword.button')}
             </Link>
             <Box>
-              {isProduction && (
+              {enableTurnstile && (
                 <Turnstile
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
@@ -178,7 +179,7 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading || (isProduction && !captchaToken)}
+              disabled={loading || (enableTurnstile && !captchaToken)}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}

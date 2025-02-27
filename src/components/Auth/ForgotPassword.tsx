@@ -26,14 +26,15 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
   const [error, setError] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const toast = useToast()
-  const isProduction = import.meta.env.VITE_APP_ENV === 'production'
+  // Enable Turnstile in development and production, but not in local
+  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
-    if (isProduction && !captchaToken) {
+    if (enableTurnstile && !captchaToken) {
       setError(t('auth.forgotPassword.error.captchaRequired'))
       setLoading(false)
       return
@@ -42,7 +43,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
     try {
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/?reset_password=true`,
-        captchaToken: isProduction && captchaToken ? captchaToken : undefined
+        captchaToken: enableTurnstile && captchaToken ? captchaToken : undefined
       })
 
       if (resetError) throw resetError
@@ -122,7 +123,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
                 }}
               />
             </Box>
-            {isProduction && (
+            {enableTurnstile && (
               <Box>
                 <Turnstile
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
@@ -138,7 +139,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading || (isProduction && !captchaToken)}
+              disabled={loading || (enableTurnstile && !captchaToken)}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
