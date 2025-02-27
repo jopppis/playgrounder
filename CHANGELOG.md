@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.3] - 2025-02-27
+
 ### Changed
 - Improved performance of map markers by drawing them on cavas when zooming out
 
