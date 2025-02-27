@@ -79,7 +79,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'chakra': ['@chakra-ui/react', '@chakra-ui/switch', '@chakra-ui/transition', 'framer-motion'],
+          'chakra': ['@chakra-ui/react', 'framer-motion'],
           'map': ['leaflet', 'react-leaflet'],
           'supabase': ['@supabase/supabase-js']
         }
