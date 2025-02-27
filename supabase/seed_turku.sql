@@ -11,7 +11,7 @@ VALUES
     (
         'Hemmilän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23455754.67, 6705024.592), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23455754.6702, 6705024.5924), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -19,7 +19,7 @@ VALUES
     (
         'Piiparinpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459124.497, 6708537.691), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459124.4969, 6708537.6906), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -27,7 +27,7 @@ VALUES
     (
         'Hyppäskentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461782.209, 6714961.993), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461782.2092, 6714961.9927), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -35,7 +35,7 @@ VALUES
     (
         'Tyytikinpesän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461463.973, 6715104.899), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461463.9729, 6715104.8991), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -43,7 +43,7 @@ VALUES
     (
         'Iskoisten leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23466072.226, 6720572.732), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23466072.2255, 6720572.7315), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -51,7 +51,7 @@ VALUES
     (
         'Läpikäytävän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464782.404, 6714300.379), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464782.4043, 6714300.3787), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -59,7 +59,7 @@ VALUES
     (
         'Liikennepuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23465592.626, 6698660.311), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465592.6257, 6698660.3111), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -67,7 +67,7 @@ VALUES
     (
         'Nyplääjänpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462920.794, 6715036.575), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462920.7939, 6715036.5753), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -75,7 +75,7 @@ VALUES
     (
         'Lehtisalonpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23465968.147, 6720227.425), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465968.1472, 6720227.4254), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -83,7 +83,7 @@ VALUES
     (
         'Tenderipuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459317.123, 6705338.976), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459317.123, 6705338.9756), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -91,7 +91,7 @@ VALUES
     (
         'Nunnanpellon leikkipuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23468467.641, 6703759.929), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23468467.6411, 6703759.9292), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -99,7 +99,7 @@ VALUES
     (
         'Moisionkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461217.666, 6713482.088), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461217.6663, 6713482.088), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -107,7 +107,7 @@ VALUES
     (
         'Jaakonkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461866.588, 6715933.915), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461866.5878, 6715933.9149), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -115,7 +115,7 @@ VALUES
     (
         'Oinasmäen Joosepin leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458107.973, 6707897.23), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458107.9732, 6707897.2299), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -131,7 +131,7 @@ VALUES
     (
         'Saaronniemen uimarannan leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23450127.725, 6701359.646), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23450127.7252, 6701359.6459), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -139,7 +139,7 @@ VALUES
     (
         'Herrahaan leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460869.984, 6713687.501), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460869.9837, 6713687.5006), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -147,7 +147,7 @@ VALUES
     (
         'Jäkärlänpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464617.725, 6714553.157), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464617.7248, 6714553.1574), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -155,7 +155,7 @@ VALUES
     (
         'Perkkiönkadun leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464593.631, 6714423.023), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464593.6309, 6714423.0228), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -163,7 +163,7 @@ VALUES
     (
         'Suikkilanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23456944.854, 6706108.277), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456944.8535, 6706108.2772), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -171,7 +171,7 @@ VALUES
     (
         'Frantsinkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462387.927, 6706676.556), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462387.9265, 6706676.5561), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -179,7 +179,7 @@ VALUES
     (
         'Virgonkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461780.03, 6714343.929), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461780.03, 6714343.9294), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -187,7 +187,7 @@ VALUES
     (
         'Rakennusmestarinpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23456910.762, 6707243.404), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456910.7622, 6707243.4043), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -195,7 +195,7 @@ VALUES
     (
         'Järviniitun leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23455860.258, 6699603.658), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23455860.2583, 6699603.658), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -203,7 +203,7 @@ VALUES
     (
         'Paunanpellon leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462300.939, 6710645.42), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462300.9385, 6710645.4196), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -211,7 +211,7 @@ VALUES
     (
         'Paaskunnanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462728.948, 6705528.886), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462728.9476, 6705528.8864), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -219,7 +219,7 @@ VALUES
     (
         'Tammikankareen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458399.709, 6707133.42), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458399.7091, 6707133.4197), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -227,7 +227,7 @@ VALUES
     (
         'Ratsastajanpuiston leikkipuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23470281.351, 6700638.217), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23470281.3506, 6700638.2172), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -235,7 +235,7 @@ VALUES
     (
         'Raskinpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459528.78, 6709014.633), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459528.7804, 6709014.6334), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -243,7 +243,7 @@ VALUES
     (
         'Liljalaakson leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458198.904, 6709194.657), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458198.9042, 6709194.6568), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -251,7 +251,7 @@ VALUES
     (
         'Orjasmäen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460853.232, 6708990.004), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460853.232, 6708990.0038), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -259,7 +259,7 @@ VALUES
     (
         'Leikkimäen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459397.93, 6708856.864), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459397.9295, 6708856.8636), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -267,7 +267,7 @@ VALUES
     (
         'Julinin leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462654.165, 6706363.881), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462654.1647, 6706363.8805), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -275,7 +275,7 @@ VALUES
     (
         'Korpisaran leikkipuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23457360.197, 6708709.369), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457360.1974, 6708709.3691), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -283,7 +283,7 @@ VALUES
     (
         'Alastalonpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23456840.899, 6706306.726), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456840.8991, 6706306.7262), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -291,7 +291,7 @@ VALUES
     (
         'Parolanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458914.889, 6708520.487), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458914.8889, 6708520.4874), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -299,7 +299,7 @@ VALUES
     (
         'Huhtaraivion leikkikenttä',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23463916.366, 6704971.988), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463916.3655, 6704971.9876), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -307,7 +307,7 @@ VALUES
     (
         'Paltanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460540.812, 6708357.129), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460540.8119, 6708357.129), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -315,7 +315,7 @@ VALUES
     (
         'Kaijalanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458468.479, 6708322.038), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458468.4791, 6708322.0376), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -323,7 +323,7 @@ VALUES
     (
         'Hyrköistenpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23453972.508, 6705214.396), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23453972.5081, 6705214.396), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -331,7 +331,7 @@ VALUES
     (
         'Kärsämäen urheilupuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460364.129, 6707751.143), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460364.1288, 6707751.1426), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -339,7 +339,7 @@ VALUES
     (
         'Kirstinpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458105.541, 6704419.475), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458105.5408, 6704419.475), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -347,7 +347,7 @@ VALUES
     (
         'Elinanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461643.237, 6705630.811), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461643.2374, 6705630.8108), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -355,7 +355,7 @@ VALUES
     (
         'Koukkukankareen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458276.906, 6706213.641), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458276.9063, 6706213.6407), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -363,7 +363,7 @@ VALUES
     (
         'Urheilupuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459338.02, 6703392.157), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459338.0203, 6703392.1569), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -371,7 +371,7 @@ VALUES
     (
         'Savonkedon leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459993.691, 6707754.867), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459993.6908, 6707754.8669), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -379,7 +379,7 @@ VALUES
     (
         'Jukolanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459610.272, 6707702.42), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459610.2723, 6707702.4202), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -387,7 +387,7 @@ VALUES
     (
         'Piirtäjänpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23456064.052, 6707069.37), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456064.0518, 6707069.3702), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -395,7 +395,7 @@ VALUES
     (
         'Martanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458506.813, 6707750.786), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458506.8127, 6707750.786), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -403,7 +403,7 @@ VALUES
     (
         'Ingegerdinpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461658.615, 6707286.701), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461658.6146, 6707286.7005), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -411,7 +411,7 @@ VALUES
     (
         'Tammispaltanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458879.534, 6707082.137), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458879.5336, 6707082.1369), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -419,7 +419,7 @@ VALUES
     (
         'Myrskypuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23457439.514, 6698261.122), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457439.5135, 6698261.1216), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -427,7 +427,7 @@ VALUES
     (
         'Kirveenpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460087.594, 6706807.281), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460087.5944, 6706807.2814), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -435,7 +435,7 @@ VALUES
     (
         'Koroistenpuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23473634.458, 6701580.868), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23473634.4579, 6701580.8677), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -443,7 +443,7 @@ VALUES
     (
         'Siirinpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460599.464, 6706739.698), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460599.4635, 6706739.698), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -451,7 +451,7 @@ VALUES
     (
         'Hovilanmetsän leikkipuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23465209.22, 6703015.45), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465209.2195, 6703015.4503), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -459,7 +459,7 @@ VALUES
     (
         'Kastunpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460197.598, 6706426.266), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460197.5978, 6706426.2657), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -467,7 +467,7 @@ VALUES
     (
         'Moskalan leikkipuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23472210.902, 6702114.619), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23472210.9016, 6702114.6187), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -475,7 +475,7 @@ VALUES
     (
         'Pertunpuistikon leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458606.126, 6705187.039), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458606.1257, 6705187.0385), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -483,7 +483,7 @@ VALUES
     (
         'Kesämäen kentän leikkipuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23466913.007, 6700533.45), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23466913.0067, 6700533.4501), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -491,7 +491,7 @@ VALUES
     (
         'Solmukadun leikkipuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23465049.549, 6706146.769), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465049.5494, 6706146.769), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -499,7 +499,7 @@ VALUES
     (
         'Alfan leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460323.853, 6706130.81), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460323.8529, 6706130.8095), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -507,7 +507,7 @@ VALUES
     (
         'Vätinpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459469.381, 6706186.977), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459469.3813, 6706186.9772), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -515,7 +515,7 @@ VALUES
     (
         'Härkähaan leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23455594.923, 6706113.542), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23455594.9227, 6706113.5418), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -523,7 +523,7 @@ VALUES
     (
         'Itäpellonpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458836.45, 6705646.107), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458836.4497, 6705646.1074), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -531,7 +531,7 @@ VALUES
     (
         'Silvolanpuisto',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464439.841, 6705905.594), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464439.8405, 6705905.5944), 3877), 4326),
         NULL,
         false,
         'Kaarina'
@@ -539,7 +539,7 @@ VALUES
     (
         'Pyölinpellonpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458082.498, 6705821.715), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458082.4977, 6705821.7152), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -547,7 +547,7 @@ VALUES
     (
         'Jyrkkälänmäen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23456229.453, 6705527.268), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456229.4533, 6705527.2677), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -555,7 +555,7 @@ VALUES
     (
         'Civiksenkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460996.937, 6705996.9), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460996.9369, 6705996.8997), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -563,7 +563,7 @@ VALUES
     (
         'Ruohonpäänpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458753.232, 6705875.898), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458753.232, 6705875.8983), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -571,7 +571,7 @@ VALUES
     (
         'Pikkunotkon leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464241.654, 6705586.508), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464241.6535, 6705586.5077), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -579,7 +579,7 @@ VALUES
     (
         'Kointähdenkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23457061.044, 6698367.924), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457061.0438, 6698367.9243), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -587,7 +587,7 @@ VALUES
     (
         'Yrjänänpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459486.871, 6705549.881), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459486.8712, 6705549.8814), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -595,7 +595,7 @@ VALUES
     (
         'Jussi Ollinpojan leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462903.893, 6705352.694), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462903.8925, 6705352.6935), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -603,7 +603,7 @@ VALUES
     (
         'Vähäheikkilänkenttä',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458957.754, 6702699.646), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458957.7541, 6702699.6463), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -611,7 +611,7 @@ VALUES
     (
         'Nummenpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461542.124, 6705367.195), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461542.1235, 6705367.1953), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -619,7 +619,7 @@ VALUES
     (
         'Tuomaanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460510.296, 6705347.046), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460510.2964, 6705347.046), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -627,7 +627,7 @@ VALUES
     (
         'Mansinpuistikon leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464705.556, 6702742.928), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464705.5557, 6702742.9284), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -635,7 +635,7 @@ VALUES
     (
         'Lauri Viljasen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462025.821, 6705130.874), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462025.821, 6705130.8738), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -643,7 +643,7 @@ VALUES
     (
         'Saukonojanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23457144.569, 6705191.066), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457144.5692, 6705191.0655), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -651,7 +651,7 @@ VALUES
     (
         'Jaaninpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23463167.711, 6704884.089), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463167.7107, 6704884.0892), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -659,7 +659,7 @@ VALUES
     (
         'Hannunniitun leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462790.706, 6704990.771), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462790.7062, 6704990.7708), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -667,7 +667,7 @@ VALUES
     (
         'Museomäen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459426.69, 6704890.876), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459426.69, 6704890.8759), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -675,7 +675,7 @@ VALUES
     (
         'Puolalanmäen leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459199.244, 6704821.951), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459199.244, 6704821.9513), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -683,7 +683,7 @@ VALUES
     (
         'Pahaniemenpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23455988.528, 6704906.252), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23455988.5281, 6704906.2519), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -691,7 +691,7 @@ VALUES
     (
         'Paakarlanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23454144.144, 6704963.741), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23454144.1442, 6704963.741), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -699,7 +699,7 @@ VALUES
     (
         'Kirskulinnun leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23463554.072, 6704642.969), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463554.0719, 6704642.9688), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -707,7 +707,7 @@ VALUES
     (
         'Paimenpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462035.904, 6704669.086), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462035.9043, 6704669.0864), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -715,7 +715,7 @@ VALUES
     (
         'Rosanpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459840.863, 6701339.039), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459840.8629, 6701339.0394), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -723,7 +723,7 @@ VALUES
     (
         'Ruukinaukion leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23461785.355, 6704758.897), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461785.3547, 6704758.8972), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -731,7 +731,7 @@ VALUES
     (
         'Karvataskunpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464548.737, 6704290.013), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464548.7371, 6704290.0132), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -739,7 +739,7 @@ VALUES
     (
         'Puolalanmäen leikkipaikka 2',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23459278.961, 6704791.481), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459278.9614, 6704791.4806), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -747,7 +747,7 @@ VALUES
     (
         'Iso-Heikkilänpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23457576.411, 6704695.205), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457576.4108, 6704695.2045), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -755,7 +755,7 @@ VALUES
     (
         'Kurjenkaivonkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23460744.546, 6704489.649), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460744.5461, 6704489.6491), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -763,7 +763,7 @@ VALUES
     (
         'Mannerheiminpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23458771.165, 6704415.962), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458771.1646, 6704415.9617), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -771,7 +771,7 @@ VALUES
     (
         'Rajakarhunpuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464809.955, 6704210.627), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464809.9546, 6704210.6271), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -779,7 +779,7 @@ VALUES
     (
         'Varissuonkentän leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23464590.136, 6704269.474), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464590.1361, 6704269.4742), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -787,7 +787,7 @@ VALUES
     (
         'Kotimetsän leikkipaikka 1',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23462976.264, 6704347.061), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462976.2637, 6704347.0611), 3877), 4326),
         NULL,
         false,
         'Turku'
@@ -803,8 +803,832 @@ VALUES
     (
         'Kisapuiston leikkipaikka',
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(23454120.215, 6704253.922), 3877), 4326),
+        ST_Transform(ST_SetSRID(ST_MakePoint(23454120.2149, 6704253.9223), 3877), 4326),
         NULL,
         false,
         'Turku'
+    ),
+    (
+        'Niinismäenpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23467368.655, 6704052.849), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Barkerinpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458620.7421, 6703579.0957), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Tiuhtapuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465782.225, 6704077.9469), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Vaahemäenpellon leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458353.4543, 6700261.0046), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Marjavuoren leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464336.6852, 6704037.419), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kupittaanpuisto/ Liikuntapuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460964.1655, 6704054.7561), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Seikkailupuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460920.4058, 6704149.8323), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kupittaanlähteen leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460920.9658, 6704048.7951), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kupittaanpuiston leikkipaikka PaPu',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460844.0631, 6704044.5647), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Vartiovuoren kahluualtaan leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460013.0031, 6704144.39), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Vartiovuoren leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460089.2573, 6704166.9919), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Samppalinnan leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459758.375, 6704035.4688), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Annanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458106.4127, 6704062.5997), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Varsahaanpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23466526.1058, 6700891.2586), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Kanslerinpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457275.1995, 6704122.9602), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Pääskyvuoren leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463506.0315, 6703885.9882), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Molskipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23467070.1262, 6703758.416), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Saarnipuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460354.377, 6703704.5027), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Majanummen leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464725.0768, 6703444.021), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Munkkion leikkikenttä',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462902.3515, 6703462.9675), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kirismäenpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23472286.829, 6702701.4616), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Niilo Oravapuun leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464709.1747, 6703394.5926), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Hurttivuoren leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463643.1497, 6703241.9836), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Urheilupuiston leikkipaikka 1',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459377.4198, 6703368.4777), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Martinkentän leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459284.1084, 6703330.0348), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Pakkarinpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458105.4721, 6703379.0253), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Marjamaanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461976.5691, 6703159.4937), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Radioasemanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461590.4238, 6703185.0607), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kiulukujan leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458983.2675, 6703007.9023), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Vilkkilänmäen leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458636.7445, 6703183.5597), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Turjanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461472.8469, 6702874.5649), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Sikaojanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459504.189, 6702980.1356), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Hakametsän leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23471743.7579, 6702646.3777), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Honkamäenpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461069.4367, 6702767.1742), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Lylynpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460151.9027, 6702734.1182), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Harakkapuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459742.0007, 6702789.2585), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Ojarinteenpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458362.735, 6702608.2536), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Haanväljän leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23472900.4822, 6702440.7757), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Lähteenmäen leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465949.3827, 6702522.1584), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Raadinpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464606.4038, 6702430.5113), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Tähkäpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461201.9488, 6702428.4287), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Korppolaispuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457949.1362, 6702489.9408), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Hiiskan kenttä',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23466795.9007, 6702253.6078), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Lausteenpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463828.3883, 6702237.4384), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Luolavuorenpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460183.0023, 6702255.8182), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kahvelin leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457759.8079, 6702201.6969), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Poropuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463319.8954, 6702183.4597), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kenraali Airon leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458921.8578, 6702102.7177), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Teppalan leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23471728.5242, 6701883.9819), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Ilpoistenpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460680.7163, 6700898.5084), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kettupuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463651.2739, 6701958.4217), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kuhilaspuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461324.636, 6701904.895), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Peter Thorwösten niitun leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456081.8702, 6701904.595), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kansanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23455007.4439, 6701907.6834), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Petankkikenttä',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23473280.2783, 6701675.2905), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Saaronniemen leirintäalueen leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23450117.0797, 6701744.3192), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kurjenkankareen leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23472625.6064, 6701463.7672), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Kiurunpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462062.0936, 6699801.3976), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Puistotädinpolun leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460840.3859, 6701426.0775), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Arolan leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456327.7502, 6701575.1211), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Angervon leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23471266.5083, 6701277.7102), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Piikkiönmetsän leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23469788.7903, 6701320.7524), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Välskärinpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462173.7471, 6701381.6335), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Ratsumiehenpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459326.602, 6701073.3077), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Empon leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23466205.6969, 6697752.5928), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Naulatehtaanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458918.774, 6701137.3984), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kumpulanpuisto, leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23467355.4629, 6700803.6665), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Kuhankentän leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23459236.2199, 6698899.509), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Muntionpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461622.8079, 6700898.0175), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Moikoistenmäen leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458113.1754, 6700888.0435), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Vräkinniitun leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458595.0132, 6700672.4217), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Skandinavianpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23461922.7377, 6700507.0814), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Junginkentän leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23460280.2552, 6700436.8086), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Vättilän leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465337.0535, 6700398.9906), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Kliistperin leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465700.7532, 6697037.779), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Käen leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462320.9157, 6700078.8319), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Häppilänlaakson leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456101.3214, 6700127.8741), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Kurrenpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463216.8018, 6699866.8774), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Tammilehdon leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457492.9218, 6699831.3699), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Pilttipuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456943.5649, 6699800.0497), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Enköpinginpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463984.2102, 6699760.3783), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Voivalan leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23467773.8444, 6699468.3916), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Rauhalinnan leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23467208.0331, 6699515.233), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Pekolanpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464841.4414, 6699469.8928), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Taskalanpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465125.5007, 6699279.2029), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Taskalanpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465125.5007, 6699264.4579), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Taskalanpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465116.7876, 6699269.4491), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Herrasniityn leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23462663.9798, 6699237.774), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Kaistarniemenpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23458270.7325, 6699339.0966), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Veitenmäen leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23466150.8827, 6699107.8072), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Paltanpuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465130.6749, 6699038.3976), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Auvaisbergin leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23463503.6631, 6699091.7829), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Laholanpuiston leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457064.7627, 6698930.542), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Hovirinnan rantapuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465540.011, 6698667.4248), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Senioripuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23465505.1437, 6698666.6823), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Arnikan leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457610.1814, 6698793.7871), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Koristonrannan leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23464398.459, 6698448.2695), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Itätalonpellon leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456759.3841, 6698410.1915), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Suulikentän leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456299.7974, 6698491.7227), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Pellin leikkipuisto',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23466871.247, 6698181.0461), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
+    ),
+    (
+        'Suvituulenniitun leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23457120.52, 6697684.2892), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Tuurenpellon leikkipaikka',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23456863.3334, 6697639.6203), 3877), 4326),
+        NULL,
+        false,
+        'Turku'
+    ),
+    (
+        'Harvaluodon uimaranta',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(23473289.4348, 6695471.629), 3877), 4326),
+        NULL,
+        false,
+        'Kaarina'
     );
