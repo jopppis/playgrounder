@@ -31,6 +31,7 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [resetCounter, setResetCounter] = useState(0)
   const toast = useToast()
   // Enable Turnstile in development and production, but not in local
   const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
@@ -73,9 +74,10 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
       if (window.turnstile) {
         window.turnstile.reset();
       }
-      // We need to reset the captchaToken, but we'll also update the Turnstile component
-      // to re-render with a key to force a fresh instance
+      // We need to reset the captchaToken and increment the reset counter
+      // to force a fresh instance of the Turnstile component
       setCaptchaToken(null)
+      setResetCounter(prev => prev + 1)
     } finally {
       setLoading(false)
     }
@@ -171,7 +173,7 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
             <Box>
               {enableTurnstile && (
                 <Turnstile
-                  key={error ? `turnstile-${Date.now()}` : 'turnstile'}
+                  key={`turnstile-${resetCounter}`}
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
                   onError={() => setCaptchaToken(null)}

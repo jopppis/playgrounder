@@ -27,6 +27,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [resetCounter, setResetCounter] = useState(0)
   const toast = useToast()
   // Enable Turnstile in development and production, but not in local
   const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
@@ -71,6 +72,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         window.turnstile.reset();
       }
       setCaptchaToken(null)
+      setResetCounter(prev => prev + 1)
     } finally {
       setLoading(false)
     }
@@ -165,7 +167,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
             <Box>
               {enableTurnstile && (
                 <Turnstile
-                  key={error ? `turnstile-${Date.now()}` : 'turnstile'}
+                  key={`turnstile-${resetCounter}`}
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
                   onError={() => setCaptchaToken(null)}
