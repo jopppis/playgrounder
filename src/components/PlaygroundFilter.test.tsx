@@ -1,4 +1,5 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
 import enTranslations from '../i18n/locales/en.json'
@@ -108,86 +109,141 @@ describe('PlaygroundFilter', () => {
     expect(getFilterButton()).toBeInTheDocument()
   })
 
-  it('shows filter options when clicked', () => {
+  it('shows filter options when clicked', async () => {
     renderComponent()
-    fireEvent.click(getFilterButton())
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      // Wait for any state updates to complete
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
     expect(screen.getByText(enTranslations.playground.supervision.label)).toBeInTheDocument()
     expect(screen.getByText(enTranslations.minStars)).toBeInTheDocument()
   })
 
-  it('does not show visit status filters when user is not logged in', () => {
+  it('does not show visit status filters when user is not logged in', async () => {
     renderComponent()
-    fireEvent.click(getFilterButton())
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
     expect(screen.queryByText(enTranslations.visitStatus)).not.toBeInTheDocument()
   })
 
-  it('shows visit status filters when user is logged in', () => {
+  it('shows visit status filters when user is logged in', async () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(getFilterButton())
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
     expect(screen.getByText(enTranslations.visitStatus)).toBeInTheDocument()
   })
 
-  it('calls onChange when supervision filter is clicked', () => {
+  it('calls onChange when supervision filter is clicked', async () => {
     renderComponent()
-    fireEvent.click(getFilterButton())
-    fireEvent.click(screen.getByText(enTranslations.playground.supervision.supervised))
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(enTranslations.playground.supervision.supervised))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
       hasSupervised: true
     })
   })
 
-  it('toggles supervision filter when clicked twice', () => {
+  it('toggles supervision filter when clicked twice', async () => {
     renderComponent({ ...defaultFilters, hasSupervised: true })
-    fireEvent.click(getFilterButton())
-    fireEvent.click(screen.getByText(enTranslations.playground.supervision.supervised))
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(enTranslations.playground.supervision.supervised))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
       hasSupervised: null
     })
   })
 
-  it('shows more star filters when "Show More" is clicked', () => {
+  it('shows more star filters when "Show More" is clicked', async () => {
     renderComponent()
-    fireEvent.click(getFilterButton())
-    fireEvent.click(screen.getByText(enTranslations.showMore))
-    expect(screen.getByText(enTranslations.showLess)).toBeInTheDocument()
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(enTranslations.showMore))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await waitFor(() => {
+      expect(screen.getByText(enTranslations.showLess)).toBeInTheDocument()
+    })
   })
 
-  it('shows visited filter when user is logged in', () => {
+  it('shows visited filter when user is logged in', async () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(getFilterButton())
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
     expect(screen.getByText(enTranslations.visitStatus)).toBeInTheDocument()
     expect(screen.getByText(enTranslations.visited)).toBeInTheDocument()
   })
 
   // New tests for user ratings filter
-  it('does not show user ratings filter when user is not logged in', () => {
+  it('does not show user ratings filter when user is not logged in', async () => {
     renderComponent()
-    fireEvent.click(getFilterButton())
-    fireEvent.click(screen.getByText(enTranslations.showMore))
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(enTranslations.showMore))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
     expect(screen.queryByText(enTranslations.minUserStars)).not.toBeInTheDocument()
   })
 
-  it('shows user ratings filter when user is logged in', () => {
+  it('shows user ratings filter when user is logged in', async () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(getFilterButton())
-    fireEvent.click(screen.getByText(enTranslations.showMore))
-    expect(screen.getByText(enTranslations.minUserStars)).toBeInTheDocument()
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(enTranslations.showMore))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await waitFor(() => {
+      expect(screen.getByText(enTranslations.minUserStars)).toBeInTheDocument()
+    })
   })
 
-  it('calls onChange when user rating filter is clicked', () => {
+  it('calls onChange when user rating filter is clicked', async () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent()
-    fireEvent.click(getFilterButton())
-    fireEvent.click(screen.getByText(enTranslations.showMore))
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(enTranslations.showMore))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
 
     // Click the 5-star rating button
-    const fiveStarButton = screen.getByTestId('user-rating-5')
-    fireEvent.click(fiveStarButton)
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('user-rating-5'))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
 
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
@@ -195,15 +251,23 @@ describe('PlaygroundFilter', () => {
     })
   })
 
-  it('toggles user rating filter when clicked twice', () => {
+  it('toggles user rating filter when clicked twice', async () => {
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({ user: { id: '1' } })
     renderComponent({ ...defaultFilters, minUserStars: 5 })
-    fireEvent.click(getFilterButton())
-    fireEvent.click(screen.getByText(enTranslations.showMore))
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByText(enTranslations.showMore))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
 
     // Click the 5-star rating button
-    const fiveStarButton = screen.getByTestId('user-rating-5')
-    fireEvent.click(fiveStarButton)
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('user-rating-5'))
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
 
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,

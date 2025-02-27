@@ -1,5 +1,6 @@
 import { Session, User } from '@supabase/supabase-js'
 import { renderHook, waitFor } from '@testing-library/react'
+import { act } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from './useAuth'
@@ -99,7 +100,9 @@ describe('useAuth', () => {
     // Simulate auth state change
     const authStateChangeCallback = vi.mocked(supabase.auth.onAuthStateChange).mock.calls[0][0]
     if (typeof authStateChangeCallback === 'function') {
-      authStateChangeCallback('SIGNED_IN', mockSession)
+      act(() => {
+        authStateChangeCallback('SIGNED_IN', mockSession)
+      })
     }
 
     // User should be updated
