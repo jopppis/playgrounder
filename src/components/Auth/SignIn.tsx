@@ -70,6 +70,11 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
         description: t('auth.signIn.error.message')
       })
       // Reset captcha on error
+      if (window.turnstile) {
+        window.turnstile.reset();
+      }
+      // We need to reset the captchaToken, but we'll also update the Turnstile component
+      // to re-render with a key to force a fresh instance
       setCaptchaToken(null)
     } finally {
       setLoading(false)
@@ -166,6 +171,7 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
             <Box>
               {enableTurnstile && (
                 <Turnstile
+                  key={error ? `turnstile-${Date.now()}` : 'turnstile'}
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
                   onError={() => setCaptchaToken(null)}

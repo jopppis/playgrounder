@@ -62,6 +62,9 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
         description: t('auth.forgotPassword.error.message')
       })
       // Reset captcha on error
+      if (window.turnstile) {
+        window.turnstile.reset();
+      }
       setCaptchaToken(null)
     } finally {
       setLoading(false)
@@ -126,6 +129,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
             {enableTurnstile && (
               <Box>
                 <Turnstile
+                  key={error ? `turnstile-${Date.now()}` : 'turnstile'}
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
                   onError={() => setCaptchaToken(null)}

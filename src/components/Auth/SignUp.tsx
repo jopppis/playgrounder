@@ -67,6 +67,9 @@ export default function SignUp({ onSuccess }: SignUpProps) {
         description: t('auth.signUp.error.message')
       })
       // Reset captcha on error
+      if (window.turnstile) {
+        window.turnstile.reset();
+      }
       setCaptchaToken(null)
     } finally {
       setLoading(false)
@@ -162,6 +165,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
             <Box>
               {enableTurnstile && (
                 <Turnstile
+                  key={error ? `turnstile-${Date.now()}` : 'turnstile'}
                   sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setCaptchaToken(token)}
                   onError={() => setCaptchaToken(null)}

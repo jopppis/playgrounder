@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Reset Turnstile captcha on auth error
+
+## [0.9.1] - 2025-02-27
+
 ### Changed
 - Enable Turnstile captcha in development
 
