@@ -42,12 +42,20 @@ default_pool_size = 20
 # Maximum number of client connections allowed.
 max_client_conn = 100
 
+# [db.vault]
+# secret_key = "env(SECRET_VALUE)"
+
+[db.migrations]
+# Specifies an ordered list of schema files that describe your database.
+# Supports glob patterns relative to supabase directory: "./schemas/*.sql"
+schema_paths = []
+
 [db.seed]
 # If enabled, seeds the database after migrations during a db reset.
 enabled = true
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory: "./seeds/*.sql"
-sql_paths = ["./seed_helsinki.sql", "./seed_turku.sql", "./seed_tampere.sql"]
+sql_paths = ["./seed_users.sql", "./seed_helsinki.sql", "./seed_turku.sql", "./seed_tampere.sql"]
 
 [realtime]
 enabled = true
@@ -118,6 +126,12 @@ minimum_password_length = 8
 # Passwords that do not meet the following requirements will be rejected as weak. Supported values
 # are: `letters_digits`, `lower_upper_letters_digits`, `lower_upper_letters_digits_symbols`
 password_requirements = ""
+
+# Configure one of the supported captcha providers: `hcaptcha`, `turnstile`.
+# [auth.captcha]
+# enabled = true
+# provider = "hcaptcha"
+# secret = ""
 
 [auth.email]
 # Allow/disallow new user signups via email to your project.

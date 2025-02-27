@@ -8,7 +8,7 @@ const environment = import.meta.env.VITE_APP_ENV
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
     `Missing Supabase environment variables for ${environment} environment. ` +
-    'Please check your .env.development or .env.production file.'
+    'Please check your .env.local, .env.development or .env.production file.'
   )
 }
 

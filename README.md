@@ -33,15 +33,11 @@ Install dependencies:
 npm install
 ```
 
-Create a `.env` file with your Supabase credentials:
 ```bash
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_TURNSTILE_SITE_KEY=your-turnstile-site-key # not needed in development
-VITE_APP_ENV=development
+npx supabase start
 ```
 
-Creating a new Supabase project can be done by first creating an empty project and then running the migraitons followed by `seed.sql` that fills the playgrounds table.
+Create a `.env.local`, `.env.development` or `.env.production` file from the `.env.example` file and fill in the values. `npx supabase start` will output the values for `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
 
 Start the development server:
 ```bash
@@ -50,7 +46,7 @@ npm run dev
 
 ## TODO
 
-- Add other Finnish cities
+- Add more Finnish cities
 - Security audit
 - Run coverage and improve it
 - Linter warnings
