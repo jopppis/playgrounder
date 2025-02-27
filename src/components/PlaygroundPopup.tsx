@@ -8,11 +8,12 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
 import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
+import { useLoginToast } from '../hooks/useLoginToast'
 import { useRatings } from '../hooks/useRatings'
 import { useToast } from '../hooks/useToast'
 import { useUserPreferences } from '../hooks/useUserPreferences'
@@ -34,19 +35,11 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
   const { t } = useTranslation()
   const { user, loading: authLoading } = useAuth()
   const toast = useToast()
+  const { showLoginToast } = useLoginToast()
   const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
   const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating, setOptimisticRating } = useRatings(playground.id)
   const { preferences } = useUserPreferences()
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
-  const hasShownLoginToast = useRef(false)
-
-  // Add showLoginToast helper function
-  const showLoginToast = useCallback(() => {
-    toast.showInfo({
-      title: t('common.loginRequired'),
-      description: t('playground.loginToInteract')
-    })
-  }, [toast, t])
 
   // Use useEffect to update hasVisited when visits change
   const [hasVisited, setHasVisited] = useState(false)
@@ -69,11 +62,10 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
 
   // Show login toast when component mounts if user is not logged in
   useEffect(() => {
-    if (!authLoading && !user && !hasShownLoginToast.current) {
-      hasShownLoginToast.current = true
+    if (!authLoading && !user) {
       showLoginToast()
     }
-  }, [user, authLoading, toast, t, showLoginToast])
+  }, [user, authLoading, showLoginToast])
 
   const handleVisit = async () => {
     if (!user) {

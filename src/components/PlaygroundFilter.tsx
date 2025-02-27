@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Collapsible,
   HStack,
   NativeSelect,
   Stack,
@@ -8,7 +9,6 @@ import {
   VStack,
   useBreakpointValue
 } from '@chakra-ui/react'
-import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
@@ -421,103 +421,105 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                   </Button>
                 )}
 
-                <Collapse in={showAllStars}>
-                  <Stack gap={0.5}>
-                    {[3, 2, 1].map((stars) => (
+                <Collapsible.Root open={showAllStars}>
+                  <Collapsible.Content>
+                    <Stack gap={0.5}>
+                      {[3, 2, 1].map((stars) => (
+                        <FilterButton
+                          key={stars}
+                          value={
+                            <HStack gap={0.5}>
+                              {[...Array(stars)].map((_, i) => (
+                                <FaStar key={i} color="secondary.500" size={14} />
+                              ))}
+                            </HStack>
+                          }
+                          isSelected={filters.minStars === stars}
+                          onClick={() => onChange({
+                            ...filters,
+                            minStars: filters.minStars === stars ? null : stars,
+                            noRating: null
+                          })}
+                        />
+                      ))}
+
                       <FilterButton
-                        key={stars}
-                        value={
-                          <HStack gap={0.5}>
-                            {[...Array(stars)].map((_, i) => (
-                              <FaStar key={i} color="secondary.500" size={14} />
-                            ))}
-                          </HStack>
-                        }
-                        isSelected={filters.minStars === stars}
+                        value={t('noRating')}
+                        isSelected={filters.noRating === true}
                         onClick={() => onChange({
                           ...filters,
-                          minStars: filters.minStars === stars ? null : stars,
-                          noRating: null
+                          noRating: filters.noRating === true ? null : true,
+                          minStars: null
                         })}
                       />
-                    ))}
 
-                    <FilterButton
-                      value={t('noRating')}
-                      isSelected={filters.noRating === true}
-                      onClick={() => onChange({
-                        ...filters,
-                        noRating: filters.noRating === true ? null : true,
-                        minStars: null
-                      })}
-                    />
+                      {/* User ratings filter */}
+                      {user && (
+                        <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
+                          <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                            {t('minUserStars')}
+                          </Text>
+                          <Stack gap={0.5}>
+                            {[5, 4, 3, 2, 1].map((stars) => (
+                              <FilterButton
+                                key={`user-${stars}`}
+                                value={
+                                  <HStack gap={0.5}>
+                                    {[...Array(stars)].map((_, i) => (
+                                      <FaStar key={i} color="secondary.500" size={14} />
+                                    ))}
+                                  </HStack>
+                                }
+                                isSelected={filters.minUserStars === stars}
+                                onClick={() => onChange({
+                                  ...filters,
+                                  minUserStars: filters.minUserStars === stars ? null : stars,
+                                  noUserRating: null
+                                })}
+                                data-testid={`user-rating-${stars}`}
+                              />
+                            ))}
 
-                    {/* User ratings filter */}
-                    {user && (
-                      <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
-                        <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                          {t('minUserStars')}
-                        </Text>
-                        <Stack gap={0.5}>
-                          {[5, 4, 3, 2, 1].map((stars) => (
                             <FilterButton
-                              key={`user-${stars}`}
-                              value={
-                                <HStack gap={0.5}>
-                                  {[...Array(stars)].map((_, i) => (
-                                    <FaStar key={i} color="secondary.500" size={14} />
-                                  ))}
-                                </HStack>
-                              }
-                              isSelected={filters.minUserStars === stars}
+                              value={t('noRating')}
+                              isSelected={filters.noUserRating === true}
                               onClick={() => onChange({
                                 ...filters,
-                                minUserStars: filters.minUserStars === stars ? null : stars,
-                                noUserRating: null
+                                noUserRating: filters.noUserRating === true ? null : true,
+                                minUserStars: null
                               })}
-                              data-testid={`user-rating-${stars}`}
+                              data-testid="user-rating-none"
                             />
-                          ))}
+                          </Stack>
+                        </Box>
+                      )}
 
-                          <FilterButton
-                            value={t('noRating')}
-                            isSelected={filters.noUserRating === true}
-                            onClick={() => onChange({
-                              ...filters,
-                              noUserRating: filters.noUserRating === true ? null : true,
-                              minUserStars: null
-                            })}
-                            data-testid="user-rating-none"
-                          />
-                        </Stack>
-                      </Box>
-                    )}
-
-                    <Button
-                      size="xs"
-                      height="28px"
-                      variant="ghost"
-                      bg="transparent"
-                      color="gray.700"
-                      _hover={{
-                        bg: 'gray.50',
-                        color: 'gray.700'
-                      }}
-                      _active={{
-                        bg: 'brand.500',
-                        color: 'white',
-                        transform: 'scale(0.98)'
-                      }}
-                      onClick={() => setShowAllStars(false)}
-                      width="full"
-                      fontSize="sm"
-                      justifyContent="flex-start"
-                      transition="all 0.2s"
-                    >
-                      {t('showLess')}
-                    </Button>
-                  </Stack>
-                </Collapse>
+                      <Button
+                        size="xs"
+                        height="28px"
+                        variant="ghost"
+                        bg="transparent"
+                        color="gray.700"
+                        _hover={{
+                          bg: 'gray.50',
+                          color: 'gray.700'
+                        }}
+                        _active={{
+                          bg: 'brand.500',
+                          color: 'white',
+                          transform: 'scale(0.98)'
+                        }}
+                        onClick={() => setShowAllStars(false)}
+                        width="full"
+                        fontSize="sm"
+                        justifyContent="flex-start"
+                        transition="all 0.2s"
+                      >
+                        {t('showLess')}
+                      </Button>
+                    </Stack>
+                  </Collapsible.Content>
+                </Collapsible.Root>
               </Stack>
             </Box>
           </VStack>
