@@ -121,7 +121,8 @@
       "error": {
         "title": "Change Failed",
         "message": "Failed to change your password",
-        "incorrectPassword": "Current password is incorrect"
+        "incorrectPassword": "Current password is incorrect",
+        "captchaRequired": "Please complete the captcha verification"
       },
       "close": "Close change password dialog"
     }

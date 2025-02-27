@@ -121,7 +121,8 @@
       "error": {
         "title": "Vaihto epäonnistui",
         "message": "Salasanan vaihto epäonnistui",
-        "incorrectPassword": "Nykyinen salasana on virheellinen"
+        "incorrectPassword": "Nykyinen salasana on virheellinen",
+        "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
       },
       "close": "Sulje salasanan vaihtoikkuna"
     }
