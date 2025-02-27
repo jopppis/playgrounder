@@ -47,7 +47,6 @@ npm run dev
 ## TODO
 
 - Add more Finnish cities
-- Security audit
 - Run coverage and improve it
 
 ## Contributing
