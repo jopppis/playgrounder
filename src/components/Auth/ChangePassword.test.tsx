@@ -36,7 +36,13 @@ vi.mock('../../lib/supabaseClient', () => ({
 
 // Mock Turnstile
 vi.mock('react-turnstile', () => ({
-  default: vi.fn().mockImplementation(() => <div data-testid="mock-turnstile">Turnstile</div>)
+  default: vi.fn().mockImplementation(({ onSuccess }) => {
+    // Simulate successful captcha verification immediately
+    if (onSuccess) {
+      setTimeout(() => onSuccess('test-token'), 0)
+    }
+    return <div data-testid="mock-turnstile">Turnstile</div>
+  })
 }))
 
 // Mock environment variables
@@ -118,15 +124,23 @@ describe('ChangePassword', () => {
       fireEvent.click(screen.getByRole('button', { name: enTranslations.auth.changePassword.button.default }))
     })
 
-    // Verify the API calls - simplified to avoid timeouts
-    expect(supabase.auth.getUser).toHaveBeenCalled()
-    expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
-      email: 'test@example.com',
-      password: 'current-password'
-    })
-    expect(supabase.auth.updateUser).toHaveBeenCalledWith({
-      password: 'new-password'
-    })
+    // Verify the API calls with waitFor to ensure they happen
+    await waitFor(() => {
+      expect(supabase.auth.getUser).toHaveBeenCalled()
+    }, { timeout: 5000 })
+
+    await waitFor(() => {
+      expect(supabase.auth.signInWithPassword).toHaveBeenCalled()
+      const callArgs = (supabase.auth.signInWithPassword as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(callArgs.email).toBe('test@example.com');
+      expect(callArgs.password).toBe('current-password');
+    }, { timeout: 5000 })
+
+    await waitFor(() => {
+      expect(supabase.auth.updateUser).toHaveBeenCalledWith({
+        password: 'new-password'
+      })
+    }, { timeout: 5000 })
 
     // Wait for success message
     await waitFor(() => {
@@ -134,10 +148,13 @@ describe('ChangePassword', () => {
         title: enTranslations.auth.changePassword.success.title,
         description: enTranslations.auth.changePassword.success.message
       })
-    }, { timeout: 30000 })
+    }, { timeout: 5000 })
 
-    expect(mockOnSuccess).toHaveBeenCalled()
-  }, 30000)
+    // Verify onSuccess callback was called
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalled()
+    })
+  }, 10000)
 
   it('handles incorrect current password', async () => {
     // Mock sign in to fail
@@ -161,17 +178,26 @@ describe('ChangePassword', () => {
       fireEvent.click(screen.getByRole('button', { name: enTranslations.auth.changePassword.button.default }))
     })
 
-    // Verify error handling
+    // Verify error handling with waitFor
     await waitFor(() => {
       expect(supabase.auth.signInWithPassword).toHaveBeenCalled()
+    }, { timeout: 5000 })
+
+    await waitFor(() => {
       expect(supabase.auth.updateUser).not.toHaveBeenCalled()
+    })
+
+    await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith({
         title: enTranslations.auth.changePassword.error.title,
         description: enTranslations.auth.changePassword.error.message
       })
+    }, { timeout: 5000 })
+
+    await waitFor(() => {
       expect(screen.getByText(enTranslations.auth.changePassword.error.title)).toBeInTheDocument()
     })
-  })
+  }, 10000)
 
   it('handles update password error', async () => {
     // Mock update to fail
@@ -195,16 +221,22 @@ describe('ChangePassword', () => {
       fireEvent.click(screen.getByRole('button', { name: enTranslations.auth.changePassword.button.default }))
     })
 
-    // Verify error handling
+    // Verify error handling with waitFor
     await waitFor(() => {
       expect(supabase.auth.updateUser).toHaveBeenCalled()
+    }, { timeout: 5000 })
+
+    await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith({
         title: enTranslations.auth.changePassword.error.title,
         description: enTranslations.auth.changePassword.error.message
       })
+    }, { timeout: 5000 })
+
+    await waitFor(() => {
       expect(screen.getByText(enTranslations.auth.changePassword.error.title)).toBeInTheDocument()
     })
-  })
+  }, 10000)
 
   it('closes the form when close button is clicked', () => {
     render(<ChangePassword onSuccess={mockOnSuccess} />)

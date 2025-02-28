@@ -27,8 +27,10 @@ vi.mock('../../lib/supabaseClient', () => ({
 // Mock Turnstile
 vi.mock('react-turnstile', () => ({
   default: vi.fn().mockImplementation(({ onSuccess }) => {
-    // Simulate successful captcha verification
-    setTimeout(() => onSuccess?.('test-token'), 0)
+    // Simulate successful captcha verification immediately
+    if (onSuccess) {
+      setTimeout(() => onSuccess('test-token'), 0)
+    }
     return <div data-testid="mock-turnstile">Turnstile</div>
   })
 }))
@@ -104,11 +106,13 @@ describe('SignUp', () => {
       fireEvent.click(screen.getByRole('button', { name: enTranslations.auth.signUp.button.default }))
     })
 
-    // Verify the API calls - simplified to avoid timeouts
-    expect(supabase.auth.signUp).toHaveBeenCalledWith({
-      email: 'test@example.com',
-      password: 'password123'
-    })
+    // Wait for the API call to be made with the correct parameters
+    await waitFor(() => {
+      expect(supabase.auth.signUp).toHaveBeenCalled()
+      const callArgs = (supabase.auth.signUp as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(callArgs.email).toBe('test@example.com');
+      expect(callArgs.password).toBe('password123');
+    }, { timeout: 5000 })
 
     // Wait for success message
     await waitFor(() => {
@@ -116,12 +120,19 @@ describe('SignUp', () => {
         title: enTranslations.auth.signUp.success.title,
         description: enTranslations.auth.signUp.success.message
       })
-    }, { timeout: 30000 })
+    }, { timeout: 5000 })
 
-    expect(screen.getByText(enTranslations.auth.signUp.success.title)).toBeInTheDocument()
-    expect(screen.getByText(enTranslations.auth.signUp.success.message)).toBeInTheDocument()
-    expect(mockOnSuccess).toHaveBeenCalled()
-  }, 30000)
+    // Verify success UI is shown
+    await waitFor(() => {
+      expect(screen.getByText(enTranslations.auth.signUp.success.title)).toBeInTheDocument()
+      expect(screen.getByText(enTranslations.auth.signUp.success.message)).toBeInTheDocument()
+    })
+
+    // Verify onSuccess callback was called
+    await waitFor(() => {
+      expect(mockOnSuccess).toHaveBeenCalled()
+    })
+  }, 10000)
 
   it('handles sign up error', async () => {
     // Mock sign up to fail
@@ -180,8 +191,11 @@ describe('SignUp', () => {
       fireEvent.click(screen.getByRole('button', { name: enTranslations.auth.signUp.button.default }))
     })
 
-    // Verify loading state
-    expect(screen.getByRole('button', { name: enTranslations.auth.signUp.button.loading })).toBeInTheDocument()
+    // Verify loading state - use a more robust selector
+    await waitFor(() => {
+      const button = screen.getByRole('button', { name: new RegExp(enTranslations.auth.signUp.button.loading) })
+      expect(button).toBeInTheDocument()
+    })
 
     // Resolve the promise
     await act(async () => {
@@ -190,9 +204,9 @@ describe('SignUp', () => {
 
     // Verify loading state is removed
     await waitFor(() => {
-      expect(screen.queryByRole('button', { name: enTranslations.auth.signUp.button.loading })).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: new RegExp(enTranslations.auth.signUp.button.loading) })).not.toBeInTheDocument()
     })
-  })
+  }, 10000)
 
   it('validates required fields', async () => {
     render(<SignUp onSuccess={mockOnSuccess} />)

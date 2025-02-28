@@ -191,6 +191,8 @@ export default function ChangePassword({ onSuccess }: ChangePasswordProps) {
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
               transition="all 0.2s"
+              loading={loading}
+              loadingText={t('auth.changePassword.button.loading')}
             >
               {loading ? t('auth.changePassword.button.loading') : t('auth.changePassword.button.default')}
             </Button>
