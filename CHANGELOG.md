@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Improved loading state handling in SignUp and ChangePassword components
+- Enhanced test stability with better async handling
+
 ## [0.9.3] - 2025-02-27
 
 ### Changed

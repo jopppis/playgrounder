@@ -186,8 +186,10 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
               transition="all 0.2s"
+              loading={loading}
+              loadingText={t('auth.signUp.button.loading')}
             >
-              {loading ? t('auth.signUp.button.loading') : t('auth.signUp.button.default')}
+              {t('auth.signUp.button.default')}
             </Button>
           </Stack>
         </Box>
