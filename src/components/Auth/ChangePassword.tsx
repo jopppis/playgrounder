@@ -194,7 +194,7 @@ export default function ChangePassword({ onSuccess }: ChangePasswordProps) {
               loading={loading}
               loadingText={t('auth.changePassword.button.loading')}
             >
-              {loading ? t('auth.changePassword.button.loading') : t('auth.changePassword.button.default')}
+              {t('auth.changePassword.button.default')}
             </Button>
           </Stack>
         </Box>

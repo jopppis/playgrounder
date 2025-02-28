@@ -189,7 +189,7 @@ export default function SignUp({ onSuccess }: SignUpProps) {
               loading={loading}
               loadingText={t('auth.signUp.button.loading')}
             >
-              {loading ? t('auth.signUp.button.loading') : t('auth.signUp.button.default')}
+              {t('auth.signUp.button.default')}
             </Button>
           </Stack>
         </Box>
