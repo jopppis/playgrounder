@@ -438,9 +438,9 @@ const PlaygroundMap = () => {
   // Define marker cluster group options
   const markerClusterOptions = {
     showCoverageOnHover: true,
-    maxClusterRadius: 50,
+    maxClusterRadius: 100,
     spiderfyOnMaxZoom: true,
-    disableClusteringAtZoom: 17
+    disableClusteringAtZoom: 13
   }
 
   if (playgroundsLoading || visitsLoading || filtersLoading) {
