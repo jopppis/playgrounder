@@ -1,10 +1,13 @@
 import { Box, Button, Spinner } from '@chakra-ui/react'
 import { User } from '@supabase/supabase-js'
 import L from 'leaflet'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CircleMarker, LayersControl, MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
+import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
 import { useAuth } from '../hooks/useAuth'
@@ -79,6 +82,11 @@ style.textContent = `
     line-height: 40px !important;
     font-size: 18px !important;
   }
+  .marker-cluster div {
+    background-color: rgba(254, 198, 1, 0.8);
+    color: #333;
+    font-weight: bold;
+  }
 `
 document.head.appendChild(style)
 
@@ -103,15 +111,13 @@ const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
 // Separate component for playground markers
-const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange, useCircle = false, zoomLevel }: {
+const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
   visitsLoading: boolean
   onVisitChange: (playgroundId: string, isVisited: boolean) => void
   onRatingChange: () => void
-  useCircle?: boolean
-  zoomLevel: number
 }) => {
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
@@ -137,53 +143,6 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
   useEffect(() => {
     updatePopup()
   }, [hasVisited, updatePopup])
-
-  // Calculate circle radius based on zoom level
-  const getCircleRadius = useCallback((zoom: number) => {
-    // Base size at zoom level 13
-    const baseRadius = 15;
-
-    if (zoom <= 10) return baseRadius * 0.5;  // Very zoomed out
-    if (zoom <= 12) return baseRadius * 0.7;  // Zoomed out
-    if (zoom <= 14) return baseRadius;        // Default zoom
-    if (zoom <= 16) return baseRadius * 1.3;  // Zoomed in
-    return baseRadius * 1.5;                  // Very zoomed in
-  }, []);
-
-  // Calculate border weight based on zoom level
-  const getBorderWeight = useCallback((zoom: number) => {
-    if (zoom <= 12) return 1;
-    if (zoom <= 15) return 2;
-    return 3;
-  }, []);
-
-  if (useCircle) {
-    // Use direct hex color values instead of CSS variables
-    return (
-      <CircleMarker
-        center={[playground.latitude, playground.longitude]}
-        radius={getCircleRadius(zoomLevel)}
-        fillColor="#FEC601"
-        color={hasVisited ? "#38A169" : "#CBD5E0"} // Green for visited, gray for unvisited
-        weight={getBorderWeight(zoomLevel)}
-        opacity={1}
-        fillOpacity={0.9}
-      >
-        <Popup
-          ref={popupRef}
-          autoPan={true}
-          autoPanPadding={[50, 50]}
-        >
-          <PlaygroundPopup
-            playground={playground}
-            onVisitChange={(isVisited) => onVisitChange(playground.id, isVisited)}
-            onContentChange={updatePopup}
-            onRatingChange={onRatingChange}
-          />
-        </Popup>
-      </CircleMarker>
-    )
-  }
 
   return (
     <Marker
@@ -355,24 +314,6 @@ interface PlaygroundRating {
   user_rating: number | null
 }
 
-// Component to track map zoom level
-const ZoomTracker = ({ onZoomChange }: { onZoomChange: (zoom: number) => void }) => {
-  const map = useMapEvents({
-    zoomend: () => {
-      onZoomChange(map.getZoom())
-    },
-    load: () => {
-      onZoomChange(map.getZoom())
-    }
-  })
-
-  // Set initial zoom
-  useEffect(() => {
-    onZoomChange(map.getZoom())
-  }, [map, onZoomChange])
-
-  return null
-}
 
 const PlaygroundMap = () => {
   const { t } = useTranslation()
@@ -386,7 +327,6 @@ const PlaygroundMap = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const mapRef = useRef<L.Map | null>(null)
   const location = useLocation()
-  const [zoomLevel, setZoomLevel] = useState<number>(13)
 
   useEffect(() => {
     // Check for email confirmation redirect
@@ -495,10 +435,13 @@ const PlaygroundMap = () => {
     })
   }, [playgrounds, filters, user, visits, ratings])
 
-  // Handle zoom level change
-  const handleZoomChange = useCallback((zoom: number) => {
-    setZoomLevel(zoom)
-  }, [])
+  // Define marker cluster group options
+  const markerClusterOptions = {
+    showCoverageOnHover: true,
+    maxClusterRadius: 100,
+    spiderfyOnMaxZoom: true,
+    disableClusteringAtZoom: 13
+  }
 
   if (playgroundsLoading || visitsLoading || filtersLoading) {
     return (
@@ -555,7 +498,6 @@ const PlaygroundMap = () => {
         zoomControl={false}
         preferCanvas={true}
       >
-        <ZoomTracker onZoomChange={handleZoomChange} />
         <LayersControl position="bottomright">
           <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
             <TileLayer
@@ -579,19 +521,20 @@ const PlaygroundMap = () => {
           </LayersControl.BaseLayer>
         </LayersControl>
         <LocationControl onLocationUpdate={updateCurrentCity} />
-        {filteredPlaygrounds.map((playground) => (
-          <PlaygroundMarker
-            key={playground.id}
-            playground={playground}
-            visits={visits}
-            user={user}
-            visitsLoading={visitsLoading}
-            onVisitChange={updateVisitsState}
-            onRatingChange={fetchRatings}
-            useCircle={zoomLevel < 12}
-            zoomLevel={zoomLevel}
-          />
-        ))}
+
+        <MarkerClusterGroup {...markerClusterOptions}>
+          {filteredPlaygrounds.map((playground) => (
+            <PlaygroundMarker
+              key={playground.id}
+              playground={playground}
+              visits={visits}
+              user={user}
+              visitsLoading={visitsLoading}
+              onVisitChange={updateVisitsState}
+              onRatingChange={fetchRatings}
+            />
+          ))}
+        </MarkerClusterGroup>
       </MapContainer>
     </Box>
   )
