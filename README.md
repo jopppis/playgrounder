@@ -1,5 +1,7 @@
 # PlayGrounder
 
+[![main](https://github.com/jopppis/playgrounder/actions/workflows/main.yml/badge.svg)](https://codecov.io/gh/jopppis/playgrounder) [![codecov](https://codecov.io/gh/jopppis/playgrounder/graph/badge.svg?token=fj2PiGnj23)](https://codecov.io/gh/jopppis/playgrounder)
+
 An interactive web application to help parents and caregivers find and share local playgrounds. Built with React, Vite, and Chakra UI, using Supabase for the backend.
 
 ![PlayGrounder Screenshot](./screenshot.png)
