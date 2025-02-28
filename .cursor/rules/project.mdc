@@ -26,3 +26,4 @@ The project theming is defined in theme.ts file. Please use the brand and second
 - When adding translations always add them to @fi.json and @en.json.
 - When changing something that might break the build run `npm run build` to check if the build is successful.
 - For single command verification run `npm run lint && npm test && npm run build`
+- When adding tests, do not hardcode translations but instead use the enTranslations object like in @playgroundPopup.test.tsx
