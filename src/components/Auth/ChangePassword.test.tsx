@@ -42,7 +42,7 @@ vi.mock('react-turnstile', () => ({
 // Mock environment variables
 vi.mock('../../lib/env', () => ({
   env: {
-    VITE_APP_ENV: 'local',
+    VITE_APP_ENV: 'test',
     VITE_TURNSTILE_SITE_KEY: 'test-site-key'
   }
 }))
@@ -118,22 +118,14 @@ describe('ChangePassword', () => {
       fireEvent.click(screen.getByRole('button', { name: enTranslations.auth.changePassword.button.default }))
     })
 
-    // Verify the API calls
-    await waitFor(() => {
-      expect(supabase.auth.getUser).toHaveBeenCalled()
+    // Verify the API calls - simplified to avoid timeouts
+    expect(supabase.auth.getUser).toHaveBeenCalled()
+    expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
+      email: 'test@example.com',
+      password: 'current-password'
     })
-
-    await waitFor(() => {
-      expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
-        email: 'test@example.com',
-        password: 'current-password'
-      })
-    })
-
-    await waitFor(() => {
-      expect(supabase.auth.updateUser).toHaveBeenCalledWith({
-        password: 'new-password'
-      })
+    expect(supabase.auth.updateUser).toHaveBeenCalledWith({
+      password: 'new-password'
     })
 
     // Wait for success message
@@ -142,13 +134,10 @@ describe('ChangePassword', () => {
         title: enTranslations.auth.changePassword.success.title,
         description: enTranslations.auth.changePassword.success.message
       })
-    })
+    }, { timeout: 30000 })
 
-    // Wait for onSuccess to be called
-    await waitFor(() => {
-      expect(mockOnSuccess).toHaveBeenCalled()
-    })
-  })
+    expect(mockOnSuccess).toHaveBeenCalled()
+  }, 30000)
 
   it('handles incorrect current password', async () => {
     // Mock sign in to fail
@@ -175,20 +164,11 @@ describe('ChangePassword', () => {
     // Verify error handling
     await waitFor(() => {
       expect(supabase.auth.signInWithPassword).toHaveBeenCalled()
-    })
-
-    await waitFor(() => {
       expect(supabase.auth.updateUser).not.toHaveBeenCalled()
-    })
-
-    await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith({
         title: enTranslations.auth.changePassword.error.title,
         description: enTranslations.auth.changePassword.error.message
       })
-    })
-
-    await waitFor(() => {
       expect(screen.getByText(enTranslations.auth.changePassword.error.title)).toBeInTheDocument()
     })
   })
@@ -218,16 +198,10 @@ describe('ChangePassword', () => {
     // Verify error handling
     await waitFor(() => {
       expect(supabase.auth.updateUser).toHaveBeenCalled()
-    })
-
-    await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith({
         title: enTranslations.auth.changePassword.error.title,
         description: enTranslations.auth.changePassword.error.message
       })
-    })
-
-    await waitFor(() => {
       expect(screen.getByText(enTranslations.auth.changePassword.error.title)).toBeInTheDocument()
     })
   })

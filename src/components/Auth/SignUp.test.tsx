@@ -36,7 +36,7 @@ vi.mock('react-turnstile', () => ({
 // Mock environment variables
 vi.mock('../../lib/env', () => ({
   env: {
-    VITE_APP_ENV: 'local',
+    VITE_APP_ENV: 'test',
     VITE_TURNSTILE_SITE_KEY: 'test-site-key'
   }
 }))
