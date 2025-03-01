@@ -278,7 +278,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                 fontSize="sm"
                 justifyContent="flex-start"
                 transition="all 0.2s"
-                mb={2}
+                mt={{ base: 1, sm: 0 }}
                 px={0}
               >
                 <HStack width="100%" justify="space-between" px={2}>
@@ -287,8 +287,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                 </HStack>
               </Button>
             )}
-            <Box>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+            <Box mt={{ base: 2, sm: 0 }} >
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={{ base: 2, sm: 1 }}>
                 {t('city')}
               </Text>
               <Box position="relative">
