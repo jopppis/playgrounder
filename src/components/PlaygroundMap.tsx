@@ -561,7 +561,7 @@ const PlaygroundMap = () => {
     showCoverageOnHover: true,
     maxClusterRadius: 100,
     spiderfyOnMaxZoom: true,
-    disableClusteringAtZoom: 13
+    disableClusteringAtZoom: 12
   }
 
   if (playgroundsLoading || visitsLoading || filtersLoading) {
