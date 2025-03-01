@@ -296,20 +296,31 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
 
-    // Start watching location automatically without setting view
-    map.locate({
-      setView: false,
-      watch: true,
-      enableHighAccuracy: true,
-      timeout: 600000, // 10 minutes
-      maximumAge: 60000 // 1 minute
-    });
+    // Delay location initialization to avoid issues with some browsers
+    const locationTimer = setTimeout(() => {
+      try {
+        map.locate({
+          setView: false,
+          watch: true,
+          enableHighAccuracy: true,
+          timeout: 600000, // 10 minutes
+          maximumAge: 60000 // 1 minute
+        });
+      } catch (error) {
+        console.error('Error starting location tracking:', error);
+      }
+    }, 1000); // 1 second delay
 
     // Clean up on unmount
     return () => {
       map.off('locationfound', onLocationFound);
       map.off('locationerror', onLocationError);
-      map.stopLocate(); // Stop watching location when component unmounts
+      clearTimeout(locationTimer);
+      try {
+        map.stopLocate(); // Stop watching location when component unmounts
+      } catch (error) {
+        console.error('Error stopping location tracking:', error);
+      }
     };
   }, [map]); // Only depend on map
 
