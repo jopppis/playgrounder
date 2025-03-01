@@ -193,6 +193,8 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
   const isInitialized = useRef(false)
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [isMapInteracting, setIsMapInteracting] = useState(false)
+  const [isWatchingLocation, setIsWatchingLocation] = useState(true)
+  const watchIdRef = useRef<number | null>(null)
 
   // Add zoom control to bottom right
   useEffect(() => {
@@ -263,8 +265,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     if (!isInitialized.current && !isPopupOpen && !isMapInteracting) {
       map.setView(newLocation, 14)
     }
-    // Do not set view after the first location is found
-    isInitialized.current = true
+    isInitialized.current = true;
   }, [map, onLocationUpdate, isPopupOpen, isMapInteracting])
 
   const handleLocationError = useCallback((e: L.ErrorEvent) => {
@@ -281,6 +282,35 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     locationErrorHandlerRef.current = handleLocationError;
   }, [handleLocationFound, handleLocationError]);
 
+  // Define startWatchingLocation first, before it's used
+  const startWatchingLocation = useCallback(() => {
+    // Get location once with setView to center map if needed
+    map.locate({ setView: false, maxZoom: 14, watch: false });
+
+    // Then start watching
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const locationEvent = {
+          latlng: L.latLng(position.coords.latitude, position.coords.longitude)
+        } as L.LocationEvent;
+        locationFoundHandlerRef.current(locationEvent);
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        const errorEvent = { message: error.message } as L.ErrorEvent;
+        locationErrorHandlerRef.current(errorEvent);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 3600000, // 1 hour
+        timeout: 300000 // 5 minutes
+      }
+    );
+
+    watchIdRef.current = watchId;
+    setIsWatchingLocation(true);
+  }, [map]);
+
   // Initialize the component and set up location handling only once
   useEffect(() => {
     if (!map) return;
@@ -296,15 +326,40 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
 
-    // Request location only once on mount
-    map.locate({ setView: false, maxZoom: 10, watch: false });
+    // Start watching location immediately
+    startWatchingLocation();
 
     // Clean up on unmount
     return () => {
       map.off('locationfound', onLocationFound);
       map.off('locationerror', onLocationError);
+
+      // Clear any active watch
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
     };
-  }, [map]); // Only depend on map
+  }, [map, startWatchingLocation]);
+
+  // Toggle location watching
+  const toggleLocationWatching = useCallback(() => {
+    if (isWatchingLocation) {
+      // Stop watching
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+      setIsWatchingLocation(false);
+    } else {
+      if (userLocation) {
+        map.setView(userLocation, 14)
+      }
+
+      // Then start watching
+      startWatchingLocation();
+    }
+  }, [isWatchingLocation, startWatchingLocation, map, userLocation]);
 
   // Add location control button
   useEffect(() => {
@@ -314,15 +369,15 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
       const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
       const button = L.DomUtil.create('a', '', div)
       button.href = '#'
-      button.title = t('map.showMyLocation')
+      button.title = isWatchingLocation ? t('map.stopWatchingLocation') : t('map.showMyLocation')
       button.style.width = '40px'
       button.style.height = '40px'
       button.style.lineHeight = '40px'
       button.style.display = 'flex'
       button.style.alignItems = 'center'
       button.style.justifyContent = 'center'
-      button.style.color = 'gray.600'
-      button.style.backgroundColor = 'white'
+      button.style.color = isWatchingLocation ? 'white' : 'gray.600'
+      button.style.backgroundColor = isWatchingLocation ? 'var(--chakra-colors-brand-500)' : 'white'
       button.style.fontSize = '18px'
       button.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
@@ -337,20 +392,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
 
       L.DomEvent.on(button, 'click', (e) => {
         L.DomEvent.preventDefault(e)
-
-        // Set isMapInteracting to true to prevent automatic view changes from locationfound events
-        setIsMapInteracting(true)
-
-        // Always set view when user clicks the location button
-        if (userLocation) {
-          map.setView(userLocation, 14)
-        }
-        map.locate({ setView: true, maxZoom: 14, watch: false })
-
-        // Reset interaction state after a delay
-        setTimeout(() => {
-          setIsMapInteracting(false)
-        }, 1000)
+        toggleLocationWatching();
       })
 
       return div
@@ -361,7 +403,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     return () => {
       locationControl.remove()
     }
-  }, [map, t, userLocation])
+  }, [map, t, isWatchingLocation, toggleLocationWatching]);
 
   return userLocation ? (
     <Marker
