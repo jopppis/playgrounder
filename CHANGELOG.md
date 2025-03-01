@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Changed location watching logic to always watch
+
 ## [0.11.4] - 2025-03-01
 
 ## [0.11.3] - 2025-03-01

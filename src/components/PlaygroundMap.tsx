@@ -250,21 +250,21 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
   }, [map])
 
   const handleLocationFound = useCallback((e: L.LocationEvent) => {
-    const { lat, lng } = e.latlng
-    const newLocation: [number, number] = [lat, lng]
+    const { lat, lng } = e.latlng;
+    const newLocation: [number, number] = [lat, lng];
 
-    setUserLocation(newLocation)
-    onLocationUpdate(lat, lng)
+    setUserLocation(newLocation);
+    onLocationUpdate(lat, lng);
 
     // Only set view automatically if:
     // 1. The map is not initialized yet
     // 2. No popup is open or about to open
     // 3. The user is not currently interacting with the map
     if (!isInitialized.current && !isPopupOpen && !isMapInteracting) {
-      map.setView(newLocation, 14)
+      map.setView(newLocation, 14);
     }
     // Do not set view after the first location is found
-    isInitialized.current = true
+    isInitialized.current = true;
   }, [map, onLocationUpdate, isPopupOpen, isMapInteracting])
 
   const handleLocationError = useCallback((e: L.ErrorEvent) => {
@@ -296,13 +296,20 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
 
-    // Request location only once on mount
-    map.locate({ setView: false, maxZoom: 10, watch: false });
+    // Start watching location automatically without setting view
+    map.locate({
+      setView: false,
+      watch: true,
+      enableHighAccuracy: true,
+      timeout: 600000, // 10 minutes
+      maximumAge: 60000 // 1 minute
+    });
 
     // Clean up on unmount
     return () => {
       map.off('locationfound', onLocationFound);
       map.off('locationerror', onLocationError);
+      map.stopLocate(); // Stop watching location when component unmounts
     };
   }, [map]); // Only depend on map
 
@@ -341,11 +348,10 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
         // Set isMapInteracting to true to prevent automatic view changes from locationfound events
         setIsMapInteracting(true)
 
-        // Always set view when user clicks the location button
+        // Jump to the latest known user location if available
         if (userLocation) {
           map.setView(userLocation, 14)
         }
-        map.locate({ setView: true, maxZoom: 14, watch: false })
 
         // Reset interaction state after a delay
         setTimeout(() => {
