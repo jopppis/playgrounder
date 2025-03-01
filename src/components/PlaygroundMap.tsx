@@ -321,6 +321,8 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
         // Set isMapInteracting to true to prevent automatic view changes from locationfound events
         setIsMapInteracting(true)
 
+        console.log('[DEBUG] Clicked location control button')
+
         // Always set view when user clicks the location button
         if (userLocation) {
           map.setView(userLocation, 14)
