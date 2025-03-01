@@ -252,12 +252,13 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
 
     setUserLocation(newLocation)
     onLocationUpdate(lat, lng)
-
+    console.log('[DEBUG] Location found:', newLocation)
     // Only set view automatically if:
     // 1. The map is not initialized yet
     // 2. No popup is open or about to open
     // 3. The user is not currently interacting with the map
     if (!isInitialized.current && !isPopupOpen && !isMapInteracting) {
+      console.log('[DEBUG] Setting view to location:', newLocation)
       map.setView(newLocation, 14)
     }
     // Do not set view after the first location is found
