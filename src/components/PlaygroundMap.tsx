@@ -172,6 +172,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
   const isInitialized = useRef(false)
   const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const [isMapInteracting, setIsMapInteracting] = useState(false)
 
   // Add zoom control to bottom right
   useEffect(() => {
@@ -193,12 +194,39 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
       setIsPopupOpen(false)
     }
 
+    // Track map interaction events
+    const handleMapInteractionStart = () => {
+      setIsMapInteracting(true)
+    }
+
+    const handleMapInteractionEnd = () => {
+      setTimeout(() => setIsMapInteracting(false), 300) // Small delay to ensure interaction is complete
+    }
+
+    // Add touch event listeners for mobile
+    const handleTouchStart = () => {
+      setIsMapInteracting(true)
+    }
+
+    const handleTouchEnd = () => {
+      // Longer delay for touch events to ensure popup has time to open
+      setTimeout(() => setIsMapInteracting(false), 500)
+    }
+
     map.on('popupopen', handlePopupOpen)
     map.on('popupclose', handlePopupClose)
+    map.on('dragstart zoomstart', handleMapInteractionStart)
+    map.on('dragend zoomend', handleMapInteractionEnd)
+    map.on('touchstart', handleTouchStart)
+    map.on('touchend', handleTouchEnd)
 
     return () => {
       map.off('popupopen', handlePopupOpen)
       map.off('popupclose', handlePopupClose)
+      map.off('dragstart zoomstart', handleMapInteractionStart)
+      map.off('dragend zoomend', handleMapInteractionEnd)
+      map.off('touchstart', handleTouchStart)
+      map.off('touchend', handleTouchEnd)
     }
   }, [map])
 
@@ -209,11 +237,16 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     setUserLocation(newLocation)
     onLocationUpdate(lat, lng)
 
-    if (!isInitialized.current && !isPopupOpen) {
+    // Only set view automatically if:
+    // 1. The map is not initialized yet
+    // 2. No popup is open or about to open
+    // 3. The user is not currently interacting with the map
+    if (!isInitialized.current && !isPopupOpen && !isMapInteracting) {
       map.setView(newLocation, 14)
-      isInitialized.current = true
     }
-  }, [map, onLocationUpdate, isPopupOpen])
+    // Do not set view after the first location is found
+    isInitialized.current = true
+  }, [map, onLocationUpdate, isPopupOpen, isMapInteracting])
 
   const handleLocationError = useCallback((e: L.ErrorEvent) => {
     console.error('Location error:', e.message)
@@ -267,11 +300,19 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
       L.DomEvent.on(button, 'click', (e) => {
         L.DomEvent.preventDefault(e)
 
+        // Set isMapInteracting to true to prevent automatic view changes from locationfound events
+        setIsMapInteracting(true)
+
         // Always set view when user clicks the location button
         if (userLocation) {
           map.setView(userLocation, 14)
         }
         map.locate({ setView: true, maxZoom: 14, watch: false })
+
+        // Reset interaction state after a delay
+        setTimeout(() => {
+          setIsMapInteracting(false)
+        }, 1000)
       })
 
       return div

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Do not automatically move map to user location when user is interacting with the map
+
+## [0.10.0] - 2025-02-28
+
 ### Added
 - Map marker clustering
 
