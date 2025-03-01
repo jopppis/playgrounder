@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.4] - 2025-03-01
+
+## [0.11.3] - 2025-03-01
+
+### Changed
+- Disable clustering at zoom level 11
+- Add padding to filter menu on small screens
+- Add small paddig to the bottom of menu
+
+## [0.11.2] - 2025-03-01
+
+### Added
+- Added contact email to About section
+
+## [0.11.1] - 2025-03-01
+
+### Changed
+- Disable clustering at zoom level 12
+
+## [0.11.0] - 2025-03-01
+
+### Added
+- Added location watching instead of single location update
+
+## [0.10.3] - 2025-03-01
+
+### Fixed
+- Fixed popup closing when visit status changes
+
+## [0.10.2] - 2025-03-01
+### Fixed
+- Repeated marker renderings on page load
+
 ## [0.10.1] - 2025-03-01
 
 ### Changed

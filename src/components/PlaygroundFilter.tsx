@@ -245,7 +245,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
             align="stretch"
             p={2}
             pt={2}
-            gap={1.5}
+            gap={{ base: 3, sm: 1.5 }}
             bg="white"
             width="100%"
             position={{ base: 'absolute', sm: 'static' }}
@@ -288,7 +288,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
               </Button>
             )}
             <Box>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={{ base: 2, sm: 1 }}>
                 {t('city')}
               </Text>
               <Box position="relative">
@@ -322,10 +322,10 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
             </Box>
 
             <Box>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={{ base: 2, sm: 1 }}>
                 {t('playground.supervision.label')}
               </Text>
-              <Stack gap={0.5}>
+              <Stack gap={{ base: 1, sm: 0.5 }}>
                 <FilterButton
                   value={t('playground.supervision.supervised')}
                   isSelected={filters.hasSupervised === true}
@@ -347,10 +347,10 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
             {user && (
               <Box>
-                <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={{ base: 2, sm: 1 }}>
                   {t('visitStatus')}
                 </Text>
-                <Stack gap={0.5}>
+                <Stack gap={{ base: 1, sm: 0.5 }}>
                   <FilterButton
                     value={t('visited')}
                     isSelected={filters.visitStatus === 'visited'}
@@ -371,11 +371,11 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
               </Box>
             )}
 
-            <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+            <Box borderTop="1px" borderColor="gray.200" pt={{ base: 3, sm: 1.5 }}>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={{ base: 2, sm: 1 }}>
                 {t('minStars')}
               </Text>
-              <Stack gap={0.5}>
+              <Stack gap={{ base: 1, sm: 0.5 }}>
                 {[5, 4].map((stars) => (
                   <FilterButton
                     key={stars}
@@ -423,7 +423,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
                 <Collapsible.Root open={showAllStars}>
                   <Collapsible.Content>
-                    <Stack gap={0.5}>
+                    <Stack gap={{ base: 1, sm: 0.5 }}>
                       {[3, 2, 1].map((stars) => (
                         <FilterButton
                           key={stars}
@@ -455,11 +455,11 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
                       {/* User ratings filter */}
                       {user && (
-                        <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
-                          <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                        <Box borderTop="1px" borderColor="gray.200" pt={{ base: 3, sm: 1.5 }}>
+                          <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={{ base: 2, sm: 1 }}>
                             {t('minUserStars')}
                           </Text>
-                          <Stack gap={0.5}>
+                          <Stack gap={{ base: 1, sm: 0.5 }}>
                             {[5, 4, 3, 2, 1].map((stars) => (
                               <FilterButton
                                 key={`user-${stars}`}
