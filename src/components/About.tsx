@@ -66,7 +66,7 @@ const About = ({ onBack }: AboutProps) => {
       </Link>
 
       <Link
-        href="mailto:info@leikkipuistokartta.fi"
+        href={`mailto:${import.meta.env.VITE_CONTACT_EMAIL}`}
         display="flex"
         gap={2}
         color="brand.500"
@@ -76,7 +76,7 @@ const About = ({ onBack }: AboutProps) => {
         alignItems="center"
         onClick={(e) => e.stopPropagation()}
       >
-        <Text>info@leikkipuistokartta.fi</Text>
+        <Text>{import.meta.env.VITE_CONTACT_EMAIL}</Text>
       </Link>
 
       <Box flex={1} />
