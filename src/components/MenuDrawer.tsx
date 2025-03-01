@@ -131,6 +131,7 @@ const MenuDrawer = ({
             bg="white"
             boxShadow="dark-lg"
             p={4}
+            pb={4}
             zIndex={2000}
             color="gray.700"
             borderLeft="1px solid"

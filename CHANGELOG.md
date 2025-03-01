@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Disable clustering at zoom level 11
 - Add padding to filter menu on small screens
+- Add small paddig to the bottom of menu
+
 ## [0.11.2] - 2025-03-01
 
 ### Added
