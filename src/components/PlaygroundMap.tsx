@@ -132,6 +132,7 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   }, [user, visitsLoading, hasVisited])
 
   const popupRef = useRef<L.Popup>(null)
+  const markerRef = useRef<L.Marker>(null)
 
   const updatePopup = useCallback(() => {
     if (popupRef.current) {
@@ -144,10 +145,20 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
     updatePopup()
   }, [hasVisited, updatePopup])
 
+  // Handle local visit status change
+  const handleVisitChange = useCallback((isVisited: boolean) => {
+    onVisitChange(playground.id, isVisited)
+    // Force icon update immediately
+    if (markerRef.current) {
+      markerRef.current.setIcon(isVisited ? visitedPlaygroundIcon : basePlaygroundIcon)
+    }
+  }, [playground.id, onVisitChange])
+
   return (
     <Marker
       position={[playground.latitude, playground.longitude]}
       icon={icon}
+      ref={markerRef}
     >
       <Popup
         ref={popupRef}
@@ -156,7 +167,7 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
       >
         <PlaygroundPopup
           playground={playground}
-          onVisitChange={(isVisited) => onVisitChange(playground.id, isVisited)}
+          onVisitChange={handleVisitChange}
           onContentChange={updatePopup}
           onRatingChange={onRatingChange}
         />
@@ -166,13 +177,11 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
 }, (prevProps, nextProps) => {
   // Custom comparison to prevent unnecessary rerenders
   // Only rerender if the core properties we depend on have changed
+  // Icon is changed independently to prevent closing of the popup
   return (
     prevProps.playground.id === nextProps.playground.id &&
     prevProps.visitsLoading === nextProps.visitsLoading &&
-    prevProps.user?.id === nextProps.user?.id &&
-    // Check if the visit status stayed the same for this specific playground
-    prevProps.visits.some(v => v.playground_id === prevProps.playground.id) ===
-    nextProps.visits.some(v => v.playground_id === nextProps.playground.id)
+    prevProps.user?.id === nextProps.user?.id
   );
 });
 
