@@ -297,13 +297,13 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     map.on('locationerror', onLocationError);
 
     // Start watching location automatically without setting view
-    map.locate({
-      setView: false,
-      watch: true,
-      enableHighAccuracy: true,
-      timeout: 600000, // 10 minutes
-      maximumAge: 60000 // 1 minute
-    });
+    // map.locate({
+    //   setView: false,
+    //   watch: true,
+    //   enableHighAccuracy: true,
+    //   timeout: 600000, // 10 minutes
+    //   maximumAge: 60000 // 1 minute
+    // });
 
     // Clean up on unmount
     return () => {
