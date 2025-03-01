@@ -252,13 +252,12 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
 
     setUserLocation(newLocation)
     onLocationUpdate(lat, lng)
-    console.log('[DEBUG] Location found:', newLocation)
+
     // Only set view automatically if:
     // 1. The map is not initialized yet
     // 2. No popup is open or about to open
     // 3. The user is not currently interacting with the map
     if (!isInitialized.current && !isPopupOpen && !isMapInteracting) {
-      console.log('[DEBUG] Setting view to location:', newLocation)
       map.setView(newLocation, 14)
     }
     // Do not set view after the first location is found
@@ -269,23 +268,40 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     console.error('Location error:', e.message)
   }, [])
 
+  // Store the latest handlers in refs to avoid re-registering event listeners
+  const locationFoundHandlerRef = useRef(handleLocationFound);
+  const locationErrorHandlerRef = useRef(handleLocationError);
+
+  // Update refs when handlers change
   useEffect(() => {
-    isInitialized.current = false
-    map.on('locationfound', handleLocationFound)
-    map.on('locationerror', handleLocationError)
+    locationFoundHandlerRef.current = handleLocationFound;
+    locationErrorHandlerRef.current = handleLocationError;
+  }, [handleLocationFound, handleLocationError]);
 
-    console.log('[DEBUG] Requesting location')
+  // Initialize the component and set up location handling only once
+  useEffect(() => {
+    if (!map) return;
 
-    // Request location on mount
-    map.locate({ setView: false, maxZoom: 10, watch: false })
+    // Set initialization flag
+    isInitialized.current = false;
 
-    // Clean up
+    // Create stable wrapper functions that call the latest handlers
+    const onLocationFound = (e: L.LocationEvent) => locationFoundHandlerRef.current(e);
+    const onLocationError = (e: L.ErrorEvent) => locationErrorHandlerRef.current(e);
+
+    // Set up event handlers
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    // Request location only once on mount
+    map.locate({ setView: false, maxZoom: 10, watch: false });
+
+    // Clean up on unmount
     return () => {
-      map.off('locationfound', handleLocationFound)
-      map.off('locationerror', handleLocationError)
-    }
-  }, [map, handleLocationFound, handleLocationError])
-
+      map.off('locationfound', onLocationFound);
+      map.off('locationerror', onLocationError);
+    };
+  }, [map]); // Only depend on map
 
   // Add location control button
   useEffect(() => {
@@ -321,8 +337,6 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
 
         // Set isMapInteracting to true to prevent automatic view changes from locationfound events
         setIsMapInteracting(true)
-
-        console.log('[DEBUG] Clicked location control button')
 
         // Always set view when user clicks the location button
         if (userLocation) {
