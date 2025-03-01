@@ -364,14 +364,6 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
           map.setView(userLocation, 14)
         }
 
-        map.locate({
-          setView: false,
-          watch: false,
-          enableHighAccuracy: true,
-          timeout: 600000, // 10 minutes
-          maximumAge: 60000 // 1 minute
-        });
-
         // Reset interaction state after a delay
         setTimeout(() => {
           setIsMapInteracting(false)
