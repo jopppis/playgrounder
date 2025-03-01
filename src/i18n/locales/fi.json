@@ -195,6 +195,7 @@
     "loading": "Ladataan...",
     "attribution": "© OpenStreetMap contributors",
     "showMyLocation": "Näytä sijaintini",
+    "stopWatchingLocation": "Lopeta sijainnin seuranta",
     "standard": "Oletus",
     "osm": "OpenStreetMap",
     "aerial": "Ilmakuva"
