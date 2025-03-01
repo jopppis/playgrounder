@@ -64,6 +64,21 @@ const About = ({ onBack }: AboutProps) => {
         <Icon as={FaGithub} boxSize={5} />
         <Text>{t('menu.about.github')}</Text>
       </Link>
+
+      <Link
+        href="mailto:info@leikkipuistokartta.fi"
+        display="flex"
+        gap={2}
+        color="brand.500"
+        _hover={{ color: 'secondary.500' }}
+        transition="all 0.2s"
+        mb={6}
+        alignItems="center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Text>info@leikkipuistokartta.fi</Text>
+      </Link>
+
       <Box flex={1} />
       <Link
         href={`https://github.com/jopppis/playgrounder/releases/tag/v${import.meta.env.APP_VERSION}`}
