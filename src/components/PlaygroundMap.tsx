@@ -184,7 +184,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
   }, [map])
 
-  // Track popup open/close state
+  // Track interactions
   useEffect(() => {
     const handlePopupOpen = () => {
       setIsPopupOpen(true)
@@ -200,7 +200,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
 
     const handleMapInteractionEnd = () => {
-      setTimeout(() => setIsMapInteracting(false), 300) // Small delay to ensure interaction is complete
+      setTimeout(() => setIsMapInteracting(false), 1000)
     }
 
     // Add touch event listeners for mobile
@@ -209,8 +209,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
 
     const handleTouchEnd = () => {
-      // Longer delay for touch events to ensure popup has time to open
-      setTimeout(() => setIsMapInteracting(false), 500)
+      setTimeout(() => setIsMapInteracting(false), 1000)
     }
 
     map.on('popupopen', handlePopupOpen)
