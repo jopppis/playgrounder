@@ -4,7 +4,7 @@ import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
@@ -111,7 +111,7 @@ const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
 // Separate component for playground markers
-const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
+const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
@@ -163,7 +163,18 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
       </Popup>
     </Marker>
   )
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary rerenders
+  // Only rerender if the core properties we depend on have changed
+  return (
+    prevProps.playground.id === nextProps.playground.id &&
+    prevProps.visitsLoading === nextProps.visitsLoading &&
+    prevProps.user?.id === nextProps.user?.id &&
+    // Check if the visit status stayed the same for this specific playground
+    prevProps.visits.some(v => v.playground_id === prevProps.playground.id) ===
+    nextProps.visits.some(v => v.playground_id === nextProps.playground.id)
+  );
+});
 
 // Location control component
 const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number, lng: number) => void }) => {
