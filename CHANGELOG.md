@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] - 2025-03-01
+
 ### Changed
 - Do not automatically move map to user location when user is interacting with the map
+
+### Fixed
+- Fixed jumping to user location on every interaction
+- Repeated marker renderings on page load
 
 ## [0.10.0] - 2025-02-28
 

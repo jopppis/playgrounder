@@ -4,7 +4,7 @@ import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
@@ -111,7 +111,7 @@ const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
 // Separate component for playground markers
-const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
+const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
@@ -163,7 +163,18 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
       </Popup>
     </Marker>
   )
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary rerenders
+  // Only rerender if the core properties we depend on have changed
+  return (
+    prevProps.playground.id === nextProps.playground.id &&
+    prevProps.visitsLoading === nextProps.visitsLoading &&
+    prevProps.user?.id === nextProps.user?.id &&
+    // Check if the visit status stayed the same for this specific playground
+    prevProps.visits.some(v => v.playground_id === prevProps.playground.id) ===
+    nextProps.visits.some(v => v.playground_id === nextProps.playground.id)
+  );
+});
 
 // Location control component
 const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number, lng: number) => void }) => {
@@ -184,7 +195,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
   }, [map])
 
-  // Track popup open/close state
+  // Track interactions
   useEffect(() => {
     const handlePopupOpen = () => {
       setIsPopupOpen(true)
@@ -200,7 +211,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
 
     const handleMapInteractionEnd = () => {
-      setTimeout(() => setIsMapInteracting(false), 300) // Small delay to ensure interaction is complete
+      setTimeout(() => setIsMapInteracting(false), 1000)
     }
 
     // Add touch event listeners for mobile
@@ -209,8 +220,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     }
 
     const handleTouchEnd = () => {
-      // Longer delay for touch events to ensure popup has time to open
-      setTimeout(() => setIsMapInteracting(false), 500)
+      setTimeout(() => setIsMapInteracting(false), 1000)
     }
 
     map.on('popupopen', handlePopupOpen)
@@ -252,21 +262,40 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     console.error('Location error:', e.message)
   }, [])
 
+  // Store the latest handlers in refs to avoid re-registering event listeners
+  const locationFoundHandlerRef = useRef(handleLocationFound);
+  const locationErrorHandlerRef = useRef(handleLocationError);
+
+  // Update refs when handlers change
   useEffect(() => {
-    isInitialized.current = false
-    map.on('locationfound', handleLocationFound)
-    map.on('locationerror', handleLocationError)
+    locationFoundHandlerRef.current = handleLocationFound;
+    locationErrorHandlerRef.current = handleLocationError;
+  }, [handleLocationFound, handleLocationError]);
 
-    // Request location on mount
-    map.locate({ setView: false, maxZoom: 10, watch: false })
+  // Initialize the component and set up location handling only once
+  useEffect(() => {
+    if (!map) return;
 
-    // Clean up
+    // Set initialization flag
+    isInitialized.current = false;
+
+    // Create stable wrapper functions that call the latest handlers
+    const onLocationFound = (e: L.LocationEvent) => locationFoundHandlerRef.current(e);
+    const onLocationError = (e: L.ErrorEvent) => locationErrorHandlerRef.current(e);
+
+    // Set up event handlers
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    // Request location only once on mount
+    map.locate({ setView: false, maxZoom: 10, watch: false });
+
+    // Clean up on unmount
     return () => {
-      map.off('locationfound', handleLocationFound)
-      map.off('locationerror', handleLocationError)
-    }
-  }, [map, handleLocationFound, handleLocationError])
-
+      map.off('locationfound', onLocationFound);
+      map.off('locationerror', onLocationError);
+    };
+  }, [map]); // Only depend on map
 
   // Add location control button
   useEffect(() => {
