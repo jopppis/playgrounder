@@ -132,7 +132,6 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
   }, [user, visitsLoading, hasVisited])
 
   const popupRef = useRef<L.Popup>(null)
-  const map = useMap()
 
   const updatePopup = useCallback(() => {
     if (popupRef.current) {
@@ -145,25 +144,10 @@ const PlaygroundMarker = ({ playground, visits, user, visitsLoading, onVisitChan
     updatePopup()
   }, [hasVisited, updatePopup])
 
-  // Handle marker click to ensure popup opens properly on mobile
-  const handleMarkerClick = useCallback(() => {
-    // Ensure map isn't moving when popup opens
-    if (map) {
-      map.once('moveend', () => {
-        if (popupRef.current && !popupRef.current.isOpen()) {
-          popupRef.current.openOn(map)
-        }
-      })
-    }
-  }, [map])
-
   return (
     <Marker
       position={[playground.latitude, playground.longitude]}
       icon={icon}
-      eventHandlers={{
-        click: handleMarkerClick
-      }}
     >
       <Popup
         ref={popupRef}
