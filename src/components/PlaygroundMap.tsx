@@ -299,28 +299,55 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     // Reference to interval timer
     let locationInterval: number | null = null;
 
-    // Function to request location once
+    // Function to request location using browser's Geolocation API
     const requestLocation = () => {
-      try {
-        map.locate({
-          setView: false,
-          watch: false, // Don't use watch mode
-          enableHighAccuracy: true,
-          timeout: 5000, // 5 seconds timeout for each request
-          maximumAge: 10000 // 10 seconds
-        });
-      } catch (error) {
-        console.error('Error requesting location:', error);
+      if (!navigator.geolocation) {
+        console.error('Geolocation is not supported by this browser');
+        return;
       }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Create a synthetic Leaflet location event
+          const locationEvent = {
+            latlng: L.latLng(position.coords.latitude, position.coords.longitude),
+            accuracy: position.coords.accuracy,
+            altitude: position.coords.altitude,
+            altitudeAccuracy: position.coords.altitudeAccuracy,
+            heading: position.coords.heading,
+            speed: position.coords.speed,
+            timestamp: position.timestamp,
+            bounds: L.latLngBounds(
+              [position.coords.latitude - 0.001, position.coords.longitude - 0.001],
+              [position.coords.latitude + 0.001, position.coords.longitude + 0.001]
+            )
+          } as L.LocationEvent;
+
+          // Call the location found handler with our synthetic event
+          onLocationFound(locationEvent);
+        },
+        (error) => {
+          // Create a synthetic error event
+          const errorEvent = {
+            code: error.code,
+            message: error.message
+          } as L.ErrorEvent;
+
+          onLocationError(errorEvent);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 50000,
+          maximumAge: 10000
+        }
+      );
     };
 
     // Make initial request immediately
     requestLocation();
 
     // Set up periodic location updates
-    // map.locate with watch: true does not work on iOS Orion browser
-    // so do it manually
-    locationInterval = window.setInterval(requestLocation, 10000); // Check every 10 seconds
+    locationInterval = window.setInterval(requestLocation, 60000); // Check every minute
 
     // Clean up on unmount
     return () => {
