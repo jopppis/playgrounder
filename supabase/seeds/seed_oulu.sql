@@ -3,7 +3,7 @@
 DELETE FROM playgrounds WHERE city = 'Oulu';
         
 -- Import playgrounds
-INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city)
+INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
 VALUES
     (
         'Porkkanakujan leikkipaikka',
@@ -11,7 +11,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(471596.512, 7203763.966), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kuusikkotien leikkipaikka',
@@ -19,7 +20,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(471095.125, 7204974.948), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Hovinsuon leikkipaikka',
@@ -27,7 +29,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(477317.479, 7214402.921), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Hiukkavaaran keskusleikkipuisto',
@@ -35,7 +38,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480838.235, 7212632.045), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Peltolan leikkipuisto',
@@ -43,7 +47,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(477311.373, 7212980.141), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kariniemen leikkipaikka',
@@ -51,7 +56,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(477840.425, 7213827.078), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Höyhtyän keskusleikkipuisto',
@@ -59,7 +65,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476097.543, 7210836.592), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Rantavainion leikkipaikka',
@@ -67,7 +74,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476247.237, 7206409.419), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Rakkakivenpuiston leikkipaikka',
@@ -75,7 +83,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(481472.693, 7211102.999), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Pihlajapihan leikkipaikka',
@@ -83,7 +92,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(470134.179, 7229940.228), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Murtomaan leikkipuisto',
@@ -91,7 +101,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(505088.842, 7213779.832), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tuohustulen leikkipuisto',
@@ -99,7 +110,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480382.21, 7215268.174), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Isoniitynpuiston leikkipaikka',
@@ -107,7 +119,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(468666.812, 7231855.701), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Muuraojan leikkipaikka',
@@ -115,7 +128,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480139.716, 7211652.507), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Ilmarisenpuiston leikkipaikka',
@@ -123,7 +137,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475896.451, 7218250.335), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Letonpuiston leikkipaikka',
@@ -131,7 +146,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(467952.542, 7225079.06), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Hietalanmäen leikkipaikka',
@@ -139,7 +155,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(470837.353, 7224811.517), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Lumilinnanpuiston leikkipaikka',
@@ -147,7 +164,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480745.208, 7215992.32), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Metelinkankaan leikkipaikka',
@@ -155,7 +173,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(478673.843, 7206763.436), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Manttaalipuiston leikkipaikka',
@@ -163,7 +182,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479139.438, 7214582.567), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tolpankankaan leikkipuisto',
@@ -171,7 +191,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476486.999, 7207991.283), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Metsokankaan keskusleikkipuisto',
@@ -179,7 +200,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(478806.779, 7205645.481), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Pikkutikanpuiston leikkipaikka',
@@ -187,7 +209,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(486272.763, 7220412.289), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Myllymetsän leikkipuisto',
@@ -195,7 +218,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(491895.85, 7252634.676), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Nykäsenkankaan leikkipaikka',
@@ -203,7 +227,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479452.189, 7212663.814), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Intiönkankaan leikkipaikka',
@@ -211,7 +236,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476650.204, 7213174.015), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tuokkosenmäen leikkipuisto',
@@ -219,7 +245,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(485648.675, 7221280.391), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tuohipuiston leikkipaikka',
@@ -227,7 +254,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(471450.602, 7223731.014), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Saarelankankaan leikkipaikka',
@@ -235,7 +263,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480316.336, 7211161.867), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tähtitarhanpuiston leikkipaikka',
@@ -243,7 +272,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(481800.136, 7216145.203), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Rajakylän keskusleikkipuisto',
@@ -251,7 +281,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472593.969, 7219465.018), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Lähimetsän leikkipaikka',
@@ -259,7 +290,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479429.263, 7205311.023), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Talvikankaan keskusleikkipuisto',
@@ -267,7 +299,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(481099.287, 7216617.706), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Pekka vesaisen leikkipuisto',
@@ -275,7 +308,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(501114.33, 7214798.559), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Puralan leikkipuisto',
@@ -283,7 +317,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479788.411, 7210018.174), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Palosuonpuiston leikkipuisto',
@@ -291,7 +326,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472658.868, 7220135.749), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Ritaharjun keskusleikkipuisto',
@@ -299,7 +335,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474623.25, 7220581.875), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Myllyojan leikkipuisto',
@@ -307,7 +344,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(478960.459, 7213374.023), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Saverikkopuiston leikkipaikka',
@@ -315,7 +353,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479472.952, 7213729.228), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Pateniemenpuiston leikkipuisto',
@@ -323,7 +362,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(471706.552, 7219678.577), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Suokukkapuiston leikkipaikka',
@@ -331,7 +371,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479839.276, 7215925.266), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Elementtipuiston leikkipaikka',
@@ -339,7 +380,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474558.44, 7215091.635), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Paraatipuiston leikkipaikka',
@@ -347,7 +389,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(481506.393, 7216715.201), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Reslapuiston leikkipaikka',
@@ -355,7 +398,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479047.497, 7214008.18), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Isoahonkankaan leikkipaikka',
@@ -363,7 +407,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(488599.0, 7224629.068), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Navettakankaan leikkipaikka',
@@ -371,7 +416,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480331.055, 7205388.811), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kuutamopuiston leikkipaikka',
@@ -379,7 +425,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479066.318, 7216419.437), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kaarnaraitin leikkipaikka',
@@ -387,7 +434,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(486799.4, 7220783.257), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Pyräspuiston leikkipaikka',
@@ -395,7 +443,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479815.187, 7211267.073), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Karjakentän leikkipaikka',
@@ -403,7 +452,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476145.119, 7219307.753), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Sarkkisenmutkan leikkipaikka',
@@ -411,7 +461,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(471002.932, 7233520.042), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tullipuominpuiston leikkipaikka',
@@ -419,7 +470,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475038.287, 7211933.94), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kontionkankaan leikkipuisto',
@@ -427,7 +479,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480482.192, 7209088.184), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kolamäen leikkipaikka',
@@ -435,7 +488,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(489530.919, 7225186.965), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kynsilehdon leikkipuisto',
@@ -443,7 +497,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(478572.558, 7214894.187), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Ajopelin leikkipuisto',
@@ -451,7 +506,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(482149.62, 7207574.161), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Iinatin leikkipuisto',
@@ -459,7 +515,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(480081.086, 7208242.78), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kirkkosalmen leikkipaikka',
@@ -467,7 +524,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472549.365, 7203562.362), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tuiranpuiston leikkipuisto',
@@ -475,7 +533,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474666.147, 7214363.669), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Aumaharjun leikkipaikka',
@@ -483,7 +542,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(500696.871, 7214916.836), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Suolaheinikon leikkipaikka',
@@ -491,7 +551,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(473130.287, 7218620.595), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Välitalontien leikkipaikka',
@@ -499,7 +560,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(486095.292, 7221519.99), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Takkurannan leikkipaikka',
@@ -507,7 +569,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(470131.501, 7227717.419), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Salmelanpuiston leikkipuisto',
@@ -515,7 +578,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476074.236, 7213564.783), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Hupisaarten keskusleikkipuisto',
@@ -523,7 +587,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475385.175, 7213541.346), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Hakopuiston leikkipaikka',
@@ -531,7 +596,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(487484.05, 7225682.172), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Saunametsän leikkipaikka',
@@ -539,7 +605,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479804.938, 7214659.438), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Hamina-villen puiston leikkipaikka',
@@ -547,7 +614,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(473602.464, 7215081.25), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Oinaansuon leikkipaikka',
@@ -555,7 +623,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(477423.741, 7219514.242), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Silmupuiston leikkipaikka',
@@ -563,7 +632,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474869.031, 7219678.813), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kallenrannan leikkipaikka',
@@ -571,7 +641,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472952.17, 7205156.174), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Sammalojan leikkipaikka',
@@ -579,7 +650,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(488255.938, 7225579.949), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Haukkapuiston leikkipuisto',
@@ -587,7 +659,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(477367.366, 7210287.127), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kasteheinän leikkipuisto',
@@ -595,7 +668,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474389.378, 7219640.512), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tikkapuiston leikkipaikka',
@@ -603,7 +677,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(478973.719, 7207240.842), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Honkimaan leikkipaikka',
@@ -611,7 +686,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(487758.45, 7225039.495), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Repolantien leikkipaikka',
@@ -619,7 +695,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(467340.055, 7235391.237), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Ulkometsän leikkipaikka',
@@ -627,7 +704,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(479120.924, 7206258.504), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Ahvenojan leikkipaikka',
@@ -635,7 +713,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475986.156, 7219821.531), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Antellin leikkipuisto',
@@ -643,7 +722,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472724.201, 7215263.375), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Nallikarin keskusleikkipuisto',
@@ -651,7 +731,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472358.907, 7214705.41), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Tärppipuiston leikkipaikka',
@@ -659,7 +740,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(470059.375, 7206871.688), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Puistikkokadun leikkipaikka',
@@ -667,7 +749,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475850.421, 7212345.563), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kumpulanpuiston leikkipaikka',
@@ -675,7 +758,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(477639.337, 7212809.127), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Uumajan leikkipaikka',
@@ -683,7 +767,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476095.741, 7211826.94), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Merikosken leikkipaikka',
@@ -691,7 +776,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475174.459, 7214210.06), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Toivoniemen leikkipaikka',
@@ -699,7 +785,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474681.266, 7213929.561), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Castrenin leikkipuisto',
@@ -707,7 +794,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475906.209, 7215060.792), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Santaniemen leikkipaikka',
@@ -715,7 +803,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(473057.84, 7204264.798), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kivekkäänpuiston leikkipaikka',
@@ -723,7 +812,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476564.117, 7214151.815), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Honkalanpuiston leikkipaikka',
@@ -731,7 +821,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(471822.619, 7220859.404), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Herukkalammen leikkipaikka',
@@ -739,7 +830,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472282.125, 7222839.125), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Paulapuiston leikkipaikka',
@@ -747,7 +839,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474217.192, 7221017.451), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Syynimaan leikkipaikka',
@@ -755,7 +848,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(474791.25, 7217339.0), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Mäntylän leikkipaikka',
@@ -763,7 +857,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476358.152, 7209581.114), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Oulunsalon keskusleikkipuisto',
@@ -771,7 +866,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(471909.938, 7203821.5), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Puusepänpuiston leikkipaikka',
@@ -779,7 +875,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475781.935, 7213092.486), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Purjopuiston leikkipuisto',
@@ -787,7 +884,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(472217.125, 7204621.5), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Veturipuiston leikkipuisto',
@@ -795,7 +893,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(475539.788, 7210632.189), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Kaislapuiston leikkipaikka',
@@ -803,7 +902,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(476209.217, 7210121.529), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     ),
     (
         'Perhotien leikkipaikka',
@@ -811,5 +911,6 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(468723.963, 7224871.215), 3133), 4326),
         NULL,
         false,
-        'Oulu'
+        'Oulu',
+        'municipality'
     );

@@ -12,7 +12,7 @@ DELETE FROM playgrounds WHERE city = 'Vantaa';
 DELETE FROM playgrounds WHERE city = 'Kauniainen';
         
 -- Import playgrounds
-INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city)
+INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
 VALUES
     (
         'Olarin asukaspuisto',
@@ -20,7 +20,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485095.0, 6672856.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Hilleri',
@@ -28,7 +29,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502459.0, 6677431.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kivenlahden asukaspuisto',
@@ -36,7 +38,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479780.0, 6671150.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Vähätupa',
@@ -44,7 +47,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491857.0, 6680089.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Hiirisuon asukaspuisto',
@@ -52,7 +56,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485540.0, 6687811.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Latokasken asukaspuisto',
@@ -60,7 +65,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481253.0, 6673973.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Maasälpä',
@@ -68,7 +74,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500718.0, 6680513.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Perhetalo Kuutti',
@@ -76,7 +83,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498536.0, 6672684.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Maatulli',
@@ -84,7 +92,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501558.0, 6684678.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kannelmäki',
@@ -92,7 +101,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493365.0, 6680978.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Torpparinmäki',
@@ -100,7 +110,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497270.0, 6682899.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Arabia',
@@ -108,7 +119,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498691.0, 6676831.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Jalopeura',
@@ -116,7 +128,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499315.0, 6684749.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Etupelto',
@@ -124,7 +137,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497769.0, 6681140.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kesanto',
@@ -132,7 +146,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500113.0, 6684237.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Strömberg',
@@ -140,7 +155,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492743.0, 6678404.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leppävaaran asukaspuisto',
@@ -148,7 +164,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489985.0, 6679743.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Intia',
@@ -156,7 +173,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497734.0, 6677629.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kiiltotähti',
@@ -164,7 +182,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503242.0, 6674230.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kipinäpuisto',
@@ -172,7 +191,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503503.0, 6680362.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Munkki',
@@ -180,7 +200,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492934.0, 6676385.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Brahe',
@@ -188,7 +209,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497237.0, 6675118.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Trumpetti',
@@ -196,7 +218,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492627.0, 6680613.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Viikkari',
@@ -204,7 +227,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501844.0, 6679703.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Nissaksen asukaspuisto ja avoin kohtaamispaikka, Hakunila',
@@ -212,7 +236,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506857.0, 6685675.0), 3879), 4326),
         NULL,
         true,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipuisto Myllynsiipi',
@@ -220,7 +245,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503703.0, 6678648.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Tapiolan asukaspuisto',
@@ -228,7 +254,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488846.0, 6674730.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Seppä',
@@ -236,7 +263,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496639.0, 6671775.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Sanna',
@@ -244,7 +272,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495813.0, 6676284.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kimmo',
@@ -252,7 +281,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496755.0, 6677443.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kiikku',
@@ -260,7 +290,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504171.0, 6680342.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Mäkitorppa',
@@ -268,7 +299,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497758.0, 6679541.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Vihertien asukaspuisto ja avoin kohtaamispaikka, Martinlaakso',
@@ -276,7 +308,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491610.0, 6684518.0), 3879), 4326),
         NULL,
         true,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipuisto Taivallahti',
@@ -284,7 +317,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495521.0, 6673758.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kylätalo Palttinan asukaspuisto',
@@ -292,7 +326,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25477726.0, 6675669.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Unikko',
@@ -300,7 +335,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499470.0, 6681396.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Vallila',
@@ -308,7 +344,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497633.0, 6676041.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Tullinpuomi',
@@ -316,7 +353,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494920.0, 6675680.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Linnunrata',
@@ -324,7 +362,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500376.0, 6685355.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Nurkka',
@@ -332,7 +371,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503253.0, 6684313.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Nuoli',
@@ -340,7 +380,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492377.0, 6679599.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Piika',
@@ -348,7 +389,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492056.0, 6681289.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Maunula',
@@ -356,7 +398,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496046.0, 6679820.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Perhetalo Naapuri / Asukastila Kivenkolo',
@@ -364,7 +407,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503772.0, 6680848.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kotinummi',
@@ -372,7 +416,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500868.0, 6682771.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Karakallion asukaspuisto',
@@ -380,7 +425,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486942.0, 6679708.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Kurranummi',
@@ -388,7 +434,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500908.0, 6683903.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Rudolf',
@@ -396,7 +443,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502194.0, 6673177.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Mustakivi',
@@ -404,7 +452,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507800.0, 6676869.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Tuorinniemi',
@@ -412,7 +461,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502089.0, 6674898.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Suvelan asukaspuisto',
@@ -420,7 +470,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481846.0, 6676874.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Ruoholahti',
@@ -428,7 +479,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495504.0, 6671997.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Pisan asukaspuisto',
@@ -436,7 +488,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482278.0, 6673575.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Ida',
@@ -444,7 +497,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494257.0, 6679596.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Laurinniitty',
@@ -452,7 +506,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493147.0, 6679956.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Perhetalo Sahrami',
@@ -460,7 +515,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497633.0, 6676041.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Orava',
@@ -468,7 +524,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501798.0, 6676153.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Isoneva',
@@ -476,7 +533,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494016.0, 6677861.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Matinkylän asukaspuisto',
@@ -484,7 +542,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485922.0, 6671652.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Ulvila',
@@ -492,7 +551,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492543.0, 6677136.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Haruspuisto',
@@ -500,7 +560,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506792.0, 6676652.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Mellunmäki',
@@ -508,7 +569,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506820.0, 6680438.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Santahamina',
@@ -516,7 +578,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502697.0, 6671046.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Linja',
@@ -524,7 +587,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496892.0, 6674464.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Perkkaan asukaspuisto',
@@ -532,7 +596,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490177.0, 6677949.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Soukan asukaspuisto',
@@ -540,7 +605,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481601.0, 6669683.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Iso-Antti',
@@ -548,7 +614,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504688.0, 6677046.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Filpus',
@@ -556,7 +623,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500995.0, 6681863.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Lohikäärmepuisto',
@@ -564,7 +632,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507734.0, 6677661.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Lehdokki',
@@ -572,7 +641,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496815.0, 6676200.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Kankarepuisto',
@@ -580,7 +650,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504440.0, 6683110.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Lampi',
@@ -588,7 +659,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504255.0, 6681109.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Salpausselkä',
@@ -596,7 +668,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500266.0, 6679899.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Järvenperän asukaspuisto',
@@ -604,7 +677,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484019.0, 6681395.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Viiri',
@@ -612,7 +686,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493891.0, 6676804.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Soihtu',
@@ -620,7 +695,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496166.0, 6682426.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Puuskakulma',
@@ -628,7 +704,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504153.0, 6672440.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Viherkallion asukaspuisto',
@@ -636,7 +713,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485858.0, 6679487.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Mankkaan asukaspuisto',
@@ -644,7 +722,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487174.0, 6675558.0), 3879), 4326),
         NULL,
         true,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipuisto Traktori',
@@ -652,7 +731,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499809.0, 6682093.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Perhetalo Kajuutta',
@@ -660,7 +740,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507620.0, 6676577.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Lahnalahti',
@@ -668,7 +749,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493132.0, 6671932.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Loru',
@@ -676,7 +758,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496566.0, 6673500.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Roihuvuori',
@@ -684,7 +767,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503413.0, 6676695.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipuisto Rusthollari',
@@ -692,7 +776,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505534.0, 6677861.0), 3879), 4326),
         NULL,
         true,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Lukupuronpuiston leikkipaikka',
@@ -700,7 +785,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486845.0, 6674469.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Sampotorin leikkipaikka',
@@ -708,7 +794,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489061.0, 6673760.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Vesalanpuisto',
@@ -716,7 +803,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505419.0, 6680839.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kirjastopuisto',
@@ -724,7 +812,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502308.0, 6686865.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Apollonpuistikko',
@@ -732,7 +821,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495848.0, 6673702.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Hopealehdon leikkipaikka',
@@ -740,7 +830,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489271.0, 6674511.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ratsumiehenpuisto II',
@@ -748,7 +839,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505817.0, 6685244.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Koivikkopuisto',
@@ -756,7 +848,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492219.0, 6685683.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Helsinginniemenpuisto',
@@ -764,7 +857,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496510.0, 6671395.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Krapupuisto',
@@ -772,7 +866,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25509623.0, 6681931.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Suutarilanpuisto',
@@ -780,7 +875,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500011.0, 6685060.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ullanpuistikko',
@@ -788,7 +884,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497369.0, 6672001.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Elopelto II',
@@ -796,7 +893,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503451.0, 6687351.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Nestorinpolun leikkipaikka',
@@ -804,7 +902,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486063.0, 6671721.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Metsäruusunpuisto',
@@ -812,7 +911,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501579.0, 6688092.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kolmperän leikkipaikka',
@@ -820,7 +920,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25473787.0, 6681789.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Risto Rytin puisto',
@@ -828,7 +929,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500823.0, 6674919.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Lehtovuori',
@@ -836,7 +938,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490852.0, 6681624.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Muukalaispuiston leikkipaikka',
@@ -844,7 +947,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489572.0, 6679022.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kulomäenkenttä',
@@ -852,7 +956,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503197.0, 6692476.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Juvanpuiston leikkipaikka',
@@ -860,7 +965,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486329.0, 6684892.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Westendinpuiston leikkipaikka',
@@ -868,7 +974,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488753.0, 6672290.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Violanpuisto',
@@ -876,7 +983,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498140.0, 6676018.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Krenaatöörinpuiston leikkipaikka',
@@ -884,7 +992,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490781.0, 6680710.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Aimo Tukiaisen puisto',
@@ -892,7 +1001,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493861.0, 6671039.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Päivölänpuisto',
@@ -900,7 +1010,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501406.0, 6683395.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ensipuistikko',
@@ -908,7 +1019,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496772.0, 6671434.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Lehtipuiston leikkipaikka',
@@ -916,7 +1028,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486537.0, 6681991.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kahluuniitty',
@@ -924,7 +1037,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493726.0, 6683825.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Ullaksenpuisto',
@@ -932,7 +1046,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507757.0, 6676509.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Matinmetsän leikkipaikka',
@@ -940,7 +1055,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485614.0, 6671448.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Rautkallio',
@@ -948,7 +1064,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503819.0, 6689952.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kattilapohjan leikkipaikka',
@@ -956,7 +1073,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480299.0, 6672009.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kalasatamanpuisto',
@@ -964,7 +1082,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498647.0, 6674591.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Väylänrinteen puisto',
@@ -972,7 +1091,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503373.0, 6675401.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Ulappatorin leikkipaikka',
@@ -980,7 +1100,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480876.0, 6670860.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kaisaniemi',
@@ -988,7 +1109,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497056.0, 6673499.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Eugen Schaumanin puisto',
@@ -996,7 +1118,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500521.0, 6674462.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ojalehto',
@@ -1004,7 +1127,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503120.0, 6690009.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Hiihtomäentien puistikko',
@@ -1012,7 +1136,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501754.0, 6676399.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kulloonmäenpuiston leikkipaikka',
@@ -1020,7 +1145,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484317.0, 6681666.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Finnoonniityn puiston leikkipaikka',
@@ -1028,7 +1154,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483500.0, 6672775.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kivivuori',
@@ -1036,7 +1163,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492172.0, 6685255.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Toppelundinreunan leikkipaikka',
@@ -1044,7 +1172,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488068.0, 6672168.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Männikkö',
@@ -1052,7 +1181,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491747.0, 6695245.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kuopuksenpuisto',
@@ -1060,7 +1190,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494207.0, 6682431.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kirjanpuisto',
@@ -1068,7 +1199,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497556.0, 6673713.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Tervahaudanmetsä',
@@ -1076,7 +1208,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504954.0, 6692104.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Atlaspuisto',
@@ -1084,7 +1217,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500567.0, 6690521.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kottaraispuisto',
@@ -1092,7 +1226,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500250.0, 6683596.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Temppeliaukio',
@@ -1100,7 +1235,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495905.0, 6673397.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Simo Klemetinpojan puisto',
@@ -1108,7 +1244,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501526.0, 6679877.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Laajametsä',
@@ -1116,7 +1253,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490993.0, 6684706.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Sammalkallionkentän leikkipaikka',
@@ -1124,7 +1262,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485374.0, 6673715.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Perhon kenttä',
@@ -1132,7 +1271,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495679.0, 6673098.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Lohiapajanlahti',
@@ -1140,7 +1280,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493816.0, 6671752.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Tikanpuiston leikkipaikka',
@@ -1148,7 +1289,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489235.0, 6679751.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kulkuspuisto',
@@ -1156,7 +1298,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487929.0, 6681752.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kangaspelto',
@@ -1164,7 +1307,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493509.0, 6677331.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ojanvarsipuisto',
@@ -1172,7 +1316,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501637.0, 6682831.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Luuvaniemen korttelipuisto',
@@ -1180,7 +1325,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493542.0, 6676868.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Ahertajantien leikkipaikka',
@@ -1188,7 +1334,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488534.0, 6673859.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Saarenpellon leikkipaikka',
@@ -1196,7 +1343,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25477542.0, 6673334.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ulvilanpuisto',
@@ -1204,7 +1352,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493055.0, 6676939.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ehrnroothinpuisto',
@@ -1212,7 +1361,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497479.0, 6685552.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kannistonpuisto',
@@ -1220,7 +1370,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491820.0, 6690784.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kummelipuiston leikkipaikka',
@@ -1228,7 +1379,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25478778.0, 6671979.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Odilammen leikkipaikka',
@@ -1236,7 +1388,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486937.0, 6688011.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kulosaaren rantapuisto',
@@ -1244,7 +1397,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500366.0, 6675262.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Punakivenpuisto',
@@ -1252,7 +1406,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491563.0, 6689679.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Töyrylaakson leikkipaikka',
@@ -1260,7 +1415,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482387.0, 6675787.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Lillhemtinpuisto',
@@ -1268,7 +1424,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485230.0, 6674858.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kartanopuiston leikkipaikka',
@@ -1276,7 +1433,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489594.0, 6678013.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Someronpuistikko',
@@ -1284,7 +1442,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497661.0, 6675858.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Katajaharjuntie',
@@ -1292,7 +1451,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492049.0, 6672830.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Landbackanpuiston Angry Birds -leikkipaikka',
@@ -1300,7 +1460,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485583.0, 6675027.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Klaukkalanpuisto',
@@ -1308,7 +1469,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497997.0, 6681555.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Metsänhenki',
@@ -1316,7 +1478,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502450.0, 6690185.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Aitanurmen leikkipaikka',
@@ -1324,7 +1487,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484777.0, 6681900.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kapteeninpuistikko',
@@ -1332,7 +1496,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496953.0, 6671647.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Hallainvuori',
@@ -1340,7 +1505,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502741.0, 6678620.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Säterinkentän leikkipaikka',
@@ -1348,7 +1514,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488929.0, 6678129.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Alakartanonkujan leikkipaikka',
@@ -1356,7 +1523,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481563.0, 6669330.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ruoholahdenpuisto',
@@ -1364,7 +1532,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495459.0, 6672147.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kirjailijanpuisto',
@@ -1372,7 +1541,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495166.0, 6674820.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Hepopuisto',
@@ -1380,7 +1550,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505690.0, 6684595.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Pakarituvanpuisto',
@@ -1388,7 +1559,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492457.0, 6681276.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kirkkojärvenrannan leikkipaikka',
@@ -1396,7 +1568,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481605.0, 6677491.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Everstinpuiston leikkipaikka',
@@ -1404,7 +1577,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490237.0, 6677725.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Vanhanväylän puisto',
@@ -1412,7 +1586,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503383.0, 6675521.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Lastenlehto',
@@ -1420,7 +1595,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496044.0, 6672604.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Artturi Kanniston puisto',
@@ -1428,7 +1604,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494368.0, 6678365.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kotkavuori',
@@ -1436,7 +1613,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493603.0, 6672214.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Suomensuonpuisto',
@@ -1444,7 +1622,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502355.0, 6672318.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Tankovainio',
@@ -1452,7 +1631,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507017.0, 6679531.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Paasipuisto',
@@ -1460,7 +1640,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491114.0, 6689673.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Karhuneva',
@@ -1468,7 +1649,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25510567.0, 6684146.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Tuhkimo',
@@ -1476,7 +1658,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502868.0, 6676240.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Iivisniemenpuiston leikkipaikka 1 ja 2',
@@ -1484,7 +1667,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483020.0, 6670648.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Harjupuisto',
@@ -1492,7 +1676,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500247.0, 6689477.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Hietakannas',
@@ -1500,7 +1685,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495382.0, 6673464.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kilterinmäki',
@@ -1508,7 +1694,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491954.0, 6682599.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kenraalinpuisto',
@@ -1516,7 +1703,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492096.0, 6690311.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Hösmärinniityn leikkipaikka',
@@ -1524,7 +1712,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482120.0, 6676119.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Myllynsiipi kirkkopuisto',
@@ -1532,7 +1721,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503679.0, 6679022.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kivitorpan puisto',
@@ -1540,7 +1730,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493370.0, 6676422.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Takomopuisto',
@@ -1548,7 +1739,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492914.0, 6678331.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kontiopuisto',
@@ -1556,7 +1748,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505076.0, 6694263.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Tähtitornin Vuori',
@@ -1564,7 +1757,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497241.0, 6672017.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kokkokallio',
@@ -1572,7 +1766,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491853.0, 6679537.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Varhelanpuisto',
@@ -1580,7 +1775,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505739.0, 6680883.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Oskarinpuisto',
@@ -1588,7 +1784,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504295.0, 6676472.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kuloniityn leikkipaikka',
@@ -1596,7 +1793,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482418.0, 6677204.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Poikkilaakso',
@@ -1604,7 +1802,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504602.0, 6672541.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Nuottamiehenpuiston leikkipaikka',
@@ -1612,7 +1811,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485745.0, 6670946.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Åvik/Tikkurilanranta',
@@ -1620,7 +1820,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502194.0, 6686336.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Väinön lehto',
@@ -1628,7 +1829,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501773.0, 6676759.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Töölönlahden puisto',
@@ -1636,7 +1838,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496405.0, 6673774.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kaarlenpuisto',
@@ -1644,7 +1847,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497280.0, 6674939.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Rikun puisto',
@@ -1652,7 +1856,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500235.0, 6684107.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Pattistenpellon leikkipaikka',
@@ -1660,7 +1865,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487661.0, 6672102.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Patterimäki',
@@ -1668,7 +1874,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492210.0, 6678573.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Härkävaljakon puisto',
@@ -1676,7 +1883,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501973.0, 6685700.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Lillhemtinpuiston leikkipaikka',
@@ -1684,7 +1892,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485230.0, 6674858.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Palokaivonkentän leikkipaikka',
@@ -1692,7 +1901,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484083.0, 6672768.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Nummisuutarinpuisto',
@@ -1700,7 +1910,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503299.0, 6684502.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Rakettipuisto',
@@ -1708,7 +1919,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504060.0, 6676915.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Johanneksen puisto',
@@ -1716,7 +1928,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496907.0, 6672078.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kontulan asukaspuisto',
@@ -1724,7 +1937,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504749.0, 6680241.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Satumaanpuisto',
@@ -1732,7 +1946,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503211.0, 6675959.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Viputien leikkipaikka',
@@ -1740,7 +1955,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484432.0, 6679934.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Talkookenttä',
@@ -1748,7 +1964,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505070.0, 6683689.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Serkustenpuisto',
@@ -1756,7 +1973,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494419.0, 6682383.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Oulunkylän siirtolapuutarha / Leikkipaikka',
@@ -1764,7 +1982,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499106.0, 6680106.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Marielundinpuisto',
@@ -1772,7 +1991,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25508333.0, 6678502.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Viikinojanpuisto',
@@ -1780,7 +2000,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501574.0, 6679155.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Pikku-Huopalahden puisto',
@@ -1788,7 +2009,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494161.0, 6676332.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Heittopaikka',
@@ -1796,7 +2018,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505994.0, 6681226.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Nissbackanpuisto',
@@ -1804,7 +2027,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506917.0, 6685607.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Nuottaniemen leikkipaikka',
@@ -1812,7 +2036,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485369.0, 6670240.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Pasuunapuisto',
@@ -1820,7 +2045,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492806.0, 6680807.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Martinniitynpuiston leikkipaikka',
@@ -1828,7 +2054,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482976.0, 6672183.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Tynnyripuiston leikkipaikka',
@@ -1836,7 +2063,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485231.0, 6672060.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Lokkalanlehto',
@@ -1844,7 +2072,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493472.0, 6676203.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Sannanpuisto',
@@ -1852,7 +2081,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495674.0, 6676031.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Puotilan korttelipuisto',
@@ -1860,7 +2090,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505496.0, 6677700.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Poutamäki',
@@ -1868,7 +2099,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492001.0, 6678386.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Sammonpuistikko',
@@ -1876,7 +2108,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495650.0, 6673324.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kuusikallionkentän leikkipaikka',
@@ -1884,7 +2117,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485118.0, 6673684.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kaivomestarinaukion leikkipaikka',
@@ -1892,7 +2126,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481289.0, 6677319.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kalliolaakson leikkipaikka',
@@ -1900,7 +2135,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485643.0, 6685937.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kurkijoentien leikkipaikka',
@@ -1908,7 +2144,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489237.0, 6676812.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Porslahden puisto',
@@ -1916,7 +2153,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25508471.0, 6678409.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kaupungintalon leikkipuisto',
@@ -1924,7 +2162,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485011.0, 6677392.0), 3879), 4326),
         NULL,
         false,
-        'Kauniainen'
+        'Kauniainen',
+        'municipality'
     ),
     (
         'Leikkipaikka Hiiriharjunpuisto',
@@ -1932,7 +2171,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501496.0, 6689094.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Lindmaninkorpi',
@@ -1940,7 +2180,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503892.0, 6685484.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kallioruohonpuisto',
@@ -1948,7 +2189,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501150.0, 6688169.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Amiraalinpuiston leikkipaikka',
@@ -1956,7 +2198,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481262.0, 6670985.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Pihlajamäenpuiston leikkipaikka',
@@ -1964,7 +2207,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25478797.0, 6671965.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Klaukkalanpuiston ryhmäpuutarha',
@@ -1972,7 +2216,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498082.0, 6681446.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Laajaniitty',
@@ -1980,7 +2225,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491980.0, 6685337.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Etanapuisto',
@@ -1988,7 +2234,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506507.0, 6692118.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Rantapuisto',
@@ -1996,7 +2243,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493997.0, 6675981.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Siimapuisto',
@@ -2004,7 +2252,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507402.0, 6693695.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Topeliuksen puisto',
@@ -2012,7 +2261,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495561.0, 6674232.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Korpimaan leikkipaikka',
@@ -2020,7 +2270,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481623.0, 6671966.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Esikoisenpuisto',
@@ -2028,7 +2279,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494227.0, 6682288.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kuhankeittäjänpuisto',
@@ -2036,7 +2288,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500129.0, 6682817.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Siltalanpuisto',
@@ -2044,7 +2297,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499311.0, 6683853.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Koukkuniemenpuiston leikkipaikka',
@@ -2052,7 +2306,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486767.0, 6671332.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kellosaarenpuisto',
@@ -2060,7 +2315,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495024.0, 6672135.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Mielikinpuisto',
@@ -2068,7 +2324,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505328.0, 6690134.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kaskenkaatajanpuiston leikkipaikka',
@@ -2076,7 +2333,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488446.0, 6674367.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Huvilinnanaukion leikkipaikka',
@@ -2084,7 +2342,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489346.0, 6678119.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kerttulinpuisto',
@@ -2092,7 +2351,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502148.0, 6675129.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Maauuninpuisto',
@@ -2100,7 +2360,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503485.0, 6692528.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Velodrominrinne',
@@ -2108,7 +2369,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496721.0, 6676570.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kuohupuisto',
@@ -2116,7 +2378,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491625.0, 6684000.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Taikapuisto',
@@ -2124,7 +2387,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501205.0, 6691441.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Spelttipuisto',
@@ -2132,7 +2396,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497390.0, 6682103.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Haarssinpuiston leikkipaikka',
@@ -2140,7 +2405,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484209.0, 6690103.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Pisanpuiston leikkipaikka',
@@ -2148,7 +2414,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481907.0, 6673767.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Otto-Iivari Meurmanin puiston leikkipaikka',
@@ -2156,7 +2423,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489559.0, 6674387.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Pirttipuisto',
@@ -2164,7 +2432,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487718.0, 6685141.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Naalipuisto',
@@ -2172,7 +2441,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505093.0, 6693116.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Mikkelänpellon leikkipaikka',
@@ -2180,7 +2450,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479951.0, 6676745.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Laajavuori I',
@@ -2188,7 +2459,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491660.0, 6685297.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Sikurimyllyn puiston leikkipaikka',
@@ -2196,7 +2468,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491218.0, 6678590.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Itäviitanpuiston leikkipaikka',
@@ -2204,7 +2477,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25478586.0, 6672672.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Hylkeenpyytäjän kenttä',
@@ -2212,7 +2486,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496205.0, 6671394.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Vetokannas',
@@ -2220,7 +2495,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493370.0, 6684074.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kalapuiston leikkipaikka',
@@ -2228,7 +2504,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485508.0, 6671783.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Tillinmäenkentän leikkipaikka',
@@ -2236,7 +2513,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479229.0, 6672966.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Peltoniemenpuisto',
@@ -2244,7 +2522,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503522.0, 6689730.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Lumikintien leikkikenttä',
@@ -2252,7 +2531,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503000.0, 6676717.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Korppitie',
@@ -2260,7 +2540,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502700.0, 6693629.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Näsinojanpuisto',
@@ -2268,7 +2549,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496708.0, 6682937.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Poppelipuisto',
@@ -2276,7 +2558,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502328.0, 6689672.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Pakilan siirtolapuutarha / Leikkipaikka',
@@ -2284,7 +2567,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498265.0, 6681768.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Toivo J. Särkän puisto',
@@ -2292,7 +2576,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505274.0, 6676749.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Thurmaninpuiston lähiliikuntapaikka',
@@ -2300,7 +2585,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484664.0, 6677577.0), 3879), 4326),
         NULL,
         false,
-        'Kauniainen'
+        'Kauniainen',
+        'municipality'
     ),
     (
         'Leikkipaikka Haka',
@@ -2308,7 +2594,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494626.0, 6685546.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Estepuisto',
@@ -2316,7 +2603,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505780.0, 6681438.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Valkamanpuiston leikkipaikka',
@@ -2324,7 +2612,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25477043.0, 6675428.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Käräjäpuisto',
@@ -2332,7 +2621,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497154.0, 6686101.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Talin siirtolapuutarha / Leikkipaikka',
@@ -2340,7 +2630,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492251.0, 6678301.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Nöykkiönpuiston leikkipaikka',
@@ -2348,7 +2639,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481514.0, 6672546.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kurkijoenpuiston leikkipaikka',
@@ -2356,7 +2648,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489282.0, 6677027.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Lähdepuisto',
@@ -2364,7 +2657,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505859.0, 6683564.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Auringonkehrän leikkipaikka',
@@ -2372,7 +2666,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484807.0, 6673243.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Ankkuripuiston leikkipaikka',
@@ -2380,7 +2675,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480514.0, 6670673.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Alppikylänpuisto',
@@ -2388,7 +2684,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503733.0, 6683041.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Päivättärenpuisto',
@@ -2396,7 +2693,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505732.0, 6689503.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Pitkänotkon leikkipaikka',
@@ -2404,7 +2702,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482562.0, 6676369.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Runoilijanpuistikko',
@@ -2412,7 +2711,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498571.0, 6679433.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Torkkelinpuistikko',
@@ -2420,7 +2720,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497510.0, 6674732.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Iivisniemenpellon leikkipaikka',
@@ -2428,7 +2729,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483054.0, 6670520.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Niittysillanpuiston leikkipaikka',
@@ -2436,7 +2738,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487231.0, 6673028.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Otto-Iivari Meurmannin puisto',
@@ -2444,7 +2747,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497576.0, 6678251.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Ankkuripohjanpuisto',
@@ -2452,7 +2756,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480174.0, 6670449.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Krankanpuisto',
@@ -2460,7 +2765,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494653.0, 6679080.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kirjastonpuisto',
@@ -2468,7 +2774,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484770.0, 6677571.0), 3879), 4326),
         NULL,
         false,
-        'Kauniainen'
+        'Kauniainen',
+        'municipality'
     ),
     (
         'Leikkipaikka Autioniitty',
@@ -2476,7 +2783,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489346.0, 6683275.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Westendin uimarannan leikkipaikka',
@@ -2484,7 +2792,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489477.0, 6672890.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Tiilimäenlehto',
@@ -2492,7 +2801,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493009.0, 6676010.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Hevosenkenkäpuisto',
@@ -2500,7 +2810,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493041.0, 6671648.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Holmankorven leikkipaikka',
@@ -2508,7 +2819,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483806.0, 6673501.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ruutanapuisto',
@@ -2516,7 +2828,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498233.0, 6679762.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Maarianmaanpuisto',
@@ -2524,7 +2837,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499453.0, 6679268.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Porttipuiston leikkipaikka',
@@ -2532,7 +2846,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487313.0, 6676358.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Matinkylän urheilupuiston leikkipaikka',
@@ -2540,7 +2855,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486258.0, 6671564.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Sateentien leikkipaikka',
@@ -2548,7 +2864,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489571.0, 6673417.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ratsumiehenpuisto I',
@@ -2556,7 +2873,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506013.0, 6685351.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Tervasaari',
@@ -2564,7 +2882,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498296.0, 6673464.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Museon puisto',
@@ -2572,7 +2891,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496052.0, 6673515.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Stenbergin puisto',
@@ -2580,7 +2900,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483748.0, 6677982.0), 3879), 4326),
         NULL,
         false,
-        'Kauniainen'
+        'Kauniainen',
+        'municipality'
     ),
     (
         'Leikkipaikka Tokoinranta',
@@ -2588,7 +2909,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497092.0, 6674126.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Solnan puisto',
@@ -2596,7 +2918,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493269.0, 6675930.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Miilukorven kentän leikkipaikka',
@@ -2604,7 +2927,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480794.0, 6679289.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Lainekallion leikkipaikka',
@@ -2612,7 +2936,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479393.0, 6671275.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Asolanpuisto',
@@ -2620,7 +2945,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503160.0, 6690692.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Karviaismäki',
@@ -2628,7 +2954,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500402.0, 6681196.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Linnanpellonpuisto',
@@ -2636,7 +2963,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505902.0, 6679686.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Vanhapuisto',
@@ -2644,7 +2972,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495449.0, 6685499.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Keuruunpuisto',
@@ -2652,7 +2981,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497637.0, 6675518.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Niittykummunpuiston leikkipaikka',
@@ -2660,7 +2990,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486493.0, 6672966.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ilkantien puisto',
@@ -2668,7 +2999,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494677.0, 6678897.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kukkakimpunpuisto',
@@ -2676,7 +3008,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502264.0, 6687670.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Ymmerstanmäen leikkipaikka',
@@ -2684,7 +3017,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483795.0, 6676850.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Painiityn puiston leikkipaikka',
@@ -2692,7 +3026,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490772.0, 6680264.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Vallilan siirtolapuutarha / Leikkipaikka',
@@ -2700,7 +3035,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497662.0, 6676371.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Selkämerenpuisto',
@@ -2708,7 +3044,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495199.0, 6671898.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leppävaaran urheiluaukion Angry Birds- leikkipaikka',
@@ -2716,7 +3053,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489120.0, 6679155.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Linnankoskenpuisto',
@@ -2724,7 +3062,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495474.0, 6674774.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Hevoshaka I',
@@ -2732,7 +3071,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505935.0, 6684608.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Numeropuisto',
@@ -2740,7 +3080,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498056.0, 6684533.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Linnaistenmetsä',
@@ -2748,7 +3089,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488041.0, 6682305.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Aittarivi',
@@ -2756,7 +3098,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490165.0, 6684085.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Reittipuisto',
@@ -2764,7 +3107,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491808.0, 6687591.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Sibeliuksen puisto',
@@ -2772,7 +3116,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495203.0, 6674449.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Varsasaaren kesämaja-alue / Leikkipaikka',
@@ -2780,7 +3125,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488899.0, 6670938.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Lammaspuisto I',
@@ -2788,7 +3134,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489077.0, 6683125.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Siikajärven leikkipaikka',
@@ -2796,7 +3143,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25473632.0, 6683746.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Heinäpellonpuisto',
@@ -2804,7 +3152,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500513.0, 6682802.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Juoksuhaudanpuisto',
@@ -2812,7 +3161,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506477.0, 6681903.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Lähetinpuiston leikkipaikka',
@@ -2820,7 +3170,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490295.0, 6678179.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kippotien leikkipaikka',
@@ -2828,7 +3179,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480355.0, 6676330.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kelokallio',
@@ -2836,7 +3188,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505560.0, 6683222.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Pikku-Huopalahden puisto',
@@ -2844,7 +3197,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494149.0, 6676080.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Veneentekijänpuisto',
@@ -2852,7 +3206,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493724.0, 6671063.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Hiidenkiukaanpuisto',
@@ -2860,7 +3215,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491522.0, 6674092.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Vallilanlaakso',
@@ -2868,7 +3224,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497462.0, 6676272.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Yläkartanonpolun leikkipaikka',
@@ -2876,7 +3233,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481353.0, 6669967.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Mellsteninniemen leikkipaikka',
@@ -2884,7 +3242,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487582.0, 6671353.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Jupperin rantapuiston leikkipaikka',
@@ -2892,7 +3251,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486822.0, 6682727.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Mikkelänpuiston leikkipaikka',
@@ -2900,7 +3260,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479437.0, 6677066.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Ankkuripohjanpuiston leikkipaikka',
@@ -2908,7 +3269,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480174.0, 6670449.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Minkkipuisto',
@@ -2916,7 +3278,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504642.0, 6693105.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Haukiverkon leikkipaikka',
@@ -2924,7 +3287,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487048.0, 6671815.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kuitinkallion leikkipaikka',
@@ -2932,7 +3296,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484654.0, 6673644.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Haarikkopuisto',
@@ -2940,7 +3305,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502588.0, 6687901.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Paalupuisto',
@@ -2948,7 +3314,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505958.0, 6687279.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Loviisanpuisto',
@@ -2956,7 +3323,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496739.0, 6675488.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Palttinapuiston leikkipaikka',
@@ -2964,7 +3332,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25477706.0, 6675621.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Bielken leikkipaikka',
@@ -2972,7 +3341,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499416.0, 6670426.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Maitorpanpuisto',
@@ -2980,7 +3350,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491167.0, 6690575.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Annala',
@@ -2988,7 +3359,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498741.0, 6677696.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Nihtimäen puiston leikkipaikka',
@@ -2996,7 +3368,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486487.0, 6677627.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Hans Floorin puiston leikkipaikka',
@@ -3004,7 +3377,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485677.0, 6674838.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Rakuunapuisto',
@@ -3012,7 +3386,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493722.0, 6676230.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Jokiuomanpuisto',
@@ -3020,7 +3395,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492090.0, 6684571.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Rastasniityn leikkipaikka',
@@ -3028,7 +3404,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486700.0, 6680404.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Vennynpuisto',
@@ -3036,7 +3413,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494132.0, 6683211.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kongsberginpuiston leikkipaikka',
@@ -3044,7 +3422,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481021.0, 6670736.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Lähdesilmän leikkipaikka',
@@ -3052,7 +3431,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485459.0, 6681156.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Isonneva',
@@ -3060,7 +3440,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493992.0, 6677853.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kannupuisto',
@@ -3068,7 +3449,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501924.0, 6675207.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Nurkka',
@@ -3076,7 +3458,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503115.0, 6684198.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ohjaajanpuisto',
@@ -3084,7 +3467,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493856.0, 6679424.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Solvikinpuisto',
@@ -3092,7 +3476,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25508682.0, 6676793.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Jakomäenkallio',
@@ -3100,7 +3485,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504153.0, 6682676.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Johtokivenpuisto',
@@ -3108,7 +3494,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500874.0, 6679959.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Saarnimäen leikkipaikka',
@@ -3116,7 +3503,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481437.0, 6676130.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Jokiniemenpuisto',
@@ -3124,7 +3512,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498510.0, 6679639.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Myllykallio',
@@ -3132,7 +3521,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492771.0, 6671702.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Bockin puisto',
@@ -3140,7 +3530,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499226.0, 6680719.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Pallopuisto',
@@ -3148,7 +3539,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504963.0, 6681824.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Bäckbynpuisto',
@@ -3156,7 +3548,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500537.0, 6686244.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Tuohisniityn leikkipaikka',
@@ -3164,7 +3557,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485728.0, 6679970.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Trillapuiston leikkipaikka',
@@ -3172,7 +3566,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488138.0, 6678157.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kotiportinpuiston leikkipaikka',
@@ -3180,7 +3575,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480950.0, 6672872.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Viiripuiston länsiosan leikkipaikka',
@@ -3188,7 +3584,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480998.0, 6676381.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Liljapuisto',
@@ -3196,7 +3593,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501346.0, 6686551.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kestinmäki',
@@ -3204,7 +3602,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506476.0, 6692749.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Tornitason leikkipaikka',
@@ -3212,7 +3611,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488758.0, 6673628.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Telakanpuistikko',
@@ -3220,7 +3620,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496301.0, 6671862.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Naapurinmäen leikkipaikka',
@@ -3228,7 +3629,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481854.0, 6677473.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Vilpunpolun leikkipaikka',
@@ -3236,7 +3638,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485917.0, 6671525.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Soihtupuiston leikkipaikka',
@@ -3244,7 +3647,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484084.0, 6681049.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Sudenkuoppa',
@@ -3252,7 +3656,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507992.0, 6678989.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Korennonpuisto',
@@ -3260,7 +3665,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507654.0, 6691971.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Juhannustien korttelipuisto',
@@ -3268,7 +3674,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501325.0, 6685919.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Askistonpuisto',
@@ -3276,7 +3683,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487751.0, 6685437.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Jokiniemen puutarha',
@@ -3284,7 +3692,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503240.0, 6686817.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Itärannan leikkipaikka',
@@ -3292,7 +3701,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490209.0, 6673586.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Hakunilanraitti',
@@ -3300,7 +3710,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505690.0, 6684472.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kirsikkapuro',
@@ -3308,7 +3719,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495707.0, 6679999.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Työmiehenpuistikko',
@@ -3316,7 +3728,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495744.0, 6672506.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ilolanpuisto',
@@ -3324,7 +3737,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501390.0, 6690661.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Pietaryrtinpuisto',
@@ -3332,7 +3746,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501271.0, 6688611.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Uusmäen leikkipaikka',
@@ -3340,7 +3755,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490557.0, 6680885.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ester Koskelaisen puisto',
@@ -3348,7 +3764,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505742.0, 6690199.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kirvelipuisto',
@@ -3356,7 +3773,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501221.0, 6686794.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Nurmilinnunpuiston leikkipaikka',
@@ -3364,7 +3782,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487993.0, 6679949.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kolkkapojanpuisto',
@@ -3372,7 +3791,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492119.0, 6679275.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Pikkukosken puistometsä',
@@ -3380,7 +3800,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498274.0, 6678667.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Uudenrajanpuisto',
@@ -3388,7 +3809,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502174.0, 6689058.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Entressen leikkipaikka',
@@ -3396,7 +3818,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481107.0, 6676774.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leppälinnunkujan leikkipaikka',
@@ -3404,7 +3827,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488096.0, 6679740.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kaivopuisto',
@@ -3412,7 +3836,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497466.0, 6671462.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Vuorimiehenpuistikko',
@@ -3420,7 +3845,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497118.0, 6671809.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Nuotiopuiston leikkipaikka',
@@ -3428,7 +3854,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489232.0, 6677636.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kuttulammen leikkipaikka',
@@ -3436,7 +3863,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486537.0, 6681318.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kesanto',
@@ -3444,7 +3872,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488590.0, 6683779.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Otsolahdenpuiston leikkipaikka',
@@ -3452,7 +3881,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490090.0, 6673761.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Simonkallionpuisto',
@@ -3460,7 +3890,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501115.0, 6688381.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kilonkallion leikkipaikka',
@@ -3468,7 +3899,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487590.0, 6678820.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Juliuksenpuisto',
@@ -3476,7 +3908,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500001.0, 6674704.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Aitapuisto',
@@ -3484,7 +3917,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488311.0, 6683806.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Von Glanin puisto',
@@ -3492,7 +3926,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492629.0, 6681612.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Paukkulanpuisto',
@@ -3500,7 +3935,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503287.0, 6680133.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Koivikkopuisto',
@@ -3508,7 +3944,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495986.0, 6679085.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Noropuiston leikkipaikka',
@@ -3516,7 +3953,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481098.0, 6675675.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kasavuoren leikkipuisto',
@@ -3524,7 +3962,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483600.0, 6677562.0), 3879), 4326),
         NULL,
         false,
-        'Kauniainen'
+        'Kauniainen',
+        'municipality'
     ),
     (
         'Joukinahon leikkipaikka',
@@ -3532,7 +3971,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480219.0, 6672938.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Strenginkulma',
@@ -3540,7 +3980,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502112.0, 6688219.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Pyhän Laurin puisto',
@@ -3548,7 +3989,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491909.0, 6674274.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Laajasalon urheilupuisto',
@@ -3556,7 +3998,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503349.0, 6673862.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Jengipolun leikkipaikka',
@@ -3564,7 +4007,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499817.0, 6680423.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kirjokivenpuisto',
@@ -3572,7 +4016,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494489.0, 6680838.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Varistonniitty',
@@ -3580,7 +4025,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489752.0, 6684288.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Rajatorpanpuisto',
@@ -3588,7 +4034,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490669.0, 6682747.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Herttoniemen aluepuisto',
@@ -3596,7 +4043,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502199.0, 6677645.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kiillepuisto',
@@ -3604,7 +4052,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500260.0, 6680176.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Porthaninpuistikko',
@@ -3612,7 +4061,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497332.0, 6674457.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kettupuisto',
@@ -3620,7 +4070,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502058.0, 6676971.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Rukkilan puisto',
@@ -3628,7 +4079,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492360.0, 6682261.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Vanha Kirkkopuisto',
@@ -3636,7 +4088,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496626.0, 6672585.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Repovuorenpuisto',
@@ -3644,7 +4097,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495647.0, 6681962.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Vantinpuiston leikkipaikka',
@@ -3652,7 +4106,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479096.0, 6674728.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Aallonharjan leikkipaikka',
@@ -3660,7 +4115,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479981.0, 6670735.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kairakenttä',
@@ -3668,7 +4124,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506064.0, 6680854.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Laamanninpuisto',
@@ -3676,7 +4133,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497892.0, 6683211.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Pöllökallio',
@@ -3684,7 +4142,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489225.0, 6682280.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Herttoniemen siirtolapuutarha / Leikkipaikka',
@@ -3692,7 +4151,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501026.0, 6675571.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kulopuisto',
@@ -3700,7 +4160,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503784.0, 6692618.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Hakopuisto',
@@ -3708,7 +4169,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503467.0, 6690267.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Urheilukadun puistikko',
@@ -3716,7 +4178,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495680.0, 6674848.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Vaunukallio',
@@ -3724,7 +4187,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506244.0, 6685554.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Laajavuori II',
@@ -3732,7 +4196,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491345.0, 6684983.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Laivatorin leikkipaikka',
@@ -3740,7 +4205,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480586.0, 6670958.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Savela',
@@ -3748,7 +4214,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499455.0, 6680620.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Ratsaspuisto / Esteetön leikkipaikka',
@@ -3756,7 +4223,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494809.0, 6676125.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Suinonpuiston leikkipaikka',
@@ -3764,7 +4232,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483810.0, 6668256.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Hesperianpuisto',
@@ -3772,7 +4241,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496118.0, 6674085.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Punakiventien puistometsä',
@@ -3780,7 +4250,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25508099.0, 6677611.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Suuntimopuisto',
@@ -3788,7 +4259,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502109.0, 6684859.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Reuna',
@@ -3796,7 +4268,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491212.0, 6697047.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Koivuviidankentän leikkipaikka',
@@ -3804,7 +4277,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488031.0, 6674630.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ojahaka',
@@ -3812,7 +4286,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492338.0, 6683588.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Oulunkyläntienkenttä',
@@ -3820,7 +4295,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498162.0, 6678863.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Iltaruskonpuiston leikkipaikka',
@@ -3828,7 +4304,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488398.0, 6673793.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Haasia',
@@ -3836,7 +4313,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489581.0, 6684051.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Tilkan mäki',
@@ -3844,7 +4322,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494487.0, 6676582.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Vapaalan aukee',
@@ -3852,7 +4331,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490117.0, 6683530.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Estetie',
@@ -3860,7 +4340,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494213.0, 6681731.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Tasakallion leikkipaikka',
@@ -3868,7 +4349,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483022.0, 6676768.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Sahapuisto',
@@ -3876,7 +4358,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490449.0, 6683071.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Mätäspolun puistikko',
@@ -3884,7 +4367,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504591.0, 6683607.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ylästön Mustikkasuo',
@@ -3892,7 +4376,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495330.0, 6685876.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Keulapuisto',
@@ -3900,7 +4385,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507229.0, 6677338.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Sinirikonpuisto',
@@ -3908,7 +4394,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501636.0, 6686865.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Metsolansuo',
@@ -3916,7 +4403,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505484.0, 6693981.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Krämertinpuisto',
@@ -3924,7 +4412,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496472.0, 6678871.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Köydenpunojanpuisto',
@@ -3932,7 +4421,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495859.0, 6672272.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Hummapuisto',
@@ -3940,7 +4430,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505669.0, 6684849.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Onnenpuisto',
@@ -3948,7 +4439,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497639.0, 6678595.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Myllymäki',
@@ -3956,7 +4448,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506402.0, 6681073.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Ruutipuisto',
@@ -3964,7 +4457,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504115.0, 6681249.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Vanhan-Mankkaan puiston leikkipaikka',
@@ -3972,7 +4466,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487139.0, 6675438.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Keskuspuisto',
@@ -3980,7 +4475,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495248.0, 6680494.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kuitinmäenkentän leikkipaikka',
@@ -3988,7 +4484,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485181.0, 6672891.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Saksanmäki',
@@ -3996,7 +4493,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498100.0, 6677379.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kärppäpuisto',
@@ -4004,7 +4502,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504762.0, 6694321.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Lampi',
@@ -4012,7 +4511,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504536.0, 6680965.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Hiidenkivenpuisto',
@@ -4020,7 +4520,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500983.0, 6683593.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Viertolanranta',
@@ -4028,7 +4529,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501298.0, 6686300.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Mustapuro',
@@ -4036,7 +4538,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504484.0, 6678336.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kivinokan kesämaja-alue / Leikkipaikka',
@@ -4044,7 +4547,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500314.0, 6675807.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Maistraatinpuisto',
@@ -4052,7 +4556,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495762.0, 6676171.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Saunalahdenpuiston leikkipaikka',
@@ -4060,7 +4565,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25478280.0, 6672541.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Hurtigin puisto',
@@ -4068,7 +4574,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484734.0, 6677309.0), 3879), 4326),
         NULL,
         false,
-        'Kauniainen'
+        'Kauniainen',
+        'municipality'
     ),
     (
         'Leikkipaikka Kuulapuisto',
@@ -4076,7 +4583,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506106.0, 6681480.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kielipolun korttelipuisto',
@@ -4084,7 +4592,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493224.0, 6681445.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Akseli Toivosen kenttä',
@@ -4092,7 +4601,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497216.0, 6677923.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Tuuliniityn leikkipaikka',
@@ -4100,7 +4610,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488758.0, 6673234.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Tapaninvainio',
@@ -4108,7 +4619,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499379.0, 6682826.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kuismapuisto',
@@ -4116,7 +4628,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500458.0, 6688938.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Pihlajarinteen leikkipaikka',
@@ -4124,7 +4637,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483312.0, 6680256.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Vallilantien puisto',
@@ -4132,7 +4646,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497887.0, 6675541.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ojapuisto',
@@ -4140,7 +4655,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492043.0, 6683770.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Åbergin lastentalo',
@@ -4148,7 +4664,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489642.0, 6679225.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Tarha',
@@ -4156,7 +4673,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504233.0, 6689809.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Seponkentän leikkipaikka',
@@ -4164,7 +4682,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488509.0, 6674831.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Lansapuronpuiston leikkipaikka',
@@ -4172,7 +4691,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487923.0, 6677903.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kallion kirkon tontti',
@@ -4180,7 +4700,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497199.0, 6674688.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Niipperin leikkipaikka',
@@ -4188,7 +4709,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486083.0, 6685573.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Ryytimaan leikkipaikka',
@@ -4196,7 +4718,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484096.0, 6680763.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Raudikkopuisto',
@@ -4204,7 +4727,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505888.0, 6684841.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Pakilanpuisto',
@@ -4212,7 +4736,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496562.0, 6681229.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Aittalehto',
@@ -4220,7 +4745,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491315.0, 6680321.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Nurmikuukusen leikkipaikka',
@@ -4228,7 +4754,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487012.0, 6681178.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Marsinpuisto',
@@ -4236,7 +4763,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505536.0, 6692218.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Katajanokan puisto',
@@ -4244,7 +4772,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497807.0, 6672785.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Puotilan leikkiniitty',
@@ -4252,7 +4781,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505234.0, 6677513.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Krattivuoren leikkipaikka',
@@ -4260,7 +4790,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480369.0, 6670098.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Käpypuisto',
@@ -4268,7 +4799,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502684.0, 6690408.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Neilikkapuisto',
@@ -4276,7 +4808,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502153.0, 6686375.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Isonmännynpuisto',
@@ -4284,7 +4817,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495577.0, 6685176.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kuitinmäenpuiston leikkipaikka',
@@ -4292,7 +4826,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485132.0, 6672892.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Savikkapuisto',
@@ -4300,7 +4835,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501371.0, 6687118.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Thurmaninpuiston leikkipuisto',
@@ -4308,7 +4844,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484559.0, 6677441.0), 3879), 4326),
         NULL,
         false,
-        'Kauniainen'
+        'Kauniainen',
+        'municipality'
     ),
     (
         'Leikkipaikka Leppäkorvenmäki',
@@ -4316,7 +4853,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505033.0, 6693899.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Veijarivuoren puisto',
@@ -4324,7 +4862,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493609.0, 6670302.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Tuurholmanpuisto',
@@ -4332,7 +4871,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501607.0, 6673880.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Aapraminpuisto',
@@ -4340,7 +4880,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492663.0, 6682684.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Kuutamopuiston leikkipaikka',
@@ -4348,7 +4889,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484802.0, 6673479.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Rinkelipuiston leikkipaikka',
@@ -4356,7 +4898,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489618.0, 6678862.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Jukolan leikkipaikka',
@@ -4364,7 +4907,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486444.0, 6675460.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Sinisiimeksen leikkipaikka',
@@ -4372,7 +4916,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483551.0, 6674088.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Antaksenpuisto',
@@ -4380,7 +4925,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497140.0, 6686667.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Meripuisto',
@@ -4388,7 +4934,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497066.0, 6671402.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Seitsenmerenpuiston leikkipaikka',
@@ -4396,7 +4943,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479932.0, 6671285.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kumpulan siirtolapuutarha / Leikkipaikka',
@@ -4404,7 +4952,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497583.0, 6677510.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Järvikorpi, leikkipaikka',
@@ -4412,7 +4961,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481862.0, 6670587.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Nuorapuisto',
@@ -4420,7 +4970,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492183.0, 6682774.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Notkopuisto',
@@ -4428,7 +4979,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500885.0, 6691366.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Viiripuiston leikkipaikka',
@@ -4436,7 +4988,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481082.0, 6676257.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Linnalahdenpuisto',
@@ -4444,7 +4997,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506387.0, 6678624.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Jalavapuiston leikkipaikka',
@@ -4452,7 +5006,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481330.0, 6676029.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Maapallopuiston leikkipaikka',
@@ -4460,7 +5015,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25484871.0, 6673123.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Itä-Hakkilanpuisto',
@@ -4468,7 +5024,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506406.0, 6687028.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Hyväntoivonpuisto',
@@ -4476,7 +5033,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495446.0, 6671579.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Niittypuiston leikkipaikka',
@@ -4484,7 +5042,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486757.0, 6672956.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Eestinaukion leikkipaikka',
@@ -4492,7 +5051,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482066.0, 6672961.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Laakavuori',
@@ -4500,7 +5060,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506594.0, 6680788.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Suursuonpuisto',
@@ -4508,7 +5069,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496782.0, 6680092.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Ylämäenlaidan leikkipaikka',
@@ -4516,7 +5078,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482380.0, 6676499.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kuusijärven leikkipaikka',
@@ -4524,7 +5087,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506194.0, 6689008.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kastellinpuisto',
@@ -4532,7 +5096,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507285.0, 6679801.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Leirimäki',
@@ -4540,7 +5105,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491630.0, 6682778.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Lammaspuisto II',
@@ -4548,7 +5114,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489110.0, 6682902.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Matinkallionpuiston leikkipaikka',
@@ -4556,7 +5123,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485763.0, 6672241.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Tonttumaan leikkipaikka',
@@ -4564,7 +5132,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487045.0, 6673522.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Hermanninpuisto',
@@ -4572,7 +5141,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498320.0, 6675470.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Renginmäki',
@@ -4580,7 +5150,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492329.0, 6681260.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Säätytalon puisto',
@@ -4588,7 +5159,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497505.0, 6673167.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kiskonpuisto',
@@ -4596,7 +5168,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494662.0, 6676320.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kartanonkulma',
@@ -4604,7 +5177,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481353.0, 6669967.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Rastilankallio',
@@ -4612,7 +5186,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506887.0, 6677083.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Pikku-Keimolan puisto',
@@ -4620,7 +5195,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25490607.0, 6689412.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kvartsijuonenpuisto',
@@ -4628,7 +5204,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492164.0, 6689936.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Sinebrychoffin puisto',
@@ -4636,7 +5213,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496368.0, 6672080.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Lystimäenpuiston leikkipaikka',
@@ -4644,7 +5222,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486135.0, 6673655.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Askistonmetsä',
@@ -4652,7 +5231,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487792.0, 6686425.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Osmonlehto',
@@ -4660,7 +5240,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497184.0, 6677568.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kivikaudenpuisto',
@@ -4668,7 +5249,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491404.0, 6683306.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Mäenlaskijanpuisto "suopuisto"',
@@ -4676,7 +5258,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501693.0, 6675995.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Makasiinipuisto',
@@ -4684,7 +5267,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496508.0, 6673478.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Sahrapuisto',
@@ -4692,7 +5276,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25488942.0, 6683980.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Liisanpuistikko',
@@ -4700,7 +5285,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497825.0, 6673440.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Louhijanpuisto',
@@ -4708,7 +5294,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492888.0, 6683553.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Vallilanlaakso',
@@ -4716,7 +5303,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497267.0, 6676514.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Liinamäki',
@@ -4724,7 +5312,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505923.0, 6686065.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Matinkylän uimarannan leikkipaikka',
@@ -4732,7 +5321,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486459.0, 6670941.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Väinämöisenpuistikko',
@@ -4740,7 +5330,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25495445.0, 6673140.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Delfiiniaukio',
@@ -4748,7 +5339,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491821.0, 6683638.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Valimomestarinpuisto',
@@ -4756,7 +5348,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492923.0, 6678500.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Valpurinpuisto',
@@ -4764,7 +5357,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494519.0, 6675588.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Helene Schjerfbeckin puisto',
@@ -4772,7 +5366,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493873.0, 6682790.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Marjaniemen siirtolapuutarha / Leikkipaikka',
@@ -4780,7 +5375,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503813.0, 6676906.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Kuntopuisto',
@@ -4788,7 +5384,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25506336.0, 6681423.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Myllykallio',
@@ -4796,7 +5393,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492571.0, 6671680.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Haltialan kartano',
@@ -4804,7 +5402,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497443.0, 6684749.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Purotanhuan leikkipaikka',
@@ -4812,7 +5411,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25482431.0, 6672182.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Koukkuniitty',
@@ -4820,7 +5420,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492720.0, 6685595.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Saudarkrokurinpuiston leikkipaikka',
@@ -4828,7 +5429,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485501.0, 6688104.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Nupurinkartanonpuiston leikkipaikka',
@@ -4836,7 +5438,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25477446.0, 6680611.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Koivupäänpuisto',
@@ -4844,7 +5447,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493589.0, 6689702.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Tähtimöpuiston leikkipaikka',
@@ -4852,7 +5456,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25487716.0, 6679936.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Rekolankenttä',
@@ -4860,7 +5465,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25504494.0, 6691110.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Riskupuisto',
@@ -4868,7 +5474,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25505750.0, 6678933.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Aamukasteenkujan puistikko',
@@ -4876,7 +5483,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500529.0, 6685857.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Kuurinkentän leikkipaikka',
@@ -4884,7 +5492,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483958.0, 6675873.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Kurkimäki',
@@ -4892,7 +5501,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503898.0, 6679915.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Vuoritontunpuiston leikkipaikka',
@@ -4900,7 +5510,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25486870.0, 6673511.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Tapuli',
@@ -4908,7 +5519,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25501492.0, 6684508.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Planeetan päiväkodin leikkipaikka',
@@ -4916,7 +5528,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485056.0, 6672897.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Syvänsalmenpuiston leikkipaikka',
@@ -4924,7 +5537,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483593.0, 6671003.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Talinlehto',
@@ -4932,7 +5546,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492431.0, 6678099.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Frans Emil Sillanpään puisto',
@@ -4940,7 +5555,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502142.0, 6676658.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Jyrkinkallio',
@@ -4948,7 +5564,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25491511.0, 6679179.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Ilveskorvenpuisto',
@@ -4956,7 +5573,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25507624.0, 6678772.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Soukanahteen leikkipaikka',
@@ -4964,7 +5582,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481878.0, 6669805.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Matinniityn leikkipaikka',
@@ -4972,7 +5591,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485879.0, 6672000.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Virmajuurenpuisto',
@@ -4980,7 +5600,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500953.0, 6686995.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Katri Valan puisto',
@@ -4988,7 +5609,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498029.0, 6674763.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Räckhalsinpuisto',
@@ -4996,7 +5618,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502993.0, 6691279.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Pilvipuisto',
@@ -5004,7 +5627,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493210.0, 6684862.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Keinukenttä',
@@ -5012,7 +5636,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25499351.0, 6670395.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Keijuniityntien leikkipaikka',
@@ -5020,7 +5645,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25489066.0, 6674925.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Rusakkopuiston leikkipaikka',
@@ -5028,7 +5654,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483390.0, 6679164.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Laivastopuisto',
@@ -5036,7 +5663,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25498243.0, 6672870.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Hämeenlinnanväylän lähivirkistysalue',
@@ -5044,7 +5672,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493162.0, 6682378.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Puuhkalakinpuiston leikkipaikka',
@@ -5052,7 +5681,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25477635.0, 6675886.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Mäkitorpanpuisto',
@@ -5060,7 +5690,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497702.0, 6679675.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Löydöspuisto',
@@ -5068,7 +5699,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25492193.0, 6683336.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Sähköttäjänpuisto',
@@ -5076,7 +5708,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496674.0, 6676026.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Pitkänkorvenpuiston leikkipaikka',
@@ -5084,7 +5717,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25481403.0, 6676414.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Iltapäivänsillan leikkipaikka',
@@ -5092,7 +5726,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25485243.0, 6672856.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Sipulipuisto',
@@ -5100,7 +5735,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25502663.0, 6688628.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Paloheinän leikkikenttä',
@@ -5108,7 +5744,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25496466.0, 6681779.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Aino Ackten puisto',
@@ -5116,7 +5753,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25493903.0, 6679052.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Mikkelänrinteen leikkipaikka',
@@ -5124,7 +5762,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25479840.0, 6676930.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Illenpuisto',
@@ -5132,7 +5771,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25497887.0, 6685697.0), 3879), 4326),
         NULL,
         false,
-        'Vantaa'
+        'Vantaa',
+        'municipality'
     ),
     (
         'Leikkipaikka Kaadepolku',
@@ -5140,7 +5780,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25503923.0, 6682395.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Latokaskenpuiston leikkipaikka',
@@ -5148,7 +5789,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25480986.0, 6673799.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Kuuttipuiston leikkipaikka',
@@ -5156,7 +5798,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25483444.0, 6670500.0), 3879), 4326),
         NULL,
         false,
-        'Espoo'
+        'Espoo',
+        'municipality'
     ),
     (
         'Leikkipaikka Ryytimaan korttelipuisto',
@@ -5164,7 +5807,8 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25494618.0, 6678239.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     ),
     (
         'Leikkipaikka Anianpellonpuisto',
@@ -5172,5 +5816,6 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(25500138.0, 6682180.0), 3879), 4326),
         NULL,
         false,
-        'Helsinki'
+        'Helsinki',
+        'municipality'
     );

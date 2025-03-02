@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - OSM attribution to data sources
+- Data source to playgrounds
 
 ## [0.11.10] - 2025-03-02
 
