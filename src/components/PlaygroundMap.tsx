@@ -322,7 +322,7 @@ const PlaygroundMap = () => {
   const markerClusterOptions = {
     showCoverageOnHover: true,
     maxClusterRadius: 100,
-    spiderfyOnMaxZoom: true,
+    spiderfyOnMaxZoom: false,
     disableClusteringAtZoom: 11
   }
 
