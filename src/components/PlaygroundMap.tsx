@@ -343,8 +343,10 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
       );
     };
 
-    // Make initial request immediately
-    requestLocation();
+    // Make initial request after a delay
+    setTimeout(() => {
+      requestLocation();
+    }, 1000);
 
     // Set up periodic location updates
     locationInterval = window.setInterval(requestLocation, 60000); // Check every minute
