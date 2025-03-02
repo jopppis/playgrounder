@@ -330,7 +330,7 @@ const PlaygroundMap = () => {
   }
 
   return (
-    <Box position="relative" height="100%" width="100%">
+    <Box position="relative" height="100%" width="100%" pb="env(safe-area-inset-bottom)">
       <PlaygroundFilter filters={filters} onChange={updateFilters} />
       <Box position="fixed" top={4} right={4} zIndex={2200}>
         <Button
