@@ -307,7 +307,7 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
           watch: false, // Don't use watch mode
           enableHighAccuracy: true,
           timeout: 5000, // 5 seconds timeout for each request
-          maximumAge: 10000 // 10 seconds
+          maximumAge: Infinity
         });
       } catch (error) {
         console.error('Error requesting location:', error);
