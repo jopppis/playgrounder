@@ -49,7 +49,6 @@ npm run dev
 ## TODO
 
 - Add two factor authentication
-- Run coverage and improve it
 
 ## Contributing
 
