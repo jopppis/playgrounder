@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.10] - 2025-03-02
+
 ### Fixed
 - Added safe area inset bottom to map and menu drawer
 
