@@ -239,7 +239,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
           {/* Properties row with icons, rating, and visit switch */}
           <Flex justify="space-between" align="center">
             <HStack gap={3}>
-              {playground.address && (
+              {playground.address ? (
                 <Tooltip content={playground.address}>
                   <Link
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(playground.address)}`}
@@ -258,7 +258,26 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
                     />
                   </Link>
                 </Tooltip>
-              )}
+              ) :
+                <Tooltip content={`${playground.latitude.toFixed(6)}, ${playground.longitude.toFixed(6)}`}>
+                  <Link
+                    href={`https://www.google.com/maps/search/?api=1&query=${playground.latitude},${playground.longitude}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    display="flex"
+                    alignItems="center"
+                    _hover={{ color: 'brand.500' }}
+                  >
+                    <Icon
+                      as={MdLocationOn}
+                      boxSize={5}
+                      color="gray.600"
+                      transition="color 0.2s"
+                      _hover={{ color: 'inherit' }}
+                    />
+                  </Link>
+                </Tooltip>
+              }
               {playground.has_supervised_activities && (
                 <Tooltip content={t('playground.supervision.supervised')}>
                   <Box as="span">

@@ -7,11 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add location permission to pwa manifest
+
+## [0.11.8] - 2025-03-01
+
+### Added
+- Added coordinates to playground popup if no address available
+
+## [0.11.7] - 2025-03-01
+
+### Changed
+- Improve filter menu design on small screens
+
+## [0.11.6] - 2025-03-01
+
 ## [0.11.5] - 2025-03-01
 
 ### Changed
 - Changed location watching logic to periodically request location
-- Increased filter menu gaps
 
 ## [0.11.4] - 2025-03-01
 

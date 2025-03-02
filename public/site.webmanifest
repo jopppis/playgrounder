@@ -1,6 +1,6 @@
 {
   "name": "Leikkipuistokartta",
-  "short_name": "Playgrounds",
+  "short_name": "Leikkipuistokartta",
   "icons": [
     {
       "src": "/favicon-192x192.png",
@@ -15,5 +15,8 @@
   ],
   "theme_color": "#4FD1C5",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "permissions": [
+    "geolocation"
+  ]
 }

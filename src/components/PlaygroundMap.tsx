@@ -296,40 +296,19 @@ const LocationControl = ({ onLocationUpdate }: { onLocationUpdate: (lat: number,
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
 
-    // Reference to interval timer
-    let locationInterval: number | null = null;
-
-    // Function to request location once
-    const requestLocation = () => {
-      try {
-        map.locate({
-          setView: false,
-          watch: false, // Don't use watch mode
-          enableHighAccuracy: true,
-          timeout: 5000, // 5 seconds timeout for each request
-          maximumAge: 10000 // 10 seconds
-        });
-      } catch (error) {
-        console.error('Error requesting location:', error);
-      }
-    };
-
-    // Make initial request immediately
-    requestLocation();
-
-    // Set up periodic location updates
-    // map.locate with watch: true does not work on iOS Orion browser
-    // so do it manually
-    locationInterval = window.setInterval(requestLocation, 10000); // Check every 10 seconds
+    map.locate({
+      setView: false,
+      watch: true,
+      enableHighAccuracy: true,
+      timeout: 5000, // 5 seconds timeout
+      maximumAge: Infinity
+    });
 
     // Clean up on unmount
     return () => {
       map.off('locationfound', onLocationFound);
       map.off('locationerror', onLocationError);
-
-      if (locationInterval !== null) {
-        clearInterval(locationInterval);
-      }
+      map.stopLocate();
     };
   }, [map]); // Only depend on map
 
