@@ -261,6 +261,11 @@ const PlaygroundMap = () => {
         return false
       }
 
+      // Filter by data source
+      if (filters.dataSource !== null && playground.data_source !== filters.dataSource) {
+        return false
+      }
+
       // Filter by supervised activities
       if (filters.hasSupervised !== null && playground.has_supervised_activities !== filters.hasSupervised) {
         return false

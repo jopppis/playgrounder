@@ -66,7 +66,8 @@ describe('PlaygroundPopup', () => {
     created_at: new Date().toISOString(),
     latitude: 0,
     longitude: 0,
-    city: 'Test City'
+    city: 'Test City',
+    data_source: 'municipality'
   }
 
   const defaultProps = {

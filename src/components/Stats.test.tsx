@@ -14,6 +14,7 @@ describe('Stats', () => {
       description: 'Description 1',
       address: 'Address 1',
       city: 'Helsinki',
+      data_source: 'municipality',
       has_supervised_activities: true,
       created_at: new Date().toISOString(),
       latitude: 60.1699,
@@ -25,6 +26,7 @@ describe('Stats', () => {
       description: 'Description 2',
       address: 'Address 2',
       city: 'Espoo',
+      data_source: 'municipality',
       has_supervised_activities: false,
       created_at: new Date().toISOString(),
       latitude: 60.2055,
@@ -36,6 +38,7 @@ describe('Stats', () => {
       description: 'Description 3',
       address: 'Address 3',
       city: 'Helsinki',
+      data_source: 'osm',
       has_supervised_activities: true,
       created_at: new Date().toISOString(),
       latitude: 60.1699,
@@ -102,7 +105,8 @@ describe('Stats', () => {
       minStars: null,
       minUserStars: null,
       hasSupervised: null,
-      city: null
+      city: null,
+      dataSource: null
     }
 
     render(

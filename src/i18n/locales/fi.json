@@ -248,7 +248,13 @@
       "supervised": "Ohjattua toimintaa",
       "unsupervised": "Ei ohjattua toimintaa"
     },
-    "loginToInteract": "Kirjaudu sisään merkitäksesi leikkipaikkoja vierailluiksi tai arvostellaksesi niitä"
+    "loginToInteract": "Kirjaudu sisään merkitäksesi leikkipaikkoja vierailluiksi tai arvostellaksesi niitä",
+    "dataSource": {
+      "label": "Tietolähde",
+      "any": "Mikä tahansa",
+      "municipality": "Kunta",
+      "osm": "OpenStreetMap"
+    }
   },
   "filters": "Suodattimet",
   "filterPlaygrounds": "Suodata leikkipaikkoja",

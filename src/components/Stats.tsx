@@ -9,6 +9,7 @@ type Filters = {
   minUserStars: number | null
   hasSupervised: boolean | null
   city: string | null
+  dataSource: 'municipality' | 'osm' | null
 }
 
 type StatsProps = {
@@ -65,7 +66,8 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, 
       filters.minStars !== null ||
       filters.minUserStars !== null ||
       filters.hasSupervised !== null ||
-      filters.city !== null
+      filters.city !== null ||
+      filters.dataSource !== null
   }
 
   // Calculate current city stats
@@ -98,6 +100,10 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, 
       }
 
       if (filters.hasSupervised !== null && playground.has_supervised_activities !== filters.hasSupervised) {
+        return false
+      }
+
+      if (filters.dataSource !== null && playground.data_source !== filters.dataSource) {
         return false
       }
 
