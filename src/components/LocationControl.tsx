@@ -117,19 +117,39 @@ const LocationControl = ({ onLocationUpdate }: LocationControlProps) => {
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
 
-    map.locate({
-      setView: false,
-      watch: true,
-      enableHighAccuracy: true,
-      timeout: 5000, // 5 seconds timeout
-      maximumAge: Infinity
-    });
+    try {
+      map.locate({
+        setView: false,
+        watch: true,
+        enableHighAccuracy: true,
+        timeout: 5000, // 5 seconds timeout
+        maximumAge: Infinity
+      });
+    } catch (error) {
+      console.error('Failed to initialize location tracking:', error);
+      // Get at least single location update
+      try {
+        map.locate({
+          setView: false,
+          watch: false,
+          enableHighAccuracy: true,
+          timeout: 10000, // 10 seconds timeout
+          maximumAge: Infinity
+        });
+      } catch (error) {
+        console.error('Failed to get single location update:', error);
+      }
+    }
 
     // Clean up on unmount
     return () => {
-      map.off('locationfound', onLocationFound);
-      map.off('locationerror', onLocationError);
-      map.stopLocate();
+      try {
+        map.off('locationfound', onLocationFound);
+        map.off('locationerror', onLocationError);
+        map.stopLocate();
+      } catch (error) {
+        console.error('Error during location cleanup:', error);
+      }
     };
   }, [map]); // Only depend on map
 
