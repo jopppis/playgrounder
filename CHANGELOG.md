@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Add data source to user filters
 
+### Changed
+- Always add coordinate to properties
+
 ## [0.12.2] - 2025-03-02
 
 ### Changed

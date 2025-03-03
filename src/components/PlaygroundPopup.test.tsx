@@ -90,10 +90,19 @@ describe('PlaygroundPopup', () => {
     expect(screen.getByText('Test Playground')).toBeInTheDocument()
     expect(screen.getByText('A test playground')).toBeInTheDocument()
 
-    // Check for location icon and link
-    const locationLink = screen.getByRole('link')
-    expect(locationLink).toHaveAttribute('href', 'https://www.google.com/maps/search/?api=1&query=123%20Test%20St')
-    expect(locationLink).toHaveAttribute('data-part', 'trigger')
+    // Check for location icons and links
+    const links = screen.getAllByRole('link')
+    expect(links).toHaveLength(2)
+
+    // Check coordinates link
+    const coordinatesLink = links[0]
+    expect(coordinatesLink).toHaveAttribute('href', 'https://www.google.com/maps/search/?api=1&query=0,0')
+    expect(coordinatesLink).toHaveAttribute('data-part', 'trigger')
+
+    // Check address link
+    const addressLink = links[1]
+    expect(addressLink).toHaveAttribute('href', 'https://www.google.com/maps/search/?api=1&query=123%20Test%20St')
+    expect(addressLink).toHaveAttribute('data-part', 'trigger')
   })
 
   it('shows mark visited button when logged in', () => {
