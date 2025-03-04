@@ -1,16 +1,4 @@
 
--- Clear existing data for Espoo
-DELETE FROM playgrounds WHERE city = 'Espoo';
-        
--- Clear existing data for Helsinki
-DELETE FROM playgrounds WHERE city = 'Helsinki';
-        
--- Clear existing data for Vantaa
-DELETE FROM playgrounds WHERE city = 'Vantaa';
-        
--- Clear existing data for Kauniainen
-DELETE FROM playgrounds WHERE city = 'Kauniainen';
-        
 -- Import playgrounds
 INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
 VALUES

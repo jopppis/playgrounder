@@ -1,10 +1,4 @@
 
--- Clear existing data for Turku
-DELETE FROM playgrounds WHERE city = 'Turku';
-        
--- Clear existing data for Kaarina
-DELETE FROM playgrounds WHERE city = 'Kaarina';
-        
 -- Import playgrounds
 INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
 VALUES

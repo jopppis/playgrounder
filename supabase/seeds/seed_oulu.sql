@@ -1,7 +1,4 @@
 
--- Clear existing data for Oulu
-DELETE FROM playgrounds WHERE city = 'Oulu';
-        
 -- Import playgrounds
 INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
 VALUES
