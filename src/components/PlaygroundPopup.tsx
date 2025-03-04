@@ -217,7 +217,7 @@ export const PlaygroundPopup = ({ playground, onVisitChange, onContentChange, on
               truncate
               flex={1}
             >
-              {playground.name}
+              {playground.name || t('playground.unnamed')}
             </Text>
           </Flex>
 

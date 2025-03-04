@@ -1,6 +1,6 @@
 export interface Playground {
   id: string
-  name: string
+  name: string | null
   location: string // PostGIS geometry is returned as WKT (Well-Known Text)
   description: string | null
   created_at: string
