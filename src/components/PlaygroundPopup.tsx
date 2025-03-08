@@ -1,12 +1,12 @@
 import {
-  Box,
-  Flex,
-  HStack,
-  Icon,
-  Link,
-  Spinner,
-  Text,
-  VStack
+    Box,
+    Flex,
+    HStack,
+    Icon,
+    Link,
+    Spinner,
+    Text,
+    VStack
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

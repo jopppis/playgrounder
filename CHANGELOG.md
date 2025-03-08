@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Optimized data fetching to avoid repeated requests
+
 ## [0.12.6] - 2025-03-04
 
 ### Changed
