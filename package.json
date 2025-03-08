@@ -1,7 +1,7 @@
 {
   "name": "playgrounder",
   "private": true,
-  "version": "0.12.7",
+  "version": "0.12.8",
   "description": "An interactive playground map for tracking visited playgrounds nearby",
   "type": "module",
   "scripts": {
