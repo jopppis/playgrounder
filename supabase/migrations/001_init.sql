@@ -94,8 +94,9 @@ CREATE OR REPLACE FUNCTION playgrounds_nearby(
     lat double precision,
     lng double precision,
     radius_meters double precision DEFAULT 1000
-) RETURNS SETOF playgrounds AS $$
-    SET search_path TO public;
+) RETURNS SETOF playgrounds
+SET search_path TO extensions,public
+AS $$
     SELECT *
     FROM public.playgrounds
     WHERE ST_DWithin(
@@ -107,7 +108,9 @@ $$ LANGUAGE sql STABLE;
 
 -- Add trigger to update ratings.updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+SET search_path = public
+AS $$
 BEGIN
     NEW.updated_at = TIMEZONE('utc'::text, NOW());
     RETURN NEW;
