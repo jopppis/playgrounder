@@ -190,7 +190,8 @@ describe('PlaygroundMap', () => {
     vi.mocked(usePlaygrounds).mockReturnValue({
       playgrounds: mockPlaygrounds,
       loading: false,
-      error: null
+      error: null,
+      refreshPlaygrounds: vi.fn().mockResolvedValue(mockPlaygrounds)
     })
 
     vi.mocked(useVisits).mockReturnValue({
@@ -237,7 +238,8 @@ describe('PlaygroundMap', () => {
     vi.mocked(usePlaygrounds).mockReturnValue({
       playgrounds: [],
       loading: true,
-      error: null
+      error: null,
+      refreshPlaygrounds: vi.fn().mockResolvedValue([])
     })
 
     render(<PlaygroundMap />)
