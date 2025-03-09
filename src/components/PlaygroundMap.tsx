@@ -112,13 +112,14 @@ const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
 // Separate component for playground markers
-const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
+const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange, editMode }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
   visitsLoading: boolean
   onVisitChange: (playgroundId: string, isVisited: boolean) => void
   onRatingChange: (playgroundId: string) => void
+  editMode: boolean
 }) => {
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
@@ -171,6 +172,7 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
           onVisitChange={handleVisitChange}
           onContentChange={updatePopup}
           onRatingChange={() => onRatingChange(playground.id)}
+          editMode={editMode}
         />
       </Popup>
     </Marker>
@@ -182,7 +184,8 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   return (
     prevProps.playground.id === nextProps.playground.id &&
     prevProps.visitsLoading === nextProps.visitsLoading &&
-    prevProps.user?.id === nextProps.user?.id
+    prevProps.user?.id === nextProps.user?.id &&
+    prevProps.editMode === nextProps.editMode
   );
 });
 
@@ -196,6 +199,7 @@ const PlaygroundMap = () => {
   const { ratings, refreshRatings } = useAllRatings()
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [editMode, setEditMode] = useState(false)
   const mapRef = useRef<L.Map | null>(null)
   const location = useLocation()
 
@@ -334,7 +338,10 @@ const PlaygroundMap = () => {
         filteredPlaygroundCount={filteredPlaygrounds.length}
         currentCity={currentCity}
         visits={visits}
+        editMode={editMode}
+        setEditMode={setEditMode}
       />
+
       <MapContainer
         center={helsinkiCenter}
         zoom={13.5}
@@ -377,6 +384,7 @@ const PlaygroundMap = () => {
               visitsLoading={visitsLoading}
               onVisitChange={updateVisitsState}
               onRatingChange={(playgroundId) => refreshRatings(playgroundId)}
+              editMode={editMode}
             />
           ))}
         </MarkerClusterGroup>

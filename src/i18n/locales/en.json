@@ -171,7 +171,8 @@
           "title": "Icons",
           "content": [
             "FontAwesome",
-            "Heroicons"
+            "Heroicons",
+            "Material Design Icons"
           ]
         }
       }
@@ -255,6 +256,45 @@
       "any": "Any",
       "municipality": "Municipality",
       "osm": "OpenStreetMap"
+    },
+    "edit": {
+      "title": "Edit Playground",
+      "description": "Propose changes to this playground. Your suggestions will be reviewed by administrators.",
+      "nameLabel": "Playground Name",
+      "namePlaceholder": "Enter playground name",
+      "reasonLabel": "Reason for Change",
+      "reasonPlaceholder": "Please explain why you're suggesting this name change (optional)",
+      "deleteButton": "Propose Deletion",
+      "cancelButton": "Cancel",
+      "submitButton": "Submit Changes",
+      "editMode": "Edit Mode",
+      "editModeEnabled": {
+        "title": "Edit Mode Enabled",
+        "description": "You can now propose changes to playgrounds"
+      },
+      "editModeDisabled": {
+        "title": "Edit Mode Disabled",
+        "description": "Edit mode has been turned off"
+      },
+      "editButton": "Edit Playground",
+      "success": {
+        "title": "Changes Proposed",
+        "nameChangeProposed": "Your name change has been proposed and will be reviewed",
+        "deletionProposed": "Your deletion request has been proposed and will be reviewed"
+      },
+      "error": {
+        "title": "Error",
+        "message": "Failed to propose changes",
+        "emptyName": "Playground name cannot be empty"
+      },
+      "deleteConfirm": {
+        "title": "Confirm Deletion Request",
+        "message": "Are you sure you want to propose this playground for deletion? This action will be reviewed by administrators.",
+        "reasonLabel": "Reason for Deletion",
+        "reasonPlaceholder": "Please explain why you think this playground should be deleted (optional)",
+        "confirmButton": "Yes, Request Deletion",
+        "cancelButton": "Cancel"
+      }
     }
   },
   "filters": "Filters",

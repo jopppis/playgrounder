@@ -171,7 +171,8 @@
           "title": "Ikonit",
           "content": [
             "FontAwesome",
-            "Heroicons"
+            "Heroicons",
+            "Material Design Icons"
           ]
         }
       }
@@ -255,6 +256,45 @@
       "any": "Mikä tahansa",
       "municipality": "Kunta",
       "osm": "OpenStreetMap"
+    },
+    "edit": {
+      "title": "Muokkaa leikkipaikkaa",
+      "description": "Ehdota muutoksia tähän leikkipaikkaan. Ehdotuksesi tarkistetaan ylläpitäjien toimesta.",
+      "nameLabel": "Leikkipaikan nimi",
+      "namePlaceholder": "Syötä leikkipaikan nimi",
+      "reasonLabel": "Muutoksen syy",
+      "reasonPlaceholder": "Selitä miksi ehdotat tätä nimenmuutosta (valinnainen)",
+      "deleteButton": "Ehdota poistoa",
+      "cancelButton": "Peruuta",
+      "submitButton": "Lähetä muutokset",
+      "editMode": "Muokkaustila",
+      "editModeEnabled": {
+        "title": "Muokkaustila käytössä",
+        "description": "Voit nyt ehdottaa muutoksia leikkipaikkoihin"
+      },
+      "editModeDisabled": {
+        "title": "Muokkaustila pois käytöstä",
+        "description": "Muokkaustila on poistettu käytöstä"
+      },
+      "editButton": "Muokkaa leikkipaikkaa",
+      "success": {
+        "title": "Muutokset ehdotettu",
+        "nameChangeProposed": "Nimiehdotuksesi on lähetetty ja se tarkistetaan",
+        "deletionProposed": "Poistopyyntösi on lähetetty ja se tarkistetaan"
+      },
+      "error": {
+        "title": "Virhe",
+        "message": "Muutosten ehdottaminen epäonnistui",
+        "emptyName": "Leikkipaikan nimi ei voi olla tyhjä"
+      },
+      "deleteConfirm": {
+        "title": "Vahvista poistopyyntö",
+        "message": "Haluatko varmasti ehdottaa tämän leikkipaikan poistamista? Ylläpitäjät tarkistavat tämän toimenpiteen.",
+        "reasonLabel": "Poiston syy",
+        "reasonPlaceholder": "Selitä miksi tämä leikkipaikka pitäisi poistaa (valinnainen)",
+        "confirmButton": "Kyllä, pyydä poistoa",
+        "cancelButton": "Peruuta"
+      }
     }
   },
   "filters": "Suodattimet",

@@ -1,13 +1,13 @@
 import {
-  Box,
-  Button,
-  ButtonProps,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  Icon,
-  Text
+    Box,
+    Button,
+    ButtonProps,
+    Flex,
+    Grid,
+    GridItem,
+    HStack,
+    Icon,
+    Text
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -39,6 +39,8 @@ export type MenuDrawerProps = {
   filteredPlaygroundCount: number
   currentCity: string | null
   visits: Visit[]
+  editMode?: boolean
+  setEditMode?: (editMode: boolean) => void
 }
 
 const MenuDrawer = ({
@@ -49,7 +51,9 @@ const MenuDrawer = ({
   filters,
   filteredPlaygroundCount,
   currentCity,
-  visits
+  visits,
+  editMode = false,
+  setEditMode = () => {}
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -195,6 +199,43 @@ const MenuDrawer = ({
                           />
                         </Box>
                       </HStack>
+
+                      {/* Edit Mode Switch */}
+                      <HStack gap={2} align="center" justify="space-between" w="100%">
+                        <Text fontSize="sm" color="gray.600">
+                          {t('playground.edit.editMode')}
+                        </Text>
+                        <Box
+                          position="relative"
+                          zIndex={2001}
+                          cursor="pointer"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            const newEditMode = !editMode
+                            setEditMode(newEditMode)
+                            if (newEditMode) {
+                              toast.showInfo({
+                                title: t('playground.edit.editModeEnabled.title'),
+                                description: t('playground.edit.editModeEnabled.description')
+                              })
+                            } else {
+                              toast.showInfo({
+                                title: t('playground.edit.editModeDisabled.title'),
+                                description: t('playground.edit.editModeDisabled.description')
+                              })
+                            }
+                          }}
+                        >
+                          <Switch
+                            size="sm"
+                            checked={editMode}
+                            onCheckedChange={() => {}}
+                            aria-label={t('playground.edit.editMode')}
+                          />
+                        </Box>
+                      </HStack>
+
                       <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                         <Button
                           {...buttonProps}

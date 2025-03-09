@@ -68,6 +68,19 @@ export interface UserPreferences {
   updated_at: string
 }
 
+export interface PlaygroundEditProposal {
+  id: string
+  playground_id: string
+  user_id: string
+  proposed_name: string | null
+  delete_playground: boolean
+  reason: string | null
+  status: 'pending' | 'approved' | 'rejected'
+  admin_notes: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -95,6 +108,11 @@ export interface Database {
         Row: UserPreferences
         Insert: Omit<UserPreferences, 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<UserPreferences, 'id' | 'created_at' | 'updated_at'>>
+      }
+      playground_edit_proposals: {
+        Row: PlaygroundEditProposal
+        Insert: Omit<PlaygroundEditProposal, 'id' | 'created_at' | 'updated_at' | 'status' | 'admin_notes'>
+        Update: Partial<Omit<PlaygroundEditProposal, 'id' | 'created_at' | 'updated_at'>>
       }
     }
     Functions: {
