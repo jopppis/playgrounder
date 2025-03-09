@@ -263,10 +263,15 @@
       "nameLabel": "Playground Name",
       "namePlaceholder": "Enter playground name",
       "reasonLabel": "Reason for Change",
-      "reasonPlaceholder": "Please explain why you're suggesting this name change (optional)",
+      "reasonPlaceholder": "Please explain why you're suggesting these changes (optional)",
       "deleteButton": "Propose Deletion",
       "cancelButton": "Cancel",
       "submitButton": "Submit Changes",
+      "fieldModified": "Modified",
+      "noChanges": {
+        "title": "No Changes",
+        "description": "You haven't made any changes to submit"
+      },
       "editMode": "Edit Mode",
       "editModeEnabled": {
         "title": "Edit Mode Enabled",
@@ -279,7 +284,7 @@
       "editButton": "Edit Playground",
       "success": {
         "title": "Changes Proposed",
-        "nameChangeProposed": "Your name change has been proposed and will be reviewed",
+        "nameChangeProposed": "Your changes have been proposed and will be reviewed",
         "deletionProposed": "Your deletion request has been proposed and will be reviewed"
       },
       "error": {

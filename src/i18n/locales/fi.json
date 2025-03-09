@@ -263,10 +263,15 @@
       "nameLabel": "Leikkipaikan nimi",
       "namePlaceholder": "Syötä leikkipaikan nimi",
       "reasonLabel": "Muutoksen syy",
-      "reasonPlaceholder": "Selitä miksi ehdotat tätä nimenmuutosta (valinnainen)",
+      "reasonPlaceholder": "Selitä miksi ehdotat näitä muutoksia (valinnainen)",
       "deleteButton": "Ehdota poistoa",
       "cancelButton": "Peruuta",
       "submitButton": "Lähetä muutokset",
+      "fieldModified": "Muokattu",
+      "noChanges": {
+        "title": "Ei muutoksia",
+        "description": "Et ole tehnyt muutoksia lähetettäväksi"
+      },
       "editMode": "Muokkaustila",
       "editModeEnabled": {
         "title": "Muokkaustila käytössä",
@@ -279,7 +284,7 @@
       "editButton": "Muokkaa leikkipaikkaa",
       "success": {
         "title": "Muutokset ehdotettu",
-        "nameChangeProposed": "Nimiehdotuksesi on lähetetty ja se tarkistetaan",
+        "nameChangeProposed": "Muutosehdotuksesi on lähetetty ja se tarkistetaan",
         "deletionProposed": "Poistopyyntösi on lähetetty ja se tarkistetaan"
       },
       "error": {

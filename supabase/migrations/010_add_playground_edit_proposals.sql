@@ -5,6 +5,7 @@ CREATE TABLE playground_edit_proposals (
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   proposed_name TEXT,
   delete_playground BOOLEAN NOT NULL DEFAULT FALSE,
+  has_supervised_activities BOOLEAN,
   reason TEXT,
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   admin_notes TEXT,

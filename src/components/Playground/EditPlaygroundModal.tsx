@@ -3,6 +3,8 @@ import {
   Button,
   CloseButton,
   Dialog,
+  Flex,
+  HStack,
   Input,
   Portal,
   Text,
@@ -11,9 +13,11 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { MdSupervisorAccount } from 'react-icons/md'
 import { usePlaygroundEdits } from '../../hooks/usePlaygroundEdits'
 import { useToast } from '../../hooks/useToast'
 import { PlaygroundWithCoordinates } from '../../types/database.types'
+import { Switch } from '../ui/switch'
 
 interface EditPlaygroundModalProps {
   isOpen: boolean
@@ -26,14 +30,37 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
   const [proposedName, setProposedName] = useState(playground.name || '')
   const [nameChangeReason, setNameChangeReason] = useState('')
   const [deletionReason, setDeletionReason] = useState('')
+  const [hasSupervised, setHasSupervised] = useState<boolean>(playground.has_supervised_activities)
+  const [nameModified, setNameModified] = useState(false)
+  const [supervisedModified, setSupervisedModified] = useState(false)
   const { proposeNameChange, proposePlaygroundDeletion, loading } = usePlaygroundEdits()
   const toast = useToast()
 
   // For delete confirmation
   const deleteDialog = useDisclosure()
 
+  const handleNameChange = (value: string) => {
+    setProposedName(value)
+    setNameModified(value !== (playground.name || ''))
+  }
+
+  const handleSupervisedChange = (value: boolean) => {
+    setHasSupervised(value)
+    setSupervisedModified(value !== playground.has_supervised_activities)
+  }
+
   const handleNameChangeSubmit = async () => {
-    if (proposedName.trim() === '') {
+    // Check if any changes were made
+    if (!nameModified && !supervisedModified) {
+      toast.showInfo({
+        title: t('playground.edit.noChanges.title'),
+        description: t('playground.edit.noChanges.description')
+      })
+      return
+    }
+
+    // If name is modified, ensure it's not empty
+    if (nameModified && proposedName.trim() === '') {
       toast.showError({
         title: t('playground.edit.error.title'),
         description: t('playground.edit.error.emptyName')
@@ -43,7 +70,8 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
 
     const { error } = await proposeNameChange(
       playground.id,
-      proposedName,
+      nameModified ? proposedName : null,
+      supervisedModified ? hasSupervised : null,
       nameChangeReason.trim() || null
     )
 
@@ -90,6 +118,9 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
     deleteDialog.onClose()
   }
 
+  // Check if any changes have been made to enable/disable the submit button
+  const hasChanges = nameModified || supervisedModified
+
   return (
     <>
       {/* Add spin animation */}
@@ -133,12 +164,48 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                     </Text>
                     <Input
                       value={proposedName}
-                      onChange={(e) => setProposedName(e.target.value)}
+                      onChange={(e) => handleNameChange(e.target.value)}
                       placeholder={t('playground.edit.namePlaceholder')}
                       color="gray.800"
-                      borderColor="gray.300"
+                      borderColor={nameModified ? "brand.500" : "gray.300"}
                       _placeholder={{ color: 'gray.400' }}
                     />
+                    {nameModified && (
+                      <Text fontSize="xs" color="brand.500" mt={1}>
+                        {t('playground.edit.fieldModified')}
+                      </Text>
+                    )}
+                  </Box>
+
+                  {/* Supervised Activities Switch */}
+                  <Box>
+                    <HStack gap={2} align="center" justify="space-between" w="100%">
+                      <Flex align="center" gap={2}>
+                        <Box as={MdSupervisorAccount} boxSize="20px" color="gray.600" />
+                        <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                          {t('playground.supervision.label')}
+                        </Text>
+                      </Flex>
+                      <Box
+                        position="relative"
+                        zIndex={1}
+                        cursor="pointer"
+                        onClick={() => handleSupervisedChange(!hasSupervised)}
+                      >
+                        <Switch
+                          size="md"
+                          checked={hasSupervised}
+                          onCheckedChange={() => {}}
+                          aria-label={t('playground.supervision.label')}
+                        />
+                      </Box>
+                    </HStack>
+                    <Text fontSize="xs" color={supervisedModified ? "brand.500" : "gray.500"} mt={1}>
+                      {hasSupervised
+                        ? t('playground.supervision.supervised')
+                        : t('playground.supervision.unsupervised')}
+                      {supervisedModified && ` (${t('playground.edit.fieldModified')})`}
+                    </Text>
                   </Box>
 
                   <Box>
@@ -188,7 +255,8 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   color="white"
                   _hover={{ bg: 'brand.600' }}
                   onClick={handleNameChangeSubmit}
-                  disabled={loading}
+                  disabled={loading || !hasChanges}
+                  opacity={!hasChanges ? 0.6 : 1}
                 >
                   {loading ? (
                     <Box as="span" display="flex" alignItems="center" gap={2}>

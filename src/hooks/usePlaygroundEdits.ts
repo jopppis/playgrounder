@@ -10,7 +10,12 @@ export const usePlaygroundEdits = () => {
   const { t } = useTranslation()
 
   const proposeNameChange = useCallback(
-    async (playgroundId: string, proposedName: string, reason: string | null = null): Promise<{ error: string | null }> => {
+    async (
+      playgroundId: string,
+      proposedName: string | null,
+      hasSupervised: boolean | null = null,
+      reason: string | null = null
+    ): Promise<{ error: string | null }> => {
       if (!user) {
         return { error: t('common.loginRequired') }
       }
@@ -40,6 +45,7 @@ export const usePlaygroundEdits = () => {
             user_id: user.id,
             proposed_name: proposedName,
             delete_playground: false,
+            has_supervised_activities: hasSupervised,
             reason
           })
 
@@ -93,6 +99,7 @@ export const usePlaygroundEdits = () => {
             user_id: user.id,
             proposed_name: null,
             delete_playground: true,
+            has_supervised_activities: null,
             reason
           })
 

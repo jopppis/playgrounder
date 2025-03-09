@@ -74,6 +74,7 @@ export interface PlaygroundEditProposal {
   user_id: string
   proposed_name: string | null
   delete_playground: boolean
+  has_supervised_activities: boolean | null
   reason: string | null
   status: 'pending' | 'approved' | 'rejected'
   admin_notes: string | null
