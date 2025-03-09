@@ -24,6 +24,7 @@ export interface FilterOptions {
   city: string | null
   noRating: boolean | null
   noUserRating: boolean | null
+  dataSource: 'municipality' | 'osm' | null
 }
 
 interface PlaygroundFilterProps {
@@ -45,7 +46,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       return filters.minStars !== null ||
         filters.hasSupervised !== null ||
         filters.city !== null ||
-        filters.noRating !== null
+        filters.noRating !== null ||
+        filters.dataSource !== null
     }
     // For logged in users, check all filters
     return filters.visitStatus !== null ||
@@ -54,7 +56,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       filters.hasSupervised !== null ||
       filters.city !== null ||
       filters.noRating !== null ||
-      filters.noUserRating !== null
+      filters.noUserRating !== null ||
+      filters.dataSource !== null
   }, [filters, user])
 
   const resetFilters = () => {
@@ -65,7 +68,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
         minStars: null,
         hasSupervised: null,
         city: null,
-        noRating: null
+        noRating: null,
+        dataSource: null
       })
       return
     }
@@ -77,7 +81,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       hasSupervised: null,
       city: null,
       noRating: null,
-      noUserRating: null
+      noUserRating: null,
+      dataSource: null
     })
   }
 
@@ -101,6 +106,12 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       }))
     ]
   }, [playgrounds, t])
+
+  const dataSources = [
+    { label: t('playground.dataSource.any'), value: null },
+    { label: t('playground.dataSource.municipality'), value: 'municipality' },
+    { label: t('playground.dataSource.osm'), value: 'osm' }
+  ]
 
   const filterPosition = useBreakpointValue({
     base: {
@@ -313,6 +324,40 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                         value={city.value ?? ''}
                       >
                         {city.label}
+                      </option>
+                    ))}
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator/>
+                </NativeSelect.Root>
+              </Box>
+            </Box>
+
+            <Box>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                {t('playground.dataSource.label')}
+              </Text>
+              <Box position="relative">
+                <NativeSelect.Root
+                  size="sm"
+                  variant="outline"
+                  colorPalette="brand"
+                  color="gray.700"
+                >
+                  <NativeSelect.Field
+                    value={filters.dataSource ?? ''}
+                    onChange={(e) => onChange({
+                      ...filters,
+                      dataSource: e.target.value as 'municipality' | 'osm' || null
+                    })}
+                    height="28px"
+                    fontSize="sm"
+                  >
+                    {dataSources.map((source) => (
+                      <option
+                        key={source.value ?? 'any'}
+                        value={source.value ?? ''}
+                      >
+                        {source.label}
                       </option>
                     ))}
                   </NativeSelect.Field>

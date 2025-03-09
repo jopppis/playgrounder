@@ -163,7 +163,8 @@
             "Helsinki region: Service Map APIs of the Helsinki Metropolitan Area. The data is maintained by the Helsingin kapunginkanslia / Digitalization Unit and originally created by the cities of Helsinki, Espoo, Vantaa, and Kauniainen. The data has been downloaded from the Helsinki Region Infoshare service on 24.02.2025 under the Creative Commons Attribution 4.0 license.",
             "Tampere: Tampere playgrounds. Data has been downloaded from the Tampere City Data Portal on 26.02.2025 under the Creative Commons Attribution 4.0 license.",
             "Turku and Kaarina: Turku and Kaarina playgrounds. Data has been downloaded from the Avoindata.fi service on 26.02.2025 under the Creative Commons Attribution 4.0 license.",
-            "Oulu: Oulu playgrounds. Data has been downloaded from the Oulu City Data Portal on 02.03.2025 under the Creative Commons Attribution 4.0 license."
+            "Oulu: Oulu playgrounds. Data has been downloaded from the Oulu City Data Portal on 02.03.2025 under the Creative Commons Attribution 4.0 license.",
+            "Other cities: Playground data has been downloaded from OpenStreetMap on 02.03.2025 under the Open Database License. https://www.openstreetmap.org/copyright"
           ]
         },
         "icons": {
@@ -201,6 +202,7 @@
     "aerial": "Aerial"
   },
   "playground": {
+    "unnamed": "Unnamed playground",
     "address": "Address",
     "markVisited": "Visited",
     "login": {
@@ -247,7 +249,13 @@
       "supervised": "Supervised activities",
       "unsupervised": "No supervised activities"
     },
-    "loginToInteract": "Please log in to mark playgrounds as visited or rate them"
+    "loginToInteract": "Please log in to mark playgrounds as visited or rate them",
+    "dataSource": {
+      "label": "Data Source",
+      "any": "Any",
+      "municipality": "Municipality",
+      "osm": "OpenStreetMap"
+    }
   },
   "filters": "Filters",
   "filterPlaygrounds": "Filter playgrounds",

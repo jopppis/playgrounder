@@ -42,7 +42,8 @@ describe('MenuDrawer', () => {
       hasSupervised: null,
       city: null,
       noRating: null,
-      noUserRating: null
+      noUserRating: null,
+      dataSource: null
     },
     filteredPlaygroundCount: 0,
     currentCity: null,

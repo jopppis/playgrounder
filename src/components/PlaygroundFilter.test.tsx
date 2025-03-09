@@ -86,7 +86,8 @@ describe('PlaygroundFilter', () => {
     hasSupervised: null,
     city: null,
     noRating: null,
-    noUserRating: null
+    noUserRating: null,
+    dataSource: null
   }
 
   beforeEach(() => {

@@ -7,8 +7,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.8] - 2025-03-08
+
+## [0.12.7] - 2025-03-08
+
+### Changed
+- Optimized data fetching to avoid repeated requests
+
+## [0.12.6] - 2025-03-04
+
+### Changed
+- Disable clustering at zoom level 13
+
+## [0.12.5] - 2025-03-04
+
+### Added
+- Unnamed playgrounds
+
+## [0.12.4] - 2025-03-03
+
+## [0.12.3] - 2025-03-03
+
+### Fixed
+- Add data source to user filters
+
+### Changed
+- Always add coordinate to properties
+
+## [0.12.2] - 2025-03-02
+
+### Changed
+- Tweaked clustering options
+
+## [0.12.1] - 2025-03-02
+
+### Changed
+- Disable spiderfy on max zoom
+
+### Fixed
+- Fix build
+
+## [0.12.0] - 2025-03-02
+
+### Added
+- OSM attribution to data sources
+- Data source to playgrounds
+
+## [0.11.10] - 2025-03-02
+
+### Fixed
+- Added safe area inset bottom to map and menu drawer
+
+## [0.11.9] - 2025-03-02
+
 ### Added
 - Add location permission to pwa manifest
+- Data for Oulu
+
+### Changed
+- Improved location watching
+
 
 ## [0.11.8] - 2025-03-01
 

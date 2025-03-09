@@ -48,10 +48,7 @@ npm run dev
 
 ## TODO
 
-- Add more Finnish cities
 - Add two factor authentication
-- Markers on canvas always
-- Run coverage and improve it
 
 ## Contributing
 

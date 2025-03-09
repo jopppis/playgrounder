@@ -52,7 +52,9 @@ fastjsonschema==2.21.1
 fqdn==1.5.1
     # via jsonschema
 geopandas==1.0.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   osmnx
 h11==0.14.0
     # via httpcore
 httpcore==1.0.7
@@ -166,6 +168,8 @@ nbformat==5.10.4
     #   nbconvert
 nest-asyncio==1.6.0
     # via ipykernel
+networkx==3.4.2
+    # via osmnx
 notebook==7.3.2
     # via jupyter
 notebook-shim==0.2.4
@@ -175,9 +179,12 @@ notebook-shim==0.2.4
 numpy==2.2.3
     # via
     #   geopandas
+    #   osmnx
     #   pandas
     #   pyogrio
     #   shapely
+osmnx==2.0.1
+    # via -r requirements.in
 overrides==7.7.0
     # via jupyter-server
 packaging==24.2
@@ -191,7 +198,9 @@ packaging==24.2
     #   nbconvert
     #   pyogrio
 pandas==2.2.3
-    # via geopandas
+    # via
+    #   geopandas
+    #   osmnx
 pandocfilters==1.5.1
     # via nbconvert
 parso==0.8.4
@@ -250,7 +259,9 @@ referencing==0.36.2
     #   jsonschema-specifications
     #   jupyter-events
 requests==2.32.3
-    # via jupyterlab-server
+    # via
+    #   jupyterlab-server
+    #   osmnx
 rfc3339-validator==0.1.4
     # via
     #   jsonschema
@@ -268,7 +279,9 @@ send2trash==1.8.3
 setuptools==75.8.1
     # via jupyterlab
 shapely==2.0.7
-    # via geopandas
+    # via
+    #   geopandas
+    #   osmnx
 six==1.17.0
     # via
     #   python-dateutil

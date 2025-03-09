@@ -11,6 +11,7 @@ export const useUserFilters = () => {
     minUserStars: null,
     hasSupervised: null,
     city: null,
+    dataSource: null,
     noRating: null,
     noUserRating: null
   })
@@ -26,6 +27,7 @@ export const useUserFilters = () => {
         minUserStars: null,
         hasSupervised: null,
         city: null,
+        dataSource: null,
         noRating: null,
         noUserRating: null
       })
@@ -49,6 +51,7 @@ export const useUserFilters = () => {
           minUserStars: data.min_user_stars,
           hasSupervised: data.has_supervised_activities,
           city: data.city,
+          dataSource: data.data_source,
           noRating: data.no_rating,
           noUserRating: data.no_user_rating
         })
@@ -75,6 +78,7 @@ export const useUserFilters = () => {
         min_user_stars: newFilters.minUserStars,
         has_supervised_activities: newFilters.hasSupervised,
         city: newFilters.city,
+        data_source: newFilters.dataSource,
         no_rating: newFilters.noRating,
         no_user_rating: newFilters.noUserRating
       }

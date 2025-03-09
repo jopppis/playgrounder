@@ -157,6 +157,7 @@ describe('PlaygroundMap', () => {
       latitude: 60.1699,
       longitude: 24.9384,
       city: 'Helsinki',
+      data_source: 'municipality',
       has_supervised_activities: true,
       address: '123 Test St',
       description: 'A test playground',
@@ -168,6 +169,7 @@ describe('PlaygroundMap', () => {
       latitude: 60.1701,
       longitude: 24.9386,
       city: 'Helsinki',
+      data_source: 'osm',
       has_supervised_activities: false,
       address: '456 Test Ave',
       description: 'Another test playground',
@@ -188,7 +190,8 @@ describe('PlaygroundMap', () => {
     vi.mocked(usePlaygrounds).mockReturnValue({
       playgrounds: mockPlaygrounds,
       loading: false,
-      error: null
+      error: null,
+      refreshPlaygrounds: vi.fn().mockResolvedValue(mockPlaygrounds)
     })
 
     vi.mocked(useVisits).mockReturnValue({
@@ -235,7 +238,8 @@ describe('PlaygroundMap', () => {
     vi.mocked(usePlaygrounds).mockReturnValue({
       playgrounds: [],
       loading: true,
-      error: null
+      error: null,
+      refreshPlaygrounds: vi.fn().mockResolvedValue([])
     })
 
     render(<PlaygroundMap />)

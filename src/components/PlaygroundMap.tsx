@@ -10,12 +10,12 @@ import { LayersControl, MapContainer, Marker, Popup, TileLayer } from 'react-lea
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
+import { useAllRatings } from '../hooks/useAllRatings'
 import { useAuth } from '../hooks/useAuth'
 import { useCurrentCity } from '../hooks/useCurrentCity'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useUserFilters } from '../hooks/useUserFilters'
 import { useVisits } from '../hooks/useVisits'
-import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import LocationControl from './LocationControl'
 import MenuDrawer from './MenuDrawer'
@@ -118,7 +118,7 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   user: User | null
   visitsLoading: boolean
   onVisitChange: (playgroundId: string, isVisited: boolean) => void
-  onRatingChange: () => void
+  onRatingChange: (playgroundId: string) => void
 }) => {
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
@@ -170,7 +170,7 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
           playground={playground}
           onVisitChange={handleVisitChange}
           onContentChange={updatePopup}
-          onRatingChange={onRatingChange}
+          onRatingChange={() => onRatingChange(playground.id)}
         />
       </Popup>
     </Marker>
@@ -186,13 +186,6 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   );
 });
 
-interface PlaygroundRating {
-  playground_id: string
-  avg_rating: number | null
-  total_ratings: number
-  user_rating: number | null
-}
-
 const PlaygroundMap = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -200,7 +193,7 @@ const PlaygroundMap = () => {
   const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
   const { filters, loading: filtersLoading, updateFilters } = useUserFilters()
   const { currentCity, updateCurrentCity } = useCurrentCity()
-  const [ratings, setRatings] = useState<PlaygroundRating[]>([])
+  const { ratings, refreshRatings } = useAllRatings()
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const mapRef = useRef<L.Map | null>(null)
@@ -214,41 +207,6 @@ const PlaygroundMap = () => {
     }
   }, [location])
 
-  // Create a fetchRatings function that can be called from child components
-  const fetchRatings = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('playground_ratings')
-      .select('playground_id, avg_rating, total_ratings')
-
-    if (!error && data) {
-      // If user is logged in, fetch their ratings
-      let userRatings: { [key: string]: number } = {}
-      if (user) {
-        const { data: userRatingsData } = await supabase
-          .from('ratings')
-          .select('playground_id, rating')
-          .eq('user_id', user.id)
-
-        if (userRatingsData) {
-          userRatings = Object.fromEntries(
-            userRatingsData.map(r => [r.playground_id, r.rating])
-          )
-        }
-      }
-
-      // Combine public ratings with user ratings
-      setRatings(data.map(r => ({
-        ...r,
-        user_rating: userRatings[r.playground_id] || null
-      })))
-    }
-  }, [user])
-
-  // Fetch ratings when playgrounds change or when explicitly requested
-  useEffect(() => {
-    fetchRatings()
-  }, [fetchRatings, playgrounds])
-
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
 
@@ -258,6 +216,11 @@ const PlaygroundMap = () => {
     return playgrounds.filter(playground => {
       // Filter by city
       if (filters.city !== null && playground.city?.toLowerCase() !== filters.city) {
+        return false
+      }
+
+      // Filter by data source
+      if (filters.dataSource !== null && playground.data_source !== filters.dataSource) {
         return false
       }
 
@@ -317,11 +280,15 @@ const PlaygroundMap = () => {
   const markerClusterOptions = {
     showCoverageOnHover: true,
     maxClusterRadius: 100,
-    spiderfyOnMaxZoom: true,
-    disableClusteringAtZoom: 11
+    spiderfyOnMaxZoom: false,
+    disableClusteringAtZoom: 13,
+    removeOutsideVisibleBounds: true
   }
 
-  if (playgroundsLoading || visitsLoading || filtersLoading) {
+  // Only show loading spinner for essential data, not for ratings
+  const isLoading = playgroundsLoading || visitsLoading || filtersLoading
+
+  if (isLoading) {
     return (
       <Box height="100dvh" display="flex" alignItems="center" justifyContent="center">
         <Spinner size="xl" color="brand.500" />
@@ -330,7 +297,7 @@ const PlaygroundMap = () => {
   }
 
   return (
-    <Box position="relative" height="100%" width="100%">
+    <Box position="relative" height="100%" width="100%" pb="env(safe-area-inset-bottom)">
       <PlaygroundFilter filters={filters} onChange={updateFilters} />
       <Box position="fixed" top={4} right={4} zIndex={2200}>
         <Button
@@ -409,7 +376,7 @@ const PlaygroundMap = () => {
               user={user}
               visitsLoading={visitsLoading}
               onVisitChange={updateVisitsState}
-              onRatingChange={fetchRatings}
+              onRatingChange={(playgroundId) => refreshRatings(playgroundId)}
             />
           ))}
         </MarkerClusterGroup>
