@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
 import { HiPencil } from 'react-icons/hi2'
-import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
+import { MdLocationOn, MdSearch, MdSupervisorAccount } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useLoginToast } from '../hooks/useLoginToast'
 import { useRatings } from '../hooks/useRatings'
@@ -254,6 +254,26 @@ export const PlaygroundPopup = ({
                     />
                   </Link>
                 </Tooltip>
+                {playground.name && (
+                  <Tooltip content={t('playground.searchByName', { name: playground.name })}>
+                    <Link
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(playground.name)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      display="flex"
+                      alignItems="center"
+                      _hover={{ color: 'brand.500' }}
+                    >
+                      <Icon
+                        as={MdSearch}
+                        boxSize={5}
+                        color="gray.600"
+                        transition="color 0.2s"
+                        _hover={{ color: 'inherit' }}
+                      />
+                    </Link>
+                  </Tooltip>
+                )}
                 {playground.has_supervised_activities && (
                   <Tooltip content={t('playground.supervision.supervised')}>
                     <Box as="span">
@@ -270,7 +290,7 @@ export const PlaygroundPopup = ({
               <Box flex={1} minW={4} />
 
               {!ratingLoading && (
-                <HStack gap={1} mr={8}>
+                <HStack gap={0.5} flexShrink={0} mr={3}>
                   <Text fontSize="sm" fontWeight="medium" color="gray.600" whiteSpace="nowrap">
                     {rating?.avgRating ? Number(rating.avgRating).toFixed(1) : 'N/A'}
                   </Text>

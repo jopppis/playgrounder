@@ -209,6 +209,7 @@
     "location": "Sijainti",
     "noCity": "Ei kaupunkitietoa",
     "markVisited": "Vierailtu",
+    "searchByName": "Hae Google Mapsista nimellä {{name}}",
     "login": {
       "required": "Kirjaudu sisään merkitäksesi vierailluksi"
     },

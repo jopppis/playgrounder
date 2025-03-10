@@ -52,7 +52,6 @@ npm run dev
 - Restrict loading of playgrounds to nearby
 - Create playgrounds
 - Move playgrounds
-- Add proper link to google maps
 - Make modals chakra dialogs
 - Add admin users view and playgrounds view
 

@@ -209,6 +209,7 @@
     "location": "Location",
     "noCity": "No city information",
     "markVisited": "Visited",
+    "searchByName": "Search Google Maps for {{name}}",
     "login": {
       "required": "Login required to mark as visited"
     },
