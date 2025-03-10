@@ -92,7 +92,6 @@ SELECT
     ),
     p.has_supervised_activities
   ) as has_supervised_activities,
-  p.address,
   p.city,
   p.data_source,
   p.created_at

@@ -205,7 +205,6 @@
   },
   "playground": {
     "unnamed": "Unnamed playground",
-    "address": "Address",
     "name": "Name",
     "location": "Location",
     "markVisited": "Visited",

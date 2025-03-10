@@ -224,10 +224,10 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                   </Link>
                 </Flex>
 
-                {proposal.playground.address && (
+                {proposal.playground.city && (
                   <Flex justify="space-between">
-                    <Text fontWeight="bold" color="gray.700">{t('playground.address')}</Text>
-                    <Text color="gray.700">{proposal.playground.address}</Text>
+                    <Text fontWeight="bold" color="gray.700">{t('city')}</Text>
+                    <Text color="gray.700">{proposal.playground.city}</Text>
                   </Flex>
                 )}
 
@@ -239,13 +239,6 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                       : t('playground.supervision.unsupervised')}
                   </Text>
                 </Flex>
-
-                {proposal.playground.city && (
-                  <Flex justify="space-between">
-                    <Text fontWeight="bold" color="gray.700">{t('city')}</Text>
-                    <Text color="gray.700">{proposal.playground.city}</Text>
-                  </Flex>
-                )}
 
                 <Flex justify="space-between">
                   <Text fontWeight="bold" color="gray.700">{t('playground.dataSource.label')}</Text>

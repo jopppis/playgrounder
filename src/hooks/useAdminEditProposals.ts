@@ -43,7 +43,6 @@ export const useAdminEditProposals = () => {
             name,
             location,
             has_supervised_activities,
-            address,
             city,
             data_source,
             created_at

@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaRegStar, FaStar } from 'react-icons/fa'
 import { HiPencil } from 'react-icons/hi2'
-import { MdHome, MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
+import { MdLocationOn, MdSupervisorAccount } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useLoginToast } from '../hooks/useLoginToast'
 import { useRatings } from '../hooks/useRatings'
@@ -197,21 +197,6 @@ export const PlaygroundPopup = ({
     }
   }
 
-  const renderFormattedDescription = (text: string) => {
-    // Replace \n with actual newlines
-    const processedText = text.replace(/\\n/g, '\n')
-
-    // Split by newlines to preserve them
-    const lines = processedText.split('\n')
-
-    return lines.map((line, lineIndex) => (
-      <Text as="span" key={lineIndex} display="inline">
-        {line}
-        {lineIndex < lines.length - 1 && '\n'}
-      </Text>
-    ))
-  }
-
   return (
     <>
       <Box p={3} minW="300px" maxW="700px">
@@ -269,26 +254,6 @@ export const PlaygroundPopup = ({
                     />
                   </Link>
                 </Tooltip>
-                {playground.address && (
-                  <Tooltip content={playground.address}>
-                    <Link
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(playground.address)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      display="flex"
-                      alignItems="center"
-                      _hover={{ color: 'brand.500' }}
-                    >
-                      <Icon
-                        as={MdHome}
-                        boxSize={5}
-                        color="gray.600"
-                        transition="color 0.2s"
-                        _hover={{ color: 'inherit' }}
-                      />
-                    </Link>
-                  </Tooltip>
-                )}
                 {playground.has_supervised_activities && (
                   <Tooltip content={t('playground.supervision.supervised')}>
                     <Box as="span">
@@ -349,18 +314,6 @@ export const PlaygroundPopup = ({
                 </HStack>
               </Box>
             </Flex>
-
-            {playground.description && (
-              <Text
-                fontSize="sm"
-                fontWeight="semibold"
-                color="gray.700"
-                lineHeight="tall"
-                whiteSpace="pre-wrap"
-              >
-                {renderFormattedDescription(playground.description)}
-              </Text>
-            )}
 
             {/* Rating section */}
             <Box>

@@ -159,8 +159,6 @@ describe('PlaygroundMap', () => {
       city: 'Helsinki',
       data_source: 'municipality',
       has_supervised_activities: true,
-      address: '123 Test St',
-      description: 'A test playground',
       created_at: '2023-01-01T12:00:00Z'
     },
     {
@@ -171,8 +169,6 @@ describe('PlaygroundMap', () => {
       city: 'Helsinki',
       data_source: 'osm',
       has_supervised_activities: false,
-      address: '456 Test Ave',
-      description: 'Another test playground',
       created_at: '2023-01-01T12:00:00Z'
     }
   ]

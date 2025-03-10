@@ -49,7 +49,6 @@ npm run dev
 ## TODO
 
 - Tests
-- Drop addresses and description
 - Search
 - Restrict loading of playgrounds to nearby
 - Add playgrounds without city to filter
