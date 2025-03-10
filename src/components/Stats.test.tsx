@@ -95,12 +95,15 @@ describe('Stats', () => {
 
   it('renders filtered stats when filters are applied', () => {
     const filters = {
-      visitStatus: 'visited' as const,
+      visitStatus: "visited" as const,
       minStars: null,
       minUserStars: null,
       hasSupervised: null,
       city: null,
-      dataSource: null
+      dataSource: null,
+      searchQuery: null,
+      noRating: null,
+      noUserRating: null
     }
 
     render(
