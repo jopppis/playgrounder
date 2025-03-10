@@ -100,6 +100,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
     return [
       { label: t('allCities'), value: null },
+      { label: t('playground.noCity'), value: 'no_city' },
       ...uniqueCities.map(city => ({
         label: city,
         value: city.toLowerCase()

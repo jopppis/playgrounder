@@ -207,6 +207,7 @@
     "unnamed": "Unnamed playground",
     "name": "Name",
     "location": "Location",
+    "noCity": "No city information",
     "markVisited": "Visited",
     "login": {
       "required": "Login required to mark as visited"

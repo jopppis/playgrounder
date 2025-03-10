@@ -237,8 +237,14 @@ const PlaygroundMap = () => {
 
     return playgrounds.filter(playground => {
       // Filter by city
-      if (filters.city !== null && playground.city?.toLowerCase() !== filters.city) {
-        return false
+      if (filters.city !== null) {
+        if (filters.city === 'no_city') {
+          if (playground.city !== null && playground.city !== undefined) {
+            return false;
+          }
+        } else if (playground.city?.toLowerCase() !== filters.city) {
+          return false;
+        }
       }
 
       // Filter by data source

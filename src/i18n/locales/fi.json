@@ -207,6 +207,7 @@
     "unnamed": "Nimetön leikkipaikka",
     "name": "Nimi",
     "location": "Sijainti",
+    "noCity": "Ei kaupunkitietoa",
     "markVisited": "Vierailtu",
     "login": {
       "required": "Kirjaudu sisään merkitäksesi vierailluksi"
