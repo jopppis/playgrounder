@@ -6,3 +6,6 @@ VALUES('00000000-0000-0000-0000-000000000000'::uuid, 'c181f02d-861d-42fa-acbb-17
 INSERT INTO auth.identities
 (provider_id, user_id, identity_data, provider, last_sign_in_at, created_at, updated_at, id)
 VALUES('c181f02d-861d-42fa-acbb-172f26535cda', 'c181f02d-861d-42fa-acbb-172f26535cda'::uuid, '{"sub": "c181f02d-861d-42fa-acbb-172f26535cda", "email": "user@test.com", "email_verified": false, "phone_verified": false}'::jsonb, 'email', '2025-02-27 09:07:16.277', '2025-02-27 09:07:16.277', '2025-02-27 09:07:16.277', 'e0b08ce4-9f0d-4932-9794-906db76632fc'::uuid);
+
+INSERT INTO admin_users (user_id)
+VALUES ('c181f02d-861d-42fa-acbb-172f26535cda'::uuid);

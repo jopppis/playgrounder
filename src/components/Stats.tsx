@@ -4,12 +4,15 @@ import { useTranslation } from 'react-i18next'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 
 type Filters = {
+  searchQuery: string | null
   visitStatus: 'visited' | 'unvisited' | null
   minStars: number | null
   minUserStars: number | null
   hasSupervised: boolean | null
   city: string | null
   dataSource: 'municipality' | 'osm' | null
+  noRating: boolean | null
+  noUserRating: boolean | null
 }
 
 type StatsProps = {
@@ -62,12 +65,15 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, 
   )
 
   const hasActiveFilters = (filters: Filters) => {
-    return filters.visitStatus !== null ||
+    return filters.searchQuery !== null ||
+      filters.visitStatus !== null ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
       filters.hasSupervised !== null ||
       filters.city !== null ||
-      filters.dataSource !== null
+      filters.dataSource !== null ||
+      filters.noRating !== null ||
+      filters.noUserRating !== null
   }
 
   // Calculate current city stats

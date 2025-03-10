@@ -112,13 +112,14 @@ const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
 // Separate component for playground markers
-const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange }: {
+const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange, editMode }: {
   playground: PlaygroundWithCoordinates
   visits: Visit[]
   user: User | null
   visitsLoading: boolean
   onVisitChange: (playgroundId: string, isVisited: boolean) => void
   onRatingChange: (playgroundId: string) => void
+  editMode: boolean
 }) => {
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
@@ -171,6 +172,7 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
           onVisitChange={handleVisitChange}
           onContentChange={updatePopup}
           onRatingChange={() => onRatingChange(playground.id)}
+          editMode={editMode}
         />
       </Popup>
     </Marker>
@@ -182,7 +184,8 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   return (
     prevProps.playground.id === nextProps.playground.id &&
     prevProps.visitsLoading === nextProps.visitsLoading &&
-    prevProps.user?.id === nextProps.user?.id
+    prevProps.user?.id === nextProps.user?.id &&
+    prevProps.editMode === nextProps.editMode
   );
 });
 
@@ -196,6 +199,7 @@ const PlaygroundMap = () => {
   const { ratings, refreshRatings } = useAllRatings()
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [editMode, setEditMode] = useState(false)
   const mapRef = useRef<L.Map | null>(null)
   const location = useLocation()
 
@@ -214,9 +218,32 @@ const PlaygroundMap = () => {
     if (!playgrounds) return []
 
     return playgrounds.filter(playground => {
+      // Filter by search query
+      if (filters.searchQuery !== null && filters.searchQuery.trim() !== '') {
+        const searchTerms = filters.searchQuery.toLowerCase().trim().split(/\s+/)
+        const searchableText = [
+          playground.name,
+          playground.city
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase()
+
+        // Check if all search terms are present in the searchable text
+        if (!searchTerms.every(term => searchableText.includes(term))) {
+          return false
+        }
+      }
+
       // Filter by city
-      if (filters.city !== null && playground.city?.toLowerCase() !== filters.city) {
-        return false
+      if (filters.city !== null) {
+        if (filters.city === 'no_city') {
+          if (playground.city !== null && playground.city !== undefined) {
+            return false;
+          }
+        } else if (playground.city?.toLowerCase() !== filters.city) {
+          return false;
+        }
       }
 
       // Filter by data source
@@ -276,6 +303,41 @@ const PlaygroundMap = () => {
     })
   }, [playgrounds, filters, user, visits, ratings])
 
+  // Watch for search and city filter changes and zoom to markers
+  useEffect(() => {
+    if (mapRef.current && filteredPlaygrounds.length > 0 &&
+        (filters.searchQuery !== null || filters.city !== null)) {
+      const bounds = L.latLngBounds(
+        filteredPlaygrounds.map(playground => [playground.latitude, playground.longitude])
+      )
+      mapRef.current.fitBounds(bounds, {
+        padding: [50, 50],
+        maxZoom: 16,
+        animate: true,
+        duration: 1
+      })
+    }
+  }, [filteredPlaygrounds, filters.searchQuery, filters.city])
+
+  // Add navigation and zoom event listeners
+  useEffect(() => {
+    const handleNavigateToPlayground = (event: CustomEvent) => {
+      const { lat, lng, zoom } = event.detail
+      if (mapRef.current) {
+        mapRef.current.setView([lat, lng], zoom, {
+          animate: true,
+          duration: 1
+        })
+      }
+    }
+
+    window.addEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
+
+    return () => {
+      window.removeEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
+    }
+  }, [])
+
   // Define marker cluster group options
   const markerClusterOptions = {
     showCoverageOnHover: true,
@@ -334,7 +396,10 @@ const PlaygroundMap = () => {
         filteredPlaygroundCount={filteredPlaygrounds.length}
         currentCity={currentCity}
         visits={visits}
+        editMode={editMode}
+        setEditMode={setEditMode}
       />
+
       <MapContainer
         center={helsinkiCenter}
         zoom={13.5}
@@ -377,6 +442,7 @@ const PlaygroundMap = () => {
               visitsLoading={visitsLoading}
               onVisitChange={updateVisitsState}
               onRatingChange={(playgroundId) => refreshRatings(playgroundId)}
+              editMode={editMode}
             />
           ))}
         </MarkerClusterGroup>

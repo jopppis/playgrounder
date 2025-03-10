@@ -60,8 +60,6 @@ describe('PlaygroundPopup', () => {
   const mockPlayground: PlaygroundWithCoordinates = {
     id: '1',
     name: 'Test Playground',
-    description: 'A test playground',
-    address: '123 Test St',
     has_supervised_activities: true,
     created_at: new Date().toISOString(),
     latitude: 0,
@@ -91,16 +89,6 @@ describe('PlaygroundPopup', () => {
     // Check for playground name
     expect(screen.getByText('Test Playground')).toBeInTheDocument()
 
-    // Check for playground description
-    expect(screen.getByText('A test playground')).toBeInTheDocument()
-
-    // Check for address in the link
-    const links = screen.getAllByRole('link');
-    const addressLink = links.find(link =>
-      link.getAttribute('href')?.includes('123%20Test%20St')
-    );
-    expect(addressLink).toBeInTheDocument();
-    expect(addressLink).toHaveAttribute('href', 'https://www.google.com/maps/search/?api=1&query=123%20Test%20St');
   }, 10000) // Increase timeout to 10 seconds
 
   it('shows mark visited button when logged in', () => {

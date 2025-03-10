@@ -171,7 +171,8 @@
           "title": "Ikonit",
           "content": [
             "FontAwesome",
-            "Heroicons"
+            "Heroicons",
+            "Material Design Icons"
           ]
         }
       }
@@ -179,7 +180,8 @@
     "buttons": {
       "about": "Tietoa",
       "close": "×",
-      "account": "Tili"
+      "account": "Tili",
+      "admin": "Ylläpitäjän hallintapaneeli"
     },
     "language": "Kieli",
     "language.changed": {
@@ -203,8 +205,11 @@
   },
   "playground": {
     "unnamed": "Nimetön leikkipaikka",
-    "address": "Osoite",
+    "name": "Nimi",
+    "location": "Sijainti",
+    "noCity": "Ei kaupunkitietoa",
     "markVisited": "Vierailtu",
+    "searchByName": "Hae Google Mapsista nimellä {{name}}",
     "login": {
       "required": "Kirjaudu sisään merkitäksesi vierailluksi"
     },
@@ -255,10 +260,55 @@
       "any": "Mikä tahansa",
       "municipality": "Kunta",
       "osm": "OpenStreetMap"
+    },
+    "edit": {
+      "title": "Muokkaa leikkipaikkaa",
+      "description": "Ehdota muutoksia tähän leikkipaikkaan. Ehdotuksesi tarkistetaan ylläpitäjien toimesta.",
+      "nameLabel": "Leikkipaikan nimi",
+      "namePlaceholder": "Syötä leikkipaikan nimi",
+      "reasonLabel": "Muutosten syy",
+      "reasonPlaceholder": "Selitä miksi ehdotat näitä muutoksia (valinnainen)",
+      "deleteButton": "Ehdota poistoa",
+      "cancelButton": "Peruuta",
+      "submitButton": "Lähetä muutokset",
+      "fieldModified": "Muokattu",
+      "noChanges": {
+        "title": "Ei muutoksia",
+        "description": "Et ole tehnyt muutoksia lähetettäväksi"
+      },
+      "editMode": "Muokkaustila",
+      "editModeEnabled": {
+        "title": "Muokkaustila käytössä",
+        "description": "Voit nyt ehdottaa muutoksia leikkipaikkoihin"
+      },
+      "editModeDisabled": {
+        "title": "Muokkaustila pois käytöstä",
+        "description": "Muokkaustila on poistettu käytöstä"
+      },
+      "editButton": "Muokkaa leikkipaikkaa",
+      "success": {
+        "title": "Muutokset ehdotettu",
+        "editProposed": "Muutosehdotuksesi on lähetetty ja se tarkistetaan",
+        "deletionProposed": "Poistopyyntösi on lähetetty ja se tarkistetaan"
+      },
+      "error": {
+        "title": "Virhe",
+        "message": "Muutosten ehdottaminen epäonnistui",
+        "emptyName": "Leikkipaikan nimi ei voi olla tyhjä"
+      },
+      "deleteConfirm": {
+        "title": "Vahvista poistopyyntö",
+        "message": "Haluatko varmasti ehdottaa tämän leikkipaikan poistamista? Ylläpitäjät tarkistavat tämän toimenpiteen.",
+        "reasonLabel": "Poiston syy",
+        "reasonPlaceholder": "Selitä miksi tämä leikkipaikka pitäisi poistaa (valinnainen)",
+        "confirmButton": "Kyllä, pyydä poistoa",
+        "cancelButton": "Peruuta"
+      }
     }
   },
   "filters": "Suodattimet",
   "filterPlaygrounds": "Suodata leikkipaikkoja",
+  "searchPlaceholder": "Hae leikkipaikkoja...",
   "city": "Kaupunki",
   "allCities": "Kaikki",
   "visitStatus": "Vierailutila",
@@ -288,5 +338,79 @@
     "filteredPlaygrounds": "Suodatetut",
     "currentCity": "{{city}}",
     "backButton": "Takaisin"
+  },
+  "admin": {
+    "title": "Ylläpitäjän hallintapaneeli",
+    "accessDenied": "Pääsy estetty - Ylläpitäjän oikeudet vaaditaan",
+    "tabs": {
+      "proposals": "Muutosehdotukset",
+      "playgrounds": "Leikkipaikat",
+      "users": "Käyttäjät"
+    },
+    "proposals": {
+      "title": "Muutosehdotukset",
+      "detailTitle": "Muutosehdotuksen tiedot",
+      "backToList": "Takaisin listaan",
+      "proposalDetails": "Ehdotuksen tiedot",
+      "playgroundDetails": "Leikkipaikan tiedot",
+      "proposedChanges": "Ehdotetut muutokset",
+      "current": "Nykyinen",
+      "proposed": "Ehdotettu",
+      "adminNotes": "Ylläpitäjän muistiinpanot",
+      "notesPlaceholder": "Kirjoita muistiinpanot päätöksestäsi (vaaditaan hylkäämiseen)",
+      "requireNotes": "Ole hyvä ja kirjoita selitys hylkäämiselle",
+      "decision": "Päätös",
+      "reason": "Syy",
+      "noReasonProvided": "Ei syytä annettu",
+      "approve": "Hyväksy",
+      "reject": "Hylkää",
+      "filter": {
+        "all": "Kaikki ehdotukset",
+        "pending": "Käsittelemättömät",
+        "approved": "Hyväksytyt",
+        "rejected": "Hylätyt",
+        "reverted": "Kumotut"
+      },
+      "noProposals": "Ei muutosehdotuksia",
+      "table": {
+        "date": "Päivämäärä",
+        "playground": "Leikkipaikka",
+        "type": "Tyyppi",
+        "status": "Tila",
+        "actions": "Toiminnot"
+      },
+      "requestor": "Pyytäjä",
+      "type": {
+        "deletion": "Poistopyyntö",
+        "dataUpdate": "Tietojen päivitys"
+      },
+      "status": {
+        "pending": "Käsittelemättä",
+        "approved": "Hyväksytty",
+        "rejected": "Hylätty",
+        "reverted": "Kumottu"
+      },
+      "success": {
+        "approveTitle": "Ehdotus hyväksytty",
+        "approveDescription": "Ehdotus on hyväksytty ja muutokset on tehty",
+        "rejectTitle": "Ehdotus hylätty",
+        "rejectDescription": "Ehdotus on hylätty",
+        "revertTitle": "Muutokset kumottu",
+        "revertDescription": "Muutokset on kumottu onnistuneesti"
+      },
+      "error": {
+        "approveTitle": "Hyväksyminen epäonnistui",
+        "rejectTitle": "Hylkääminen epäonnistui",
+        "revertTitle": "Kumoaminen epäonnistui"
+      },
+      "view": "Näytä",
+      "deleteRequest": "Poistopyyntö",
+      "requestedDeletion": "Leikkipaikan poistoa pyydetty",
+      "deletionWarning": "Varoitus: Poistopyyntö",
+      "deletionExplanation": "Tämä ehdotus pyytää leikkipaikan täydellistä poistamista. Ole hyvä ja tarkista huolellisesti ennen hyväksymistä.",
+      "revert": "Kumoa muutokset"
+    },
+    "playgroundsManagement": "Leikkipaikkojen hallinta",
+    "usersManagement": "Käyttäjien hallinta"
   }
 }

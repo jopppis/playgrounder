@@ -48,7 +48,12 @@ npm run dev
 
 ## TODO
 
-- Add two factor authentication
+- Tests
+- Restrict loading of playgrounds to nearby
+- Create playgrounds
+- Move playgrounds
+- Make modals chakra dialogs
+- Add admin users view and playgrounds view
 
 ## Contributing
 

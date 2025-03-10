@@ -12,8 +12,9 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
-import { HiChartBar, HiLanguage } from 'react-icons/hi2'
+import { HiChartBar, HiLanguage, HiShieldCheck } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
+import { useIsAdmin } from '../hooks/useIsAdmin'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
 import { useUserPreferences } from '../hooks/useUserPreferences'
@@ -21,6 +22,7 @@ import { supabase } from '../lib/supabaseClient'
 import { Visit } from '../types/database.types'
 import About from './About'
 import Account from './Account'
+import AdminPage from './Admin/AdminPage'
 import ChangePasswordModal from './Auth/ChangePasswordModal'
 import RemoveAccount from './Auth/RemoveAccount'
 import SignInModal from './Auth/SignInModal'
@@ -39,6 +41,8 @@ export type MenuDrawerProps = {
   filteredPlaygroundCount: number
   currentCity: string | null
   visits: Visit[]
+  editMode?: boolean
+  setEditMode?: (editMode: boolean) => void
 }
 
 const MenuDrawer = ({
@@ -49,10 +53,13 @@ const MenuDrawer = ({
   filters,
   filteredPlaygroundCount,
   currentCity,
-  visits
+  visits,
+  editMode = false,
+  setEditMode = () => {}
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
+  const { isAdmin } = useIsAdmin()
   const { playgrounds } = usePlaygrounds()
   const { preferences, loading: preferencesLoading, updateDefaultPublicRatings } = useUserPreferences()
   const [showAbout, setShowAbout] = useState(false)
@@ -61,6 +68,7 @@ const MenuDrawer = ({
   const [showAccount, setShowAccount] = useState(false)
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
+  const [showAdmin, setShowAdmin] = useState(false)
   const toast = useToast()
 
   useEffect(() => {
@@ -195,6 +203,43 @@ const MenuDrawer = ({
                           />
                         </Box>
                       </HStack>
+
+                      {/* Edit Mode Switch */}
+                      <HStack gap={2} align="center" justify="space-between" w="100%">
+                        <Text fontSize="sm" color="gray.600">
+                          {t('playground.edit.editMode')}
+                        </Text>
+                        <Box
+                          position="relative"
+                          zIndex={2001}
+                          cursor="pointer"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            const newEditMode = !editMode
+                            setEditMode(newEditMode)
+                            if (newEditMode) {
+                              toast.showInfo({
+                                title: t('playground.edit.editModeEnabled.title'),
+                                description: t('playground.edit.editModeEnabled.description')
+                              })
+                            } else {
+                              toast.showInfo({
+                                title: t('playground.edit.editModeDisabled.title'),
+                                description: t('playground.edit.editModeDisabled.description')
+                              })
+                            }
+                          }}
+                        >
+                          <Switch
+                            size="sm"
+                            checked={editMode}
+                            onCheckedChange={() => {}}
+                            aria-label={t('playground.edit.editMode')}
+                          />
+                        </Box>
+                      </HStack>
+
                       <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                         <Button
                           {...buttonProps}
@@ -209,6 +254,20 @@ const MenuDrawer = ({
                           {t('menu.buttons.account')}
                         </Button>
                       </Grid>
+
+                      {/* Admin button - only for admin users */}
+                      {isAdmin && (
+                        <Button
+                          {...buttonProps}
+                          onClick={() => {
+                            setShowAdmin(true)
+                            onClose()
+                          }}
+                        >
+                          <Icon as={HiShieldCheck} boxSize={4} mr={2} />
+                          {t('menu.buttons.admin')}
+                        </Button>
+                      )}
                     </>
                   ) : (
                     <Grid
@@ -322,6 +381,7 @@ const MenuDrawer = ({
       {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
       {showRemoveAccount && <RemoveAccount onClose={() => setShowRemoveAccount(false)} />}
       {showChangePassword && <ChangePasswordModal onClose={() => setShowChangePassword(false)} />}
+      <AdminPage isOpen={showAdmin} onClose={() => setShowAdmin(false)} />
     </>
   )
 }

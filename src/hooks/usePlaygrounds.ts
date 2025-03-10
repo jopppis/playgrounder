@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import type { PlaygroundWithCoordinates } from '../types/database.types'
+import { Playground, PlaygroundWithCoordinates } from '../types/database.types'
+
+// Represents the raw playground data from the materialized view before coordinate transformation
+interface PlaygroundFromView extends Omit<Playground, 'location'> {
+  location: {
+    coordinates: [number, number] // [longitude, latitude]
+  }
+}
 
 // Module-level cache
 let playgroundsCache: PlaygroundWithCoordinates[] | null = null
@@ -46,25 +53,26 @@ export const usePlaygrounds = () => {
 
     const fetchPromise = (async () => {
       try {
-        const { data, error } = await supabase
-          .from('playgrounds')
-          .select('id, name, description, address, created_at, location, has_supervised_activities, city, data_source')
+        // Fetch active playgrounds from the materialized view
+        const { data: playgroundsData, error: playgroundsError } = await supabase
+          .from('v_active_playgrounds')
+          .select('*')
 
-        if (error) throw error
+        if (playgroundsError) throw playgroundsError
 
-        // Transform the data to include latitude and longitude
-        const transformedData = data?.map(playground => ({
+        // Convert playground location to coordinates
+        const playgroundsWithCoordinates = (playgroundsData || []).map((playground: PlaygroundFromView) => ({
           ...playground,
           latitude: playground.location.coordinates[1],
-          longitude: playground.location.coordinates[0],
-        })) || []
+          longitude: playground.location.coordinates[0]
+        }))
 
         // Update cache
-        playgroundsCache = transformedData
+        playgroundsCache = playgroundsWithCoordinates
         lastFetchTime = now
 
-        setPlaygrounds(transformedData)
-        return transformedData
+        setPlaygrounds(playgroundsWithCoordinates)
+        return playgroundsWithCoordinates
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
         throw err

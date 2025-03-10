@@ -171,7 +171,8 @@
           "title": "Icons",
           "content": [
             "FontAwesome",
-            "Heroicons"
+            "Heroicons",
+            "Material Design Icons"
           ]
         }
       }
@@ -179,7 +180,8 @@
     "buttons": {
       "about": "About",
       "close": "×",
-      "account": "Account"
+      "account": "Account",
+      "admin": "Admin Dashboard"
     },
     "language": "Language",
     "language.changed": {
@@ -203,8 +205,11 @@
   },
   "playground": {
     "unnamed": "Unnamed playground",
-    "address": "Address",
+    "name": "Name",
+    "location": "Location",
+    "noCity": "No city information",
     "markVisited": "Visited",
+    "searchByName": "Search Google Maps for {{name}}",
     "login": {
       "required": "Login required to mark as visited"
     },
@@ -255,6 +260,50 @@
       "any": "Any",
       "municipality": "Municipality",
       "osm": "OpenStreetMap"
+    },
+    "edit": {
+      "title": "Edit Playground",
+      "description": "Propose changes to this playground. Your suggestions will be reviewed by administrators.",
+      "nameLabel": "Playground Name",
+      "namePlaceholder": "Enter playground name",
+      "reasonLabel": "Reason for Changes",
+      "reasonPlaceholder": "Please explain why you're suggesting these changes (optional)",
+      "deleteButton": "Propose Deletion",
+      "cancelButton": "Cancel",
+      "submitButton": "Submit Changes",
+      "fieldModified": "Modified",
+      "noChanges": {
+        "title": "No Changes",
+        "description": "You haven't made any changes to submit"
+      },
+      "editMode": "Edit Mode",
+      "editModeEnabled": {
+        "title": "Edit Mode Enabled",
+        "description": "You can now propose changes to playgrounds"
+      },
+      "editModeDisabled": {
+        "title": "Edit Mode Disabled",
+        "description": "Edit mode has been turned off"
+      },
+      "editButton": "Edit Playground",
+      "success": {
+        "title": "Changes Proposed",
+        "editProposed": "Your changes have been proposed and will be reviewed",
+        "deletionProposed": "Your deletion request has been proposed and will be reviewed"
+      },
+      "error": {
+        "title": "Error",
+        "message": "Failed to propose changes",
+        "emptyName": "Playground name cannot be empty"
+      },
+      "deleteConfirm": {
+        "title": "Confirm Deletion Request",
+        "message": "Are you sure you want to propose this playground for deletion? This action will be reviewed by administrators.",
+        "reasonLabel": "Reason for Deletion",
+        "reasonPlaceholder": "Please explain why you think this playground should be deleted (optional)",
+        "confirmButton": "Yes, Request Deletion",
+        "cancelButton": "Cancel"
+      }
     }
   },
   "filters": "Filters",
@@ -288,5 +337,80 @@
     "filteredPlaygrounds": "Filtered",
     "currentCity": "{{city}}",
     "backButton": "Back"
-  }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "accessDenied": "Access Denied - Admin privileges required",
+    "tabs": {
+      "proposals": "Proposals",
+      "playgrounds": "Playgrounds",
+      "users": "Users"
+    },
+    "proposals": {
+      "title": "Edit Proposals",
+      "detailTitle": "Proposal Details",
+      "backToList": "Back to List",
+      "proposalDetails": "Proposal Details",
+      "playgroundDetails": "Playground Details",
+      "proposedChanges": "Proposed Changes",
+      "current": "Current",
+      "proposed": "Proposed",
+      "adminNotes": "Admin Notes",
+      "notesPlaceholder": "Enter notes about your decision (required for rejection)",
+      "requireNotes": "Please provide notes explaining the rejection",
+      "decision": "Decision",
+      "reason": "Reason",
+      "noReasonProvided": "No reason provided",
+      "approve": "Approve",
+      "reject": "Reject",
+      "filter": {
+        "all": "All Proposals",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "reverted": "Reverted"
+      },
+      "noProposals": "No proposals found",
+      "table": {
+        "date": "Date",
+        "playground": "Playground",
+        "type": "Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "requestor": "Requestor",
+      "type": {
+        "deletion": "Deletion Request",
+        "dataUpdate": "Data Update"
+      },
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "reverted": "Reverted"
+      },
+      "success": {
+        "approveTitle": "Proposal Approved",
+        "approveDescription": "The proposal has been approved and changes have been applied",
+        "rejectTitle": "Proposal Rejected",
+        "rejectDescription": "The proposal has been rejected",
+        "revertTitle": "Changes Reverted",
+        "revertDescription": "The changes have been successfully reverted"
+      },
+      "error": {
+        "approveTitle": "Approval Failed",
+        "rejectTitle": "Rejection Failed",
+        "revertTitle": "Revert Failed"
+      },
+      "view": "View",
+      "deleteRequest": "Delete Request",
+      "requestedDeletion": "Playground Deletion Requested",
+      "deletionWarning": "Warning: Deletion Request",
+      "deletionExplanation": "This proposal requests the complete removal of this playground. Please review carefully before approving.",
+      "revert": "Revert Changes"
+    },
+    "playgroundsManagement": "Playgrounds Management",
+    "usersManagement": "Users Management"
+  },
+  "searchPlaceholder": "Search playgrounds..."
 }

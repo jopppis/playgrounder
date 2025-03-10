@@ -3,6 +3,7 @@ import {
   Button,
   Collapsible,
   HStack,
+  Input,
   NativeSelect,
   Stack,
   Text,
@@ -17,6 +18,7 @@ import { useAuth } from '../hooks/useAuth'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 
 export interface FilterOptions {
+  searchQuery: string | null
   visitStatus: 'visited' | 'unvisited' | null
   minStars: number | null
   minUserStars: number | null
@@ -36,21 +38,57 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [showAllStars, setShowAllStars] = useState(false)
+  const [localSearchQuery, setLocalSearchQuery] = useState(filters.searchQuery || '')
+  const searchTimeoutRef = useRef<NodeJS.Timeout>()
   const { user } = useAuth()
   const filterRef = useRef<HTMLDivElement>(null)
   const { playgrounds } = usePlaygrounds()
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Update local search query when filters change externally
+  useEffect(() => {
+    setLocalSearchQuery(filters.searchQuery || '')
+  }, [filters.searchQuery])
+
+  const handleSearchChange = (value: string) => {
+    setLocalSearchQuery(value)
+
+    // Clear any existing timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
+    }
+
+    // Set a new timeout to update the filters
+    searchTimeoutRef.current = setTimeout(() => {
+      onChange({
+        ...filters,
+        searchQuery: value || null
+      })
+    }, 500) // Increased to 500ms for better performance with database persistence
+  }
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
+      }
+    }
+  }, [])
 
   const hasActiveFilters = useMemo(() => {
     // For non-logged in users, only check non-user-specific filters
     if (!user) {
-      return filters.minStars !== null ||
+      return filters.searchQuery !== null ||
+        filters.minStars !== null ||
         filters.hasSupervised !== null ||
         filters.city !== null ||
         filters.noRating !== null ||
         filters.dataSource !== null
     }
     // For logged in users, check all filters
-    return filters.visitStatus !== null ||
+    return filters.searchQuery !== null ||
+      filters.visitStatus !== null ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
       filters.hasSupervised !== null ||
@@ -65,6 +103,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     if (!user) {
       onChange({
         ...filters,
+        searchQuery: null,
         minStars: null,
         hasSupervised: null,
         city: null,
@@ -75,6 +114,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     }
     // For logged in users, reset all filters
     onChange({
+      searchQuery: null,
       visitStatus: null,
       minStars: null,
       minUserStars: null,
@@ -100,6 +140,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
 
     return [
       { label: t('allCities'), value: null },
+      { label: t('playground.noCity'), value: 'no_city' },
       ...uniqueCities.map(city => ({
         label: city,
         value: city.toLowerCase()
@@ -129,24 +170,24 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const buttonStyle = useBreakpointValue({
     base: {
       height: '40px',
-      width: isOpen ? '100%' : '40px',
-      padding: isOpen ? '0 12px' : 0,
+      width: '100%',
+      padding: '0 12px',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: isOpen ? 'space-between' : 'center',
-      borderRadius: isOpen ? 'md md 0 0' : 'md',
+      justifyContent: 'space-between',
+      borderRadius: 'md',
       transition: 'all 0.2s'
     },
     sm: {
       height: '40px',
       width: '100%',
       padding: '0 12px',
-      borderRadius: isOpen ? 'md md 0 0' : 'md'
+      borderRadius: 'md'
     }
   })
 
   const showButtonText = useBreakpointValue({
-    base: isOpen,
+    base: true,
     sm: true
   }) ?? true
 
@@ -202,39 +243,95 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       zIndex={1000}
       ref={filterRef}
     >
-      <Box bg="white" borderRadius={isOpen ? "md md 0 0" : "md"} boxShadow={isOpen ? "none" : "xl"} width="100%" position="relative">
-        <Button
-          bg="white"
-          color="gray.700"
-          _hover={{ bg: 'gray.50' }}
-          _active={{ bg: 'gray.100' }}
-          fontSize="sm"
-          onClick={() => setIsOpen(!isOpen)}
-          {...buttonStyle}
-          position="relative"
-          zIndex="2"
-          aria-label={t('filterPlaygrounds')}
-          boxShadow="none"
-        >
-          {showButtonText ? (
-            <HStack width="100%" justify="space-between">
-              <Text>{t('filterPlaygrounds')}</Text>
-              <Box display="flex" alignItems="center" gap={1}>
+      <Box bg="white" borderRadius="md" boxShadow="xl" width="100%" position="relative">
+        {!isOpen ? (
+          <Button
+            bg="white"
+            color="gray.700"
+            _hover={{ bg: 'gray.50' }}
+            _active={{ bg: 'gray.100' }}
+            fontSize="sm"
+            onClick={() => {
+              setIsOpen(true);
+              // Focus the search input after opening
+              setTimeout(() => {
+                searchInputRef.current?.focus();
+              }, 0);
+            }}
+            {...buttonStyle}
+            position="relative"
+            zIndex="2"
+            aria-label={t('filterPlaygrounds')}
+            boxShadow="none"
+          >
+            {showButtonText ? (
+              <HStack width="100%" justify="space-between">
+                <Text>{t('filterPlaygrounds')}</Text>
+                <Box display="flex" alignItems="center" gap={1}>
+                  {hasActiveFilters && (
+                    <Box
+                      w="8px"
+                      h="8px"
+                      borderRadius="full"
+                      bg="brand.500"
+                      position="relative"
+                      top="-1px"
+                    />
+                  )}
+                  <Box as={FaFilter} boxSize="14px" />
+                </Box>
+              </HStack>
+            ) : (
+              <Box position="relative">
                 {hasActiveFilters && (
                   <Box
-                    w="8px"
-                    h="8px"
+                    position="absolute"
+                    w="6px"
+                    h="6px"
                     borderRadius="full"
                     bg="brand.500"
-                    position="relative"
                     top="-1px"
+                    left="-1px"
                   />
                 )}
                 <Box as={FaFilter} boxSize="14px" />
               </Box>
-            </HStack>
-          ) : (
-            <Box position="relative">
+            )}
+          </Button>
+        ) : (
+          <Box>
+            <Input
+              ref={searchInputRef}
+              placeholder={t('searchPlaceholder')}
+              size="md"
+              height="40px"
+              value={localSearchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              bg="white"
+              color="gray.700"
+              borderColor="gray.300"
+              _hover={{ borderColor: 'gray.400' }}
+              _focus={{ borderColor: 'brand.500', boxShadow: 'none' }}
+              borderRadius="md md 0 0"
+              pr="40px"
+            />
+            <Button
+              position="absolute"
+              right={0}
+              top={0}
+              height="40px"
+              width="40px"
+              bg="transparent"
+              _hover={{ bg: 'gray.50' }}
+              _active={{ bg: 'gray.100' }}
+              onClick={() => setIsOpen(false)}
+              borderRadius="0 md 0 0"
+              borderLeft="1px"
+              borderColor="gray.300"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
               {hasActiveFilters && (
                 <Box
                   position="absolute"
@@ -242,14 +339,14 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                   h="6px"
                   borderRadius="full"
                   bg="brand.500"
-                  top="-1px"
-                  left="-1px"
+                  top="6px"
+                  right="6px"
                 />
               )}
-              <Box as={FaFilter} boxSize="14px" />
-            </Box>
-          )}
-        </Button>
+              <Box as={FaFilter} boxSize="14px" color="gray.700" />
+            </Button>
+          </Box>
+        )}
 
         {isOpen && (
           <VStack
@@ -311,10 +408,12 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                 >
                   <NativeSelect.Field
                     value={filters.city ?? ''}
-                    onChange={(e) => onChange({
-                      ...filters,
-                      city: e.target.value || null
-                    })}
+                    onChange={(e) => {
+                      onChange({
+                        ...filters,
+                        city: e.target.value || null
+                      })
+                    }}
                     height="28px"
                     fontSize="sm"
                   >

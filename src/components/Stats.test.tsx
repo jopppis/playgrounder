@@ -11,8 +11,6 @@ describe('Stats', () => {
     {
       id: '1',
       name: 'Playground 1',
-      description: 'Description 1',
-      address: 'Address 1',
       city: 'Helsinki',
       data_source: 'municipality',
       has_supervised_activities: true,
@@ -23,8 +21,6 @@ describe('Stats', () => {
     {
       id: '2',
       name: 'Playground 2',
-      description: 'Description 2',
-      address: 'Address 2',
       city: 'Espoo',
       data_source: 'municipality',
       has_supervised_activities: false,
@@ -35,8 +31,6 @@ describe('Stats', () => {
     {
       id: '3',
       name: 'Playground 3',
-      description: 'Description 3',
-      address: 'Address 3',
       city: 'Helsinki',
       data_source: 'osm',
       has_supervised_activities: true,

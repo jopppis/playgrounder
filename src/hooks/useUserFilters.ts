@@ -6,6 +6,7 @@ import { useAuth } from './useAuth'
 
 export const useUserFilters = () => {
   const [filters, setFilters] = useState<FilterOptions>({
+    searchQuery: null,
     visitStatus: null,
     minStars: null,
     minUserStars: null,
@@ -22,6 +23,7 @@ export const useUserFilters = () => {
   const fetchFilters = useCallback(async () => {
     if (!user) {
       setFilters({
+        searchQuery: null,
         visitStatus: null,
         minStars: null,
         minUserStars: null,
@@ -46,6 +48,7 @@ export const useUserFilters = () => {
 
       if (data) {
         setFilters({
+          searchQuery: null, // Search query is not persisted
           visitStatus: data.visit_status,
           minStars: data.min_stars,
           minUserStars: data.min_user_stars,

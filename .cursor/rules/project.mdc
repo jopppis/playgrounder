@@ -1,6 +1,6 @@
 ---
 description: Explanation of the project
-globs:
+globs: 
 ---
 
 # Project description
@@ -12,6 +12,8 @@ globs:
 - The website is currently hosted on Vercel.
 - Always use Chakra UI V3 components.
 - Never use @chakra-ui V2 components.
+- Find Chakra UI V3 components from https://www.chakra-ui.com/docs/components/concepts/overview.
+- Routes are definedin [Router.tsx](mdc:src/Router.tsx)
 
 # Theming
 
@@ -26,5 +28,6 @@ The project theming is defined in theme.ts file. Please use the brand and second
 - When adding translations always add them to @fi.json and @en.json.
 - When changing something that might break the build run `npm run build` to check if the build is successful.
 - For single command verification run `npm run lint && npm test && npm run build`
-- When adding tests, do not hardcode translations but instead use the enTranslations object like in @playgroundPopup.test.tsx
-- When changing filters in @PlaygroundFilter.tsx make sure to also propagate the filter to @Stats.tsx
+- When adding tests, do not hardcode translations but instead use the enTranslations object like in [PlaygroundPopup.test.tsx](mdc:src/components/PlaygroundPopup.test.tsx)
+- When changing filters in [PlaygroundFilter.tsx](mdc:src/components/PlaygroundFilter.tsx) make sure to also propagate the filter to @Stats.tsx
+- Use button colors according to the brand and secondary colors from [theme.ts](mdc:src/theme.ts). See [MenuDrawer.tsx](mdc:src/components/MenuDrawer.tsx) for example.

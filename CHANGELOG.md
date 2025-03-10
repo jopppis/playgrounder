@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Edit playground functionality
+- Admin panel
+- No city filter
+- Search query filter
+- Zoom to city on selection
+- Add link to Google Maps search for playground name
+
+### Changed
+- Improve city determination
+
 ## [0.12.8] - 2025-03-08
 
 ## [0.12.7] - 2025-03-08

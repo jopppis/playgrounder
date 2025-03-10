@@ -24,6 +24,8 @@ beautifulsoup4==4.13.3
     # via nbconvert
 bleach==6.2.0
     # via nbconvert
+branca==0.8.1
+    # via folium
 certifi==2025.1.31
     # via
     #   httpcore
@@ -39,6 +41,10 @@ comm==0.2.2
     # via
     #   ipykernel
     #   ipywidgets
+contourpy==1.3.1
+    # via matplotlib
+cycler==0.12.1
+    # via matplotlib
 debugpy==1.8.12
     # via ipykernel
 decorator==5.2.1
@@ -49,12 +55,24 @@ executing==2.2.0
     # via stack-data
 fastjsonschema==2.21.1
     # via nbformat
+folium==0.19.5
+    # via geopandas
+fonttools==4.56.0
+    # via matplotlib
 fqdn==1.5.1
     # via jsonschema
+geoalchemy2==0.17.1
+    # via geopandas
+geographiclib==2.0
+    # via geopy
 geopandas==1.0.1
     # via
     #   -r requirements.in
     #   osmnx
+geopy==2.4.1
+    # via geopandas
+greenlet==3.1.1
+    # via sqlalchemy
 h11==0.14.0
     # via httpcore
 httpcore==1.0.7
@@ -85,10 +103,14 @@ jedi==0.19.2
     # via ipython
 jinja2==3.1.5
     # via
+    #   branca
+    #   folium
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
     #   nbconvert
+joblib==1.4.2
+    # via scikit-learn
 json5==0.10.0
     # via jupyterlab-server
 jsonpointer==3.0.0
@@ -145,10 +167,16 @@ jupyterlab-server==2.27.3
     #   notebook
 jupyterlab-widgets==3.0.13
     # via ipywidgets
+kiwisolver==1.4.8
+    # via matplotlib
+mapclassify==2.8.1
+    # via geopandas
 markupsafe==3.0.2
     # via
     #   jinja2
     #   nbconvert
+matplotlib==3.10.1
+    # via geopandas
 matplotlib-inline==0.1.7
     # via
     #   ipykernel
@@ -169,7 +197,9 @@ nbformat==5.10.4
 nest-asyncio==1.6.0
     # via ipykernel
 networkx==3.4.2
-    # via osmnx
+    # via
+    #   mapclassify
+    #   osmnx
 notebook==7.3.2
     # via jupyter
 notebook-shim==0.2.4
@@ -178,10 +208,16 @@ notebook-shim==0.2.4
     #   notebook
 numpy==2.2.3
     # via
+    #   contourpy
+    #   folium
     #   geopandas
+    #   mapclassify
+    #   matplotlib
     #   osmnx
     #   pandas
     #   pyogrio
+    #   scikit-learn
+    #   scipy
     #   shapely
 osmnx==2.0.1
     # via -r requirements.in
@@ -189,17 +225,20 @@ overrides==7.7.0
     # via jupyter-server
 packaging==24.2
     # via
+    #   geoalchemy2
     #   geopandas
     #   ipykernel
     #   jupyter-events
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
+    #   matplotlib
     #   nbconvert
     #   pyogrio
 pandas==2.2.3
     # via
     #   geopandas
+    #   mapclassify
     #   osmnx
 pandocfilters==1.5.1
     # via nbconvert
@@ -207,6 +246,8 @@ parso==0.8.4
     # via jedi
 pexpect==4.9.0
     # via ipython
+pillow==11.1.0
+    # via matplotlib
 pip==25.0.1
     # via -r requirements.in
 platformdirs==4.3.6
@@ -219,12 +260,16 @@ prompt-toolkit==3.0.50
     #   jupyter-console
 psutil==7.0.0
     # via ipykernel
+psycopg-binary==3.2.5
+    # via geopandas
 ptyprocess==0.7.0
     # via
     #   pexpect
     #   terminado
 pure-eval==0.2.3
     # via stack-data
+pyarrow==19.0.1
+    # via geopandas
 pycparser==2.22
     # via cffi
 pygments==2.19.1
@@ -234,12 +279,15 @@ pygments==2.19.1
     #   nbconvert
 pyogrio==0.10.0
     # via geopandas
+pyparsing==3.2.1
+    # via matplotlib
 pyproj==3.7.1
     # via geopandas
 python-dateutil==2.9.0.post0
     # via
     #   arrow
     #   jupyter-client
+    #   matplotlib
     #   pandas
 python-json-logger==3.2.1
     # via jupyter-events
@@ -260,6 +308,7 @@ referencing==0.36.2
     #   jupyter-events
 requests==2.32.3
     # via
+    #   folium
     #   jupyterlab-server
     #   osmnx
 rfc3339-validator==0.1.4
@@ -274,6 +323,12 @@ rpds-py==0.23.1
     # via
     #   jsonschema
     #   referencing
+scikit-learn==1.6.1
+    # via mapclassify
+scipy==1.15.2
+    # via
+    #   mapclassify
+    #   scikit-learn
 send2trash==1.8.3
     # via jupyter-server
 setuptools==75.8.1
@@ -290,12 +345,18 @@ sniffio==1.3.1
     # via anyio
 soupsieve==2.6
     # via beautifulsoup4
+sqlalchemy==2.0.38
+    # via
+    #   geoalchemy2
+    #   geopandas
 stack-data==0.6.3
     # via ipython
 terminado==0.18.1
     # via
     #   jupyter-server
     #   jupyter-server-terminals
+threadpoolctl==3.5.0
+    # via scikit-learn
 tinycss2==1.4.0
     # via bleach
 tornado==6.4.2
@@ -330,6 +391,7 @@ typing-extensions==4.12.2
     #   beautifulsoup4
     #   ipython
     #   referencing
+    #   sqlalchemy
 tzdata==2025.1
     # via pandas
 uri-template==1.3.0
@@ -348,3 +410,7 @@ websocket-client==1.8.0
     # via jupyter-server
 widgetsnbextension==4.0.13
     # via ipywidgets
+xyzservices==2025.1.0
+    # via
+    #   folium
+    #   geopandas
