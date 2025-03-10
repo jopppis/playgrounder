@@ -410,5 +410,6 @@
     },
     "playgroundsManagement": "Playgrounds Management",
     "usersManagement": "Users Management"
-  }
+  },
+  "searchPlaceholder": "Search playgrounds..."
 }

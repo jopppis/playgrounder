@@ -202,6 +202,7 @@ describe('PlaygroundMap', () => {
 
     vi.mocked(useUserFilters).mockReturnValue({
       filters: {
+        searchQuery: null,
         visitStatus: null,
         minStars: 0,
         minUserStars: null,

@@ -49,7 +49,6 @@ npm run dev
 ## TODO
 
 - Tests
-- Search
 - Restrict loading of playgrounds to nearby
 - Create playgrounds
 - Move playgrounds

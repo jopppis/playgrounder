@@ -36,6 +36,7 @@ describe('MenuDrawer', () => {
   const mockSetShowSignIn = vi.fn()
   const defaultProps = {
     filters: {
+      searchQuery: null,
       visitStatus: null,
       minStars: null,
       minUserStars: null,

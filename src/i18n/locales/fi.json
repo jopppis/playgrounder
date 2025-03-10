@@ -307,6 +307,7 @@
   },
   "filters": "Suodattimet",
   "filterPlaygrounds": "Suodata leikkipaikkoja",
+  "searchPlaceholder": "Hae leikkipaikkoja...",
   "city": "Kaupunki",
   "allCities": "Kaikki",
   "visitStatus": "Vierailutila",

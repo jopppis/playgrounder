@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Edit playground functionality
 - Admin panel
 - No city filter
+- Search query filter
+- Zoom to city on selection
 
 ### Changed
 - Improve city determination

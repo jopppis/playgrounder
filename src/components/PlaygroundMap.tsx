@@ -211,24 +211,6 @@ const PlaygroundMap = () => {
     }
   }, [location])
 
-  // Add navigation event listener
-  useEffect(() => {
-    const handleNavigateToPlayground = (event: CustomEvent) => {
-      const { lat, lng, zoom } = event.detail
-      if (mapRef.current) {
-        mapRef.current.setView([lat, lng], zoom, {
-          animate: true,
-          duration: 1
-        })
-      }
-    }
-
-    window.addEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
-    return () => {
-      window.removeEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
-    }
-  }, [])
-
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
 
@@ -236,6 +218,23 @@ const PlaygroundMap = () => {
     if (!playgrounds) return []
 
     return playgrounds.filter(playground => {
+      // Filter by search query
+      if (filters.searchQuery !== null && filters.searchQuery.trim() !== '') {
+        const searchTerms = filters.searchQuery.toLowerCase().trim().split(/\s+/)
+        const searchableText = [
+          playground.name,
+          playground.city
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase()
+
+        // Check if all search terms are present in the searchable text
+        if (!searchTerms.every(term => searchableText.includes(term))) {
+          return false
+        }
+      }
+
       // Filter by city
       if (filters.city !== null) {
         if (filters.city === 'no_city') {
@@ -303,6 +302,41 @@ const PlaygroundMap = () => {
       return true
     })
   }, [playgrounds, filters, user, visits, ratings])
+
+  // Watch for search and city filter changes and zoom to markers
+  useEffect(() => {
+    if (mapRef.current && filteredPlaygrounds.length > 0 &&
+        (filters.searchQuery !== null || filters.city !== null)) {
+      const bounds = L.latLngBounds(
+        filteredPlaygrounds.map(playground => [playground.latitude, playground.longitude])
+      )
+      mapRef.current.fitBounds(bounds, {
+        padding: [50, 50],
+        maxZoom: 16,
+        animate: true,
+        duration: 1
+      })
+    }
+  }, [filteredPlaygrounds, filters.searchQuery, filters.city])
+
+  // Add navigation and zoom event listeners
+  useEffect(() => {
+    const handleNavigateToPlayground = (event: CustomEvent) => {
+      const { lat, lng, zoom } = event.detail
+      if (mapRef.current) {
+        mapRef.current.setView([lat, lng], zoom, {
+          animate: true,
+          duration: 1
+        })
+      }
+    }
+
+    window.addEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
+
+    return () => {
+      window.removeEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
+    }
+  }, [])
 
   // Define marker cluster group options
   const markerClusterOptions = {

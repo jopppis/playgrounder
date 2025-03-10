@@ -80,6 +80,7 @@ vi.mock('react-i18next', () => ({
 describe('PlaygroundFilter', () => {
   const mockOnChange = vi.fn()
   const defaultFilters: FilterOptions = {
+    searchQuery: null,
     visitStatus: null,
     minStars: null,
     minUserStars: null,
