@@ -180,7 +180,8 @@
     "buttons": {
       "about": "About",
       "close": "×",
-      "account": "Account"
+      "account": "Account",
+      "admin": "Admin Dashboard"
     },
     "language": "Language",
     "language.changed": {
@@ -205,6 +206,8 @@
   "playground": {
     "unnamed": "Unnamed playground",
     "address": "Address",
+    "name": "Name",
+    "location": "Location",
     "markVisited": "Visited",
     "login": {
       "required": "Login required to mark as visited"
@@ -262,7 +265,7 @@
       "description": "Propose changes to this playground. Your suggestions will be reviewed by administrators.",
       "nameLabel": "Playground Name",
       "namePlaceholder": "Enter playground name",
-      "reasonLabel": "Reason for Change",
+      "reasonLabel": "Reason for Changes",
       "reasonPlaceholder": "Please explain why you're suggesting these changes (optional)",
       "deleteButton": "Propose Deletion",
       "cancelButton": "Cancel",
@@ -284,7 +287,7 @@
       "editButton": "Edit Playground",
       "success": {
         "title": "Changes Proposed",
-        "nameChangeProposed": "Your changes have been proposed and will be reviewed",
+        "editProposed": "Your changes have been proposed and will be reviewed",
         "deletionProposed": "Your deletion request has been proposed and will be reviewed"
       },
       "error": {
@@ -333,5 +336,79 @@
     "filteredPlaygrounds": "Filtered",
     "currentCity": "{{city}}",
     "backButton": "Back"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "accessDenied": "Access Denied - Admin privileges required",
+    "tabs": {
+      "proposals": "Proposals",
+      "playgrounds": "Playgrounds",
+      "users": "Users"
+    },
+    "proposals": {
+      "title": "Edit Proposals",
+      "detailTitle": "Proposal Details",
+      "backToList": "Back to List",
+      "proposalDetails": "Proposal Details",
+      "playgroundDetails": "Playground Details",
+      "proposedChanges": "Proposed Changes",
+      "current": "Current",
+      "proposed": "Proposed",
+      "adminNotes": "Admin Notes",
+      "notesPlaceholder": "Enter notes about your decision (required for rejection)",
+      "requireNotes": "Please provide notes explaining the rejection",
+      "decision": "Decision",
+      "reason": "Reason",
+      "noReasonProvided": "No reason provided",
+      "approve": "Approve",
+      "reject": "Reject",
+      "filter": {
+        "all": "All Proposals",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "reverted": "Reverted"
+      },
+      "noProposals": "No proposals found",
+      "table": {
+        "date": "Date",
+        "playground": "Playground",
+        "type": "Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "requestor": "Requestor",
+      "type": {
+        "deletion": "Deletion Request",
+        "dataUpdate": "Data Update"
+      },
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "reverted": "Reverted"
+      },
+      "success": {
+        "approveTitle": "Proposal Approved",
+        "approveDescription": "The proposal has been approved and changes have been applied",
+        "rejectTitle": "Proposal Rejected",
+        "rejectDescription": "The proposal has been rejected",
+        "revertTitle": "Changes Reverted",
+        "revertDescription": "The changes have been successfully reverted"
+      },
+      "error": {
+        "approveTitle": "Approval Failed",
+        "rejectTitle": "Rejection Failed",
+        "revertTitle": "Revert Failed"
+      },
+      "view": "View",
+      "deleteRequest": "Delete Request",
+      "requestedDeletion": "Playground Deletion Requested",
+      "deletionWarning": "Warning: Deletion Request",
+      "deletionExplanation": "This proposal requests the complete removal of this playground. Please review carefully before approving.",
+      "revert": "Revert Changes"
+    },
+    "playgroundsManagement": "Playgrounds Management",
+    "usersManagement": "Users Management"
   }
 }

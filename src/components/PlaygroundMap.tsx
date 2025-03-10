@@ -211,6 +211,24 @@ const PlaygroundMap = () => {
     }
   }, [location])
 
+  // Add navigation event listener
+  useEffect(() => {
+    const handleNavigateToPlayground = (event: CustomEvent) => {
+      const { lat, lng, zoom } = event.detail
+      if (mapRef.current) {
+        mapRef.current.setView([lat, lng], zoom, {
+          animate: true,
+          duration: 1
+        })
+      }
+    }
+
+    window.addEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
+    return () => {
+      window.removeEventListener('navigateToPlayground', handleNavigateToPlayground as EventListener)
+    }
+  }, [])
+
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
 

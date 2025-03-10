@@ -48,7 +48,17 @@ npm run dev
 
 ## TODO
 
-- Add two factor authentication
+- Tests
+- Drop addresses and description
+- Search
+- Restrict loading of playgrounds to nearby
+- Add playgrounds without city to filter
+- Create playgrounds
+- Move playgrounds
+- Refresh playgrounds on proposal approval
+- Add proper link to google maps
+- Make modals chakra dialogs
+- Add admin users view and playgrounds view
 
 ## Contributing
 

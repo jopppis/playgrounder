@@ -1,3 +1,5 @@
+-- Disable trigger to prevent recursive refresh
+ALTER TABLE playgrounds DISABLE TRIGGER refresh_active_playgrounds_on_playground;
 
 -- Import playgrounds
 INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
@@ -62,7 +64,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(108474.0839642071, 6682982.248849182), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Maarianhamina - Mariehamn',
         'osm'
     ),
     (
@@ -1970,7 +1972,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(209540.16221779643, 6812999.145428515), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Eurajoki',
         'osm'
     ),
     (
@@ -4332,15 +4334,6 @@ VALUES
         'osm'
     ),
     (
-        'Tervasaari',
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(387349.33020516485, 6672524.423865738), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
         'Kasarmintorin leikkialue',
         NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(228233.64910237366, 7006997.139739329), 3067), 4326),
@@ -5364,6 +5357,15 @@ VALUES
         NULL,
         false,
         'Kirkkonummi',
+        'osm'
+    ),
+    (
+        'Ankarparken',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(240596.68930680337, 6694281.806893245), 3067), 4326),
+        NULL,
+        false,
+        'Parainen',
         'osm'
     ),
     (
@@ -11352,6 +11354,15 @@ VALUES
         'osm'
     ),
     (
+        'Centralparken',
+        NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(240616.5929529572, 6694592.559188423), 3067), 4326),
+        NULL,
+        false,
+        'Parainen',
+        'osm'
+    ),
+    (
         'Syrjänharjun leikkikenttä',
         NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(347318.1244324481, 6714299.83812662), 3067), 4326),
@@ -12068,7 +12079,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(458276.2840680307, 6702540.574722748), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Loviisa',
         'osm'
     ),
     (
@@ -13656,15 +13667,6 @@ VALUES
         'osm'
     ),
     (
-        'Mellsteninniemen leikkipaikka',
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(376426.8935868009, 6670675.84600887), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
         'Renginpihan leikkipaikka',
         NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(356380.50150405033, 6668694.583207753), 3067), 4326),
@@ -13727,3 +13729,8 @@ VALUES
         'Vaasa',
         'osm'
     );
+
+-- Enable trigger to allow recursive refresh
+ALTER TABLE playgrounds ENABLE TRIGGER refresh_active_playgrounds_on_playground;
+
+REFRESH MATERIALIZED VIEW v_active_playgrounds;

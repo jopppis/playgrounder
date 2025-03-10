@@ -1,19 +1,20 @@
 import {
-    Box,
-    Button,
-    ButtonProps,
-    Flex,
-    Grid,
-    GridItem,
-    HStack,
-    Icon,
-    Text
+  Box,
+  Button,
+  ButtonProps,
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Icon,
+  Text
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
-import { HiChartBar, HiLanguage } from 'react-icons/hi2'
+import { HiChartBar, HiLanguage, HiShieldCheck } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
+import { useIsAdmin } from '../hooks/useIsAdmin'
 import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
 import { useUserPreferences } from '../hooks/useUserPreferences'
@@ -21,6 +22,7 @@ import { supabase } from '../lib/supabaseClient'
 import { Visit } from '../types/database.types'
 import About from './About'
 import Account from './Account'
+import AdminPage from './Admin/AdminPage'
 import ChangePasswordModal from './Auth/ChangePasswordModal'
 import RemoveAccount from './Auth/RemoveAccount'
 import SignInModal from './Auth/SignInModal'
@@ -57,6 +59,7 @@ const MenuDrawer = ({
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
+  const { isAdmin } = useIsAdmin()
   const { playgrounds } = usePlaygrounds()
   const { preferences, loading: preferencesLoading, updateDefaultPublicRatings } = useUserPreferences()
   const [showAbout, setShowAbout] = useState(false)
@@ -65,6 +68,7 @@ const MenuDrawer = ({
   const [showAccount, setShowAccount] = useState(false)
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
+  const [showAdmin, setShowAdmin] = useState(false)
   const toast = useToast()
 
   useEffect(() => {
@@ -250,6 +254,20 @@ const MenuDrawer = ({
                           {t('menu.buttons.account')}
                         </Button>
                       </Grid>
+
+                      {/* Admin button - only for admin users */}
+                      {isAdmin && (
+                        <Button
+                          {...buttonProps}
+                          onClick={() => {
+                            setShowAdmin(true)
+                            onClose()
+                          }}
+                        >
+                          <Icon as={HiShieldCheck} boxSize={4} mr={2} />
+                          {t('menu.buttons.admin')}
+                        </Button>
+                      )}
                     </>
                   ) : (
                     <Grid
@@ -363,6 +381,7 @@ const MenuDrawer = ({
       {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
       {showRemoveAccount && <RemoveAccount onClose={() => setShowRemoveAccount(false)} />}
       {showChangePassword && <ChangePasswordModal onClose={() => setShowChangePassword(false)} />}
+      <AdminPage isOpen={showAdmin} onClose={() => setShowAdmin(false)} />
     </>
   )
 }

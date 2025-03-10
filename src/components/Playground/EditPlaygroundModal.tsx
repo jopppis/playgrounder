@@ -1,15 +1,15 @@
 import {
-  Box,
-  Button,
-  CloseButton,
-  Dialog,
-  Flex,
-  HStack,
-  Input,
-  Portal,
-  Text,
-  Textarea,
-  useDisclosure
+    Box,
+    Button,
+    CloseButton,
+    Dialog,
+    Flex,
+    HStack,
+    Input,
+    Portal,
+    Text,
+    Textarea,
+    useDisclosure
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -28,12 +28,12 @@ interface EditPlaygroundModalProps {
 export default function EditPlaygroundModal({ isOpen, onClose, playground }: EditPlaygroundModalProps) {
   const { t } = useTranslation()
   const [proposedName, setProposedName] = useState(playground.name || '')
-  const [nameChangeReason, setNameChangeReason] = useState('')
+  const [editReason, setEditReason] = useState('')
   const [deletionReason, setDeletionReason] = useState('')
   const [hasSupervised, setHasSupervised] = useState<boolean>(playground.has_supervised_activities)
   const [nameModified, setNameModified] = useState(false)
   const [supervisedModified, setSupervisedModified] = useState(false)
-  const { proposeNameChange, proposePlaygroundDeletion, loading } = usePlaygroundEdits()
+  const { proposePlaygroundEdit, proposePlaygroundDeletion, loading } = usePlaygroundEdits()
   const toast = useToast()
 
   // For delete confirmation
@@ -49,7 +49,7 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
     setSupervisedModified(value !== playground.has_supervised_activities)
   }
 
-  const handleNameChangeSubmit = async () => {
+  const handleEditSubmit = async () => {
     // Check if any changes were made
     if (!nameModified && !supervisedModified) {
       toast.showInfo({
@@ -68,11 +68,11 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
       return
     }
 
-    const { error } = await proposeNameChange(
+    const { error } = await proposePlaygroundEdit(
       playground.id,
       nameModified ? proposedName : null,
       supervisedModified ? hasSupervised : null,
-      nameChangeReason.trim() || null
+      editReason.trim() || null
     )
 
     if (error) {
@@ -83,7 +83,7 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
     } else {
       toast.showSuccess({
         title: t('playground.edit.success.title'),
-        description: t('playground.edit.success.nameChangeProposed')
+        description: t('playground.edit.success.editProposed')
       })
       onClose()
     }
@@ -149,7 +149,7 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   top="8px"
                   onClick={handleClose}
                   bg="brand.500"
-                  _hover={{ bg: 'brand.600' }}
+                  _hover={{ bg: 'secondary.500' }}
                 />
               </Dialog.Header>
               <Dialog.Body py={4} bg="white">
@@ -213,8 +213,8 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                       {t('playground.edit.reasonLabel')}
                     </Text>
                     <Textarea
-                      value={nameChangeReason}
-                      onChange={(e) => setNameChangeReason(e.target.value)}
+                      value={editReason}
+                      onChange={(e) => setEditReason(e.target.value)}
                       placeholder={t('playground.edit.reasonPlaceholder')}
                       color="gray.800"
                       borderColor="gray.300"
@@ -229,7 +229,15 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                       bg="white"
                       color="red.500"
                       borderColor="red.500"
-                      _hover={{ bg: 'red.50' }}
+                      _hover={{
+                        bg: 'red.50',
+                        transform: 'translateY(-2px)'
+                      }}
+                      _active={{
+                        bg: 'white',
+                        transform: 'translateY(0)'
+                      }}
+                      transition="all 0.2s"
                       size="sm"
                       onClick={deleteDialog.onOpen}
                     >
@@ -245,7 +253,15 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   bg="white"
                   color="gray.700"
                   borderColor="gray.300"
-                  _hover={{ bg: 'gray.100' }}
+                  _hover={{
+                    bg: 'gray.100',
+                    transform: 'translateY(-2px)'
+                  }}
+                  _active={{
+                    bg: 'white',
+                    transform: 'translateY(0)'
+                  }}
+                  transition="all 0.2s"
                   onClick={handleClose}
                 >
                   {t('playground.edit.cancelButton')}
@@ -253,8 +269,19 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                 <Button
                   bg="brand.500"
                   color="white"
-                  _hover={{ bg: 'brand.600' }}
-                  onClick={handleNameChangeSubmit}
+                  border="1px solid"
+                  borderColor="brand.500"
+                  _hover={{
+                    bg: 'secondary.500',
+                    transform: 'translateY(-2px)',
+                    borderColor: 'secondary.500'
+                  }}
+                  _active={{
+                    bg: 'brand.500',
+                    transform: 'translateY(0)'
+                  }}
+                  transition="all 0.2s"
+                  onClick={handleEditSubmit}
                   disabled={loading || !hasChanges}
                   opacity={!hasChanges ? 0.6 : 1}
                 >
@@ -322,7 +349,15 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   bg="white"
                   color="gray.700"
                   borderColor="gray.300"
-                  _hover={{ bg: 'gray.100' }}
+                  _hover={{
+                    bg: 'gray.100',
+                    transform: 'translateY(-2px)'
+                  }}
+                  _active={{
+                    bg: 'white',
+                    transform: 'translateY(0)'
+                  }}
+                  transition="all 0.2s"
                   onClick={handleDeleteDialogClose}
                 >
                   {t('playground.edit.deleteConfirm.cancelButton')}
@@ -330,7 +365,17 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                 <Button
                   bg="red.500"
                   color="white"
-                  _hover={{ bg: 'red.600' }}
+                  border="1px solid"
+                  borderColor="red.500"
+                  _hover={{
+                    bg: 'red.600',
+                    transform: 'translateY(-2px)'
+                  }}
+                  _active={{
+                    bg: 'red.500',
+                    transform: 'translateY(0)'
+                  }}
+                  transition="all 0.2s"
                   onClick={handleDeleteSubmit}
                   disabled={loading}
                 >

@@ -1,3 +1,5 @@
+-- Disable trigger to prevent recursive refresh
+ALTER TABLE playgrounds DISABLE TRIGGER refresh_active_playgrounds_on_playground;
 
 -- Import playgrounds
 INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
@@ -1874,3 +1876,8 @@ VALUES
         'Tampere',
         'municipality'
     );
+
+-- Enable trigger to allow recursive refresh
+ALTER TABLE playgrounds ENABLE TRIGGER refresh_active_playgrounds_on_playground;
+
+REFRESH MATERIALIZED VIEW v_active_playgrounds;

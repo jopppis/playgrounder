@@ -1,3 +1,5 @@
+-- Disable trigger to prevent recursive refresh
+ALTER TABLE playgrounds DISABLE TRIGGER refresh_active_playgrounds_on_playground;
 
 -- Import playgrounds
 INSERT INTO playgrounds (name, address, location, description, has_supervised_activities, city, data_source)
@@ -1643,15 +1645,6 @@ VALUES
     (
         NULL,
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(425205.3848169912, 7212661.074937076), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(103896.44104242366, 6676124.275295158), 3067), 4326),
         NULL,
         false,
@@ -2627,7 +2620,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(487547.7641026859, 6689825.040225056), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Pyhtää',
         'osm'
     ),
     (
@@ -3158,7 +3151,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(286881.079834779, 7069342.703380198), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Pietarsaari',
         'osm'
     ),
     (
@@ -10607,24 +10600,6 @@ VALUES
     (
         NULL,
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(381726.38678778283, 6672466.952713604), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(381716.92044408066, 6672551.4451376125), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(217656.5966623825, 6827647.625052642), 3067), 4326),
         NULL,
         false,
@@ -11222,7 +11197,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(423556.0442374226, 6765355.944431443), 3067), 4326),
         NULL,
         false,
-        'Hollola',
+        'Lahti',
         'osm'
     ),
     (
@@ -11231,7 +11206,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(423556.0442374226, 6765355.944431443), 3067), 4326),
         NULL,
         false,
-        'Lahti',
+        'Hollola',
         'osm'
     ),
     (
@@ -12668,6 +12643,15 @@ VALUES
     (
         NULL,
         NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(245467.77919327232, 6704437.481161138), 3067), 4326),
+        NULL,
+        false,
+        'Kaarina',
+        'osm'
+    ),
+    (
+        NULL,
+        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(223258.5062666416, 6828818.402196408), 3067), 4326),
         NULL,
         false,
@@ -13104,15 +13088,6 @@ VALUES
         NULL,
         false,
         'Seinäjoki',
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(381377.26522003126, 6672280.428820838), 3067), 4326),
-        NULL,
-        false,
-        NULL,
         'osm'
     ),
     (
@@ -14030,7 +14005,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(510014.2511960557, 6713803.264416121), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Hamina',
         'osm'
     ),
     (
@@ -20237,6 +20212,15 @@ VALUES
     (
         NULL,
         NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(240601.87257032815, 6694059.6166584985), 3067), 4326),
+        NULL,
+        false,
+        'Parainen',
+        'osm'
+    ),
+    (
+        NULL,
+        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(639852.3810612862, 6945710.367573125), 3067), 4326),
         NULL,
         false,
@@ -21785,15 +21769,6 @@ VALUES
     (
         NULL,
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(381299.3064976444, 6672224.070482246), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(329426.1397226425, 7014577.398633821), 3067), 4326),
         NULL,
         false,
@@ -22127,15 +22102,6 @@ VALUES
     (
         NULL,
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(383760.64314000186, 6670749.715548061), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(561145.8182675438, 7113131.716715732), 3067), 4326),
         NULL,
         false,
@@ -22229,7 +22195,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(108250.87463245029, 6683497.097285015), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Maarianhamina - Mariehamn',
         'osm'
     ),
     (
@@ -27491,6 +27457,15 @@ VALUES
     (
         NULL,
         NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(301352.7019845345, 6654852.33663371), 3067), 4326),
+        NULL,
+        false,
+        'Raasepori',
+        'osm'
+    ),
+    (
+        NULL,
+        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(208429.4986448665, 6940174.783347879), 3067), 4326),
         NULL,
         false,
@@ -31784,15 +31759,6 @@ VALUES
     (
         NULL,
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(390783.5373051196, 6673663.735824021), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(562542.4232641683, 7712138.954393003), 3067), 4326),
         NULL,
         false,
@@ -31923,15 +31889,6 @@ VALUES
         NULL,
         false,
         'Kauhajoki',
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(386962.8874436391, 6673068.417526349), 3067), 4326),
-        NULL,
-        false,
-        NULL,
         'osm'
     ),
     (
@@ -33038,7 +32995,7 @@ VALUES
         ST_Transform(ST_SetSRID(ST_MakePoint(243538.83762045248, 6651554.716596506), 3067), 4326),
         NULL,
         false,
-        NULL,
+        'Kemiönsaari',
         'osm'
     ),
     (
@@ -33291,24 +33248,6 @@ VALUES
         NULL,
         false,
         'Jyväskylä',
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(383788.25296327367, 6670879.848654622), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(383779.40548777045, 6670872.639545625), 3067), 4326),
-        NULL,
-        false,
-        NULL,
         'osm'
     ),
     (
@@ -33678,15 +33617,6 @@ VALUES
         NULL,
         false,
         'Oulainen',
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(383674.86983923096, 6670781.743440868), 3067), 4326),
-        NULL,
-        false,
-        NULL,
         'osm'
     ),
     (
@@ -35438,6 +35368,15 @@ VALUES
     (
         NULL,
         NULL,
+        ST_Transform(ST_SetSRID(ST_MakePoint(364435.9781344378, 6672618.095835508), 3067), 4326),
+        NULL,
+        false,
+        'Kirkkonummi',
+        'osm'
+    ),
+    (
+        NULL,
+        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(448087.4581943412, 7061395.414751226), 3067), 4326),
         NULL,
         false,
@@ -36383,15 +36322,6 @@ VALUES
     (
         NULL,
         NULL,
-        ST_Transform(ST_SetSRID(ST_MakePoint(390705.37824052415, 6673680.365215658), 3067), 4326),
-        NULL,
-        false,
-        NULL,
-        'osm'
-    ),
-    (
-        NULL,
-        NULL,
         ST_Transform(ST_SetSRID(ST_MakePoint(227464.998984629, 7012253.754878958), 3067), 4326),
         NULL,
         false,
@@ -36965,3 +36895,8 @@ VALUES
         'Lieksa',
         'osm'
     );
+
+-- Enable trigger to allow recursive refresh
+ALTER TABLE playgrounds ENABLE TRIGGER refresh_active_playgrounds_on_playground;
+
+REFRESH MATERIALIZED VIEW v_active_playgrounds;

@@ -9,7 +9,7 @@ export const usePlaygroundEdits = () => {
   const [error, setError] = useState<string | null>(null)
   const { t } = useTranslation()
 
-  const proposeNameChange = useCallback(
+  const proposePlaygroundEdit = useCallback(
     async (
       playgroundId: string,
       proposedName: string | null,
@@ -24,9 +24,9 @@ export const usePlaygroundEdits = () => {
       setError(null)
 
       try {
-        // First verify that the playground exists
+        // First verify that the playground exists and is active
         const { data: playgroundData, error: playgroundError } = await supabase
-          .from('playgrounds')
+          .from('v_active_playgrounds')
           .select('id')
           .eq('id', playgroundId)
           .single()
@@ -57,7 +57,7 @@ export const usePlaygroundEdits = () => {
 
         return { error: null }
       } catch (err) {
-        console.error('Exception in proposeNameChange:', err)
+        console.error('Exception in proposePlaygroundEdit:', err)
         const errorMessage = err instanceof Error ? err.message : String(err)
         setError(errorMessage)
         return { error: errorMessage }
@@ -78,9 +78,9 @@ export const usePlaygroundEdits = () => {
       setError(null)
 
       try {
-        // First verify that the playground exists
+        // First verify that the playground exists and is active
         const { data: playgroundData, error: playgroundError } = await supabase
-          .from('playgrounds')
+          .from('v_active_playgrounds')
           .select('id')
           .eq('id', playgroundId)
           .single()
@@ -125,7 +125,7 @@ export const usePlaygroundEdits = () => {
   return {
     loading,
     error,
-    proposeNameChange,
+    proposePlaygroundEdit,
     proposePlaygroundDeletion
   }
 }
