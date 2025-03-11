@@ -10,8 +10,8 @@ export default function ChangePasswordModal({ onClose, isOpen }: ChangePasswordM
   return (
     <Dialog.Root open={isOpen} onOpenChange={() => onClose()}>
       <Portal>
-        <Dialog.Backdrop bg="blackAlpha.600" />
-        <Dialog.Positioner display="flex" alignItems="center" justifyContent="center">
+        <Dialog.Backdrop bg="blackAlpha.600" zIndex={2100} />
+        <Dialog.Positioner display="flex" alignItems="center" justifyContent="center" zIndex={2100}>
           <Dialog.Content
             bg="white"
             borderRadius="md"

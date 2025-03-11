@@ -48,7 +48,6 @@ npm run dev
 
 ## TODO
 
-- Login shows below menu
 - Slow startup
 
 ## Consider

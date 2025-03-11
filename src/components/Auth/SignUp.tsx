@@ -1,13 +1,13 @@
 import {
-  Box,
-  Button,
-  Dialog,
-  Heading,
-  Icon,
-  Input,
-  Portal,
-  Stack,
-  Text,
+    Box,
+    Button,
+    Dialog,
+    Heading,
+    Icon,
+    Input,
+    Portal,
+    Stack,
+    Text,
 } from '@chakra-ui/react'
 import { AuthError } from '@supabase/supabase-js'
 import { useState } from 'react'
@@ -85,8 +85,8 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
   return (
     <Dialog.Root open={isOpen} onOpenChange={() => onClose()}>
       <Portal>
-        <Dialog.Backdrop bg="blackAlpha.600" />
-        <Dialog.Positioner display="flex" alignItems="center" justifyContent="center">
+        <Dialog.Backdrop bg="blackAlpha.600" zIndex={2100} />
+        <Dialog.Positioner display="flex" alignItems="center" justifyContent="center" zIndex={2100}>
           <Dialog.Content
             bg="white"
             borderRadius="md"
