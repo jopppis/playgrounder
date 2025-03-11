@@ -366,39 +366,10 @@ const MenuDrawer = ({
         </>
       )}
 
-      {showSignUp && (
-        <Box
-          position="fixed"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          bg="blackAlpha.600"
-          zIndex={2100}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          onClick={(e) => {
-            e.stopPropagation()
-            setShowSignUp(false)
-          }}
-          data-testid="sign-up-modal"
-        >
-          <Box
-            bg="white"
-            borderRadius="md"
-            maxW="md"
-            w="90%"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <SignUp onSuccess={() => setShowSignUp(false)} />
-          </Box>
-        </Box>
-      )}
-
-      {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
-      {showRemoveAccount && <RemoveAccount onClose={() => setShowRemoveAccount(false)} />}
-      {showChangePassword && <ChangePasswordModal onClose={() => setShowChangePassword(false)} />}
+      {showSignIn && <SignInModal isOpen={showSignIn} onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
+      {showRemoveAccount && <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />}
+      {showChangePassword && <ChangePasswordModal isOpen={showChangePassword} onClose={() => setShowChangePassword(false)} />}
+      {showSignUp && <SignUp isOpen={showSignUp} onClose={() => setShowSignUp(false)} onSuccess={() => setShowSignUp(false)} />}
       <AdminPage isOpen={showAdmin} onClose={() => setShowAdmin(false)} />
     </>
   )

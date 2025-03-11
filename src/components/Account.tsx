@@ -75,8 +75,8 @@ const Account = ({ onBack }: AccountProps) => {
         {t('menu.account.backButton')}
       </Button>
 
-      {showRemoveAccount && <RemoveAccount onClose={() => setShowRemoveAccount(false)} />}
-      {showChangePassword && <ChangePasswordModal onClose={() => setShowChangePassword(false)} />}
+      {showRemoveAccount && <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />}
+      {showChangePassword && <ChangePasswordModal isOpen={showChangePassword} onClose={() => setShowChangePassword(false)} />}
     </>
   )
 }

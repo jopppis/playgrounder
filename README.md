@@ -48,12 +48,13 @@ npm run dev
 
 ## TODO
 
-- Tests
 - Create playgrounds
 - Move playgrounds
-- Make modals chakra dialogs
+
+## Consider
+
+- More tests
 - Add admin users view and playgrounds view
-- Allow typing to city selection
 
 ## Contributing
 

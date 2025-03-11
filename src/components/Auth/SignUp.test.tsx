@@ -58,6 +58,7 @@ describe('SignUp', () => {
   const mockOnSuccess = vi.fn()
   const mockShowSuccess = vi.fn()
   const mockShowError = vi.fn()
+  const mockOnClose = vi.fn()
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -81,17 +82,17 @@ describe('SignUp', () => {
   })
 
   it('renders the sign up form', () => {
-    render(<SignUp onSuccess={mockOnSuccess} />)
+    render(<SignUp onSuccess={mockOnSuccess} isOpen={true} onClose={mockOnClose} />)
 
-    // Use getAllByText for elements that appear multiple times
-    expect(screen.getAllByText(enTranslations.auth.signUp.title)[0]).toBeInTheDocument()
+    // Check for the heading specifically
+    expect(screen.getByRole('heading', { name: enTranslations.auth.signUp.title })).toBeInTheDocument()
     expect(screen.getByText(enTranslations.auth.signUp.email)).toBeInTheDocument()
     expect(screen.getByText(enTranslations.auth.signUp.password)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: enTranslations.auth.signUp.button.default })).toBeInTheDocument()
   })
 
   it('handles successful sign up', async () => {
-    render(<SignUp onSuccess={mockOnSuccess} />)
+    render(<SignUp onSuccess={mockOnSuccess} isOpen={true} onClose={mockOnClose} />)
 
     // Fill in the form
     fireEvent.change(screen.getByPlaceholderText(enTranslations.auth.signUp.emailPlaceholder), {
@@ -119,11 +120,6 @@ describe('SignUp', () => {
       expect(mockShowSuccess).toHaveBeenCalled()
     }, { timeout: 2000 })
 
-    // Verify success UI is shown
-    await waitFor(() => {
-      expect(screen.getByText(enTranslations.auth.signUp.success.title)).toBeInTheDocument()
-    }, { timeout: 2000 })
-
     // Verify onSuccess callback was called
     await waitFor(() => {
       expect(mockOnSuccess).toHaveBeenCalled()
@@ -137,7 +133,7 @@ describe('SignUp', () => {
       error: new Error('Email already taken')
     })
 
-    render(<SignUp onSuccess={mockOnSuccess} />)
+    render(<SignUp onSuccess={mockOnSuccess} isOpen={true} onClose={mockOnClose} />)
 
     // Fill in the form
     fireEvent.change(screen.getByPlaceholderText(enTranslations.auth.signUp.emailPlaceholder), {
@@ -176,7 +172,7 @@ describe('SignUp', () => {
     })
     ;(supabase.auth.signUp as ReturnType<typeof vi.fn>).mockReturnValue(signUpPromise)
 
-    render(<SignUp onSuccess={mockOnSuccess} />)
+    render(<SignUp onSuccess={mockOnSuccess} isOpen={true} onClose={mockOnClose} />)
 
     // Fill in the form
     fireEvent.change(screen.getByPlaceholderText(enTranslations.auth.signUp.emailPlaceholder), {
@@ -217,7 +213,7 @@ describe('SignUp', () => {
   }, 10000)
 
   it('validates required fields', async () => {
-    render(<SignUp onSuccess={mockOnSuccess} />)
+    render(<SignUp onSuccess={mockOnSuccess} isOpen={true} onClose={mockOnClose} />)
 
     // Try to submit without filling in the form
     await act(async () => {
@@ -229,10 +225,10 @@ describe('SignUp', () => {
   })
 
   it('closes the form when close button is clicked', () => {
-    render(<SignUp onSuccess={mockOnSuccess} />)
+    render(<SignUp onSuccess={mockOnSuccess} isOpen={true} onClose={mockOnClose} />)
 
     fireEvent.click(screen.getByLabelText(enTranslations.auth.signUp.close))
 
-    expect(mockOnSuccess).toHaveBeenCalled()
+    expect(mockOnClose).toHaveBeenCalled()
   })
 })

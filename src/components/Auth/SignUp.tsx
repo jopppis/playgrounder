@@ -1,9 +1,11 @@
 import {
   Box,
   Button,
+  Dialog,
   Heading,
   Icon,
   Input,
+  Portal,
   Stack,
   Text,
 } from '@chakra-ui/react'
@@ -17,9 +19,11 @@ import { supabase } from '../../lib/supabaseClient'
 
 interface SignUpProps {
   onSuccess?: () => void
+  isOpen: boolean
+  onClose: () => void
 }
 
-export default function SignUp({ onSuccess }: SignUpProps) {
+export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
   const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -79,121 +83,131 @@ export default function SignUp({ onSuccess }: SignUpProps) {
   }
 
   return (
-    <Box
-      position="relative"
-      p={6}
-      bg="gray.50"
-      color="gray.700"
-      borderRadius="xl"
-      boxShadow="xl"
-    >
-      <Box position="absolute" right={2} top={2}>
-        <Button
-          onClick={onSuccess}
-          color="white"
-          bg="brand.500"
-          _hover={{ bg: 'secondary.500' }}
-          size="sm"
-          minW="24px"
-          h="24px"
-          p={0}
-          aria-label={t('auth.signUp.close')}
-        >
-          <Icon as={FaTimes} boxSize={3} />
-        </Button>
-      </Box>
-      <Stack gap={8}>
-        <Heading size="lg" color="brand.500">{t('auth.signUp.title')}</Heading>
-        {error && (
-          <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
-            <Text fontWeight="bold">{t('auth.signUp.error.title')}</Text>
-            <Text>{error}</Text>
-          </Box>
-        )}
-        {success && (
-          <Box p={4} bg="green.50" color="green.500" borderRadius="md" w="100%">
-            <Text fontWeight="bold">{t('auth.signUp.success.title')}</Text>
-            <Text>{t('auth.signUp.success.message')}</Text>
-          </Box>
-        )}
-        <Box as="form" onSubmit={handleSubmit}>
-          <Stack gap={4}>
-            <Box>
-              <Text mb={2} color="gray.700">{t('auth.signUp.email')}</Text>
-              <Input
-                type="email"
-                name="email"
-                autoComplete="username"
-                value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                placeholder={t('auth.signUp.emailPlaceholder')}
-                required
-                fontSize={{ base: "16px", sm: "inherit" }}
-                bg="white"
-                _placeholder={{ color: 'gray.400' }}
-                borderColor="brand.200"
-                _hover={{ borderColor: 'brand.300' }}
-                _focus={{
-                  borderColor: 'brand.500',
-                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                  outline: 'none'
-                }}
-              />
-            </Box>
-            <Box>
-              <Text mb={2} color="gray.700">{t('auth.signUp.password')}</Text>
-              <Input
-                type="password"
-                name="password"
-                autoComplete="new-password"
-                data-form-type="password"
-                value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                placeholder={t('auth.signUp.passwordPlaceholder')}
-                required
-                minLength={8}
-                fontSize={{ base: "16px", sm: "inherit" }}
-                bg="white"
-                _placeholder={{ color: 'gray.400' }}
-                borderColor="brand.200"
-                _hover={{ borderColor: 'brand.300' }}
-                _focus={{
-                  borderColor: 'brand.500',
-                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                  outline: 'none'
-                }}
-              />
-            </Box>
-            <Box>
-              {enableTurnstile && (
-                <Turnstile
-                  key={`turnstile-${resetCounter}`}
-                  sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                  onSuccess={(token) => setCaptchaToken(token)}
-                  onError={() => setCaptchaToken(null)}
-                  onExpire={() => setCaptchaToken(null)}
-                  theme="light"
-                />
-              )}
-            </Box>
-            <Button
-              type="submit"
-              bg="brand.500"
-              color="white"
-              w="100%"
-              disabled={loading || (enableTurnstile && !captchaToken)}
-              size="lg"
-              _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
-              _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
-              transition="all 0.2s"
-              loading={loading}
-              loadingText={t('auth.signUp.button.loading')}
+    <Dialog.Root open={isOpen} onOpenChange={() => onClose()}>
+      <Portal>
+        <Dialog.Backdrop bg="blackAlpha.600" />
+        <Dialog.Positioner display="flex" alignItems="center" justifyContent="center">
+          <Dialog.Content
+            bg="white"
+            borderRadius="md"
+            maxW="md"
+            w="90%"
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          >
+            <Box
+              position="relative"
+              p={6}
+              bg="gray.50"
+              color="gray.700"
+              borderRadius="xl"
+              boxShadow="xl"
             >
-              {t('auth.signUp.button.default')}
-            </Button>
-          </Stack>
-        </Box>
-      </Stack>
-    </Box>
+              <Box position="absolute" right={2} top={2}>
+                <Button
+                  onClick={onClose}
+                  color="white"
+                  bg="brand.500"
+                  _hover={{ bg: 'secondary.500' }}
+                  size="sm"
+                  minW="24px"
+                  h="24px"
+                  p={0}
+                  aria-label={t('auth.signUp.close')}
+                >
+                  <Icon as={FaTimes} boxSize={3} />
+                </Button>
+              </Box>
+              <Stack gap={8}>
+                <Heading size="lg" color="brand.500">{t('auth.signUp.title')}</Heading>
+                {error && (
+                  <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
+                    <Text fontWeight="bold">{t('auth.signUp.error.title')}</Text>
+                    <Text>{error}</Text>
+                  </Box>
+                )}
+                {success && (
+                  <Box p={4} bg="green.50" color="green.500" borderRadius="md" w="100%">
+                    <Text fontWeight="bold">{t('auth.signUp.success.title')}</Text>
+                    <Text>{t('auth.signUp.success.message')}</Text>
+                  </Box>
+                )}
+                <Box as="form" onSubmit={handleSubmit}>
+                  <Stack gap={4}>
+                    <Box>
+                      <Text mb={2} color="gray.700">{t('auth.signUp.email')}</Text>
+                      <Input
+                        type="email"
+                        name="email"
+                        autoComplete="username"
+                        value={email}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                        placeholder={t('auth.signUp.emailPlaceholder')}
+                        required
+                        fontSize={{ base: "16px", sm: "inherit" }}
+                        _placeholder={{ color: 'gray.400' }}
+                        borderColor="brand.200"
+                        _hover={{ borderColor: 'brand.300' }}
+                        _focus={{
+                          borderColor: 'brand.500',
+                          boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                          outline: 'none'
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <Text mb={2} color="gray.700">{t('auth.signUp.password')}</Text>
+                      <Input
+                        type="password"
+                        name="password"
+                        autoComplete="new-password"
+                        data-form-type="password"
+                        value={password}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        placeholder={t('auth.signUp.passwordPlaceholder')}
+                        required
+                        fontSize={{ base: "16px", sm: "inherit" }}
+                        _placeholder={{ color: 'gray.400' }}
+                        borderColor="brand.200"
+                        _hover={{ borderColor: 'brand.300' }}
+                        _focus={{
+                          borderColor: 'brand.500',
+                          boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                          outline: 'none'
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      {enableTurnstile && (
+                        <Turnstile
+                          key={`turnstile-${resetCounter}`}
+                          sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                          onSuccess={(token) => setCaptchaToken(token)}
+                          onError={() => setCaptchaToken(null)}
+                          onExpire={() => setCaptchaToken(null)}
+                          theme="light"
+                        />
+                      )}
+                    </Box>
+                    <Button
+                      type="submit"
+                      bg="brand.500"
+                      color="white"
+                      w="100%"
+                      disabled={loading || (enableTurnstile && !captchaToken)}
+                      size="lg"
+                      _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
+                      _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
+                      transition="all 0.2s"
+                    >
+                      {loading ? t('auth.signUp.button.loading') : t('auth.signUp.button.default')}
+                    </Button>
+                  </Stack>
+                </Box>
+              </Stack>
+            </Box>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
   )
 }
