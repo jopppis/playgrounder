@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed search bar visuals
+
 ## [0.13.1] - 2025-03-10
 
 ### Fixed

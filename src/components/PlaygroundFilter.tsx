@@ -170,24 +170,24 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const buttonStyle = useBreakpointValue({
     base: {
       height: '40px',
-      width: '100%',
-      padding: '0 12px',
+      width: isOpen ? '100%' : '40px',
+      padding: isOpen ? '0 12px' : 0,
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      borderRadius: 'md',
+      justifyContent: isOpen ? 'space-between' : 'center',
+      borderRadius: isOpen ? 'md md 0 0' : 'md',
       transition: 'all 0.2s'
     },
     sm: {
       height: '40px',
       width: '100%',
       padding: '0 12px',
-      borderRadius: 'md'
+      borderRadius: isOpen ? 'md md 0 0' : 'md'
     }
   })
 
   const showButtonText = useBreakpointValue({
-    base: true,
+    base: isOpen,
     sm: true
   }) ?? true
 
@@ -311,9 +311,16 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
               color="gray.700"
               borderColor="gray.300"
               _hover={{ borderColor: 'gray.400' }}
-              _focus={{ borderColor: 'brand.500', boxShadow: 'none' }}
+              _focus={{
+                borderColor: 'brand.500',
+                boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                outline: 'none'
+              }}
               borderRadius="md md 0 0"
+              border="0px"
               pr="40px"
+              position="relative"
+              zIndex="2"
             />
             <Button
               position="absolute"
@@ -325,12 +332,11 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
               _hover={{ bg: 'gray.50' }}
               _active={{ bg: 'gray.100' }}
               onClick={() => setIsOpen(false)}
-              borderRadius="0 md 0 0"
-              borderLeft="1px"
-              borderColor="gray.300"
+              border="0px"
               display="flex"
               alignItems="center"
               justifyContent="center"
+              zIndex="3"
             >
               {hasActiveFilters && (
                 <Box
