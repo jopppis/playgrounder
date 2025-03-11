@@ -331,7 +331,8 @@
   "common": {
     "error": "Virhe",
     "unknownError": "Tuntematon virhe tapahtui",
-    "loginRequired": "Kirjautuminen vaaditaan"
+    "loginRequired": "Kirjautuminen vaaditaan",
+    "clearFilters": "Poista suodattimet"
   },
   "stats": {
     "title": "Tilastot",

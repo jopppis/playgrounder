@@ -330,7 +330,8 @@
   "common": {
     "error": "Error",
     "unknownError": "An unknown error occurred",
-    "loginRequired": "Login Required"
+    "loginRequired": "Login Required",
+    "clearFilters": "Clear filters"
   },
   "stats": {
     "title": "Statistics",

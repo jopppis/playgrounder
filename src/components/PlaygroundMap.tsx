@@ -427,6 +427,30 @@ const PlaygroundMap = () => {
   // Only show loading spinner for essential data, not for ratings
   const isLoading = playgroundsLoading || visitsLoading || filtersLoading
 
+  // Add handler for when no playgrounds are visible
+  const handleNoVisiblePlaygrounds = useCallback(async () => {
+    try {
+      await refreshPlaygrounds(null, 0)
+    } catch (error) {
+      console.error('Error fetching all playgrounds:', error)
+    }
+  }, [refreshPlaygrounds])
+
+  // Add handler for clearing filters
+  const handleClearFilters = useCallback(() => {
+    updateFilters({
+      searchQuery: null,
+      city: null,
+      dataSource: null,
+      hasSupervised: null,
+      visitStatus: null,
+      minStars: null,
+      noRating: null,
+      minUserStars: null,
+      noUserRating: null
+    })
+  }, [updateFilters])
+
   return (
     <Box position="relative" height="100%" width="100%" pb="env(safe-area-inset-bottom)">
       {(isLoading || isLoadingStats) && (
@@ -458,7 +482,9 @@ const PlaygroundMap = () => {
           map={mapRef.current}
           playgrounds={playgrounds || []}
           filteredPlaygrounds={filteredPlaygrounds}
-          refreshPlaygrounds={refreshPlaygrounds}
+          onNoVisiblePlaygrounds={handleNoVisiblePlaygrounds}
+          onClearFilters={handleClearFilters}
+          isLoading={isLoading || isLoadingStats}
         />
       )}
       <Box position="fixed" top={4} right={4} zIndex={2200}>

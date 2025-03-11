@@ -2,72 +2,71 @@ import { Box, Button, Text } from '@chakra-ui/react'
 import L from 'leaflet'
 import { memo, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BBox } from '../hooks/usePlaygrounds'
 import { PlaygroundWithCoordinates } from '../types/database.types'
 
 interface NoVisiblePlaygroundsProps {
   map: L.Map
   playgrounds: PlaygroundWithCoordinates[]
   filteredPlaygrounds: PlaygroundWithCoordinates[]
-  refreshPlaygrounds: (bbox: BBox | null, zoomLevel: number) => Promise<void>
+  onNoVisiblePlaygrounds: () => Promise<void>
+  onClearFilters: () => void
+  isLoading: boolean
 }
 
 const NoVisiblePlaygrounds = memo(({
   map,
   playgrounds,
   filteredPlaygrounds,
-  refreshPlaygrounds
+  onNoVisiblePlaygrounds,
+  onClearFilters,
+  isLoading
 }: NoVisiblePlaygroundsProps) => {
   const { t } = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const [isFetching, setIsFetching] = useState(false)
+  const [hasFetched, setHasFetched] = useState(false)
 
   const noPlaygroundsAtAll = filteredPlaygrounds.length === 0
 
+  // Handle visibility of the popup
   useEffect(() => {
-    const checkVisibility = () => {
-      // If there are no filtered playgrounds at all, show the message
-      if (filteredPlaygrounds.length === 0 && playgrounds.length > 0) {
-        setIsVisible(true)
+    const checkVisibility = async () => {
+      // Don't show anything while loading
+      if (isLoading) {
+        setIsVisible(false)
         return
       }
 
-      // Otherwise, check if any filtered playgrounds are in the current view
+      // If we haven't fetched yet and there are no visible playgrounds, trigger fetch
       const bounds = map.getBounds()
       const hasVisiblePlaygrounds = filteredPlaygrounds.some(playground =>
         bounds.contains([playground.latitude, playground.longitude])
       )
-      setIsVisible(!hasVisiblePlaygrounds && playgrounds.length > 0 && filteredPlaygrounds.length > 0)
+
+      if (!hasVisiblePlaygrounds && !hasFetched) {
+        await onNoVisiblePlaygrounds()
+        setHasFetched(true)
+        return
+      }
+
+      // After fetch, check visibility again
+      if (filteredPlaygrounds.length === 0 && playgrounds.length > 0) {
+        setIsVisible(true)
+        return
+      }
+      const shouldShow = !hasVisiblePlaygrounds && playgrounds.length > 0 && filteredPlaygrounds.length > 0
+      setIsVisible(shouldShow)
     }
 
-    // Check initial visibility
     checkVisibility()
 
-    // Add event listeners for map movements
     map.on('moveend', checkVisibility)
     map.on('zoomend', checkVisibility)
 
-    // Cleanup
     return () => {
       map.off('moveend', checkVisibility)
       map.off('zoomend', checkVisibility)
     }
-  }, [map, playgrounds, filteredPlaygrounds])
-
-  // Fetch all playgrounds when component becomes visible
-  useEffect(() => {
-    const fetchAllPlaygrounds = async () => {
-      if (isVisible && !isFetching) {
-        setIsFetching(true)
-        try {
-          await refreshPlaygrounds(null, 0)
-        } finally {
-          setIsFetching(false)
-        }
-      }
-    }
-    fetchAllPlaygrounds()
-  }, [isVisible, isFetching, refreshPlaygrounds])
+  }, [map, playgrounds, filteredPlaygrounds, onNoVisiblePlaygrounds, isLoading, hasFetched])
 
   const handleZoomToPlaygrounds = useCallback(() => {
     if (filteredPlaygrounds.length > 0) {
@@ -83,7 +82,7 @@ const NoVisiblePlaygrounds = memo(({
     }
   }, [map, filteredPlaygrounds])
 
-  if (!isVisible) {
+  if (!isVisible || isLoading) {
     return null
   }
 
@@ -112,27 +111,50 @@ const NoVisiblePlaygrounds = memo(({
           : t('map.noVisiblePlaygrounds')
         }
       </Text>
-      {filteredPlaygrounds.length > 0 && (
-        <Button
-          onClick={handleZoomToPlaygrounds}
-          bg="brand.500"
-          color="white"
-          size="sm"
-          _hover={{
-            bg: 'secondary.500',
-            transform: 'translateY(-2px)',
-            boxShadow: 'sm'
-          }}
-          _active={{
-            bg: 'brand.600',
-            transform: 'translateY(0)'
-          }}
-          transition="all 0.2s"
-          boxShadow="base"
-        >
-          {t('map.zoomToPlaygrounds')}
-        </Button>
-      )}
+      <Box display="flex" flexDirection={noPlaygroundsAtAll ? "column" : "row"} gap={2} justifyContent="center">
+        {noPlaygroundsAtAll && (
+          <Button
+            onClick={onClearFilters}
+            bg="white"
+            color="red.500"
+            size="sm"
+            _hover={{
+              bg: 'gray.100',
+              transform: 'translateY(-2px)',
+              boxShadow: 'sm'
+            }}
+            _active={{
+              bg: 'gray.200',
+              transform: 'translateY(0)'
+            }}
+            transition="all 0.2s"
+            boxShadow="base"
+          >
+            {t('common.clearFilters')}
+          </Button>
+        )}
+        {filteredPlaygrounds.length > 0 && (
+          <Button
+            onClick={handleZoomToPlaygrounds}
+            bg="brand.500"
+            color="white"
+            size="sm"
+            _hover={{
+              bg: 'secondary.500',
+              transform: 'translateY(-2px)',
+              boxShadow: 'sm'
+            }}
+            _active={{
+              bg: 'brand.600',
+              transform: 'translateY(0)'
+            }}
+            transition="all 0.2s"
+            boxShadow="base"
+          >
+            {t('map.zoomToPlaygrounds')}
+          </Button>
+        )}
+      </Box>
     </Box>
   )
 })
