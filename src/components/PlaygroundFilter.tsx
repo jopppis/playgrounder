@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
 import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6'
 import { useAuth } from '../hooks/useAuth'
-import { usePlaygrounds } from '../hooks/usePlaygrounds'
+import { useCities } from '../hooks/useCities'
 
 export interface FilterOptions {
   searchQuery: string | null
@@ -32,9 +32,10 @@ export interface FilterOptions {
 interface PlaygroundFilterProps {
   filters: FilterOptions
   onChange: (filters: FilterOptions) => void
+  onLoadAllPlaygrounds: () => Promise<void>
 }
 
-export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) => {
+export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: PlaygroundFilterProps) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [showAllStars, setShowAllStars] = useState(false)
@@ -42,8 +43,9 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const searchTimeoutRef = useRef<NodeJS.Timeout>()
   const { user } = useAuth()
   const filterRef = useRef<HTMLDivElement>(null)
-  const { playgrounds } = usePlaygrounds()
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const { cities, loading: citiesLoading } = useCities()
+  const [isCitySelectOpen, setIsCitySelectOpen] = useState(false)
 
   // Update local search query when filters change externally
   useEffect(() => {
@@ -125,28 +127,6 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       dataSource: null
     })
   }
-
-  // Extract unique cities from playgrounds and sort them alphabetically
-  const cities = useMemo(() => {
-    if (!playgrounds || playgrounds.length === 0) {
-      return [{ label: t('allCities'), value: null }]
-    }
-
-    const uniqueCities = Array.from(new Set(
-      playgrounds
-        .map(playground => playground.city)
-        .filter((city): city is string => city !== null && city !== undefined)
-    )).sort()
-
-    return [
-      { label: t('allCities'), value: null },
-      { label: t('playground.noCity'), value: 'no_city' },
-      ...uniqueCities.map(city => ({
-        label: city,
-        value: city.toLowerCase()
-      }))
-    ]
-  }, [playgrounds, t])
 
   const dataSources = [
     { label: t('playground.dataSource.any'), value: null },
@@ -235,6 +215,18 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       {value}
     </Button>
   )
+
+  // Handle city select focus to load all playgrounds
+  const handleCitySelectFocus = async () => {
+    if (!isCitySelectOpen) {
+      setIsCitySelectOpen(true)
+      await onLoadAllPlaygrounds()
+    }
+  }
+
+  const handleCitySelectBlur = () => {
+    setIsCitySelectOpen(false)
+  }
 
   return (
     <Box
@@ -411,6 +403,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                   variant="outline"
                   colorPalette="brand"
                   color="gray.700"
+                  disabled={citiesLoading}
                 >
                   <NativeSelect.Field
                     value={filters.city ?? ''}
@@ -422,6 +415,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     }}
                     height="28px"
                     fontSize="sm"
+                    onFocus={handleCitySelectFocus}
+                    onBlur={handleCitySelectBlur}
                   >
                     {cities.map((city) => (
                       <option

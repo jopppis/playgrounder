@@ -15,11 +15,10 @@ import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
 import { HiChartBar, HiLanguage, HiShieldCheck } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 import { useIsAdmin } from '../hooks/useIsAdmin'
-import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
 import { useUserPreferences } from '../hooks/useUserPreferences'
 import { supabase } from '../lib/supabaseClient'
-import { Visit } from '../types/database.types'
+import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import About from './About'
 import Account from './Account'
 import AdminPage from './Admin/AdminPage'
@@ -43,6 +42,10 @@ export type MenuDrawerProps = {
   visits: Visit[]
   editMode?: boolean
   setEditMode?: (editMode: boolean) => void
+  loading?: boolean
+  showStats?: boolean
+  onStatsChange?: (show: boolean) => void
+  playgrounds?: PlaygroundWithCoordinates[]
 }
 
 const MenuDrawer = ({
@@ -55,15 +58,18 @@ const MenuDrawer = ({
   currentCity,
   visits,
   editMode = false,
-  setEditMode = () => {}
+  setEditMode = () => {},
+  loading = false,
+  showStats: externalShowStats,
+  onStatsChange,
+  playgrounds
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { isAdmin } = useIsAdmin()
-  const { playgrounds } = usePlaygrounds()
   const { preferences, loading: preferencesLoading, updateDefaultPublicRatings } = useUserPreferences()
   const [showAbout, setShowAbout] = useState(false)
-  const [showStats, setShowStats] = useState(false)
+  const [internalShowStats, setInternalShowStats] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
   const [showAccount, setShowAccount] = useState(false)
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
@@ -71,13 +77,19 @@ const MenuDrawer = ({
   const [showAdmin, setShowAdmin] = useState(false)
   const toast = useToast()
 
+  // Use external or internal state for showStats
+  const showStats = externalShowStats ?? internalShowStats
+  const setShowStats = onStatsChange ?? setInternalShowStats
+
   useEffect(() => {
     if (!isOpen) {
       setShowAbout(false)
-      setShowStats(false)
+      if (!onStatsChange) {
+        setInternalShowStats(false)
+      }
       setShowAccount(false)
     }
-  }, [isOpen])
+  }, [isOpen, onStatsChange])
 
   const handleSignOut = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -92,6 +104,11 @@ const MenuDrawer = ({
   const handleClick = (e: React.MouseEvent, action: () => void) => {
     e.stopPropagation()
     action()
+  }
+
+  const handleStatsClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setShowStats(true)
   }
 
   const buttonProps: ButtonProps = {
@@ -304,7 +321,7 @@ const MenuDrawer = ({
                   <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
                   <Button
                     {...buttonProps}
-                    onClick={(e) => handleClick(e, () => setShowStats(true))}
+                    onClick={handleStatsClick}
                   >
                     <Icon as={HiChartBar} boxSize={4} />
                     <Text>{t('stats.title')}</Text>
@@ -318,6 +335,7 @@ const MenuDrawer = ({
                   filteredPlaygroundCount={filteredPlaygroundCount}
                   onBack={() => setShowStats(false)}
                   currentCity={currentCity}
+                  loading={loading}
                 />
               ) : showAccount ? (
                 <Account onBack={() => setShowAccount(false)} />

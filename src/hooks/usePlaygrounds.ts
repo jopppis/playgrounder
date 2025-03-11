@@ -1,102 +1,85 @@
-import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
-import { Playground, PlaygroundWithCoordinates } from '../types/database.types'
+import { useCallback, useState } from 'react'
+import { PlaygroundWithCoordinates } from '../types/database.types'
+import { BBox, usePlaygroundFetcher } from './usePlaygroundFetcher'
 
-// Represents the raw playground data from the materialized view before coordinate transformation
-interface PlaygroundFromView extends Omit<Playground, 'location'> {
-  location: {
-    coordinates: [number, number] // [longitude, latitude]
-  }
-}
+const BBOX_PADDING_FACTOR = 5 // How much to expand the bbox for prefetching
+const ZOOM_THRESHOLD = 11 // Zoom level at which we switch between full and bbox fetching
 
-// Module-level cache
-let playgroundsCache: PlaygroundWithCoordinates[] | null = null
-let lastFetchTime: number | null = null
-const CACHE_DURATION = 60 * 60 * 1000 // 1 hour in milliseconds
-
-// Request deduplication - store the pending promise
-let pendingFetchPromise: Promise<PlaygroundWithCoordinates[]> | null = null
+export type { BBox } from './usePlaygroundFetcher'
 
 export const usePlaygrounds = () => {
-  const [playgrounds, setPlaygrounds] = useState<PlaygroundWithCoordinates[]>(playgroundsCache || [])
-  const [loading, setLoading] = useState(!playgroundsCache)
-  const [error, setError] = useState<string | null>(null)
+  const [playgrounds, setPlaygrounds] = useState<PlaygroundWithCoordinates[]>([])
+  const [loading, setLoading] = useState(false)
+  const [lastFetchedBBox, setLastFetchedBBox] = useState<BBox | null>(null)
+  const [hasAllPlaygrounds, setHasAllPlaygrounds] = useState(false)
+  const { getPlaygrounds } = usePlaygroundFetcher()
 
-  const fetchPlaygrounds = useCallback(async (forceRefresh = false) => {
-    // Use cache if available and not expired, unless force refresh is requested
-    const now = Date.now()
-    const isCacheValid = playgroundsCache && lastFetchTime && (now - lastFetchTime < CACHE_DURATION)
+  const expandBBox = useCallback((bbox: BBox): BBox => {
+    const lonDiff = bbox.maxLon - bbox.minLon
+    const latDiff = bbox.maxLat - bbox.minLat
+    const lonPadding = lonDiff * (BBOX_PADDING_FACTOR - 1) / 2
+    const latPadding = latDiff * (BBOX_PADDING_FACTOR - 1) / 2
 
-    if (isCacheValid && !forceRefresh) {
-      setPlaygrounds(playgroundsCache || [])
-      setLoading(false)
-      return playgroundsCache
+    return {
+      minLon: bbox.minLon - lonPadding,
+      maxLon: bbox.maxLon + lonPadding,
+      minLat: bbox.minLat - latPadding,
+      maxLat: bbox.maxLat + latPadding
     }
-
-    // If there's already a fetch in progress, use that promise instead of starting a new request
-    if (pendingFetchPromise && !forceRefresh) {
-      setLoading(true)
-      try {
-        const result = await pendingFetchPromise
-        setPlaygrounds(result)
-        return result
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
-        return []
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    // Start a new fetch
-    setLoading(true)
-
-    const fetchPromise = (async () => {
-      try {
-        // Fetch active playgrounds from the materialized view
-        const { data: playgroundsData, error: playgroundsError } = await supabase
-          .from('v_active_playgrounds')
-          .select('*')
-
-        if (playgroundsError) throw playgroundsError
-
-        // Convert playground location to coordinates
-        const playgroundsWithCoordinates = (playgroundsData || []).map((playground: PlaygroundFromView) => ({
-          ...playground,
-          latitude: playground.location.coordinates[1],
-          longitude: playground.location.coordinates[0]
-        }))
-
-        // Update cache
-        playgroundsCache = playgroundsWithCoordinates
-        lastFetchTime = now
-
-        setPlaygrounds(playgroundsWithCoordinates)
-        return playgroundsWithCoordinates
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
-        throw err
-      } finally {
-        setLoading(false)
-        // Clear the pending promise reference when done
-        pendingFetchPromise = null
-      }
-    })()
-
-    // Store the promise for deduplication
-    pendingFetchPromise = fetchPromise
-
-    return fetchPromise
   }, [])
 
-  useEffect(() => {
-    fetchPlaygrounds()
-  }, [fetchPlaygrounds])
+  const isContainedInCachedArea = useCallback((bbox: BBox): boolean => {
+    if (hasAllPlaygrounds) return true
+
+    if (!lastFetchedBBox) return false
+
+    return (
+      bbox.minLon >= lastFetchedBBox.minLon &&
+      bbox.maxLon <= lastFetchedBBox.maxLon &&
+      bbox.minLat >= lastFetchedBBox.minLat &&
+      bbox.maxLat <= lastFetchedBBox.maxLat
+    )
+  }, [lastFetchedBBox, hasAllPlaygrounds])
+
+  const refreshPlaygrounds = useCallback(async (
+    bbox: BBox | null,
+    zoomLevel: number,
+    forceRefresh = false
+  ) => {
+    try {
+      setLoading(true)
+
+      // If zoom level is low or no bbox, fetch all playgrounds
+      const shouldFetchAll = !bbox || zoomLevel <= ZOOM_THRESHOLD
+
+      // Skip fetch if we already have all playgrounds
+      if (shouldFetchAll && hasAllPlaygrounds && !forceRefresh) {
+        return
+      }
+
+      // Skip fetch if current bbox is contained in cached area
+      if (!shouldFetchAll && bbox && !forceRefresh && isContainedInCachedArea(bbox)) {
+        return
+      }
+
+      // For high zoom levels, expand the bbox before fetching
+      const fetchBBox = shouldFetchAll ? null : expandBBox(bbox!)
+
+      const newPlaygrounds = await getPlaygrounds(fetchBBox, forceRefresh)
+      setPlaygrounds(newPlaygrounds)
+      setLastFetchedBBox(fetchBBox)
+      setHasAllPlaygrounds(shouldFetchAll)
+    } catch (error) {
+      console.error('Error fetching playgrounds:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [getPlaygrounds, hasAllPlaygrounds, isContainedInCachedArea, expandBBox])
 
   return {
     playgrounds,
     loading,
-    error,
-    refreshPlaygrounds: () => fetchPlaygrounds(true)
+    refreshPlaygrounds,
+    hasAllPlaygrounds
   }
 }

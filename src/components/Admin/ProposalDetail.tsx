@@ -36,7 +36,7 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
     if (onProposalAction) {
       await onProposalAction()
     }
-    await refreshPlaygrounds()
+    await refreshPlaygrounds(null, 0)
     setLoading(false)
     onBack()
   }
@@ -51,6 +51,7 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
     if (onProposalAction) {
       await onProposalAction()
     }
+    await refreshPlaygrounds(null, 0)
     setLoading(false)
     onBack()
   }
@@ -62,7 +63,7 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
     if (onProposalAction) {
       await onProposalAction()
     }
-    await refreshPlaygrounds()
+    await refreshPlaygrounds(null, 0)
     setLoading(false)
     onBack()
   }

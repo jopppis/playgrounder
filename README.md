@@ -49,11 +49,11 @@ npm run dev
 ## TODO
 
 - Tests
-- Restrict loading of playgrounds to nearby
 - Create playgrounds
 - Move playgrounds
 - Make modals chakra dialogs
 - Add admin users view and playgrounds view
+- Allow typing to city selection
 
 ## Contributing
 

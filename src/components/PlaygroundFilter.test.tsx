@@ -98,7 +98,11 @@ describe('PlaygroundFilter', () => {
 
   const renderComponent = (filters = defaultFilters): ReturnType<typeof render> => {
     return render(
-      <PlaygroundFilter filters={filters} onChange={mockOnChange} />
+      <PlaygroundFilter
+        filters={filters}
+        onChange={mockOnChange}
+        onLoadAllPlaygrounds={vi.fn()}
+      />
     )
   }
 

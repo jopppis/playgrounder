@@ -6,14 +6,14 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LayersControl, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
 import { useAllRatings } from '../hooks/useAllRatings'
 import { useAuth } from '../hooks/useAuth'
 import { useCurrentCity } from '../hooks/useCurrentCity'
-import { usePlaygrounds } from '../hooks/usePlaygrounds'
+import { BBox, usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useUserFilters } from '../hooks/useUserFilters'
 import { useVisits } from '../hooks/useVisits'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
@@ -189,10 +189,21 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   );
 });
 
+// Separate component to handle map events
+const MapEvents = ({ onMapReady }: { onMapReady: (map: L.Map) => void }) => {
+  const map = useMap()
+
+  useEffect(() => {
+    onMapReady(map)
+  }, [map, onMapReady])
+
+  return null
+}
+
 const PlaygroundMap = () => {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
+  const { playgrounds, loading: playgroundsLoading, refreshPlaygrounds } = usePlaygrounds()
   const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
   const { filters, loading: filtersLoading, updateFilters } = useUserFilters()
   const { currentCity, updateCurrentCity } = useCurrentCity()
@@ -203,6 +214,10 @@ const PlaygroundMap = () => {
   const mapRef = useRef<L.Map | null>(null)
   const location = useLocation()
 
+  // Add state for stats loading
+  const [isLoadingStats, setIsLoadingStats] = useState(false)
+  const [showStats, setShowStats] = useState(false)
+
   useEffect(() => {
     // Check for email confirmation redirect
     const searchParams = new URLSearchParams(location.search)
@@ -210,6 +225,67 @@ const PlaygroundMap = () => {
       setShowSignIn(true)
     }
   }, [location])
+
+  // Add handler for menu open to fetch all playgrounds
+  const handleMenuOpen = useCallback(async (open: boolean) => {
+    setIsMenuOpen(open)
+    if (!open) {
+      setShowStats(false)
+      setIsLoadingStats(false)
+    }
+  }, [])
+
+  // Add handler for stats menu
+  const handleStatsOpen = useCallback(async (show: boolean) => {
+    if (show) {
+      setIsLoadingStats(true)
+      try {
+        // Force refresh when fetching all playgrounds for stats
+        await refreshPlaygrounds(null, 0)
+      } catch (error) {
+        console.error('Error fetching playgrounds:', error)
+      } finally {
+        setIsLoadingStats(false)
+      }
+    }
+    setShowStats(show)
+  }, [refreshPlaygrounds])
+
+  // Add handler for map move/zoom events
+  const handleMapMoveEnd = useCallback(() => {
+    if (!mapRef.current) return
+
+    const bounds = mapRef.current.getBounds()
+    const zoom = mapRef.current.getZoom()
+
+    const currentBBox: BBox = {
+      minLon: bounds.getWest(),
+      minLat: bounds.getSouth(),
+      maxLon: bounds.getEast(),
+      maxLat: bounds.getNorth()
+    }
+
+    refreshPlaygrounds(currentBBox, zoom)
+  }, [refreshPlaygrounds])
+
+  const handleMapReady = useCallback((map: L.Map) => {
+    mapRef.current = map
+    map.on('moveend', handleMapMoveEnd)
+    map.on('zoomend', handleMapMoveEnd)
+
+    // Trigger initial fetch
+    handleMapMoveEnd()
+  }, [handleMapMoveEnd])
+
+  // Cleanup map events
+  useEffect(() => {
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.off('moveend', handleMapMoveEnd)
+        mapRef.current.off('zoomend', handleMapMoveEnd)
+      }
+    }
+  }, [handleMapMoveEnd])
 
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
@@ -350,22 +426,37 @@ const PlaygroundMap = () => {
   // Only show loading spinner for essential data, not for ratings
   const isLoading = playgroundsLoading || visitsLoading || filtersLoading
 
-  if (isLoading) {
-    return (
-      <Box height="100dvh" display="flex" alignItems="center" justifyContent="center">
-        <Spinner size="xl" color="brand.500" />
-      </Box>
-    )
-  }
-
   return (
     <Box position="relative" height="100%" width="100%" pb="env(safe-area-inset-bottom)">
-      <PlaygroundFilter filters={filters} onChange={updateFilters} />
+      {(isLoading || isLoadingStats) && (
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg="blackAlpha.200"
+          zIndex={1000}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          pointerEvents="none"
+        >
+          <Spinner size="xl" color="brand.500" />
+        </Box>
+      )}
+      <PlaygroundFilter
+        filters={filters}
+        onChange={updateFilters}
+        onLoadAllPlaygrounds={async () => {
+          await refreshPlaygrounds(null, 0)
+        }}
+      />
       <Box position="fixed" top={4} right={4} zIndex={2200}>
         <Button
           size="md"
           variant="solid"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => handleMenuOpen(!isMenuOpen)}
           bg="brand.500"
           color="white"
           border="1px solid"
@@ -389,7 +480,7 @@ const PlaygroundMap = () => {
       </Box>
       <MenuDrawer
         isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
+        onClose={() => handleMenuOpen(false)}
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
         filters={filters}
@@ -398,16 +489,20 @@ const PlaygroundMap = () => {
         visits={visits}
         editMode={editMode}
         setEditMode={setEditMode}
+        loading={isLoadingStats}
+        showStats={showStats}
+        onStatsChange={handleStatsOpen}
+        playgrounds={playgrounds}
       />
 
       <MapContainer
         center={helsinkiCenter}
         zoom={13.5}
         style={{ height: '100%', width: '100%' }}
-        ref={mapRef}
         zoomControl={false}
         preferCanvas={true}
       >
+        <MapEvents onMapReady={handleMapReady} />
         <LayersControl position="bottomright">
           <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
             <TileLayer
