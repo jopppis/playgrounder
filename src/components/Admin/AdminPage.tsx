@@ -54,54 +54,41 @@ export default function AdminPage({ isOpen, onClose }: AdminPageProps) {
             </Dialog.Header>
 
             <Dialog.Body p={0} flex="1 1 auto" overflow="hidden">
-              <Tabs.Root variant="line" colorPalette="brand" defaultValue="proposals" h="100%" display="flex" flexDirection="column">
-                <Tabs.List p={1} borderBottomWidth="1px" display="flex" gap={1} flex="0 0 auto">
-                  <Tabs.Trigger
-                    value="proposals"
-                    bg="white"
-                    color="brand.900"
-                    _hover={{ bg: 'brand.50', color: 'secondary.500' }}
-                    _selected={{
-                      color: 'brand.700',
-                      fontWeight: 'semibold',
-                      borderBottom: '2px solid',
-                      borderColor: 'brand.500'
-                    }}
-                    px={4}
-                    py={2}
-                  >
+              <Tabs.Root
+                variant="line"
+                colorPalette="brand"
+                defaultValue="proposals"
+                h="100%"
+                display="flex"
+                flexDirection="column"
+              >
+                <Tabs.List
+                  p={1}
+                  borderBottomWidth="1px"
+                  display="flex"
+                  gap={1}
+                  flex="0 0 auto"
+                  css={{
+                    "& [role='tab']": {
+                      bg: 'white',
+                      color: 'brand.900',
+                      px: 4,
+                      py: 2,
+                      _hover: { bg: 'brand.50', color: 'secondary.500' },
+                      _selected: {
+                        color: 'brand.700',
+                        fontWeight: 'semibold'
+                      }
+                    }
+                  }}
+                >
+                  <Tabs.Trigger value="proposals">
                     {t('admin.tabs.proposals')}
                   </Tabs.Trigger>
-                  <Tabs.Trigger
-                    value="playgrounds"
-                    bg="white"
-                    color="brand.900"
-                    _hover={{ bg: 'brand.50', color: 'secondary.500' }}
-                    _selected={{
-                      color: 'brand.700',
-                      fontWeight: 'semibold',
-                      borderBottom: '2px solid',
-                      borderColor: 'brand.500'
-                    }}
-                    px={4}
-                    py={2}
-                  >
+                  <Tabs.Trigger value="playgrounds">
                     {t('admin.tabs.playgrounds')}
                   </Tabs.Trigger>
-                  <Tabs.Trigger
-                    value="users"
-                    bg="white"
-                    color="brand.900"
-                    _hover={{ bg: 'brand.50', color: 'secondary.500' }}
-                    _selected={{
-                      color: 'brand.700',
-                      fontWeight: 'semibold',
-                      borderBottom: '2px solid',
-                      borderColor: 'brand.500'
-                    }}
-                    px={4}
-                    py={2}
-                  >
+                  <Tabs.Trigger value="users">
                     {t('admin.tabs.users')}
                   </Tabs.Trigger>
                 </Tabs.List>

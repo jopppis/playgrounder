@@ -1,6 +1,6 @@
 ---
 description: Explanation of the project
-globs: 
+globs:
 ---
 
 # Project description
@@ -14,7 +14,8 @@ globs:
 - Never use @chakra-ui V2 components.
 - Find Chakra UI V3 components from https://www.chakra-ui.com/docs/components/concepts/overview.
 - Routes are definedin [Router.tsx](mdc:src/Router.tsx)
-
+- CSS can be applied to components by using the `css` prop in Chakra UI V3 instead of sx prop of Chakra UI V2.
+- Checkout Chkara UI V3 migration guide from https://www.chakra-ui.com/docs/get-started/migration.
 # Theming
 
 The project theming is defined in theme.ts file. Please use the brand and secondary colors for the project for all applicable uses.
