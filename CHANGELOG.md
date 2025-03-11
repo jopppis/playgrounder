@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Improve no visible playgrounds notification
+- Do not zoom automatically to playgrounds after filtering
+
 ### Added
 - No visible playgrounds notification modal
 

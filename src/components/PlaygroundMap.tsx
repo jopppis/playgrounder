@@ -380,22 +380,6 @@ const PlaygroundMap = () => {
     })
   }, [playgrounds, filters, user, visits, ratings])
 
-  // Watch for search and city filter changes and zoom to markers
-  useEffect(() => {
-    if (mapRef.current && filteredPlaygrounds.length > 0 &&
-        (filters.searchQuery !== null || filters.city !== null)) {
-      const bounds = L.latLngBounds(
-        filteredPlaygrounds.map(playground => [playground.latitude, playground.longitude])
-      )
-      mapRef.current.fitBounds(bounds, {
-        padding: [50, 50],
-        maxZoom: 16,
-        animate: true,
-        duration: 1
-      })
-    }
-  }, [filteredPlaygrounds, filters.searchQuery, filters.city])
-
   // Add navigation and zoom event listeners
   useEffect(() => {
     const handleNavigateToPlayground = (event: CustomEvent) => {
