@@ -204,14 +204,17 @@ const MapEvents = ({ onMapReady }: { onMapReady: (map: L.Map) => void }) => {
 const NoVisiblePlaygrounds = memo(({
   map,
   playgrounds,
-  filteredPlaygrounds
+  filteredPlaygrounds,
+  refreshPlaygrounds
 }: {
   map: L.Map,
   playgrounds: PlaygroundWithCoordinates[],
-  filteredPlaygrounds: PlaygroundWithCoordinates[]
+  filteredPlaygrounds: PlaygroundWithCoordinates[],
+  refreshPlaygrounds: (bbox: BBox | null, zoomLevel: number) => Promise<void>
 }) => {
   const { t } = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
 
   useEffect(() => {
     const checkVisibility = () => {
@@ -235,6 +238,21 @@ const NoVisiblePlaygrounds = memo(({
       map.off('zoomend', checkVisibility)
     }
   }, [map, playgrounds, filteredPlaygrounds])
+
+  // Fetch all playgrounds when component becomes visible
+  useEffect(() => {
+    const fetchAllPlaygrounds = async () => {
+      if (isVisible && !isFetching) {
+        setIsFetching(true)
+        try {
+          await refreshPlaygrounds(null, 0)
+        } finally {
+          setIsFetching(false)
+        }
+      }
+    }
+    fetchAllPlaygrounds()
+  }, [isVisible, isFetching, refreshPlaygrounds])
 
   const handleZoomToPlaygrounds = useCallback(() => {
     if (filteredPlaygrounds.length > 0) {
@@ -552,6 +570,7 @@ const PlaygroundMap = () => {
           map={mapRef.current}
           playgrounds={playgrounds || []}
           filteredPlaygrounds={filteredPlaygrounds}
+          refreshPlaygrounds={refreshPlaygrounds}
         />
       )}
       <Box position="fixed" top={4} right={4} zIndex={2200}>
