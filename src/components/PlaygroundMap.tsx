@@ -1,4 +1,4 @@
-import { Box, Button, Spinner, Text } from '@chakra-ui/react'
+import { Box, Button, Spinner } from '@chakra-ui/react'
 import { User } from '@supabase/supabase-js'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -19,6 +19,7 @@ import { useVisits } from '../hooks/useVisits'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import LocationControl from './LocationControl'
 import MenuDrawer from './MenuDrawer'
+import NoVisiblePlaygrounds from './NoVisiblePlaygrounds'
 import { PlaygroundFilter } from './PlaygroundFilter'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
@@ -199,133 +200,6 @@ const MapEvents = ({ onMapReady }: { onMapReady: (map: L.Map) => void }) => {
 
   return null
 }
-
-// Add NoVisiblePlaygrounds component before PlaygroundMap component
-const NoVisiblePlaygrounds = memo(({
-  map,
-  playgrounds,
-  filteredPlaygrounds,
-  refreshPlaygrounds
-}: {
-  map: L.Map,
-  playgrounds: PlaygroundWithCoordinates[],
-  filteredPlaygrounds: PlaygroundWithCoordinates[],
-  refreshPlaygrounds: (bbox: BBox | null, zoomLevel: number) => Promise<void>
-}) => {
-  const { t } = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
-  const [isFetching, setIsFetching] = useState(false)
-
-  useEffect(() => {
-    const checkVisibility = () => {
-      // If there are no filtered playgrounds at all, show the message
-      if (filteredPlaygrounds.length === 0 && playgrounds.length > 0) {
-        setIsVisible(true)
-        return
-      }
-
-      // Otherwise, check if any filtered playgrounds are in the current view
-      const bounds = map.getBounds()
-      const hasVisiblePlaygrounds = filteredPlaygrounds.some(playground =>
-        bounds.contains([playground.latitude, playground.longitude])
-      )
-      setIsVisible(!hasVisiblePlaygrounds && playgrounds.length > 0 && filteredPlaygrounds.length > 0)
-    }
-
-    // Check initial visibility
-    checkVisibility()
-
-    // Add event listeners for map movements
-    map.on('moveend', checkVisibility)
-    map.on('zoomend', checkVisibility)
-
-    // Cleanup
-    return () => {
-      map.off('moveend', checkVisibility)
-      map.off('zoomend', checkVisibility)
-    }
-  }, [map, playgrounds, filteredPlaygrounds])
-
-  // Fetch all playgrounds when component becomes visible
-  useEffect(() => {
-    const fetchAllPlaygrounds = async () => {
-      if (isVisible && !isFetching) {
-        setIsFetching(true)
-        try {
-          await refreshPlaygrounds(null, 0)
-        } finally {
-          setIsFetching(false)
-        }
-      }
-    }
-    fetchAllPlaygrounds()
-  }, [isVisible, isFetching, refreshPlaygrounds])
-
-  const handleZoomToPlaygrounds = useCallback(() => {
-    if (filteredPlaygrounds.length > 0) {
-      const allBounds = L.latLngBounds(
-        filteredPlaygrounds.map(playground => [playground.latitude, playground.longitude])
-      )
-      map.fitBounds(allBounds, {
-        padding: [50, 50],
-        maxZoom: 16,
-        animate: true,
-        duration: 1
-      })
-    }
-  }, [map, filteredPlaygrounds])
-
-  if (!isVisible) {
-    return null
-  }
-
-  return (
-    <Box
-      position="fixed"
-      bottom={4}
-      left="50%"
-      transform="translateX(-50%)"
-      bg="white"
-      p={4}
-      borderRadius="md"
-      boxShadow="lg"
-      zIndex={1000}
-      textAlign="center"
-      maxWidth="90%"
-      width="auto"
-      border="1px solid"
-      borderColor="brand.100"
-    >
-      <Text mb={3} color="gray.700">
-        {filteredPlaygrounds.length === 0
-          ? t('map.noPlaygroundsMatchFilters')
-          : t('map.noVisiblePlaygrounds')
-        }
-      </Text>
-      {filteredPlaygrounds.length > 0 && (
-        <Button
-          onClick={handleZoomToPlaygrounds}
-          bg="brand.500"
-          color="white"
-          size="sm"
-          _hover={{
-            bg: 'secondary.500',
-            transform: 'translateY(-2px)',
-            boxShadow: 'sm'
-          }}
-          _active={{
-            bg: 'brand.600',
-            transform: 'translateY(0)'
-          }}
-          transition="all 0.2s"
-          boxShadow="base"
-        >
-          {t('map.zoomToPlaygrounds')}
-        </Button>
-      )}
-    </Box>
-  )
-})
 
 const PlaygroundMap = () => {
   const { t } = useTranslation()
