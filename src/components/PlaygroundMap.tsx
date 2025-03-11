@@ -22,6 +22,7 @@ import LocationControl from './LocationControl'
 import MenuDrawer from './MenuDrawer'
 import NoVisiblePlaygrounds from './NoVisiblePlaygrounds'
 import { PlaygroundFilter } from './PlaygroundFilter'
+import { startAddingPlayground } from './PlaygroundMapUtils'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
 // Add styles to head
@@ -238,10 +239,6 @@ interface PlaygroundMapProps {
   }>
 }
 
-export const startAddingPlayground = () => {
-  window.dispatchEvent(new CustomEvent('startAddingPlayground'))
-}
-
 const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, selectingLocation: externalSelectingLocation = false, addedLocations = [] }: PlaygroundMapProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
@@ -309,7 +306,7 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
     return () => {
       markers.forEach(marker => marker.remove())
     }
-  }, [addedLocations, t])
+  }, [addedLocations, t, tempMarker])
 
   useEffect(() => {
     // Check for email confirmation redirect
@@ -586,7 +583,7 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
         mapRef.current.getContainer().style.cursor = ''
       }
     }
-  }, [selectingLocation, tempMarker, onAddPlayground])
+  }, [selectingLocation, onAddPlayground, tempMarker])
 
   // Update cursor and click handling when edit mode changes
   useEffect(() => {
@@ -600,7 +597,7 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
         setTempMarker(null)
       }
     }
-  }, [editMode, selectingLocation])
+  }, [editMode, selectingLocation, tempMarker])
 
   return (
     <Box position="relative" h="100%" w="100%">
