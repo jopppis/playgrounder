@@ -5,7 +5,7 @@ export interface Playground {
   created_at: string
   has_supervised_activities: boolean
   city: string | null
-  data_source: 'municipality' | 'osm' | null
+  data_source: 'municipality' | 'osm' | 'community' | null
 }
 
 export interface PlaygroundWithCoordinates extends Omit<Playground, 'location'> {
@@ -51,7 +51,7 @@ export interface UserFilter {
   min_user_stars: number | null
   has_supervised_activities: boolean | null
   city: string | null
-  data_source: 'municipality' | 'osm' | null
+  data_source: 'municipality' | 'osm' | 'community' | null
   no_rating: boolean | null
   no_user_rating: boolean | null
   created_at: string
@@ -68,7 +68,7 @@ export interface UserPreferences {
 
 export interface PlaygroundEditProposal {
   id: string
-  playground_id: string
+  playground_id: string | null
   user_id: string
   proposed_name: string | null
   delete_playground: boolean
@@ -78,6 +78,20 @@ export interface PlaygroundEditProposal {
   admin_notes: string | null
   created_at: string
   updated_at: string
+  proposed_location: string | null
+  is_new_playground: boolean
+}
+
+export interface EditProposalWithPlayground extends PlaygroundEditProposal {
+  playground?: {
+    id: string
+    name: string
+    has_supervised_activities: boolean
+    location: string
+    city: string
+    data_source: string
+    created_at: string
+  }
 }
 
 export interface Database {

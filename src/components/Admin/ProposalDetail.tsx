@@ -68,6 +68,14 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
     onBack()
   }
 
+  const handleNavigateToPlayground = () => {
+    if (!onNavigateToPlayground) return
+
+    if (proposal.playground_id) {
+      onNavigateToPlayground(proposal.playground.latitude, proposal.playground.longitude)
+    }
+  }
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return new Intl.DateTimeFormat('default', {
@@ -94,9 +102,22 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
     }
   }
 
+  const getProposalType = () => {
+    if (proposal.delete_playground) {
+      return t('admin.proposals.type.deletion')
+    }
+    if (proposal.is_new_playground) {
+      return t('admin.proposals.type.new')
+    }
+    return t('admin.proposals.type.dataUpdate')
+  }
+
   const getProposalTypeColor = () => {
     if (proposal.delete_playground) {
       return 'red.500'
+    }
+    if (proposal.is_new_playground) {
+      return 'green.500'
     }
     return 'blue.500'
   }
@@ -182,9 +203,7 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                 <Flex justify="space-between">
                   <Text fontWeight="bold" color="gray.700">{t('admin.proposals.table.type')}</Text>
                   <Text color={getProposalTypeColor()}>
-                    {proposal.delete_playground
-                      ? t('admin.proposals.type.deletion')
-                      : t('admin.proposals.type.dataUpdate')}
+                    {getProposalType()}
                   </Text>
                 </Flex>
 
@@ -192,6 +211,21 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                   <Flex justify="space-between">
                     <Text fontWeight="bold" color="gray.700">{t('admin.proposals.deleteRequest')}</Text>
                     <Text color="red.500">{t('admin.proposals.requestedDeletion')}</Text>
+                  </Flex>
+                )}
+
+                {proposal.is_new_playground && (
+                  <Flex justify="space-between">
+                    <Text fontWeight="bold" color="gray.700">{t('admin.proposals.location')}</Text>
+                    {(proposal.status as string) === 'approved' && !proposal.edit?.reverted_at && (
+                      <Link
+                        color="brand.500"
+                        _hover={{ color: 'secondary.500', textDecoration: 'underline', cursor: 'pointer' }}
+                        onClick={handleNavigateToPlayground}
+                      >
+                        {t('admin.proposals.viewOnMap')}
+                      </Link>
+                    )}
                   </Flex>
                 )}
 
@@ -207,25 +241,31 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
 
           <GridItem>
             <Box p={4} borderWidth="1px" borderColor="brand.200" borderRadius="md" h="100%">
-              <Heading size="md" mb={4} color="brand.900">{t('admin.proposals.playgroundDetails')}</Heading>
+              <Heading size="md" mb={4} color="brand.900">
+                {proposal.playground_id
+                  ? t('admin.proposals.playgroundDetails')
+                  : t('admin.proposals.newPlayground')}
+              </Heading>
 
               <Flex direction="column" gap={3}>
                 <Flex justify="space-between">
                   <Text fontWeight="bold" color="gray.700">{t('playground.name')}</Text>
-                  <Link
-                    color="brand.500"
-                    _hover={{ color: 'secondary.500', textDecoration: 'underline', cursor: 'pointer' }}
-                    onClick={() => {
-                      if (onNavigateToPlayground) {
-                        onNavigateToPlayground(proposal.playground.latitude, proposal.playground.longitude)
-                      }
-                    }}
-                  >
-                    {proposal.playground.name || t('playground.unnamed')}
-                  </Link>
+                  {proposal.playground_id ? (
+                    <Link
+                      color="brand.500"
+                      _hover={{ color: 'secondary.500', textDecoration: 'underline', cursor: 'pointer' }}
+                      onClick={handleNavigateToPlayground}
+                    >
+                      {proposal.playground?.name || t('playground.unnamed')}
+                    </Link>
+                  ) : (
+                    <Text color="gray.700">
+                      {proposal.proposed_name || t('playground.unnamed')}
+                    </Text>
+                  )}
                 </Flex>
 
-                {proposal.playground.city && (
+                {proposal.playground_id && proposal.playground?.city && (
                   <Flex justify="space-between">
                     <Text fontWeight="bold" color="gray.700">{t('city')}</Text>
                     <Text color="gray.700">{proposal.playground.city}</Text>
@@ -235,20 +275,26 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                 <Flex justify="space-between">
                   <Text fontWeight="bold" color="gray.700">{t('playground.supervision.label')}</Text>
                   <Text color="gray.700">
-                    {proposal.playground.has_supervised_activities
-                      ? t('playground.supervision.supervised')
-                      : t('playground.supervision.unsupervised')}
+                    {proposal.has_supervised_activities !== null
+                      ? (proposal.has_supervised_activities
+                          ? t('playground.supervision.supervised')
+                          : t('playground.supervision.unsupervised'))
+                      : (proposal.playground?.has_supervised_activities
+                          ? t('playground.supervision.supervised')
+                          : t('playground.supervision.unsupervised'))}
                   </Text>
                 </Flex>
 
-                <Flex justify="space-between">
-                  <Text fontWeight="bold" color="gray.700">{t('playground.dataSource.label')}</Text>
-                  <Text color="gray.700">
-                    {proposal.playground.data_source
-                      ? t(`playground.dataSource.${proposal.playground.data_source}`)
-                      : '-'}
-                  </Text>
-                </Flex>
+                {proposal.playground_id && proposal.playground?.data_source && (
+                  <Flex justify="space-between">
+                    <Text fontWeight="bold" color="gray.700">{t('playground.dataSource.label')}</Text>
+                    <Text color="gray.700">
+                      {proposal.playground.data_source
+                        ? t(`playground.dataSource.${proposal.playground.data_source}`)
+                        : '-'}
+                    </Text>
+                  </Flex>
+                )}
               </Flex>
             </Box>
           </GridItem>
@@ -259,13 +305,13 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
 
           {proposal.status === 'pending' ? (
             <Box>
-              {proposal.proposed_name !== null && (
+              {proposal.proposed_name !== null && proposal.playground_id && (
                 <Box mb={4} p={4} borderWidth="1px" borderColor="brand.200" borderRadius="md">
                   <Heading size="sm" mb={2} color="brand.900">{t('playground.name')}</Heading>
                   <Grid templateColumns="1fr 1fr" gap={4}>
                     <Box p={3} bg="gray.50" borderRadius="md">
                       <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.current')}</Text>
-                      <Text color="gray.700">{proposal.playground.name || t('playground.unnamed')}</Text>
+                      <Text color="gray.700">{proposal.playground?.name || t('playground.unnamed')}</Text>
                     </Box>
                     <Box p={3} bg={getProposalStatusBg(proposal.status, Boolean(proposal.edit?.reverted_at))} borderRadius="md">
                       <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.proposed')}</Text>
@@ -280,14 +326,14 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                 </Box>
               )}
 
-              {proposal.has_supervised_activities !== null && (
+              {proposal.has_supervised_activities !== null && proposal.playground_id && (
                 <Box mb={4} p={4} borderWidth="1px" borderColor="brand.200" borderRadius="md">
                   <Heading size="sm" mb={2} color="brand.900">{t('playground.supervision.label')}</Heading>
                   <Grid templateColumns="1fr 1fr" gap={4}>
                     <Box p={3} bg="gray.50" borderRadius="md">
                       <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.current')}</Text>
                       <Text color="gray.700">
-                        {proposal.playground.has_supervised_activities
+                        {proposal.playground?.has_supervised_activities
                           ? t('playground.supervision.supervised')
                           : t('playground.supervision.unsupervised')}
                       </Text>
@@ -304,6 +350,42 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                           {t('admin.proposals.status.reverted')}
                         </Text>
                       )}
+                    </Box>
+                  </Grid>
+                </Box>
+              )}
+
+              {proposal.is_new_playground && (
+                <Box mb={4} p={4} borderWidth="1px" borderColor="brand.200" borderRadius="md">
+                  <Heading size="sm" mb={2} color="brand.900">{t('admin.proposals.newPlayground')}</Heading>
+                  <Grid templateColumns="1fr" gap={4}>
+                    <Box p={3} bg={getProposalStatusBg(proposal.status, Boolean(proposal.edit?.reverted_at))} borderRadius="md">
+                      <Flex direction="column" gap={3}>
+                        <Box>
+                          <Text fontWeight="bold" mb={1} color="gray.700">{t('playground.name')}</Text>
+                          <Text color="gray.700">{proposal.proposed_name || t('playground.unnamed')}</Text>
+                        </Box>
+                        <Box>
+                          <Text fontWeight="bold" mb={1} color="gray.700">{t('playground.supervision.label')}</Text>
+                          <Text color="gray.700">
+                            {proposal.has_supervised_activities
+                              ? t('playground.supervision.supervised')
+                              : t('playground.supervision.unsupervised')}
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.location')}</Text>
+                          {(proposal.status as string) === 'approved' && !proposal.edit?.reverted_at && (
+                            <Link
+                              color="brand.500"
+                              _hover={{ color: 'secondary.500', textDecoration: 'underline', cursor: 'pointer' }}
+                              onClick={handleNavigateToPlayground}
+                            >
+                              {t('admin.proposals.viewOnMap')}
+                            </Link>
+                          )}
+                        </Box>
+                      </Flex>
                     </Box>
                   </Grid>
                 </Box>
@@ -381,13 +463,13 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
             </Box>
           ) : (
             <Flex direction="column" gap={4}>
-              {proposal.proposed_name !== null && (
+              {proposal.proposed_name !== null && proposal.playground_id && (
                 <Box mb={4} p={4} borderWidth="1px" borderColor="brand.200" borderRadius="md">
                   <Heading size="sm" mb={2} color="brand.900">{t('playground.name')}</Heading>
                   <Grid templateColumns="1fr 1fr" gap={4}>
                     <Box p={3} bg="gray.50" borderRadius="md">
                       <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.current')}</Text>
-                      <Text color="gray.700">{proposal.playground.name || t('playground.unnamed')}</Text>
+                      <Text color="gray.700">{proposal.playground?.name || t('playground.unnamed')}</Text>
                     </Box>
                     <Box p={3} bg={getProposalStatusBg(proposal.status, Boolean(proposal.edit?.reverted_at))} borderRadius="md">
                       <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.proposed')}</Text>
@@ -402,14 +484,14 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                 </Box>
               )}
 
-              {proposal.has_supervised_activities !== null && (
+              {proposal.has_supervised_activities !== null && proposal.playground_id && (
                 <Box mb={4} p={4} borderWidth="1px" borderColor="brand.200" borderRadius="md">
                   <Heading size="sm" mb={2} color="brand.900">{t('playground.supervision.label')}</Heading>
                   <Grid templateColumns="1fr 1fr" gap={4}>
                     <Box p={3} bg="gray.50" borderRadius="md">
                       <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.current')}</Text>
                       <Text color="gray.700">
-                        {proposal.playground.has_supervised_activities
+                        {proposal.playground?.has_supervised_activities
                           ? t('playground.supervision.supervised')
                           : t('playground.supervision.unsupervised')}
                       </Text>
@@ -426,6 +508,42 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                           {t('admin.proposals.status.reverted')}
                         </Text>
                       )}
+                    </Box>
+                  </Grid>
+                </Box>
+              )}
+
+              {proposal.is_new_playground && (
+                <Box mb={4} p={4} borderWidth="1px" borderColor="brand.200" borderRadius="md">
+                  <Heading size="sm" mb={2} color="brand.900">{t('admin.proposals.newPlayground')}</Heading>
+                  <Grid templateColumns="1fr" gap={4}>
+                    <Box p={3} bg={getProposalStatusBg(proposal.status, Boolean(proposal.edit?.reverted_at))} borderRadius="md">
+                      <Flex direction="column" gap={3}>
+                        <Box>
+                          <Text fontWeight="bold" mb={1} color="gray.700">{t('playground.name')}</Text>
+                          <Text color="gray.700">{proposal.proposed_name || t('playground.unnamed')}</Text>
+                        </Box>
+                        <Box>
+                          <Text fontWeight="bold" mb={1} color="gray.700">{t('playground.supervision.label')}</Text>
+                          <Text color="gray.700">
+                            {proposal.has_supervised_activities
+                              ? t('playground.supervision.supervised')
+                              : t('playground.supervision.unsupervised')}
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text fontWeight="bold" mb={1} color="gray.700">{t('admin.proposals.location')}</Text>
+                          {(proposal.status as string) === 'approved' && !proposal.edit?.reverted_at && (
+                            <Link
+                              color="brand.500"
+                              _hover={{ color: 'secondary.500', textDecoration: 'underline', cursor: 'pointer' }}
+                              onClick={handleNavigateToPlayground}
+                            >
+                              {t('admin.proposals.viewOnMap')}
+                            </Link>
+                          )}
+                        </Box>
+                      </Flex>
                     </Box>
                   </Grid>
                 </Box>

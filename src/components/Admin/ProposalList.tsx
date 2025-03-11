@@ -70,6 +70,41 @@ export default function ProposalList({ onNavigateToPlayground }: ProposalListPro
     }).format(date)
   }
 
+  const getProposalType = (proposal: EditProposalWithPlayground) => {
+    if (proposal.delete_playground) {
+      return t('admin.proposals.type.deletion')
+    }
+    if (proposal.is_new_playground) {
+      return t('admin.proposals.type.new')
+    }
+    return t('admin.proposals.type.dataUpdate')
+  }
+
+  const getProposalTypeColor = (proposal: EditProposalWithPlayground) => {
+    if (proposal.delete_playground) {
+      return 'red.500'
+    }
+    if (proposal.is_new_playground) {
+      return 'green.500'
+    }
+    return 'blue.500'
+  }
+
+  const getPlaygroundName = (proposal: EditProposalWithPlayground) => {
+    if (!proposal.playground_id) {
+      return proposal.proposed_name || t('playground.unnamed')
+    }
+    return proposal.playground.name || t('playground.unnamed')
+  }
+
+  const handleNavigateToPlayground = (proposal: EditProposalWithPlayground) => {
+    if (!onNavigateToPlayground) return
+
+    if (proposal.playground_id) {
+      onNavigateToPlayground(proposal.playground.latitude, proposal.playground.longitude)
+    }
+  }
+
   if (selectedProposal) {
     return <ProposalDetail
       proposal={selectedProposal}
@@ -137,15 +172,13 @@ export default function ProposalList({ onNavigateToPlayground }: ProposalListPro
                     <Link
                       color="brand.500"
                       _hover={{ color: 'secondary.500', textDecoration: 'underline', cursor: 'pointer' }}
-                      onClick={() => onNavigateToPlayground?.(proposal.playground.latitude, proposal.playground.longitude)}
+                      onClick={() => handleNavigateToPlayground(proposal)}
                     >
-                      {proposal.playground.name || t('playground.unnamed')}
+                      {getPlaygroundName(proposal)}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell p={3} color="gray.700">
-                    {proposal.delete_playground
-                      ? t('admin.proposals.type.deletion')
-                      : t('admin.proposals.type.dataUpdate')}
+                  <Table.Cell p={3} color={getProposalTypeColor(proposal)}>
+                    {getProposalType(proposal)}
                   </Table.Cell>
                   <Table.Cell p={3}>
                     <Text color={getStatusColor(proposal.status, proposal.edit?.reverted_at ? true : false)}>

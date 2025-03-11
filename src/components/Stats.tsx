@@ -10,7 +10,7 @@ type Filters = {
   minUserStars: number | null
   hasSupervised: boolean | null
   city: string | null
-  dataSource: 'municipality' | 'osm' | null
+  dataSource: 'municipality' | 'osm' | 'community' | null
   noRating: boolean | null
   noUserRating: boolean | null
 }

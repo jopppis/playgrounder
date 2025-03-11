@@ -41,10 +41,10 @@ export type MenuDrawerProps = {
   currentCity: string | null
   visits: Visit[]
   editMode?: boolean
-  setEditMode?: (editMode: boolean) => void
   loading?: boolean
   showStats?: boolean
   onStatsChange?: (show: boolean) => void
+  onEditModeChange?: (editMode: boolean) => void
   playgrounds?: PlaygroundWithCoordinates[]
 }
 
@@ -58,10 +58,10 @@ const MenuDrawer = ({
   currentCity,
   visits,
   editMode = false,
-  setEditMode = () => {},
   loading = false,
   showStats: externalShowStats,
   onStatsChange,
+  onEditModeChange,
   playgrounds
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
@@ -75,6 +75,7 @@ const MenuDrawer = ({
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
   const [showAdmin, setShowAdmin] = useState(false)
+  const [editModeLocal, setEditModeLocal] = useState(editMode)
   const toast = useToast()
 
   // Use external or internal state for showStats
@@ -90,6 +91,10 @@ const MenuDrawer = ({
       setShowAccount(false)
     }
   }, [isOpen, onStatsChange])
+
+  useEffect(() => {
+    setEditModeLocal(editMode)
+  }, [editMode])
 
   const handleSignOut = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -109,6 +114,25 @@ const MenuDrawer = ({
   const handleStatsClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     setShowStats(true)
+  }
+
+  const handleEditModeChange = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const newEditMode = !editModeLocal
+    setEditModeLocal(newEditMode)
+    onEditModeChange?.(newEditMode)
+    if (newEditMode) {
+      toast.showInfo({
+        title: t('playground.edit.editModeEnabled.title'),
+        description: t('playground.edit.editModeEnabled.description')
+      })
+    } else {
+      toast.showInfo({
+        title: t('playground.edit.editModeDisabled.title'),
+        description: t('playground.edit.editModeDisabled.description')
+      })
+    }
   }
 
   const buttonProps: ButtonProps = {
@@ -220,8 +244,6 @@ const MenuDrawer = ({
                           />
                         </Box>
                       </HStack>
-
-                      {/* Edit Mode Switch */}
                       <HStack gap={2} align="center" justify="space-between" w="100%">
                         <Text fontSize="sm" color="gray.600">
                           {t('playground.edit.editMode')}
@@ -230,33 +252,17 @@ const MenuDrawer = ({
                           position="relative"
                           zIndex={2001}
                           cursor="pointer"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            const newEditMode = !editMode
-                            setEditMode(newEditMode)
-                            if (newEditMode) {
-                              toast.showInfo({
-                                title: t('playground.edit.editModeEnabled.title'),
-                                description: t('playground.edit.editModeEnabled.description')
-                              })
-                            } else {
-                              toast.showInfo({
-                                title: t('playground.edit.editModeDisabled.title'),
-                                description: t('playground.edit.editModeDisabled.description')
-                              })
-                            }
-                          }}
+                          onClick={handleEditModeChange}
                         >
                           <Switch
                             size="sm"
-                            checked={editMode}
+                            checked={editModeLocal}
                             onCheckedChange={() => {}}
+                            disabled={!user}
                             aria-label={t('playground.edit.editMode')}
                           />
                         </Box>
                       </HStack>
-
                       <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                         <Button
                           {...buttonProps}
@@ -271,8 +277,6 @@ const MenuDrawer = ({
                           {t('menu.buttons.account')}
                         </Button>
                       </Grid>
-
-                      {/* Admin button - only for admin users */}
                       {isAdmin && (
                         <Button
                           {...buttonProps}

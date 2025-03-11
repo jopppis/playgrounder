@@ -24,9 +24,9 @@ export interface FilterOptions {
   minUserStars: number | null
   hasSupervised: boolean | null
   city: string | null
+  dataSource: 'municipality' | 'osm' | 'community' | null
   noRating: boolean | null
   noUserRating: boolean | null
-  dataSource: 'municipality' | 'osm' | null
 }
 
 interface PlaygroundFilterProps {
@@ -131,7 +131,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
   const dataSources = [
     { label: t('playground.dataSource.any'), value: null },
     { label: t('playground.dataSource.municipality'), value: 'municipality' },
-    { label: t('playground.dataSource.osm'), value: 'osm' }
+    { label: t('playground.dataSource.osm'), value: 'osm' },
+    { label: t('playground.dataSource.community'), value: 'community' }
   ]
 
   const filterPosition = useBreakpointValue({
@@ -447,7 +448,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     value={filters.dataSource ?? ''}
                     onChange={(e) => onChange({
                       ...filters,
-                      dataSource: e.target.value as 'municipality' | 'osm' || null
+                      dataSource: e.target.value as 'municipality' | 'osm' | 'community' || null
                     })}
                     height="28px"
                     fontSize="sm"

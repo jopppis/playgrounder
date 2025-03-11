@@ -48,11 +48,12 @@ npm run dev
 
 ## TODO
 
-- Create playgrounds
-- Move playgrounds
+- Login shows below menu
+- Slow startup
 
 ## Consider
 
+- Move playgrounds
 - More tests
 - Add admin users view and playgrounds view
 

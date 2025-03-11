@@ -11,10 +11,12 @@ export const usePlaygroundEdits = () => {
 
   const proposePlaygroundEdit = useCallback(
     async (
-      playgroundId: string,
+      playgroundId: string | null,
       proposedName: string | null,
       hasSupervised: boolean | null = null,
-      reason: string | null = null
+      newPlayground: boolean = false,
+      reason: string | null = null,
+      location?: { lat: number; lng: number } | null
     ): Promise<{ error: string | null }> => {
       if (!user) {
         return { error: t('common.loginRequired') }
@@ -24,17 +26,20 @@ export const usePlaygroundEdits = () => {
       setError(null)
 
       try {
-        // First verify that the playground exists and is active
-        const { data: playgroundData, error: playgroundError } = await supabase
-          .from('v_active_playgrounds')
-          .select('id')
-          .eq('id', playgroundId)
-          .single()
+        // Only verify existing playground if playgroundId is provided
+        if (playgroundId) {
+          // First verify that the playground exists and is active
+          const { data: playgroundData, error: playgroundError } = await supabase
+            .from('v_active_playgrounds')
+            .select('id')
+            .eq('id', playgroundId)
+            .single()
 
-        if (playgroundError || !playgroundData) {
-          const errorMsg = playgroundError?.message || 'Playground not found'
-          setError(errorMsg)
-          return { error: errorMsg }
+          if (playgroundError || !playgroundData) {
+            const errorMsg = playgroundError?.message || 'Playground not found'
+            setError(errorMsg)
+            return { error: errorMsg }
+          }
         }
 
         // Now insert the proposal
@@ -46,7 +51,9 @@ export const usePlaygroundEdits = () => {
             proposed_name: proposedName,
             delete_playground: false,
             has_supervised_activities: hasSupervised,
-            reason
+            is_new_playground: newPlayground,
+            reason,
+            proposed_location: location ? `POINT(${location.lng} ${location.lat})` : null
           })
 
         if (supabaseError) {

@@ -1,4 +1,4 @@
-import { Box, Button, Spinner } from '@chakra-ui/react'
+import { Box, Button, IconButton, Spinner, Text } from '@chakra-ui/react'
 import { User } from '@supabase/supabase-js'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -6,6 +6,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { MdAddLocation } from 'react-icons/md'
 import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { useLocation } from 'react-router-dom'
@@ -89,16 +90,39 @@ style.textContent = `
     color: #333;
     font-weight: bold;
   }
+
+  .playground-marker.new {
+    position: relative;
+  }
+
+  .playground-marker .new-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    background-color: #38A169;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 `
 document.head.appendChild(style)
 
 // Create the base playground icon
-const createBaseIcon = (isVisited = false) => {
+const createBaseIcon = (isVisited = false, isNew = false) => {
   return L.divIcon({
     html: `
-      <div class="playground-marker ${isVisited ? 'visited' : 'unvisited'}">
+      <div class="playground-marker ${isVisited ? 'visited' : 'unvisited'} ${isNew ? 'new' : ''}">
         <img src="${playgroundIcon}" alt="playground" />
         ${isVisited ? '<div class="badge">✓</div>' : ''}
+        ${isNew ? '<div class="new-badge">+</div>' : ''}
       </div>
     `,
     className: '',
@@ -201,7 +225,24 @@ const MapEvents = ({ onMapReady }: { onMapReady: (map: L.Map) => void }) => {
   return null
 }
 
-const PlaygroundMap = () => {
+interface PlaygroundMapProps {
+  editMode?: boolean
+  onAddPlayground?: (location: { lat: number; lng: number }) => void
+  onEditModeChange?: (editMode: boolean) => void
+  selectingLocation?: boolean
+  addedLocations?: Array<{
+    lat: number
+    lng: number
+    name: string
+    hasSupervised: boolean
+  }>
+}
+
+export const startAddingPlayground = () => {
+  window.dispatchEvent(new CustomEvent('startAddingPlayground'))
+}
+
+const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, selectingLocation: externalSelectingLocation = false, addedLocations = [] }: PlaygroundMapProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { playgrounds, loading: playgroundsLoading, refreshPlaygrounds } = usePlaygrounds()
@@ -211,13 +252,64 @@ const PlaygroundMap = () => {
   const { ratings, refreshRatings } = useAllRatings()
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [editMode, setEditMode] = useState(false)
+  const [selectingLocation, setSelectingLocation] = useState(false)
+  const [tempMarker, setTempMarker] = useState<L.Marker | null>(null)
   const mapRef = useRef<L.Map | null>(null)
   const location = useLocation()
 
   // Add state for stats loading
   const [isLoadingStats, setIsLoadingStats] = useState(false)
   const [showStats, setShowStats] = useState(false)
+
+  // Update internal selecting location state when external state changes
+  useEffect(() => {
+    setSelectingLocation(externalSelectingLocation)
+  }, [externalSelectingLocation])
+
+  // Manage temporary markers for added locations
+  useEffect(() => {
+    if (!mapRef.current) {
+      return
+    }
+
+    // Clear any existing temp markers
+    if (tempMarker) {
+      tempMarker.remove()
+      setTempMarker(null)
+    }
+
+    // Create markers for all added locations
+    const markers = addedLocations.map(location => {
+      const newIcon = createBaseIcon(false, true)
+      const marker = L.marker([location.lat, location.lng], { icon: newIcon })
+
+      // Add popup with proposal information
+      const popupContent = `
+        <div style="min-width: 200px;">
+          <div style="color: #38A169; font-weight: bold; margin-bottom: 8px;">
+            ${t('admin.proposals.status.pending')}
+          </div>
+          <div style="font-weight: bold; margin-bottom: 4px;">
+            ${location.name}
+          </div>
+          <div style="color: #4A5568; font-size: 0.9em;">
+            ${location.hasSupervised
+              ? t('playground.supervision.supervised')
+              : t('playground.supervision.unsupervised')
+            }
+          </div>
+        </div>
+      `
+      marker.bindPopup(popupContent)
+
+      marker.addTo(mapRef.current!)
+      return marker
+    })
+
+    return () => {
+      markers.forEach(marker => marker.remove())
+    }
+  }, [addedLocations, t])
 
   useEffect(() => {
     // Check for email confirmation redirect
@@ -435,8 +527,83 @@ const PlaygroundMap = () => {
     })
   }, [updateFilters])
 
+  // Add event listener for starting playground addition
+  useEffect(() => {
+    const handleStartAddingPlayground = () => {
+      if (!editMode) return
+      setSelectingLocation(true)
+      if (mapRef.current) {
+        mapRef.current.getContainer().style.cursor = 'crosshair'
+      }
+    }
+
+    window.addEventListener('startAddingPlayground', handleStartAddingPlayground)
+
+    return () => {
+      window.removeEventListener('startAddingPlayground', handleStartAddingPlayground)
+    }
+  }, [editMode])
+
+  // Add event listener for new playground location selection
+  useEffect(() => {
+    if (!mapRef.current || !selectingLocation) {
+      // Clean up marker when selection is canceled
+      if (tempMarker) {
+        tempMarker.remove()
+        setTempMarker(null)
+      }
+      return
+    }
+
+    const handleMapClick = (e: L.LeafletMouseEvent) => {
+      if (!selectingLocation) return
+
+      // Remove existing marker if any
+      if (tempMarker) {
+        tempMarker.remove()
+      }
+
+      // Create new marker with the new badge
+      const newIcon = createBaseIcon(false, true)
+      const marker = L.marker(e.latlng, { icon: newIcon })
+      marker.addTo(mapRef.current!)
+      setTempMarker(marker)
+
+      if (onAddPlayground) {
+        onAddPlayground(e.latlng)
+        setSelectingLocation(false)
+        if (mapRef.current) {
+          mapRef.current.getContainer().style.cursor = ''
+        }
+      }
+    }
+
+    mapRef.current.on('click', handleMapClick)
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.off('click', handleMapClick)
+        mapRef.current.getContainer().style.cursor = ''
+      }
+    }
+  }, [selectingLocation, tempMarker, onAddPlayground])
+
+  // Update cursor and click handling when edit mode changes
+  useEffect(() => {
+    if (!editMode) {
+      setSelectingLocation(false)
+      if (mapRef.current) {
+        mapRef.current.getContainer().style.cursor = ''
+      }
+      if (tempMarker && !selectingLocation) {
+        tempMarker.remove()
+        setTempMarker(null)
+      }
+    }
+  }, [editMode, selectingLocation])
+
   return (
-    <Box position="relative" height="100%" width="100%" pb="env(safe-area-inset-bottom)">
+    <Box position="relative" h="100%" w="100%">
       {(isLoading || isLoadingStats) && (
         <Box
           position="absolute"
@@ -507,10 +674,10 @@ const PlaygroundMap = () => {
         currentCity={currentCity}
         visits={visits}
         editMode={editMode}
-        setEditMode={setEditMode}
         loading={isLoadingStats}
         showStats={showStats}
         onStatsChange={handleStatsOpen}
+        onEditModeChange={onEditModeChange}
         playgrounds={playgrounds}
       />
 
@@ -561,6 +728,81 @@ const PlaygroundMap = () => {
           ))}
         </MarkerClusterGroup>
       </MapContainer>
+
+      {editMode && selectingLocation && (
+        <Box
+          position="absolute"
+          top={4}
+          left="50%"
+          transform="translateX(-50%)"
+          zIndex={1000}
+          bg="white"
+          p={3}
+          borderRadius="md"
+          boxShadow="md"
+          textAlign="center"
+          border="1px solid"
+          borderColor="brand.100"
+        >
+          <Text fontWeight="medium" color="brand.700">
+            {t('playground.add.selectLocation')}
+          </Text>
+          <Button
+            mt={2}
+            size="sm"
+            onClick={() => {
+              setSelectingLocation(false)
+              if (mapRef.current) {
+                mapRef.current.getContainer().style.cursor = ''
+              }
+              if (tempMarker) {
+                tempMarker.remove()
+              }
+            }}
+            bg="red.500"
+            color="white"
+            border="1px solid"
+            borderColor="red.500"
+            _hover={{
+              bg: 'red.600',
+              transform: 'translateY(-2px)',
+              borderColor: 'red.600'
+            }}
+            _active={{
+              bg: 'red.500',
+              transform: 'translateY(0)'
+            }}
+            transition="all 0.2s"
+          >
+            {t('playground.add.cancelButton')}
+          </Button>
+        </Box>
+      )}
+
+      {editMode && (
+        <Box position="absolute" left={4} bottom={4} zIndex={1000}>
+          <IconButton
+            aria-label={t('playground.add.button')}
+            variant="solid"
+            rounded="full"
+            size="lg"
+            bg="brand.500"
+            color="white"
+            _hover={{
+              bg: 'secondary.500',
+              transform: 'translateY(-2px)'
+            }}
+            _active={{
+              bg: 'brand.500',
+              transform: 'translateY(0)'
+            }}
+            transition="all 0.2s"
+            onClick={startAddingPlayground}
+          >
+            <Box as={MdAddLocation} fontSize="24px" />
+          </IconButton>
+        </Box>
+      )}
     </Box>
   )
 }
