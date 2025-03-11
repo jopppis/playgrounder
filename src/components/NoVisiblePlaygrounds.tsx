@@ -22,6 +22,8 @@ const NoVisiblePlaygrounds = memo(({
   const [isVisible, setIsVisible] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
 
+  const noPlaygroundsAtAll = filteredPlaygrounds.length === 0
+
   useEffect(() => {
     const checkVisibility = () => {
       // If there are no filtered playgrounds at all, show the message
@@ -91,7 +93,7 @@ const NoVisiblePlaygrounds = memo(({
       bottom={4}
       left="50%"
       transform="translateX(-50%)"
-      bg="white"
+      bg={noPlaygroundsAtAll ? 'red.500' : 'white'}
       p={4}
       borderRadius="md"
       boxShadow="lg"
@@ -99,11 +101,13 @@ const NoVisiblePlaygrounds = memo(({
       textAlign="center"
       maxWidth="90%"
       width="auto"
-      border="1px solid"
-      borderColor="brand.100"
+      border="0px"
     >
-      <Text mb={3} color="gray.700">
-        {filteredPlaygrounds.length === 0
+      <Text
+        mb={3}
+        color={noPlaygroundsAtAll ? 'gray.900' : 'gray.700'}
+      >
+        {noPlaygroundsAtAll
           ? t('map.noPlaygroundsMatchFilters')
           : t('map.noVisiblePlaygrounds')
         }
