@@ -203,6 +203,7 @@
     "osm": "OpenStreetMap",
     "aerial": "Ilmakuva",
     "noVisiblePlaygrounds": "Ei leikkipaikkoja näkyvissä",
+    "noPlaygroundsMatchFilters": "Yksikään leikkipaikka ei vastaa suodattimia",
     "zoomToPlaygrounds": "Siirry leikkipaikoille"
   },
   "playground": {

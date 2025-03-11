@@ -203,6 +203,7 @@
     "osm": "OpenStreetMap",
     "aerial": "Aerial",
     "noVisiblePlaygrounds": "No playgrounds visible in current view",
+    "noPlaygroundsMatchFilters": "No playgrounds match your current filters",
     "zoomToPlaygrounds": "Go to playgrounds"
   },
   "playground": {

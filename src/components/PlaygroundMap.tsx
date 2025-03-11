@@ -218,11 +218,18 @@ const NoVisiblePlaygrounds = memo(({
 
   useEffect(() => {
     const checkVisibility = () => {
+      // If there are no filtered playgrounds at all, show the message
+      if (filteredPlaygrounds.length === 0 && playgrounds.length > 0) {
+        setIsVisible(true)
+        return
+      }
+
+      // Otherwise, check if any filtered playgrounds are in the current view
       const bounds = map.getBounds()
       const hasVisiblePlaygrounds = filteredPlaygrounds.some(playground =>
         bounds.contains([playground.latitude, playground.longitude])
       )
-      setIsVisible(!hasVisiblePlaygrounds && playgrounds.length > 0)
+      setIsVisible(!hasVisiblePlaygrounds && playgrounds.length > 0 && filteredPlaygrounds.length > 0)
     }
 
     // Check initial visibility
@@ -289,26 +296,33 @@ const NoVisiblePlaygrounds = memo(({
       border="1px solid"
       borderColor="brand.100"
     >
-      <Text mb={3} color="gray.700">{t('map.noVisiblePlaygrounds')}</Text>
-      <Button
-        onClick={handleZoomToPlaygrounds}
-        bg="brand.500"
-        color="white"
-        size="sm"
-        _hover={{
-          bg: 'secondary.500',
-          transform: 'translateY(-2px)',
-          boxShadow: 'sm'
-        }}
-        _active={{
-          bg: 'brand.600',
-          transform: 'translateY(0)'
-        }}
-        transition="all 0.2s"
-        boxShadow="base"
-      >
-        {t('map.zoomToPlaygrounds')}
-      </Button>
+      <Text mb={3} color="gray.700">
+        {filteredPlaygrounds.length === 0
+          ? t('map.noPlaygroundsMatchFilters')
+          : t('map.noVisiblePlaygrounds')
+        }
+      </Text>
+      {filteredPlaygrounds.length > 0 && (
+        <Button
+          onClick={handleZoomToPlaygrounds}
+          bg="brand.500"
+          color="white"
+          size="sm"
+          _hover={{
+            bg: 'secondary.500',
+            transform: 'translateY(-2px)',
+            boxShadow: 'sm'
+          }}
+          _active={{
+            bg: 'brand.600',
+            transform: 'translateY(0)'
+          }}
+          transition="all 0.2s"
+          boxShadow="base"
+        >
+          {t('map.zoomToPlaygrounds')}
+        </Button>
+      )}
     </Box>
   )
 })
