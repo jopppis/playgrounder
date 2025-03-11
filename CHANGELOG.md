@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- No visible playgrounds notification modal
+
 ## [0.14.2] - 2025-03-11
 
 ### Fixed

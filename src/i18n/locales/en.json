@@ -201,7 +201,9 @@
     "showMyLocation": "Show my location",
     "standard": "Default",
     "osm": "OpenStreetMap",
-    "aerial": "Aerial"
+    "aerial": "Aerial",
+    "noVisiblePlaygrounds": "No playgrounds visible in current view",
+    "zoomToPlaygrounds": "Go to playgrounds"
   },
   "playground": {
     "unnamed": "Unnamed playground",

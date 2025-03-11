@@ -201,7 +201,9 @@
     "showMyLocation": "Näytä sijaintini",
     "standard": "Oletus",
     "osm": "OpenStreetMap",
-    "aerial": "Ilmakuva"
+    "aerial": "Ilmakuva",
+    "noVisiblePlaygrounds": "Ei leikkipaikkoja näkyvissä",
+    "zoomToPlaygrounds": "Siirry leikkipaikoille"
   },
   "playground": {
     "unnamed": "Nimetön leikkipaikka",
