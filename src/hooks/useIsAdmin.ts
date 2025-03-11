@@ -22,7 +22,9 @@ export const useIsAdmin = () => {
         .single()
 
       if (error) {
-        console.error('Error checking admin status:', error)
+        if (error.code !== 'PGRST116') {
+          console.error('Error checking admin status:', error)
+        }
         setIsAdmin(false)
       } else {
         setIsAdmin(!!data)
