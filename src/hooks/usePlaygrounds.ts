@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { PlaygroundWithCoordinates } from '../types/database.types'
 import { BBox, usePlaygroundFetcher } from './usePlaygroundFetcher'
 
-const BBOX_PADDING_FACTOR = 5 // How much to expand the bbox for prefetching
+const BBOX_PADDING_FACTOR = 10 // How much to expand the bbox for prefetching
 const ZOOM_THRESHOLD = 11 // Zoom level at which we switch between full and bbox fetching
 
 export type { BBox } from './usePlaygroundFetcher'
