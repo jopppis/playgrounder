@@ -11,7 +11,6 @@ import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'r
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
-import { useAllRatings } from '../hooks/useAllRatings'
 import { useAuth } from '../hooks/useAuth'
 import { useCurrentCity } from '../hooks/useCurrentCity'
 import { BBox, usePlaygrounds } from '../hooks/usePlaygrounds'
@@ -242,11 +241,10 @@ interface PlaygroundMapProps {
 const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, selectingLocation: externalSelectingLocation = false, addedLocations = [] }: PlaygroundMapProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { playgrounds, loading: playgroundsLoading, refreshPlaygrounds } = usePlaygrounds()
+  const { playgrounds, loading: playgroundsLoading, refreshPlaygrounds, refreshSinglePlayground } = usePlaygrounds()
   const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
   const { filters, loading: filtersLoading, updateFilters } = useUserFilters()
   const { currentCity, updateCurrentCity } = useCurrentCity()
-  const { ratings, refreshRatings } = useAllRatings()
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectingLocation, setSelectingLocation] = useState(false)
@@ -431,43 +429,39 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
 
       // Filter by public star rating
       if (filters.minStars !== null) {
-        const rating = ratings.find(r => r.playground_id === playground.id)
         // Hide unrated playgrounds or those with rating below the minimum
-        if (!rating?.avg_rating || rating.avg_rating < filters.minStars) {
+        if (!playground.avg_rating || playground.avg_rating < filters.minStars) {
           return false
         }
       }
 
       // Filter for playgrounds with no rating
       if (filters.noRating === true) {
-        const rating = ratings.find(r => r.playground_id === playground.id)
         // Only show playgrounds with no rating
-        if (rating?.avg_rating) {
+        if (playground.avg_rating) {
           return false
         }
       }
 
       // Filter by user's own rating
       if (user && filters.minUserStars !== null) {
-        const userRating = ratings.find(r => r.playground_id === playground.id)?.user_rating
         // Hide unrated playgrounds or those with user rating below the minimum
-        if (!userRating || userRating < filters.minUserStars) {
+        if (!playground.user_rating || playground.user_rating < filters.minUserStars) {
           return false
         }
       }
 
       // Filter for playgrounds with no user rating
       if (user && filters.noUserRating === true) {
-        const userRating = ratings.find(r => r.playground_id === playground.id)?.user_rating
         // Only show playgrounds with no user rating
-        if (userRating) {
+        if (playground.user_rating) {
           return false
         }
       }
 
       return true
     })
-  }, [playgrounds, filters, user, visits, ratings])
+  }, [playgrounds, filters, user, visits])
 
   // Add navigation and zoom event listeners
   useEffect(() => {
@@ -719,7 +713,7 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
               user={user}
               visitsLoading={visitsLoading}
               onVisitChange={updateVisitsState}
-              onRatingChange={(playgroundId) => refreshRatings(playgroundId)}
+              onRatingChange={() => refreshSinglePlayground(playground.id)}
               editMode={editMode}
             />
           ))}

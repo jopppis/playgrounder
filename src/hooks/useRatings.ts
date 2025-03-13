@@ -9,11 +9,16 @@ interface PlaygroundRating {
   isPublic: boolean
 }
 
-export const useRatings = (playgroundId: string) => {
+export const useRatings = (
+  playgroundId: string,
+  initialAvgRating: number | null = null,
+  initialTotalRatings: number = 0,
+  initialUserRating: number | null = null
+) => {
   const [rating, setRating] = useState<PlaygroundRating>({
-    avgRating: null,
-    totalRatings: 0,
-    userRating: null,
+    avgRating: initialAvgRating,
+    totalRatings: initialTotalRatings,
+    userRating: initialUserRating,
     isPublic: false
   })
   const [loading, setLoading] = useState(true)
@@ -22,39 +27,22 @@ export const useRatings = (playgroundId: string) => {
 
   const fetchRatings = useCallback(async () => {
     try {
-      // First get the user's rating directly from the ratings table
-      let userRating = null
-      let isPublic = false
-
+      // Only fetch the user's rating data if user is logged in
       if (user) {
         const { data: ratingData, error: ratingError } = await supabase
           .from('ratings')
-          .select('rating, is_public')
+          .select('is_public')
           .eq('playground_id', playgroundId)
           .eq('user_id', user.id)
           .maybeSingle()
 
         if (!ratingError && ratingData) {
-          userRating = ratingData.rating
-          isPublic = ratingData.is_public
+          setRating(prev => ({
+            ...prev,
+            isPublic: ratingData.is_public
+          }))
         }
       }
-
-      // Get the public ratings statistics from the view
-      const { data: statsData, error: statsError } = await supabase
-        .from('playground_ratings')
-        .select('avg_rating, total_ratings')
-        .eq('playground_id', playgroundId)
-        .single()
-
-      if (statsError && statsError.code !== 'PGRST116') throw statsError // Ignore not found error
-
-      setRating({
-        avgRating: statsData?.avg_rating || null,
-        totalRatings: statsData?.total_ratings || 0,
-        userRating,
-        isPublic
-      })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
@@ -66,30 +54,74 @@ export const useRatings = (playgroundId: string) => {
     fetchRatings()
   }, [fetchRatings])
 
-  const submitRating = async (rating: number, isPublic: boolean, visitId: string) => {
+  const submitRating = async (value: number, isPublic: boolean, visitId: string) => {
     if (!user) return
 
     try {
+      // Calculate optimistic updates
+      const oldRating = rating.userRating
+      const wasPublic = rating.isPublic
+      let newAvgRating = rating.avgRating
+      let newTotalRatings = rating.totalRatings
+
+      // Only update public stats if the rating is or was public
+      if (isPublic || wasPublic) {
+        // If this is a new public rating or changing from private to public
+        if (oldRating === null || (!wasPublic && isPublic)) {
+          newTotalRatings = rating.totalRatings + 1
+          if (rating.avgRating === null) {
+            newAvgRating = value
+          } else {
+            newAvgRating = ((rating.avgRating * (rating.totalRatings)) + value) / newTotalRatings
+          }
+        }
+        // If this is updating an existing public rating
+        else if (wasPublic && isPublic) {
+          newAvgRating = ((rating.avgRating || 0) * rating.totalRatings - oldRating + value) / rating.totalRatings
+        }
+        // If changing from public to private
+        else if (wasPublic && !isPublic) {
+          newTotalRatings = rating.totalRatings - 1
+          if (newTotalRatings === 0) {
+            newAvgRating = null
+          } else {
+            newAvgRating = ((rating.avgRating || 0) * rating.totalRatings - oldRating) / newTotalRatings
+          }
+        }
+      }
+
+      // Update state optimistically
+      setRating(prev => ({
+        ...prev,
+        userRating: value,
+        isPublic: isPublic,
+        ...(isPublic || wasPublic ? {
+          avgRating: newAvgRating,
+          totalRatings: newTotalRatings
+        } : {})
+      }))
+
       const { error } = await supabase
         .from('ratings')
         .upsert({
           playground_id: playgroundId,
           user_id: user.id,
-          rating: rating,
+          rating: value,
           is_public: isPublic,
           visit_id: visitId
         },
         {
           onConflict: 'visit_id'
-        }
-      )
+        })
 
       if (error) throw error
 
-      // Fetch updated ratings
+      // Fetch updated ratings to ensure accuracy
       await fetchRatings()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
+      // Revert optimistic update on error
+      await fetchRatings()
     }
   }
 
@@ -97,25 +129,81 @@ export const useRatings = (playgroundId: string) => {
     if (!user || rating.userRating === null) return
 
     try {
+      const oldIsPublic = rating.isPublic
+      const value = rating.userRating
+
+      // Calculate optimistic updates
+      let newAvgRating = rating.avgRating
+      let newTotalRatings = rating.totalRatings
+
+      if (oldIsPublic) {
+        // Going from public to private
+        newTotalRatings = rating.totalRatings - 1
+        if (newTotalRatings === 0) {
+          newAvgRating = null
+        } else {
+          newAvgRating = ((rating.avgRating || 0) * rating.totalRatings - value) / newTotalRatings
+        }
+      } else {
+        // Going from private to public
+        newTotalRatings = rating.totalRatings + 1
+        if (rating.avgRating === null) {
+          newAvgRating = value
+        } else {
+          newAvgRating = ((rating.avgRating * rating.totalRatings) + value) / newTotalRatings
+        }
+      }
+
+      // Update state optimistically
+      setRating(prev => ({
+        ...prev,
+        isPublic: !oldIsPublic,
+        avgRating: newAvgRating,
+        totalRatings: newTotalRatings
+      }))
+
       const { error } = await supabase
         .from('ratings')
-        .update({ is_public: !rating.isPublic })
+        .update({ is_public: !oldIsPublic })
         .eq('playground_id', playgroundId)
         .eq('user_id', user.id)
 
       if (error) throw error
 
-      // Fetch updated ratings
+      // Fetch updated ratings to ensure accuracy
       await fetchRatings()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
+      // Revert optimistic update on error
+      await fetchRatings()
     }
   }
 
-  // Add a function to set optimistic rating
-  const setOptimisticRating = (optimisticRating: PlaygroundRating) => {
-    setRating(optimisticRating)
-  }
+  const clearRating = useCallback(() => {
+    const wasPublic = rating.isPublic
+    const oldRating = rating.userRating
 
-  return { rating, loading, error, submitRating, togglePublic, refresh: fetchRatings, setOptimisticRating }
+    setRating(prev => ({
+      ...prev,
+      userRating: null,
+      isPublic: false,
+      // Only update public stats if the rating was public
+      ...(wasPublic && oldRating !== null ? {
+        avgRating: prev.totalRatings > 1
+          ? ((prev.avgRating || 0) * prev.totalRatings - oldRating) / (prev.totalRatings - 1)
+          : null,
+        totalRatings: prev.totalRatings - 1
+      } : {})
+    }))
+  }, [rating.isPublic, rating.userRating])
+
+  return {
+    rating,
+    loading,
+    error,
+    submitRating,
+    togglePublic,
+    refresh: fetchRatings,
+    clearRating
+ }
 }

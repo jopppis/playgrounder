@@ -47,7 +47,12 @@ export const PlaygroundPopup = ({
   const toast = useToast()
   const { showLoginToast } = useLoginToast()
   const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
-  const { rating, loading: ratingLoading, submitRating, togglePublic, refresh: refreshRating, setOptimisticRating } = useRatings(playground.id)
+  const { rating, loading: ratingLoading, submitRating, togglePublic, clearRating } = useRatings(
+    playground.id,
+    playground.avg_rating,
+    playground.total_ratings,
+    playground.user_rating
+  )
   const { preferences } = useUserPreferences()
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
   const [showEditModal, setShowEditModal] = useState(false)
@@ -115,7 +120,9 @@ export const PlaygroundPopup = ({
     // Reset local state
     setHasVisited(false)
     onVisitChange(false)
-    await refreshRating() // Refresh ratings to clear the old rating
+    // Clear rating data since ratings can't exist without visits
+    clearRating()
+    onRatingChange()
     onContentChange?.()
     toast.showSuccess({
       title: t('playground.removeVisit.title'),
@@ -142,35 +149,18 @@ export const PlaygroundPopup = ({
         throw new Error(t('playground.rating.error.noVisit'))
       }
 
-      // Optimistically update the local state
-      const oldRating = rating
       // Use default public setting for new ratings
-      const isPublic = oldRating?.userRating === null ? preferences.defaultPublicRatings : (oldRating?.isPublic ?? false)
-      const optimisticRating = {
-        ...rating,
-        userRating: value,
-        isPublic,
-        // Only update public stats if the rating is public
-        ...(isPublic && {
-          avgRating: oldRating?.userRating === null
-            ? (((oldRating?.avgRating || 0) * (oldRating?.totalRatings || 0) + value) / ((oldRating?.totalRatings || 0) + 1))
-            : ((((oldRating?.avgRating || 0) * (oldRating?.totalRatings || 0)) - (oldRating?.userRating || 0) + value) / (oldRating?.totalRatings || 1)),
-          totalRatings: oldRating?.userRating === null ? (oldRating?.totalRatings || 0) + 1 : oldRating?.totalRatings || 0
-        })
-      }
+      const isPublic = rating?.userRating === null ? preferences.defaultPublicRatings : (rating?.isPublic ?? false)
       setHoveredRating(null)
-      setOptimisticRating(optimisticRating)
 
-      // Now submit the rating with the visit_id
+      // Submit the rating - optimistic updates are now handled in useRatings
       await submitRating(value, isPublic, visitData.id)
       onContentChange?.()
-      onRatingChange() // Call onRatingChange after submitting rating
+      onRatingChange()
       toast.showSuccess({
         title: t('playground.rating.success.title')
       })
     } catch (err) {
-      // If there was an error, refresh the rating to get the correct state
-      await refreshRating()
       toast.showError({
         title: t('playground.rating.error.title'),
         description: err instanceof Error ? err.message : t('common.unknownError')

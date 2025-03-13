@@ -13,6 +13,9 @@ interface PlaygroundFromView extends Omit<PlaygroundWithCoordinates, 'latitude' 
   location: {
     coordinates: [number, number] // [longitude, latitude]
   }
+  avg_rating: number | null
+  total_ratings: number
+  user_rating: number | null
 }
 
 interface CacheEntry {
@@ -46,7 +49,7 @@ export const usePlaygroundFetcher = () => {
 
   const fetchAllPlaygrounds = useCallback(async (): Promise<PlaygroundWithCoordinates[]> => {
     const { data: playgroundsData, error: playgroundsError } = await supabase
-      .from('v_active_playgrounds')
+      .from('v_active_playgrounds_with_ratings')
       .select('*')
 
     if (playgroundsError) throw playgroundsError
@@ -56,7 +59,7 @@ export const usePlaygroundFetcher = () => {
 
   const fetchPlaygroundsInBBox = useCallback(async (bbox: BBox): Promise<PlaygroundWithCoordinates[]> => {
     const { data: playgroundsData, error: playgroundsError } = await supabase
-      .rpc('get_playgrounds_in_bbox', {
+      .rpc('get_playgrounds_with_ratings_in_bbox', {
         min_lon: bbox.minLon,
         min_lat: bbox.minLat,
         max_lon: bbox.maxLon,

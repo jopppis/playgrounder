@@ -163,7 +163,10 @@ describe('PlaygroundMap', () => {
       city: 'Helsinki',
       data_source: 'municipality',
       has_supervised_activities: true,
-      created_at: '2023-01-01T12:00:00Z'
+      created_at: '2023-01-01T12:00:00Z',
+      avg_rating: 4.5,
+      total_ratings: 10,
+      user_rating: null
     },
     {
       id: 'pg-2',
@@ -173,7 +176,10 @@ describe('PlaygroundMap', () => {
       city: 'Helsinki',
       data_source: 'osm',
       has_supervised_activities: false,
-      created_at: '2023-01-01T12:00:00Z'
+      created_at: '2023-01-01T12:00:00Z',
+      avg_rating: null,
+      total_ratings: 0,
+      user_rating: null
     }
   ]
 
@@ -190,7 +196,8 @@ describe('PlaygroundMap', () => {
       playgrounds: mockPlaygrounds,
       loading: false,
       refreshPlaygrounds: vi.fn().mockResolvedValue(mockPlaygrounds),
-      hasAllPlaygrounds: false
+      hasAllPlaygrounds: false,
+      refreshSinglePlayground: vi.fn().mockResolvedValue(undefined)
     })
 
     vi.mocked(useVisits).mockReturnValue({

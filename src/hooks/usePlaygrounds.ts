@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 import { PlaygroundWithCoordinates } from '../types/database.types'
 import { BBox, usePlaygroundFetcher } from './usePlaygroundFetcher'
 
@@ -76,10 +77,43 @@ export const usePlaygrounds = () => {
     }
   }, [getPlaygrounds, hasAllPlaygrounds, isContainedInCachedArea, expandBBox])
 
+  const refreshSinglePlayground = useCallback(async (playgroundId: string) => {
+    try {
+      // Fetch just this playground's updated data
+      const { data: updatedPlayground, error } = await supabase
+        .from('v_active_playgrounds_with_ratings')
+        .select('*')
+        .eq('id', playgroundId)
+        .single()
+
+      if (error) {
+        console.error('Error fetching updated playground:', error)
+        return
+      }
+
+      // Transform the playground data to include latitude and longitude
+      const transformedPlayground: PlaygroundWithCoordinates = {
+        ...updatedPlayground,
+        latitude: updatedPlayground.location.coordinates[1],
+        longitude: updatedPlayground.location.coordinates[0]
+      }
+
+      // Update this playground in the local state
+      setPlaygrounds(prevPlaygrounds =>
+        prevPlaygrounds.map(p =>
+          p.id === playgroundId ? transformedPlayground : p
+        )
+      )
+    } catch (error) {
+      console.error('Error refreshing playground:', error)
+    }
+  }, [])
+
   return {
     playgrounds,
     loading,
     refreshPlaygrounds,
-    hasAllPlaygrounds
+    hasAllPlaygrounds,
+    refreshSinglePlayground
   }
 }

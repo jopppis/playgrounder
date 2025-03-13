@@ -57,13 +57,7 @@ describe('useRatings', () => {
 
     // Mock supabase.from().select().eq().maybeSingle()
     mockFromMaybeSingle.mockResolvedValue({
-      data: { rating: 4, is_public: true },
-      error: null
-    })
-
-    // Mock supabase.from().select().eq().single()
-    mockFromSingle.mockResolvedValue({
-      data: { avg_rating: 4.5, total_ratings: 10 },
+      data: { rating: 4, is_public: false},
       error: null
     })
 
@@ -103,7 +97,7 @@ describe('useRatings', () => {
   })
 
   it('fetches ratings on mount', async () => {
-    const { result } = renderHook(() => useRatings(mockPlaygroundId))
+    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4.5, 10, 3))
 
     // Initial state
     expect(result.current.loading).toBe(true)
@@ -115,9 +109,7 @@ describe('useRatings', () => {
 
     // Verify the correct data was fetched
     expect(supabase.from).toHaveBeenCalledWith('ratings')
-    expect(supabase.from).toHaveBeenCalledWith('playground_ratings')
-    expect(mockFromSelect).toHaveBeenCalledWith('rating, is_public')
-    expect(mockFromSelect).toHaveBeenCalledWith('avg_rating, total_ratings')
+    expect(mockFromSelect).toHaveBeenCalledWith('is_public')
     expect(mockFromEq).toHaveBeenCalledWith('playground_id', mockPlaygroundId)
     expect(mockFromEq).toHaveBeenCalledWith('user_id', mockUser.id)
 
@@ -125,28 +117,12 @@ describe('useRatings', () => {
     expect(result.current.rating).toEqual({
       avgRating: 4.5,
       totalRatings: 10,
-      userRating: 4,
-      isPublic: true
+      userRating: 3,
+      isPublic: false
     })
   })
 
-  it('handles errors when fetching ratings', async () => {
-    // Mock an error response
-    mockFromSingle.mockResolvedValue({
-      data: null,
-      error: new Error('Database error')
-    })
 
-    const { result } = renderHook(() => useRatings(mockPlaygroundId))
-
-    // Wait for the fetch to complete
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false)
-    })
-
-    // Verify error state
-    expect(result.current.error).toBeTruthy()
-  })
 
   it('submits a rating successfully', async () => {
     const { result } = renderHook(() => useRatings(mockPlaygroundId))
@@ -175,7 +151,7 @@ describe('useRatings', () => {
   })
 
   it('toggles rating visibility', async () => {
-    const { result } = renderHook(() => useRatings(mockPlaygroundId))
+    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4.5, 10, 3))
 
     // Wait for initial fetch to complete
     await waitFor(() => {
@@ -189,35 +165,47 @@ describe('useRatings', () => {
 
     // Verify the visibility was toggled
     expect(supabase.from).toHaveBeenCalledWith('ratings')
-    expect(mockFromUpdate).toHaveBeenCalledWith({ is_public: false })
+    expect(mockFromUpdate).toHaveBeenCalledWith({ is_public: true })
     expect(mockFromEq).toHaveBeenCalledWith('playground_id', mockPlaygroundId)
     expect(mockFromEq).toHaveBeenCalledWith('user_id', mockUser.id)
   })
 
   it('sets optimistic rating', async () => {
-    const { result } = renderHook(() => useRatings(mockPlaygroundId))
+    // Mock that after submitting, the fetch will return is_public: true
+    mockFromMaybeSingle.mockResolvedValueOnce({
+      data: { rating: 4, is_public: false },
+      error: null
+    }).mockResolvedValueOnce({
+      data: { rating: 5, is_public: true },
+      error: null
+    })
+
+    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4, 1, 4))
 
     // Wait for initial fetch to complete
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
     })
 
-    // Set optimistic rating
-    act(() => {
-      result.current.setOptimisticRating({
-        avgRating: 4.2,
-        totalRatings: 5,
-        userRating: 3,
-        isPublic: false
-      })
+    // Verify the rating was set initially
+    expect(result.current.rating).toEqual({
+      avgRating: 4,
+      totalRatings: 1,
+      userRating: 4,
+      isPublic: false
+    })
+
+    // Submit a rating
+    await act(async () => {
+      await result.current.submitRating(5, true, 'test-visit-id')
     })
 
     // Verify the rating was updated
     expect(result.current.rating).toEqual({
-      avgRating: 4.2,
-      totalRatings: 5,
-      userRating: 3,
-      isPublic: false
+      avgRating: 4.5,
+      totalRatings: 2,
+      userRating: 5,
+      isPublic: true
     })
   })
 

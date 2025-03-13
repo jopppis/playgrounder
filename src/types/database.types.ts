@@ -6,6 +6,9 @@ export interface Playground {
   has_supervised_activities: boolean
   city: string | null
   data_source: 'municipality' | 'osm' | 'community' | null
+  avg_rating: number | null
+  total_ratings: number
+  user_rating: number | null
 }
 
 export interface PlaygroundWithCoordinates extends Omit<Playground, 'location'> {

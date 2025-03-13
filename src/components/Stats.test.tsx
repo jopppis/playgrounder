@@ -16,7 +16,10 @@ describe('Stats', () => {
       has_supervised_activities: true,
       created_at: new Date().toISOString(),
       latitude: 60.1699,
-      longitude: 24.9384
+      longitude: 24.9384,
+      avg_rating: 4.5,
+      total_ratings: 10,
+      user_rating: null
     },
     {
       id: '2',
@@ -26,7 +29,10 @@ describe('Stats', () => {
       has_supervised_activities: false,
       created_at: new Date().toISOString(),
       latitude: 60.2055,
-      longitude: 24.6559
+      longitude: 24.6559,
+      avg_rating: null,
+      total_ratings: 0,
+      user_rating: null
     },
     {
       id: '3',
@@ -36,7 +42,10 @@ describe('Stats', () => {
       has_supervised_activities: true,
       created_at: new Date().toISOString(),
       latitude: 60.1699,
-      longitude: 24.9384
+      longitude: 24.9384,
+      avg_rating: 3.0,
+      total_ratings: 5,
+      user_rating: null
     }
   ]
 
