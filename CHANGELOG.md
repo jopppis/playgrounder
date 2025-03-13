@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2025-03-13
+
 ### Changed
 - Optimize rating fetching
 - Rename playground_ratings view to v_playground_ratings
