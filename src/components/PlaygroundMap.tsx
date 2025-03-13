@@ -187,8 +187,13 @@ const MapStateManager = ({ onMapReady, playgrounds }: {
   const initialState = getInitialMapState()
   const isInitialLoad = useRef(true)
   const updateTimeout = useRef<number>()
-  const DEBOUNCE_DELAY = 300
+  const URL_DEBOUNCE_DELAY = 300
   const initialPlaygroundId = useRef<string | null>(initialState.playgroundId || null)
+
+  // Separate effect for onMapReady
+  useEffect(() => {
+    onMapReady(map)
+  }, [map, onMapReady])
 
   useEffect(() => {
     // Handle initial state only once
@@ -196,7 +201,6 @@ const MapStateManager = ({ onMapReady, playgrounds }: {
       if (initialState.center && initialState.zoom) {
         map.setView(initialState.center, initialState.zoom)
       }
-      onMapReady(map)
       isInitialLoad.current = false
     }
 
@@ -249,7 +253,7 @@ const MapStateManager = ({ onMapReady, playgrounds }: {
 
         // Update URL state with the playground ID if a popup is open
         updateUrlState(map, openPopupPlaygroundId)
-      }, DEBOUNCE_DELAY)
+      }, URL_DEBOUNCE_DELAY)
     }
 
     map.on('moveend', handleMapMove)
@@ -494,6 +498,7 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
   }, [refreshPlaygrounds])
 
   const handleMapReady = useCallback((map: L.Map) => {
+    console.log('handleMapReady')
     mapRef.current = map
     map.on('moveend', handleMapMoveEnd)
     map.on('zoomend', handleMapMoveEnd)
