@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2025-03-13
+
 ### Changed
 - Reduced interval for login toast to 1 minute
 - Synchronize default zoom levels
