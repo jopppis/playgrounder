@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Reduced interval for login toast to 1 minute
+
 ## [0.16.1] - 2025-03-13
 
 ### Fixed
