@@ -136,6 +136,137 @@ const createBaseIcon = (isVisited = false, isNew = false) => {
 const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
+// Add URL state management
+const useMapUrlState = () => {
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+
+  const updateUrlState = useCallback((map: L.Map, playgroundId?: string) => {
+    const center = map.getCenter()
+    const zoom = map.getZoom()
+    const params = new URLSearchParams(window.location.search)
+
+    params.set('lat', center.lat.toFixed(6))
+    params.set('lng', center.lng.toFixed(6))
+    params.set('zoom', zoom.toString())
+
+    if (playgroundId) {
+      params.set('playground', playgroundId)
+    } else {
+      params.delete('playground')
+    }
+
+    // Use history.replaceState directly to avoid React re-renders
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState(null, '', newUrl)
+  }, [])
+
+  const getInitialMapState = useCallback(() => {
+    const lat = searchParams.get('lat')
+    const lng = searchParams.get('lng')
+    const zoom = searchParams.get('zoom')
+    const playgroundId = searchParams.get('playground')
+
+    return {
+      center: lat && lng ? [parseFloat(lat), parseFloat(lng)] as [number, number] : undefined,
+      zoom: zoom ? parseInt(zoom) : undefined,
+      playgroundId
+    }
+  }, [searchParams])
+
+  return { updateUrlState, getInitialMapState }
+}
+
+// Add MapStateManager component
+const MapStateManager = ({ onMapReady, playgrounds }: {
+  onMapReady: (map: L.Map) => void,
+  playgrounds: PlaygroundWithCoordinates[]
+}) => {
+  const map = useMap()
+  const { updateUrlState, getInitialMapState } = useMapUrlState()
+  const initialState = getInitialMapState()
+  const isInitialLoad = useRef(true)
+  const updateTimeout = useRef<number>()
+  const DEBOUNCE_DELAY = 300
+  const initialPlaygroundId = useRef<string | null>(initialState.playgroundId || null)
+
+  useEffect(() => {
+    // Handle initial state only once
+    if (isInitialLoad.current) {
+      if (initialState.center && initialState.zoom) {
+        map.setView(initialState.center, initialState.zoom)
+      }
+      onMapReady(map)
+      isInitialLoad.current = false
+    }
+
+    // Try to open the initial playground popup if we have a playground ID and playgrounds are loaded
+    if (initialPlaygroundId.current && playgrounds.length > 0) {
+      const playground = playgrounds.find(p => p.id === initialPlaygroundId.current)
+      if (playground) {
+        // Set view to the playground location
+        map.setView([playground.latitude, playground.longitude], 14)
+
+        // Use setTimeout to wait for markers to be created
+        setTimeout(() => {
+          map.eachLayer((layer) => {
+            if (layer instanceof L.Marker) {
+              const markerLatLng = layer.getLatLng()
+              if (markerLatLng.lat === playground.latitude && markerLatLng.lng === playground.longitude) {
+                layer.openPopup()
+              }
+            }
+          })
+        }, 200) // Small delay to ensure markers are rendered
+
+        // Clear the ID so we don't try to open it again
+        initialPlaygroundId.current = null
+      }
+    }
+
+    // Debounced URL update handler
+    const handleMapMove = () => {
+      if (updateTimeout.current) {
+        window.clearTimeout(updateTimeout.current)
+      }
+
+      updateTimeout.current = window.setTimeout(() => {
+        // Check for open popups
+        let openPopupPlaygroundId: string | undefined
+        map.eachLayer((layer) => {
+          if (layer instanceof L.Marker && layer.getPopup()?.isOpen()) {
+            // Find the playground that matches this marker's position
+            const markerLatLng = layer.getLatLng()
+            const playground = playgrounds.find(p =>
+              p.latitude === markerLatLng.lat &&
+              p.longitude === markerLatLng.lng
+            )
+            if (playground) {
+              openPopupPlaygroundId = playground.id
+            }
+          }
+        })
+
+        // Update URL state with the playground ID if a popup is open
+        updateUrlState(map, openPopupPlaygroundId)
+      }, DEBOUNCE_DELAY)
+    }
+
+    map.on('moveend', handleMapMove)
+    map.on('zoomend', handleMapMove)
+
+    return () => {
+      if (updateTimeout.current) {
+        window.clearTimeout(updateTimeout.current)
+      }
+      map.off('moveend', handleMapMove)
+      map.off('zoomend', handleMapMove)
+    }
+  }, [map, onMapReady, initialState, playgrounds, updateUrlState])
+
+  return null
+}
+
 // Separate component for playground markers
 const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange, editMode }: {
   playground: PlaygroundWithCoordinates
@@ -146,6 +277,8 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   onRatingChange: (playgroundId: string) => void
   editMode: boolean
 }) => {
+  const { updateUrlState } = useMapUrlState()
+  const map = useMap()
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
     [visits, playground.id]
@@ -181,6 +314,15 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
     }
   }, [playground.id, onVisitChange])
 
+  // Handle popup open/close
+  const handlePopupOpen = useCallback(() => {
+    updateUrlState(map, playground.id)
+  }, [map, playground.id, updateUrlState])
+
+  const handlePopupClose = useCallback(() => {
+    updateUrlState(map)
+  }, [map, updateUrlState])
+
   return (
     <Marker
       position={[playground.latitude, playground.longitude]}
@@ -191,14 +333,20 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
         ref={popupRef}
         autoPan={true}
         autoPanPadding={[50, 50]}
+        eventHandlers={{
+          add: handlePopupOpen,
+          remove: handlePopupClose
+        }}
       >
-        <PlaygroundPopup
-          playground={playground}
-          onVisitChange={handleVisitChange}
-          onContentChange={updatePopup}
-          onRatingChange={() => onRatingChange(playground.id)}
-          editMode={editMode}
-        />
+        <Box>
+          <PlaygroundPopup
+            playground={playground}
+            onVisitChange={handleVisitChange}
+            onContentChange={updatePopup}
+            onRatingChange={() => onRatingChange(playground.id)}
+            editMode={editMode}
+          />
+        </Box>
       </Popup>
     </Marker>
   )
@@ -213,17 +361,6 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
     prevProps.editMode === nextProps.editMode
   );
 });
-
-// Separate component to handle map events
-const MapEvents = ({ onMapReady }: { onMapReady: (map: L.Map) => void }) => {
-  const map = useMap()
-
-  useEffect(() => {
-    onMapReady(map)
-  }, [map, onMapReady])
-
-  return null
-}
 
 interface PlaygroundMapProps {
   editMode?: boolean
@@ -377,6 +514,12 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
 
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
+
+  // Get initial map state from URL parameters
+  const { getInitialMapState } = useMapUrlState()
+  const initialMapState = getInitialMapState()
+  const initialCenter = initialMapState.center || helsinkiCenter
+  const initialZoom = initialMapState.zoom || 14
 
   const filteredPlaygrounds = useMemo(() => {
     if (!playgrounds) return []
@@ -673,13 +816,12 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
       />
 
       <MapContainer
-        center={helsinkiCenter}
-        zoom={13.5}
+        center={initialCenter}
+        zoom={initialZoom}
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
         preferCanvas={true}
       >
-        <MapEvents onMapReady={handleMapReady} />
         <LayersControl position="bottomright">
           <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
             <TileLayer
@@ -703,6 +845,7 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
           </LayersControl.BaseLayer>
         </LayersControl>
         <LocationControl onLocationUpdate={updateCurrentCity} />
+        <MapStateManager onMapReady={handleMapReady} playgrounds={playgrounds || []} />
 
         <MarkerClusterGroup {...markerClusterOptions}>
           {filteredPlaygrounds.map((playground) => (

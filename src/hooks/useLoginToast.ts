@@ -8,7 +8,7 @@ const MIN_TOAST_INTERVAL_MS = 60 * 1000
 
 /**
  * Hook for showing login toasts with throttling across all component instances
- * Will only show a toast at most once every 15 seconds
+ * Will only show a toast at most once every some seconds.
  */
 export const useLoginToast = () => {
   const { t } = useTranslation()

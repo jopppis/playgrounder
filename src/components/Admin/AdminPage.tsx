@@ -98,7 +98,7 @@ export default function AdminPage({ isOpen, onClose }: AdminPageProps) {
                     <ProposalList onNavigateToPlayground={(lat, lng) => {
                       onClose()
                       window.dispatchEvent(new CustomEvent('navigateToPlayground', {
-                        detail: { lat, lng, zoom: 17 }
+                        detail: { lat, lng, zoom: 14 }
                       }))
                     }} />
                   </Tabs.Content>

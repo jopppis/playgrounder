@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Reduced interval for login toast to 1 minute
+- Synchronize default zoom levels
+
+### Added
+- Map state in URL parameters for sharing
 
 ## [0.16.1] - 2025-03-13
 
