@@ -50,21 +50,31 @@ export const PlaygroundPopup = ({
   const { rating, loading: ratingLoading, submitRating, togglePublic, clearRating } = useRatings(
     playground.id,
     playground.avg_rating,
-    playground.total_ratings,
-    playground.user_rating
+    playground.total_ratings
   )
   const { preferences } = useUserPreferences()
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [hasVisited, setHasVisited] = useState(false)
+
+  // Reset states when user changes
+  useEffect(() => {
+    // Only reset if we're sure there's no user (not during loading)
+    if (!user && !authLoading) {
+      setHoveredRating(null)
+    }
+  }, [user, authLoading])
 
   // Use useEffect to update hasVisited when visits change
-  const [hasVisited, setHasVisited] = useState(false)
   useEffect(() => {
-    if (!visitsLoading) {
+    if (!visitsLoading && user) {
       setHasVisited(visits.some(visit => visit.playground_id === playground.id))
       onContentChange?.()
+    } else if (!user && !authLoading) {
+      setHasVisited(false)
+      onContentChange?.()
     }
-  }, [visits, playground.id, onContentChange, visitsLoading])
+  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading])
 
   // Update popup when rating changes
   useEffect(() => {
@@ -328,7 +338,7 @@ export const PlaygroundPopup = ({
             {/* Rating section */}
             <Box>
               <Box borderBottom="1px solid" borderColor="gray.200" mb={2} />
-              {ratingLoading ? (
+              {ratingLoading || authLoading ? (
                 <Spinner size="md" color="brand.500" role="status" aria-label={t('playground.rating.loading')} />
               ) : (
                 <HStack gap={2} justify="space-between" align="center">

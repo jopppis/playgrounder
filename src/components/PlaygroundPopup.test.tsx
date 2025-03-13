@@ -138,7 +138,7 @@ describe('PlaygroundPopup', () => {
     expect(switchElement).not.toBeDisabled()
   })
 
-  it('shows disabled visited state when visited but not logged in', async () => {
+  it('shows disabled unvisited state when visited but not logged in', async () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       loading: false
@@ -156,7 +156,7 @@ describe('PlaygroundPopup', () => {
     })
     const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeInTheDocument()
-    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked')
+    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'unchecked')
     expect(switchElement).toBeDisabled()
   })
 

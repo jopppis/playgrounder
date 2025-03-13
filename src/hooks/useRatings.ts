@@ -12,26 +12,41 @@ interface PlaygroundRating {
 export const useRatings = (
   playgroundId: string,
   initialAvgRating: number | null = null,
-  initialTotalRatings: number = 0,
-  initialUserRating: number | null = null
+  initialTotalRatings: number = 0
 ) => {
   const [rating, setRating] = useState<PlaygroundRating>({
     avgRating: initialAvgRating,
     totalRatings: initialTotalRatings,
-    userRating: initialUserRating,
+    userRating: null,
     isPublic: false
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
+
+  // Reset rating state when user logs out
+  useEffect(() => {
+    if (!authLoading && !user) {
+      setRating(prev => ({
+        ...prev,
+        userRating: null,
+        isPublic: false
+      }))
+      setLoading(false)
+    }
+  }, [user, authLoading])
 
   const fetchRatings = useCallback(async () => {
+    if (authLoading) {
+      return
+    }
+
     try {
       // Only fetch the user's rating data if user is logged in
       if (user) {
         const { data: ratingData, error: ratingError } = await supabase
           .from('ratings')
-          .select('is_public')
+          .select('rating, is_public')
           .eq('playground_id', playgroundId)
           .eq('user_id', user.id)
           .maybeSingle()
@@ -39,6 +54,7 @@ export const useRatings = (
         if (!ratingError && ratingData) {
           setRating(prev => ({
             ...prev,
+            userRating: ratingData.rating,
             isPublic: ratingData.is_public
           }))
         }
@@ -48,11 +64,15 @@ export const useRatings = (
     } finally {
       setLoading(false)
     }
-  }, [playgroundId, user])
+  }, [playgroundId, user, authLoading])
 
+  // Fetch ratings when user or playground changes
   useEffect(() => {
-    fetchRatings()
-  }, [fetchRatings])
+    if (user) {
+      setLoading(true)
+      fetchRatings()
+    }
+  }, [user, playgroundId, fetchRatings])
 
   const submitRating = async (value: number, isPublic: boolean, visitId: string) => {
     if (!user) return

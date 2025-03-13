@@ -97,7 +97,7 @@ describe('useRatings', () => {
   })
 
   it('fetches ratings on mount', async () => {
-    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4.5, 10, 3))
+    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4.5, 10))
 
     // Initial state
     expect(result.current.loading).toBe(true)
@@ -109,7 +109,7 @@ describe('useRatings', () => {
 
     // Verify the correct data was fetched
     expect(supabase.from).toHaveBeenCalledWith('ratings')
-    expect(mockFromSelect).toHaveBeenCalledWith('is_public')
+    expect(mockFromSelect).toHaveBeenCalledWith('rating, is_public')
     expect(mockFromEq).toHaveBeenCalledWith('playground_id', mockPlaygroundId)
     expect(mockFromEq).toHaveBeenCalledWith('user_id', mockUser.id)
 
@@ -117,7 +117,7 @@ describe('useRatings', () => {
     expect(result.current.rating).toEqual({
       avgRating: 4.5,
       totalRatings: 10,
-      userRating: 3,
+      userRating: 4,
       isPublic: false
     })
   })
@@ -151,7 +151,7 @@ describe('useRatings', () => {
   })
 
   it('toggles rating visibility', async () => {
-    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4.5, 10, 3))
+    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4.5, 10))
 
     // Wait for initial fetch to complete
     await waitFor(() => {
@@ -180,7 +180,7 @@ describe('useRatings', () => {
       error: null
     })
 
-    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4, 1, 4))
+    const { result } = renderHook(() => useRatings(mockPlaygroundId, 4, 1))
 
     // Wait for initial fetch to complete
     await waitFor(() => {

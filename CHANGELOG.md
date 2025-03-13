@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fix issues with ratings during logins and logouts
+
 ## [0.16.0] - 2025-03-13
 
 ### Changed
