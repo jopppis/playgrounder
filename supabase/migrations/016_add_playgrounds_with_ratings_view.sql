@@ -1,22 +1,20 @@
--- Drop existing view if it exists
+-- Drop existing view and function if exists
+DROP FUNCTION IF EXISTS get_playgrounds_with_ratings_in_bbox;
 DROP VIEW IF EXISTS v_active_playgrounds_with_ratings;
 
 -- Create view that combines playground data with ratings
 CREATE VIEW v_active_playgrounds_with_ratings AS
 SELECT
   vap.*,
-  pr.avg_rating,
-  pr.total_ratings,
+  vpr.avg_rating,
+  vpr.total_ratings,
   CASE
     WHEN auth.uid() IS NOT NULL THEN
       (SELECT rating FROM ratings WHERE playground_id = vap.id AND user_id = auth.uid())
     ELSE NULL
   END as user_rating
 FROM v_active_playgrounds vap
-LEFT JOIN playground_ratings pr ON pr.playground_id = vap.id;
-
--- Drop existing function if it exists
-DROP FUNCTION IF EXISTS get_playgrounds_with_ratings_in_bbox;
+LEFT JOIN v_playground_ratings vpr ON vpr.playground_id = vap.id;
 
 -- Create function to get playgrounds with ratings in a bounding box
 CREATE OR REPLACE FUNCTION get_playgrounds_with_ratings_in_bbox(

@@ -85,7 +85,7 @@ describe('useRatings', () => {
           upsert: mockFromUpsert,
           update: mockFromUpdate
         }
-      } else if (table === 'playground_ratings') {
+      } else if (table === 'v_playground_ratings') {
         return {
           select: mockFromSelect
         }

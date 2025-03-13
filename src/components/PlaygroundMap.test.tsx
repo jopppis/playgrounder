@@ -54,7 +54,7 @@ vi.mock('../lib/supabaseClient', () => {
       from: vi.fn().mockImplementation((table) => {
         return {
           select: vi.fn().mockImplementation(() => {
-            if (table === 'playground_ratings') {
+            if (table === 'v_playground_ratings') {
               return {
                 data: [
                   {
