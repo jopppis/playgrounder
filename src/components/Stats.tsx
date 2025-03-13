@@ -1,4 +1,4 @@
-import { Box, Button, ButtonProps, Heading, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonProps, Heading, Spinner, Text, VStack } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
@@ -10,7 +10,7 @@ type Filters = {
   minUserStars: number | null
   hasSupervised: boolean | null
   city: string | null
-  dataSource: 'municipality' | 'osm' | null
+  dataSource: 'municipality' | 'osm' | 'community' | null
   noRating: boolean | null
   noUserRating: boolean | null
 }
@@ -22,9 +22,10 @@ type StatsProps = {
   filteredPlaygroundCount?: number
   onBack: () => void
   currentCity?: string | null
+  loading?: boolean
 }
 
-const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, currentCity }: StatsProps) => {
+const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, currentCity, loading }: StatsProps) => {
   const { t } = useTranslation()
 
   const buttonProps: ButtonProps = {
@@ -143,41 +144,49 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, 
       <Text fontSize="lg" fontWeight="bold" color="brand.500" mb={4}>
         {t('stats.title')}
       </Text>
-      <VStack gap={4} align="stretch" mb={6}>
-        {/* All Playgrounds Section */}
-        <StatSection
-          title={t('stats.allPlaygrounds')}
-          totalCount={playgrounds?.length || 0}
-          visitedCount={visits?.length || 0}
-        />
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" minH="200px">
+          <Spinner size="xl" color="brand.500" />
+        </Box>
+      ) : (
+        <>
+          <VStack gap={4} align="stretch" mb={6}>
+            {/* All Playgrounds Section */}
+            <StatSection
+              title={t('stats.allPlaygrounds')}
+              totalCount={playgrounds?.length || 0}
+              visitedCount={visits?.length || 0}
+            />
 
-        {/* Filtered Section */}
-        {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
-          <StatSection
-            title={t('stats.filteredPlaygrounds')}
-            totalCount={filteredPlaygroundCount}
-            visitedCount={filteredVisitedCount || 0}
-          />
-        )}
+            {/* Filtered Section */}
+            {filters && filteredPlaygroundCount !== undefined && hasActiveFilters(filters) && (
+              <StatSection
+                title={t('stats.filteredPlaygrounds')}
+                totalCount={filteredPlaygroundCount}
+                visitedCount={filteredVisitedCount || 0}
+              />
+            )}
 
-        {/* City-specific Section */}
-        {currentCityStats && (
-          <StatSection
-            title={t('stats.currentCity', { city: currentCity })}
-            totalCount={currentCityStats.total}
-            visitedCount={currentCityStats.visited}
-          />
-        )}
-      </VStack>
-      <Button
-        {...buttonProps}
-        onClick={(e) => {
-          e.stopPropagation()
-          onBack()
-        }}
-      >
-        {t('stats.backButton')}
-      </Button>
+            {/* City-specific Section */}
+            {currentCityStats && (
+              <StatSection
+                title={t('stats.currentCity', { city: currentCity })}
+                totalCount={currentCityStats.total}
+                visitedCount={currentCityStats.visited}
+              />
+            )}
+          </VStack>
+          <Button
+            {...buttonProps}
+            onClick={(e) => {
+              e.stopPropagation()
+              onBack()
+            }}
+          >
+            {t('stats.backButton')}
+          </Button>
+        </>
+      )}
     </>
   )
 }

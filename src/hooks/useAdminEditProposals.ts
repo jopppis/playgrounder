@@ -132,42 +132,82 @@ export const useAdminEditProposals = () => {
         throw new Error(proposalError?.message || 'Proposal not found')
       }
 
-      // First update the proposal status
-      const { error: statusError } = await supabase
-        .from('playground_edit_proposals')
-        .update({
-          status: 'approved',
-          admin_notes: adminNotes || null
-        })
-        .eq('id', proposalId)
+      // If it's a new playground proposal
+      if (proposal.is_new_playground) {
+        // Add new playground
+        const { data: playgrounds, error: playgroundError } = await supabase
+          .from('playgrounds')
+          .insert({
+            name: proposal.proposed_name,
+            has_supervised_activities: proposal.has_supervised_activities,
+            location: proposal.proposed_location,
+            data_source: 'community',
+            city: null
+          })
+          .select('id')
 
-      if (statusError) throw statusError
+        if (playgroundError) throw playgroundError
+        if (!playgrounds || playgrounds.length === 0) {
+          throw new Error('Failed to create playground: No data returned')
+        }
 
-      // Then create the edit record
-      const { error: editError } = await supabase
-        .from('edited_playgrounds')
-        .insert({
-          original_id: proposal.playground_id,
-          proposal_id: proposalId,
-          name: proposal.proposed_name,
-          has_supervised_activities: proposal.has_supervised_activities,
-          is_deleted: proposal.delete_playground
-        })
+        const newPlayground = playgrounds[0]
 
-      // Restore the proposal status to pending if error occurs
-      if (editError) {
-      const { error: revertError } = await supabase
-        .from('playground_edit_proposals')
-        .update({
-          status: 'pending',
-          admin_notes: null
-        })
+        // Update proposal status and link to the new playground
+        // Also clear the proposed_location to satisfy the check constraint
+        const { error: statusError } = await supabase
+          .from('playground_edit_proposals')
+          .update({
+            status: 'approved',
+            admin_notes: adminNotes || null,
+            playground_id: newPlayground.id,
+            proposed_location: null,
+            is_new_playground: true
+          })
           .eq('id', proposalId)
 
-        if (revertError) throw revertError
+        if (statusError) throw statusError
       }
+      // If it's an edit to an existing playground
+      else if (proposal.playground_id) {
+        // First update the proposal status
+        const { error: statusError } = await supabase
+          .from('playground_edit_proposals')
+          .update({
+            status: 'approved',
+            admin_notes: adminNotes || null
+          })
+          .eq('id', proposalId)
 
-      if (editError) throw editError
+        if (statusError) throw statusError
+
+        // Then create the edit record
+        const { error: editError } = await supabase
+          .from('edited_playgrounds')
+          .insert({
+            original_id: proposal.playground_id,
+            proposal_id: proposalId,
+            name: proposal.proposed_name,
+            has_supervised_activities: proposal.has_supervised_activities,
+            is_deleted: proposal.delete_playground
+          })
+
+        // Restore the proposal status to pending if error occurs
+        if (editError) {
+          const { error: revertError } = await supabase
+            .from('playground_edit_proposals')
+            .update({
+              status: 'pending',
+              admin_notes: null
+            })
+            .eq('id', proposalId)
+
+          if (revertError) throw revertError
+          throw editError
+        }
+      } else {
+        throw new Error('Invalid proposal type')
+      }
 
       toast.showSuccess({
         title: t('admin.proposals.success.approveTitle'),

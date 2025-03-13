@@ -1,6 +1,6 @@
 ---
 description: Explanation of the project
-globs: 
+globs:
 ---
 
 # Project description
@@ -14,7 +14,8 @@ globs:
 - Never use @chakra-ui V2 components.
 - Find Chakra UI V3 components from https://www.chakra-ui.com/docs/components/concepts/overview.
 - Routes are definedin [Router.tsx](mdc:src/Router.tsx)
-
+- CSS can be applied to components by using the `css` prop in Chakra UI V3 instead of sx prop of Chakra UI V2.
+- Checkout Chkara UI V3 migration guide from https://www.chakra-ui.com/docs/get-started/migration.
 # Theming
 
 The project theming is defined in theme.ts file. Please use the brand and secondary colors for the project for all applicable uses.
@@ -29,5 +30,5 @@ The project theming is defined in theme.ts file. Please use the brand and second
 - When changing something that might break the build run `npm run build` to check if the build is successful.
 - For single command verification run `npm run lint && npm test && npm run build`
 - When adding tests, do not hardcode translations but instead use the enTranslations object like in [PlaygroundPopup.test.tsx](mdc:src/components/PlaygroundPopup.test.tsx)
-- When changing filters in [PlaygroundFilter.tsx](mdc:src/components/PlaygroundFilter.tsx) make sure to also propagate the filter to @Stats.tsx
+- When changing filters in [PlaygroundFilter.tsx](mdc:src/components/PlaygroundFilter.tsx) make sure to also propagate the filter to @Stats.tsx and handleClearFilters function in @PlaygroundMap.tsx
 - Use button colors according to the brand and secondary colors from [theme.ts](mdc:src/theme.ts). See [MenuDrawer.tsx](mdc:src/components/MenuDrawer.tsx) for example.

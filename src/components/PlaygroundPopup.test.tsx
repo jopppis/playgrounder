@@ -65,7 +65,10 @@ describe('PlaygroundPopup', () => {
     latitude: 0,
     longitude: 0,
     city: 'Test City',
-    data_source: 'municipality'
+    data_source: 'municipality',
+    avg_rating: null,
+    total_ratings: 0,
+    user_rating: null
   }
 
   const defaultProps = {
@@ -135,7 +138,7 @@ describe('PlaygroundPopup', () => {
     expect(switchElement).not.toBeDisabled()
   })
 
-  it('shows disabled visited state when visited but not logged in', async () => {
+  it('shows disabled unvisited state when visited but not logged in', async () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       loading: false
@@ -153,7 +156,7 @@ describe('PlaygroundPopup', () => {
     })
     const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
     expect(switchElement).toBeInTheDocument()
-    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked')
+    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'unchecked')
     expect(switchElement).toBeDisabled()
   })
 
@@ -189,7 +192,7 @@ describe('PlaygroundPopup', () => {
 
   it('calls onContentChange when rating changes', async () => {
     const mockSubmitRating = vi.fn().mockResolvedValue({ error: null })
-    const mockSetOptimisticRating = vi.fn()
+    const mockClearRating = vi.fn()
     const mockVisitData = { id: '1', user_id: '1', playground_id: '1', visited_at: new Date().toISOString(), notes: null }
     ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
@@ -215,7 +218,7 @@ describe('PlaygroundPopup', () => {
       submitRating: mockSubmitRating,
       togglePublic: vi.fn(),
       refresh: vi.fn(),
-      setOptimisticRating: mockSetOptimisticRating
+      clearRating: mockClearRating
     })
     ;(supabase.from as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       select: vi.fn().mockReturnValue({
@@ -237,10 +240,7 @@ describe('PlaygroundPopup', () => {
 
     await waitFor(() => {
       expect(mockSubmitRating).toHaveBeenCalledWith(1, false, mockVisitData.id)
-      expect(mockSetOptimisticRating).toHaveBeenCalledWith(expect.objectContaining({
-        userRating: 1,
-        isPublic: false
-      }))
+      expect(mockOnContentChange).toHaveBeenCalled()
     })
   })
 

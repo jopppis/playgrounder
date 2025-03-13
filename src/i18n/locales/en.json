@@ -201,7 +201,10 @@
     "showMyLocation": "Show my location",
     "standard": "Default",
     "osm": "OpenStreetMap",
-    "aerial": "Aerial"
+    "aerial": "Aerial",
+    "noVisiblePlaygrounds": "No playgrounds visible in current view",
+    "noPlaygroundsMatchFilters": "No playgrounds match your current filters",
+    "zoomToPlaygrounds": "Go to playgrounds"
   },
   "playground": {
     "unnamed": "Unnamed playground",
@@ -259,7 +262,8 @@
       "label": "Data Source",
       "any": "Any",
       "municipality": "Municipality",
-      "osm": "OpenStreetMap"
+      "osm": "OpenStreetMap",
+      "community": "Community"
     },
     "edit": {
       "title": "Edit Playground",
@@ -304,6 +308,27 @@
         "confirmButton": "Yes, Request Deletion",
         "cancelButton": "Cancel"
       }
+    },
+    "add": {
+      "title": "Add New Playground",
+      "button": "Add Playground",
+      "selectLocation": "Select a location for the new playground",
+      "selectLocationButton": "Select Location on Map",
+      "nameLabel": "Playground Name",
+      "namePlaceholder": "Enter playground name",
+      "reasonLabel": "Reason for Adding",
+      "reasonPlaceholder": "Please explain why you're adding this playground (optional)",
+      "cancelButton": "Cancel",
+      "submitButton": "Submit Proposal",
+      "error": {
+        "title": "Error",
+        "noLocation": "Please select a location for the playground",
+        "emptyName": "Please enter a name for the playground"
+      },
+      "success": {
+        "title": "Proposal Submitted",
+        "message": "Your proposal to add a new playground has been submitted and will be reviewed"
+      }
     }
   },
   "filters": "Filters",
@@ -327,7 +352,8 @@
   "common": {
     "error": "Error",
     "unknownError": "An unknown error occurred",
-    "loginRequired": "Login Required"
+    "loginRequired": "Login Required",
+    "clearFilters": "Clear filters"
   },
   "stats": {
     "title": "Statistics",
@@ -381,7 +407,8 @@
       "requestor": "Requestor",
       "type": {
         "deletion": "Deletion Request",
-        "dataUpdate": "Data Update"
+        "dataUpdate": "Data Update",
+        "new": "New Playground"
       },
       "status": {
         "pending": "Pending",
@@ -407,7 +434,10 @@
       "requestedDeletion": "Playground Deletion Requested",
       "deletionWarning": "Warning: Deletion Request",
       "deletionExplanation": "This proposal requests the complete removal of this playground. Please review carefully before approving.",
-      "revert": "Revert Changes"
+      "revert": "Revert Changes",
+      "location": "Location",
+      "viewOnMap": "View on Map",
+      "newPlayground": "New Playground Details"
     },
     "playgroundsManagement": "Playgrounds Management",
     "usersManagement": "Users Management"

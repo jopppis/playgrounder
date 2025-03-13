@@ -98,7 +98,11 @@ describe('PlaygroundFilter', () => {
 
   const renderComponent = (filters = defaultFilters): ReturnType<typeof render> => {
     return render(
-      <PlaygroundFilter filters={filters} onChange={mockOnChange} />
+      <PlaygroundFilter
+        filters={filters}
+        onChange={mockOnChange}
+        onLoadAllPlaygrounds={vi.fn()}
+      />
     )
   }
 
@@ -274,6 +278,39 @@ describe('PlaygroundFilter', () => {
     expect(mockOnChange).toHaveBeenCalledWith({
       ...defaultFilters,
       minUserStars: null
+    })
+  })
+
+  // Add test for community data source
+  it('should handle community data source selection', async () => {
+    const onChange = vi.fn()
+    const onLoadAllPlaygrounds = vi.fn()
+    render(
+      <PlaygroundFilter
+        filters={defaultFilters}
+        onChange={onChange}
+        onLoadAllPlaygrounds={onLoadAllPlaygrounds}
+      />
+    )
+
+    // First click the filter button to show the options
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
+    // Now find the data source select by its label text
+    const select = screen.getByText(enTranslations.playground.dataSource.label)
+      .parentElement
+      ?.querySelector('select')
+    expect(select).toBeInTheDocument()
+
+    // Change the value
+    fireEvent.change(select!, { target: { value: 'community' } })
+
+    expect(onChange).toHaveBeenCalledWith({
+      ...defaultFilters,
+      dataSource: 'community'
     })
   })
 })

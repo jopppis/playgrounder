@@ -77,11 +77,16 @@ const LocationControl = ({ onLocationUpdate }: LocationControlProps) => {
     setUserLocation(newLocation);
     onLocationUpdate(lat, lng);
 
+    // Check if there are any URL parameters for location
+    const searchParams = new URLSearchParams(window.location.search);
+    const hasLocationParams = searchParams.has('lat') && searchParams.has('lng');
+
     // Only set view automatically if:
     // 1. The map is not initialized yet
     // 2. No popup is open or about to open
     // 3. The user is not currently interacting with the map
-    if (!isInitialized.current && !isPopupOpen && !isMapInteracting) {
+    // 4. There are no location parameters in the URL
+    if (!isInitialized.current && !isPopupOpen && !isMapInteracting && !hasLocationParams) {
       map.setView(newLocation, 14);
     }
     // Do not set view after the first location is found

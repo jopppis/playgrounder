@@ -1,15 +1,15 @@
 import {
-    Box,
-    Button,
-    CloseButton,
-    Dialog,
-    Flex,
-    HStack,
-    Input,
-    Portal,
-    Text,
-    Textarea,
-    useDisclosure
+  Box,
+  Button,
+  CloseButton,
+  Dialog,
+  Flex,
+  HStack,
+  Input,
+  Portal,
+  Text,
+  Textarea,
+  useDisclosure
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -72,6 +72,7 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
       playground.id,
       nameModified ? proposedName : null,
       supervisedModified ? hasSupervised : null,
+      false,
       editReason.trim() || null
     )
 

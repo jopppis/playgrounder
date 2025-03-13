@@ -48,11 +48,12 @@ npm run dev
 
 ## TODO
 
-- Tests
-- Restrict loading of playgrounds to nearby
-- Create playgrounds
+- Slow startup
+
+## Consider
+
 - Move playgrounds
-- Make modals chakra dialogs
+- More tests
 - Add admin users view and playgrounds view
 
 ## Contributing

@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
 import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6'
 import { useAuth } from '../hooks/useAuth'
-import { usePlaygrounds } from '../hooks/usePlaygrounds'
+import { useCities } from '../hooks/useCities'
 
 export interface FilterOptions {
   searchQuery: string | null
@@ -24,17 +24,18 @@ export interface FilterOptions {
   minUserStars: number | null
   hasSupervised: boolean | null
   city: string | null
+  dataSource: 'municipality' | 'osm' | 'community' | null
   noRating: boolean | null
   noUserRating: boolean | null
-  dataSource: 'municipality' | 'osm' | null
 }
 
 interface PlaygroundFilterProps {
   filters: FilterOptions
   onChange: (filters: FilterOptions) => void
+  onLoadAllPlaygrounds: () => Promise<void>
 }
 
-export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) => {
+export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: PlaygroundFilterProps) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [showAllStars, setShowAllStars] = useState(false)
@@ -42,8 +43,9 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const searchTimeoutRef = useRef<NodeJS.Timeout>()
   const { user } = useAuth()
   const filterRef = useRef<HTMLDivElement>(null)
-  const { playgrounds } = usePlaygrounds()
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const { cities, loading: citiesLoading } = useCities()
+  const [isCitySelectOpen, setIsCitySelectOpen] = useState(false)
 
   // Update local search query when filters change externally
   useEffect(() => {
@@ -126,32 +128,11 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
     })
   }
 
-  // Extract unique cities from playgrounds and sort them alphabetically
-  const cities = useMemo(() => {
-    if (!playgrounds || playgrounds.length === 0) {
-      return [{ label: t('allCities'), value: null }]
-    }
-
-    const uniqueCities = Array.from(new Set(
-      playgrounds
-        .map(playground => playground.city)
-        .filter((city): city is string => city !== null && city !== undefined)
-    )).sort()
-
-    return [
-      { label: t('allCities'), value: null },
-      { label: t('playground.noCity'), value: 'no_city' },
-      ...uniqueCities.map(city => ({
-        label: city,
-        value: city.toLowerCase()
-      }))
-    ]
-  }, [playgrounds, t])
-
   const dataSources = [
     { label: t('playground.dataSource.any'), value: null },
     { label: t('playground.dataSource.municipality'), value: 'municipality' },
-    { label: t('playground.dataSource.osm'), value: 'osm' }
+    { label: t('playground.dataSource.osm'), value: 'osm' },
+    { label: t('playground.dataSource.community'), value: 'community' }
   ]
 
   const filterPosition = useBreakpointValue({
@@ -170,24 +151,24 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
   const buttonStyle = useBreakpointValue({
     base: {
       height: '40px',
-      width: '100%',
-      padding: '0 12px',
+      width: isOpen ? '100%' : '40px',
+      padding: isOpen ? '0 12px' : 0,
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      borderRadius: 'md',
+      justifyContent: isOpen ? 'space-between' : 'center',
+      borderRadius: isOpen ? 'md md 0 0' : 'md',
       transition: 'all 0.2s'
     },
     sm: {
       height: '40px',
       width: '100%',
       padding: '0 12px',
-      borderRadius: 'md'
+      borderRadius: isOpen ? 'md md 0 0' : 'md'
     }
   })
 
   const showButtonText = useBreakpointValue({
-    base: true,
+    base: isOpen,
     sm: true
   }) ?? true
 
@@ -235,6 +216,18 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
       {value}
     </Button>
   )
+
+  // Handle city select focus to load all playgrounds
+  const handleCitySelectFocus = async () => {
+    if (!isCitySelectOpen) {
+      setIsCitySelectOpen(true)
+      await onLoadAllPlaygrounds()
+    }
+  }
+
+  const handleCitySelectBlur = () => {
+    setIsCitySelectOpen(false)
+  }
 
   return (
     <Box
@@ -311,9 +304,16 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
               color="gray.700"
               borderColor="gray.300"
               _hover={{ borderColor: 'gray.400' }}
-              _focus={{ borderColor: 'brand.500', boxShadow: 'none' }}
+              _focus={{
+                borderColor: 'brand.500',
+                boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
+                outline: 'none'
+              }}
               borderRadius="md md 0 0"
+              border="0px"
               pr="40px"
+              position="relative"
+              zIndex="2"
             />
             <Button
               position="absolute"
@@ -325,12 +325,11 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
               _hover={{ bg: 'gray.50' }}
               _active={{ bg: 'gray.100' }}
               onClick={() => setIsOpen(false)}
-              borderRadius="0 md 0 0"
-              borderLeft="1px"
-              borderColor="gray.300"
+              border="0px"
               display="flex"
               alignItems="center"
               justifyContent="center"
+              zIndex="3"
             >
               {hasActiveFilters && (
                 <Box
@@ -405,6 +404,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                   variant="outline"
                   colorPalette="brand"
                   color="gray.700"
+                  disabled={citiesLoading}
                 >
                   <NativeSelect.Field
                     value={filters.city ?? ''}
@@ -416,6 +416,8 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     }}
                     height="28px"
                     fontSize="sm"
+                    onFocus={handleCitySelectFocus}
+                    onBlur={handleCitySelectBlur}
                   >
                     {cities.map((city) => (
                       <option
@@ -446,7 +448,7 @@ export const PlaygroundFilter = ({ filters, onChange }: PlaygroundFilterProps) =
                     value={filters.dataSource ?? ''}
                     onChange={(e) => onChange({
                       ...filters,
-                      dataSource: e.target.value as 'municipality' | 'osm' || null
+                      dataSource: e.target.value as 'municipality' | 'osm' | 'community' || null
                     })}
                     height="28px"
                     fontSize="sm"

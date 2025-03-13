@@ -4,11 +4,11 @@ import { useToast } from './useToast'
 
 // Store the last toast time globally so it persists across component instances
 let lastLoginToastTime = 0
-const FIFTEEN_SECONDS_MS = 15 * 1000
+const MIN_TOAST_INTERVAL_MS = 60 * 1000
 
 /**
  * Hook for showing login toasts with throttling across all component instances
- * Will only show a toast at most once every 15 seconds
+ * Will only show a toast at most once every some seconds.
  */
 export const useLoginToast = () => {
   const { t } = useTranslation()
@@ -17,8 +17,7 @@ export const useLoginToast = () => {
   const showLoginToast = useCallback(() => {
     const now = Date.now()
 
-    // Only show toast if 15 seconds have passed since the last one
-    if (now - lastLoginToastTime >= FIFTEEN_SECONDS_MS) {
+    if (now - lastLoginToastTime >= MIN_TOAST_INTERVAL_MS) {
       toast.showInfo({
         title: t('common.loginRequired'),
         description: t('playground.loginToInteract')

@@ -130,8 +130,10 @@ describe('MenuDrawer', () => {
     })
 
     expect(clickEvent.stopPropagation).toHaveBeenCalled()
-    // The sign up modal should be visible
-    expect(screen.getByTestId('sign-up-modal')).toBeInTheDocument()
+    // The sign up modal should be visible - check for its content
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.auth.signUp.email)).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.auth.signUp.password)).toBeInTheDocument()
   })
 
   it('handles sign in button click correctly', async () => {

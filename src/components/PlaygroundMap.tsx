@@ -1,4 +1,4 @@
-import { Box, Button, Spinner } from '@chakra-ui/react'
+import { Box, Button, IconButton, Spinner, Text } from '@chakra-ui/react'
 import { User } from '@supabase/supabase-js'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -6,20 +6,22 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet/dist/leaflet.css'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LayersControl, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { MdAddLocation } from 'react-icons/md'
+import { LayersControl, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { useLocation } from 'react-router-dom'
 import playgroundIcon from '../assets/playground-icon-optimized.png'
-import { useAllRatings } from '../hooks/useAllRatings'
 import { useAuth } from '../hooks/useAuth'
 import { useCurrentCity } from '../hooks/useCurrentCity'
-import { usePlaygrounds } from '../hooks/usePlaygrounds'
+import { BBox, usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useUserFilters } from '../hooks/useUserFilters'
 import { useVisits } from '../hooks/useVisits'
 import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import LocationControl from './LocationControl'
 import MenuDrawer from './MenuDrawer'
+import NoVisiblePlaygrounds from './NoVisiblePlaygrounds'
 import { PlaygroundFilter } from './PlaygroundFilter'
+import { startAddingPlayground } from './PlaygroundMapUtils'
 import { PlaygroundPopup } from './PlaygroundPopup'
 
 // Add styles to head
@@ -88,16 +90,39 @@ style.textContent = `
     color: #333;
     font-weight: bold;
   }
+
+  .playground-marker.new {
+    position: relative;
+  }
+
+  .playground-marker .new-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    background-color: #38A169;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 `
 document.head.appendChild(style)
 
 // Create the base playground icon
-const createBaseIcon = (isVisited = false) => {
+const createBaseIcon = (isVisited = false, isNew = false) => {
   return L.divIcon({
     html: `
-      <div class="playground-marker ${isVisited ? 'visited' : 'unvisited'}">
+      <div class="playground-marker ${isVisited ? 'visited' : 'unvisited'} ${isNew ? 'new' : ''}">
         <img src="${playgroundIcon}" alt="playground" />
         ${isVisited ? '<div class="badge">✓</div>' : ''}
+        ${isNew ? '<div class="new-badge">+</div>' : ''}
       </div>
     `,
     className: '',
@@ -111,6 +136,141 @@ const createBaseIcon = (isVisited = false) => {
 const basePlaygroundIcon = createBaseIcon(false)
 const visitedPlaygroundIcon = createBaseIcon(true)
 
+// Add URL state management
+const useMapUrlState = () => {
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+
+  const updateUrlState = useCallback((map: L.Map, playgroundId?: string) => {
+    const center = map.getCenter()
+    const zoom = map.getZoom()
+    const params = new URLSearchParams(window.location.search)
+
+    params.set('lat', center.lat.toFixed(6))
+    params.set('lng', center.lng.toFixed(6))
+    params.set('zoom', zoom.toString())
+
+    if (playgroundId) {
+      params.set('playground', playgroundId)
+    } else {
+      params.delete('playground')
+    }
+
+    // Use history.replaceState directly to avoid React re-renders
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState(null, '', newUrl)
+  }, [])
+
+  const getInitialMapState = useCallback(() => {
+    const lat = searchParams.get('lat')
+    const lng = searchParams.get('lng')
+    const zoom = searchParams.get('zoom')
+    const playgroundId = searchParams.get('playground')
+
+    return {
+      center: lat && lng ? [parseFloat(lat), parseFloat(lng)] as [number, number] : undefined,
+      zoom: zoom ? parseInt(zoom) : undefined,
+      playgroundId
+    }
+  }, [searchParams])
+
+  return { updateUrlState, getInitialMapState }
+}
+
+// Add MapStateManager component
+const MapStateManager = ({ onMapReady, playgrounds }: {
+  onMapReady: (map: L.Map) => void,
+  playgrounds: PlaygroundWithCoordinates[]
+}) => {
+  const map = useMap()
+  const { updateUrlState, getInitialMapState } = useMapUrlState()
+  const initialState = getInitialMapState()
+  const isInitialLoad = useRef(true)
+  const updateTimeout = useRef<number>()
+  const URL_DEBOUNCE_DELAY = 300
+  const initialPlaygroundId = useRef<string | null>(initialState.playgroundId || null)
+
+  // Separate effect for onMapReady
+  useEffect(() => {
+    onMapReady(map)
+  }, [map, onMapReady])
+
+  useEffect(() => {
+    // Handle initial state only once
+    if (isInitialLoad.current) {
+      if (initialState.center && initialState.zoom) {
+        map.setView(initialState.center, initialState.zoom)
+      }
+      isInitialLoad.current = false
+    }
+
+    // Try to open the initial playground popup if we have a playground ID and playgrounds are loaded
+    if (initialPlaygroundId.current && playgrounds.length > 0) {
+      const playground = playgrounds.find(p => p.id === initialPlaygroundId.current)
+      if (playground) {
+        // Set view to the playground location
+        map.setView([playground.latitude, playground.longitude], 14)
+
+        // Use setTimeout to wait for markers to be created
+        setTimeout(() => {
+          map.eachLayer((layer) => {
+            if (layer instanceof L.Marker) {
+              const markerLatLng = layer.getLatLng()
+              if (markerLatLng.lat === playground.latitude && markerLatLng.lng === playground.longitude) {
+                layer.openPopup()
+              }
+            }
+          })
+        }, 200) // Small delay to ensure markers are rendered
+
+        // Clear the ID so we don't try to open it again
+        initialPlaygroundId.current = null
+      }
+    }
+
+    // Debounced URL update handler
+    const handleMapMove = () => {
+      if (updateTimeout.current) {
+        window.clearTimeout(updateTimeout.current)
+      }
+
+      updateTimeout.current = window.setTimeout(() => {
+        // Check for open popups
+        let openPopupPlaygroundId: string | undefined
+        map.eachLayer((layer) => {
+          if (layer instanceof L.Marker && layer.getPopup()?.isOpen()) {
+            // Find the playground that matches this marker's position
+            const markerLatLng = layer.getLatLng()
+            const playground = playgrounds.find(p =>
+              p.latitude === markerLatLng.lat &&
+              p.longitude === markerLatLng.lng
+            )
+            if (playground) {
+              openPopupPlaygroundId = playground.id
+            }
+          }
+        })
+
+        // Update URL state with the playground ID if a popup is open
+        updateUrlState(map, openPopupPlaygroundId)
+      }, URL_DEBOUNCE_DELAY)
+    }
+
+    map.on('moveend', handleMapMove)
+    map.on('zoomend', handleMapMove)
+
+    return () => {
+      if (updateTimeout.current) {
+        window.clearTimeout(updateTimeout.current)
+      }
+      map.off('moveend', handleMapMove)
+      map.off('zoomend', handleMapMove)
+    }
+  }, [map, onMapReady, initialState, playgrounds, updateUrlState])
+
+  return null
+}
+
 // Separate component for playground markers
 const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisitChange, onRatingChange, editMode }: {
   playground: PlaygroundWithCoordinates
@@ -121,6 +281,8 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   onRatingChange: (playgroundId: string) => void
   editMode: boolean
 }) => {
+  const { updateUrlState } = useMapUrlState()
+  const map = useMap()
   const hasVisited = useMemo(() =>
     visits.some(visit => visit.playground_id === playground.id),
     [visits, playground.id]
@@ -156,6 +318,15 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
     }
   }, [playground.id, onVisitChange])
 
+  // Handle popup open/close
+  const handlePopupOpen = useCallback(() => {
+    updateUrlState(map, playground.id)
+  }, [map, playground.id, updateUrlState])
+
+  const handlePopupClose = useCallback(() => {
+    updateUrlState(map)
+  }, [map, updateUrlState])
+
   return (
     <Marker
       position={[playground.latitude, playground.longitude]}
@@ -166,14 +337,20 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
         ref={popupRef}
         autoPan={true}
         autoPanPadding={[50, 50]}
+        eventHandlers={{
+          add: handlePopupOpen,
+          remove: handlePopupClose
+        }}
       >
-        <PlaygroundPopup
-          playground={playground}
-          onVisitChange={handleVisitChange}
-          onContentChange={updatePopup}
-          onRatingChange={() => onRatingChange(playground.id)}
-          editMode={editMode}
-        />
+        <Box>
+          <PlaygroundPopup
+            playground={playground}
+            onVisitChange={handleVisitChange}
+            onContentChange={updatePopup}
+            onRatingChange={() => onRatingChange(playground.id)}
+            editMode={editMode}
+          />
+        </Box>
       </Popup>
     </Marker>
   )
@@ -189,19 +366,86 @@ const PlaygroundMarker = memo(({ playground, visits, user, visitsLoading, onVisi
   );
 });
 
-const PlaygroundMap = () => {
+interface PlaygroundMapProps {
+  editMode?: boolean
+  onAddPlayground?: (location: { lat: number; lng: number }) => void
+  onEditModeChange?: (editMode: boolean) => void
+  selectingLocation?: boolean
+  addedLocations?: Array<{
+    lat: number
+    lng: number
+    name: string
+    hasSupervised: boolean
+  }>
+}
+
+const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, selectingLocation: externalSelectingLocation = false, addedLocations = [] }: PlaygroundMapProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { playgrounds, loading: playgroundsLoading } = usePlaygrounds()
+  const { playgrounds, loading: playgroundsLoading, refreshPlaygrounds, refreshSinglePlayground } = usePlaygrounds()
   const { visits, loading: visitsLoading, updateVisitsState } = useVisits()
   const { filters, loading: filtersLoading, updateFilters } = useUserFilters()
   const { currentCity, updateCurrentCity } = useCurrentCity()
-  const { ratings, refreshRatings } = useAllRatings()
   const [showSignIn, setShowSignIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [editMode, setEditMode] = useState(false)
+  const [selectingLocation, setSelectingLocation] = useState(false)
+  const [tempMarker, setTempMarker] = useState<L.Marker | null>(null)
   const mapRef = useRef<L.Map | null>(null)
   const location = useLocation()
+
+  // Add state for stats loading
+  const [isLoadingStats, setIsLoadingStats] = useState(false)
+  const [showStats, setShowStats] = useState(false)
+
+  // Update internal selecting location state when external state changes
+  useEffect(() => {
+    setSelectingLocation(externalSelectingLocation)
+  }, [externalSelectingLocation])
+
+  // Manage temporary markers for added locations
+  useEffect(() => {
+    if (!mapRef.current) {
+      return
+    }
+
+    // Clear any existing temp markers
+    if (tempMarker) {
+      tempMarker.remove()
+      setTempMarker(null)
+    }
+
+    // Create markers for all added locations
+    const markers = addedLocations.map(location => {
+      const newIcon = createBaseIcon(false, true)
+      const marker = L.marker([location.lat, location.lng], { icon: newIcon })
+
+      // Add popup with proposal information
+      const popupContent = `
+        <div style="min-width: 200px;">
+          <div style="color: #38A169; font-weight: bold; margin-bottom: 8px;">
+            ${t('admin.proposals.status.pending')}
+          </div>
+          <div style="font-weight: bold; margin-bottom: 4px;">
+            ${location.name}
+          </div>
+          <div style="color: #4A5568; font-size: 0.9em;">
+            ${location.hasSupervised
+              ? t('playground.supervision.supervised')
+              : t('playground.supervision.unsupervised')
+            }
+          </div>
+        </div>
+      `
+      marker.bindPopup(popupContent)
+
+      marker.addTo(mapRef.current!)
+      return marker
+    })
+
+    return () => {
+      markers.forEach(marker => marker.remove())
+    }
+  }, [addedLocations, t, tempMarker])
 
   useEffect(() => {
     // Check for email confirmation redirect
@@ -211,8 +455,76 @@ const PlaygroundMap = () => {
     }
   }, [location])
 
+  // Add handler for menu open to fetch all playgrounds
+  const handleMenuOpen = useCallback(async (open: boolean) => {
+    setIsMenuOpen(open)
+    if (!open) {
+      setShowStats(false)
+      setIsLoadingStats(false)
+    }
+  }, [])
+
+  // Add handler for stats menu
+  const handleStatsOpen = useCallback(async (show: boolean) => {
+    if (show) {
+      setIsLoadingStats(true)
+      try {
+        // Force refresh when fetching all playgrounds for stats
+        await refreshPlaygrounds(null, 0)
+      } catch (error) {
+        console.error('Error fetching playgrounds:', error)
+      } finally {
+        setIsLoadingStats(false)
+      }
+    }
+    setShowStats(show)
+  }, [refreshPlaygrounds])
+
+  // Add handler for map move/zoom events
+  const handleMapMoveEnd = useCallback(() => {
+    if (!mapRef.current) return
+
+    const bounds = mapRef.current.getBounds()
+    const zoom = mapRef.current.getZoom()
+
+    const currentBBox: BBox = {
+      minLon: bounds.getWest(),
+      minLat: bounds.getSouth(),
+      maxLon: bounds.getEast(),
+      maxLat: bounds.getNorth()
+    }
+
+    refreshPlaygrounds(currentBBox, zoom)
+  }, [refreshPlaygrounds])
+
+  const handleMapReady = useCallback((map: L.Map) => {
+    console.log('handleMapReady')
+    mapRef.current = map
+    map.on('moveend', handleMapMoveEnd)
+    map.on('zoomend', handleMapMoveEnd)
+
+    // Trigger initial fetch
+    handleMapMoveEnd()
+  }, [handleMapMoveEnd])
+
+  // Cleanup map events
+  useEffect(() => {
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.off('moveend', handleMapMoveEnd)
+        mapRef.current.off('zoomend', handleMapMoveEnd)
+      }
+    }
+  }, [handleMapMoveEnd])
+
   // Helsinki center coordinates (Senate Square area)
   const helsinkiCenter: [number, number] = [60.170887, 24.952347]
+
+  // Get initial map state from URL parameters
+  const { getInitialMapState } = useMapUrlState()
+  const initialMapState = getInitialMapState()
+  const initialCenter = initialMapState.center || helsinkiCenter
+  const initialZoom = initialMapState.zoom || 14
 
   const filteredPlaygrounds = useMemo(() => {
     if (!playgrounds) return []
@@ -265,59 +577,39 @@ const PlaygroundMap = () => {
 
       // Filter by public star rating
       if (filters.minStars !== null) {
-        const rating = ratings.find(r => r.playground_id === playground.id)
         // Hide unrated playgrounds or those with rating below the minimum
-        if (!rating?.avg_rating || rating.avg_rating < filters.minStars) {
+        if (!playground.avg_rating || playground.avg_rating < filters.minStars) {
           return false
         }
       }
 
       // Filter for playgrounds with no rating
       if (filters.noRating === true) {
-        const rating = ratings.find(r => r.playground_id === playground.id)
         // Only show playgrounds with no rating
-        if (rating?.avg_rating) {
+        if (playground.avg_rating) {
           return false
         }
       }
 
       // Filter by user's own rating
       if (user && filters.minUserStars !== null) {
-        const userRating = ratings.find(r => r.playground_id === playground.id)?.user_rating
         // Hide unrated playgrounds or those with user rating below the minimum
-        if (!userRating || userRating < filters.minUserStars) {
+        if (!playground.user_rating || playground.user_rating < filters.minUserStars) {
           return false
         }
       }
 
       // Filter for playgrounds with no user rating
       if (user && filters.noUserRating === true) {
-        const userRating = ratings.find(r => r.playground_id === playground.id)?.user_rating
         // Only show playgrounds with no user rating
-        if (userRating) {
+        if (playground.user_rating) {
           return false
         }
       }
 
       return true
     })
-  }, [playgrounds, filters, user, visits, ratings])
-
-  // Watch for search and city filter changes and zoom to markers
-  useEffect(() => {
-    if (mapRef.current && filteredPlaygrounds.length > 0 &&
-        (filters.searchQuery !== null || filters.city !== null)) {
-      const bounds = L.latLngBounds(
-        filteredPlaygrounds.map(playground => [playground.latitude, playground.longitude])
-      )
-      mapRef.current.fitBounds(bounds, {
-        padding: [50, 50],
-        maxZoom: 16,
-        animate: true,
-        duration: 1
-      })
-    }
-  }, [filteredPlaygrounds, filters.searchQuery, filters.city])
+  }, [playgrounds, filters, user, visits])
 
   // Add navigation and zoom event listeners
   useEffect(() => {
@@ -350,22 +642,146 @@ const PlaygroundMap = () => {
   // Only show loading spinner for essential data, not for ratings
   const isLoading = playgroundsLoading || visitsLoading || filtersLoading
 
-  if (isLoading) {
-    return (
-      <Box height="100dvh" display="flex" alignItems="center" justifyContent="center">
-        <Spinner size="xl" color="brand.500" />
-      </Box>
-    )
-  }
+  // Add handler for when no playgrounds are visible
+  const handleNoVisiblePlaygrounds = useCallback(async () => {
+    try {
+      await refreshPlaygrounds(null, 0)
+    } catch (error) {
+      console.error('Error fetching all playgrounds:', error)
+    }
+  }, [refreshPlaygrounds])
+
+  // Add handler for clearing filters
+  const handleClearFilters = useCallback(() => {
+    updateFilters({
+      searchQuery: null,
+      city: null,
+      dataSource: null,
+      hasSupervised: null,
+      visitStatus: null,
+      minStars: null,
+      noRating: null,
+      minUserStars: null,
+      noUserRating: null
+    })
+  }, [updateFilters])
+
+  // Add event listener for starting playground addition
+  useEffect(() => {
+    const handleStartAddingPlayground = () => {
+      if (!editMode) return
+      setSelectingLocation(true)
+      if (mapRef.current) {
+        mapRef.current.getContainer().style.cursor = 'crosshair'
+      }
+    }
+
+    window.addEventListener('startAddingPlayground', handleStartAddingPlayground)
+
+    return () => {
+      window.removeEventListener('startAddingPlayground', handleStartAddingPlayground)
+    }
+  }, [editMode])
+
+  // Add event listener for new playground location selection
+  useEffect(() => {
+    if (!mapRef.current || !selectingLocation) {
+      // Clean up marker when selection is canceled
+      if (tempMarker) {
+        tempMarker.remove()
+        setTempMarker(null)
+      }
+      return
+    }
+
+    const handleMapClick = (e: L.LeafletMouseEvent) => {
+      if (!selectingLocation) return
+
+      // Remove existing marker if any
+      if (tempMarker) {
+        tempMarker.remove()
+      }
+
+      // Create new marker with the new badge
+      const newIcon = createBaseIcon(false, true)
+      const marker = L.marker(e.latlng, { icon: newIcon })
+      marker.addTo(mapRef.current!)
+      setTempMarker(marker)
+
+      if (onAddPlayground) {
+        onAddPlayground(e.latlng)
+        setSelectingLocation(false)
+        if (mapRef.current) {
+          mapRef.current.getContainer().style.cursor = ''
+        }
+      }
+    }
+
+    mapRef.current.on('click', handleMapClick)
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.off('click', handleMapClick)
+        mapRef.current.getContainer().style.cursor = ''
+      }
+    }
+  }, [selectingLocation, onAddPlayground, tempMarker])
+
+  // Update cursor and click handling when edit mode changes
+  useEffect(() => {
+    if (!editMode) {
+      setSelectingLocation(false)
+      if (mapRef.current) {
+        mapRef.current.getContainer().style.cursor = ''
+      }
+      if (tempMarker && !selectingLocation) {
+        tempMarker.remove()
+        setTempMarker(null)
+      }
+    }
+  }, [editMode, selectingLocation, tempMarker])
 
   return (
-    <Box position="relative" height="100%" width="100%" pb="env(safe-area-inset-bottom)">
-      <PlaygroundFilter filters={filters} onChange={updateFilters} />
+    <Box position="relative" h="100%" w="100%">
+      {(isLoading || isLoadingStats) && (
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg="blackAlpha.200"
+          zIndex={1000}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          pointerEvents="none"
+        >
+          <Spinner size="xl" color="brand.500" />
+        </Box>
+      )}
+      <PlaygroundFilter
+        filters={filters}
+        onChange={updateFilters}
+        onLoadAllPlaygrounds={async () => {
+          await refreshPlaygrounds(null, 0)
+        }}
+      />
+      {mapRef.current && (
+        <NoVisiblePlaygrounds
+          map={mapRef.current}
+          playgrounds={playgrounds || []}
+          filteredPlaygrounds={filteredPlaygrounds}
+          onNoVisiblePlaygrounds={handleNoVisiblePlaygrounds}
+          onClearFilters={handleClearFilters}
+          isLoading={isLoading || isLoadingStats}
+        />
+      )}
       <Box position="fixed" top={4} right={4} zIndex={2200}>
         <Button
           size="md"
           variant="solid"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => handleMenuOpen(!isMenuOpen)}
           bg="brand.500"
           color="white"
           border="1px solid"
@@ -389,7 +805,7 @@ const PlaygroundMap = () => {
       </Box>
       <MenuDrawer
         isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
+        onClose={() => handleMenuOpen(false)}
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
         filters={filters}
@@ -397,14 +813,17 @@ const PlaygroundMap = () => {
         currentCity={currentCity}
         visits={visits}
         editMode={editMode}
-        setEditMode={setEditMode}
+        loading={isLoadingStats}
+        showStats={showStats}
+        onStatsChange={handleStatsOpen}
+        onEditModeChange={onEditModeChange}
+        playgrounds={playgrounds}
       />
 
       <MapContainer
-        center={helsinkiCenter}
-        zoom={13.5}
+        center={initialCenter}
+        zoom={initialZoom}
         style={{ height: '100%', width: '100%' }}
-        ref={mapRef}
         zoomControl={false}
         preferCanvas={true}
       >
@@ -431,6 +850,7 @@ const PlaygroundMap = () => {
           </LayersControl.BaseLayer>
         </LayersControl>
         <LocationControl onLocationUpdate={updateCurrentCity} />
+        <MapStateManager onMapReady={handleMapReady} playgrounds={playgrounds || []} />
 
         <MarkerClusterGroup {...markerClusterOptions}>
           {filteredPlaygrounds.map((playground) => (
@@ -441,12 +861,87 @@ const PlaygroundMap = () => {
               user={user}
               visitsLoading={visitsLoading}
               onVisitChange={updateVisitsState}
-              onRatingChange={(playgroundId) => refreshRatings(playgroundId)}
+              onRatingChange={() => refreshSinglePlayground(playground.id)}
               editMode={editMode}
             />
           ))}
         </MarkerClusterGroup>
       </MapContainer>
+
+      {editMode && selectingLocation && (
+        <Box
+          position="absolute"
+          top={4}
+          left="50%"
+          transform="translateX(-50%)"
+          zIndex={1000}
+          bg="white"
+          p={3}
+          borderRadius="md"
+          boxShadow="md"
+          textAlign="center"
+          border="1px solid"
+          borderColor="brand.100"
+        >
+          <Text fontWeight="medium" color="brand.700">
+            {t('playground.add.selectLocation')}
+          </Text>
+          <Button
+            mt={2}
+            size="sm"
+            onClick={() => {
+              setSelectingLocation(false)
+              if (mapRef.current) {
+                mapRef.current.getContainer().style.cursor = ''
+              }
+              if (tempMarker) {
+                tempMarker.remove()
+              }
+            }}
+            bg="red.500"
+            color="white"
+            border="1px solid"
+            borderColor="red.500"
+            _hover={{
+              bg: 'red.600',
+              transform: 'translateY(-2px)',
+              borderColor: 'red.600'
+            }}
+            _active={{
+              bg: 'red.500',
+              transform: 'translateY(0)'
+            }}
+            transition="all 0.2s"
+          >
+            {t('playground.add.cancelButton')}
+          </Button>
+        </Box>
+      )}
+
+      {editMode && (
+        <Box position="absolute" left={4} bottom={4} zIndex={1000}>
+          <IconButton
+            aria-label={t('playground.add.button')}
+            variant="solid"
+            rounded="full"
+            size="lg"
+            bg="brand.500"
+            color="white"
+            _hover={{
+              bg: 'secondary.500',
+              transform: 'translateY(-2px)'
+            }}
+            _active={{
+              bg: 'brand.500',
+              transform: 'translateY(0)'
+            }}
+            transition="all 0.2s"
+            onClick={startAddingPlayground}
+          >
+            <Box as={MdAddLocation} fontSize="24px" />
+          </IconButton>
+        </Box>
+      )}
     </Box>
   )
 }

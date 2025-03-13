@@ -7,6 +7,78 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1] - 2025-03-13
+
+### Fixed
+- Map move event not triggered on initial load
+
+## [0.17.0] - 2025-03-13
+
+### Changed
+- Reduced interval for login toast to 1 minute
+- Synchronize default zoom levels
+
+### Added
+- Map state in URL parameters for sharing
+
+## [0.16.1] - 2025-03-13
+
+### Fixed
+- Fix issues with ratings during logins and logouts
+
+## [0.16.0] - 2025-03-13
+
+### Changed
+- Optimize rating fetching
+- Rename playground_ratings view to v_playground_ratings
+
+## [0.15.1] - 2025-03-11
+
+### Changed
+- Increased bbox padding factor to 10
+
+## [0.15.0] - 2025-03-11
+
+### Fixed
+- Show login and signup modals on top of menu
+
+### Added
+- Add playground proposal feature
+
+## [0.14.3] - 2025-03-11
+
+### Changed
+- Improve no visible playgrounds notification
+- Do not zoom automatically to playgrounds after filtering
+
+### Added
+- No visible playgrounds notification modal
+
+## [0.14.2] - 2025-03-11
+
+### Fixed
+- Fixed admin status check
+
+## [0.14.1] - 2025-03-11
+
+### Changed
+- Use Chakra UI dialogs for modals
+
+## [0.14.0] - 2025-03-11
+
+### Added
+- Limit data fetched by using map bounds
+
+### Fixed
+- Fixed search bar visuals
+
+## [0.13.1] - 2025-03-10
+
+### Fixed
+- Fix build
+
+## [0.13.0] - 2025-03-10
+
 ### Added
 - Edit playground functionality
 - Admin panel

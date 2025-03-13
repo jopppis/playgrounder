@@ -15,11 +15,10 @@ import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
 import { HiChartBar, HiLanguage, HiShieldCheck } from 'react-icons/hi2'
 import { useAuth } from '../hooks/useAuth'
 import { useIsAdmin } from '../hooks/useIsAdmin'
-import { usePlaygrounds } from '../hooks/usePlaygrounds'
 import { useToast } from '../hooks/useToast'
 import { useUserPreferences } from '../hooks/useUserPreferences'
 import { supabase } from '../lib/supabaseClient'
-import { Visit } from '../types/database.types'
+import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
 import About from './About'
 import Account from './Account'
 import AdminPage from './Admin/AdminPage'
@@ -42,7 +41,11 @@ export type MenuDrawerProps = {
   currentCity: string | null
   visits: Visit[]
   editMode?: boolean
-  setEditMode?: (editMode: boolean) => void
+  loading?: boolean
+  showStats?: boolean
+  onStatsChange?: (show: boolean) => void
+  onEditModeChange?: (editMode: boolean) => void
+  playgrounds?: PlaygroundWithCoordinates[]
 }
 
 const MenuDrawer = ({
@@ -55,29 +58,43 @@ const MenuDrawer = ({
   currentCity,
   visits,
   editMode = false,
-  setEditMode = () => {}
+  loading = false,
+  showStats: externalShowStats,
+  onStatsChange,
+  onEditModeChange,
+  playgrounds
 }: MenuDrawerProps) => {
   const { t } = useTranslation()
   const { user } = useAuth()
   const { isAdmin } = useIsAdmin()
-  const { playgrounds } = usePlaygrounds()
   const { preferences, loading: preferencesLoading, updateDefaultPublicRatings } = useUserPreferences()
   const [showAbout, setShowAbout] = useState(false)
-  const [showStats, setShowStats] = useState(false)
+  const [internalShowStats, setInternalShowStats] = useState(false)
   const [showSignUp, setShowSignUp] = useState(false)
   const [showAccount, setShowAccount] = useState(false)
   const [showRemoveAccount, setShowRemoveAccount] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
   const [showAdmin, setShowAdmin] = useState(false)
+  const [editModeLocal, setEditModeLocal] = useState(editMode)
   const toast = useToast()
+
+  // Use external or internal state for showStats
+  const showStats = externalShowStats ?? internalShowStats
+  const setShowStats = onStatsChange ?? setInternalShowStats
 
   useEffect(() => {
     if (!isOpen) {
       setShowAbout(false)
-      setShowStats(false)
+      if (!onStatsChange) {
+        setInternalShowStats(false)
+      }
       setShowAccount(false)
     }
-  }, [isOpen])
+  }, [isOpen, onStatsChange])
+
+  useEffect(() => {
+    setEditModeLocal(editMode)
+  }, [editMode])
 
   const handleSignOut = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -92,6 +109,30 @@ const MenuDrawer = ({
   const handleClick = (e: React.MouseEvent, action: () => void) => {
     e.stopPropagation()
     action()
+  }
+
+  const handleStatsClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setShowStats(true)
+  }
+
+  const handleEditModeChange = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const newEditMode = !editModeLocal
+    setEditModeLocal(newEditMode)
+    onEditModeChange?.(newEditMode)
+    if (newEditMode) {
+      toast.showInfo({
+        title: t('playground.edit.editModeEnabled.title'),
+        description: t('playground.edit.editModeEnabled.description')
+      })
+    } else {
+      toast.showInfo({
+        title: t('playground.edit.editModeDisabled.title'),
+        description: t('playground.edit.editModeDisabled.description')
+      })
+    }
   }
 
   const buttonProps: ButtonProps = {
@@ -139,7 +180,7 @@ const MenuDrawer = ({
             bg="white"
             boxShadow="dark-lg"
             p={4}
-            pb="calc(env(safe-area-inset-bottom) + 1em)"
+            pb="calc(env(safe-area-inset-bottom) + 1.5em)"
             zIndex={2000}
             color="gray.700"
             borderLeft="1px solid"
@@ -203,8 +244,6 @@ const MenuDrawer = ({
                           />
                         </Box>
                       </HStack>
-
-                      {/* Edit Mode Switch */}
                       <HStack gap={2} align="center" justify="space-between" w="100%">
                         <Text fontSize="sm" color="gray.600">
                           {t('playground.edit.editMode')}
@@ -213,33 +252,17 @@ const MenuDrawer = ({
                           position="relative"
                           zIndex={2001}
                           cursor="pointer"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            const newEditMode = !editMode
-                            setEditMode(newEditMode)
-                            if (newEditMode) {
-                              toast.showInfo({
-                                title: t('playground.edit.editModeEnabled.title'),
-                                description: t('playground.edit.editModeEnabled.description')
-                              })
-                            } else {
-                              toast.showInfo({
-                                title: t('playground.edit.editModeDisabled.title'),
-                                description: t('playground.edit.editModeDisabled.description')
-                              })
-                            }
-                          }}
+                          onClick={handleEditModeChange}
                         >
                           <Switch
                             size="sm"
-                            checked={editMode}
+                            checked={editModeLocal}
                             onCheckedChange={() => {}}
+                            disabled={!user}
                             aria-label={t('playground.edit.editMode')}
                           />
                         </Box>
                       </HStack>
-
                       <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                         <Button
                           {...buttonProps}
@@ -254,8 +277,6 @@ const MenuDrawer = ({
                           {t('menu.buttons.account')}
                         </Button>
                       </Grid>
-
-                      {/* Admin button - only for admin users */}
                       {isAdmin && (
                         <Button
                           {...buttonProps}
@@ -304,7 +325,7 @@ const MenuDrawer = ({
                   <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
                   <Button
                     {...buttonProps}
-                    onClick={(e) => handleClick(e, () => setShowStats(true))}
+                    onClick={handleStatsClick}
                   >
                     <Icon as={HiChartBar} boxSize={4} />
                     <Text>{t('stats.title')}</Text>
@@ -318,6 +339,7 @@ const MenuDrawer = ({
                   filteredPlaygroundCount={filteredPlaygroundCount}
                   onBack={() => setShowStats(false)}
                   currentCity={currentCity}
+                  loading={loading}
                 />
               ) : showAccount ? (
                 <Account onBack={() => setShowAccount(false)} />
@@ -348,39 +370,10 @@ const MenuDrawer = ({
         </>
       )}
 
-      {showSignUp && (
-        <Box
-          position="fixed"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          bg="blackAlpha.600"
-          zIndex={2100}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          onClick={(e) => {
-            e.stopPropagation()
-            setShowSignUp(false)
-          }}
-          data-testid="sign-up-modal"
-        >
-          <Box
-            bg="white"
-            borderRadius="md"
-            maxW="md"
-            w="90%"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <SignUp onSuccess={() => setShowSignUp(false)} />
-          </Box>
-        </Box>
-      )}
-
-      {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
-      {showRemoveAccount && <RemoveAccount onClose={() => setShowRemoveAccount(false)} />}
-      {showChangePassword && <ChangePasswordModal onClose={() => setShowChangePassword(false)} />}
+      {showSignIn && <SignInModal isOpen={showSignIn} onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
+      {showRemoveAccount && <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />}
+      {showChangePassword && <ChangePasswordModal isOpen={showChangePassword} onClose={() => setShowChangePassword(false)} />}
+      {showSignUp && <SignUp isOpen={showSignUp} onClose={() => setShowSignUp(false)} onSuccess={() => setShowSignUp(false)} />}
       <AdminPage isOpen={showAdmin} onClose={() => setShowAdmin(false)} />
     </>
   )

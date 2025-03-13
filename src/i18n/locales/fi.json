@@ -201,7 +201,10 @@
     "showMyLocation": "Näytä sijaintini",
     "standard": "Oletus",
     "osm": "OpenStreetMap",
-    "aerial": "Ilmakuva"
+    "aerial": "Ilmakuva",
+    "noVisiblePlaygrounds": "Ei leikkipaikkoja näkyvissä",
+    "noPlaygroundsMatchFilters": "Yksikään leikkipaikka ei vastaa suodattimia",
+    "zoomToPlaygrounds": "Siirry leikkipaikoille"
   },
   "playground": {
     "unnamed": "Nimetön leikkipaikka",
@@ -259,7 +262,8 @@
       "label": "Tietolähde",
       "any": "Mikä tahansa",
       "municipality": "Kunta",
-      "osm": "OpenStreetMap"
+      "osm": "OpenStreetMap",
+      "community": "Yhteisö"
     },
     "edit": {
       "title": "Muokkaa leikkipaikkaa",
@@ -304,6 +308,27 @@
         "confirmButton": "Kyllä, pyydä poistoa",
         "cancelButton": "Peruuta"
       }
+    },
+    "add": {
+      "title": "Lisää uusi leikkipaikka",
+      "button": "Lisää leikkipaikka",
+      "selectLocation": "Valitse sijainti uudelle leikkipaikalle",
+      "selectLocationButton": "Valitse sijainti kartalta",
+      "nameLabel": "Leikkipaikan nimi",
+      "namePlaceholder": "Syötä leikkipaikan nimi",
+      "reasonLabel": "Syy lisäämiselle",
+      "reasonPlaceholder": "Kerro miksi lisäät tämän leikkipaikan (valinnainen)",
+      "cancelButton": "Peruuta",
+      "submitButton": "Lähetä ehdotus",
+      "error": {
+        "title": "Virhe",
+        "noLocation": "Valitse sijainti leikkipaikalle",
+        "emptyName": "Syötä nimi leikkipaikalle"
+      },
+      "success": {
+        "title": "Ehdotus lähetetty",
+        "message": "Ehdotuksesi uudesta leikkipaikasta on lähetetty ja se tarkistetaan"
+      }
     }
   },
   "filters": "Suodattimet",
@@ -328,7 +353,8 @@
   "common": {
     "error": "Virhe",
     "unknownError": "Tuntematon virhe tapahtui",
-    "loginRequired": "Kirjautuminen vaaditaan"
+    "loginRequired": "Kirjautuminen vaaditaan",
+    "clearFilters": "Poista suodattimet"
   },
   "stats": {
     "title": "Tilastot",
@@ -382,7 +408,8 @@
       "requestor": "Pyytäjä",
       "type": {
         "deletion": "Poistopyyntö",
-        "dataUpdate": "Tietojen päivitys"
+        "dataUpdate": "Tietojen päivitys",
+        "new": "Uusi leikkipaikka"
       },
       "status": {
         "pending": "Käsittelemättä",
@@ -408,7 +435,10 @@
       "requestedDeletion": "Leikkipaikan poistoa pyydetty",
       "deletionWarning": "Varoitus: Poistopyyntö",
       "deletionExplanation": "Tämä ehdotus pyytää leikkipaikan täydellistä poistamista. Ole hyvä ja tarkista huolellisesti ennen hyväksymistä.",
-      "revert": "Kumoa muutokset"
+      "revert": "Kumoa muutokset",
+      "location": "Sijainti",
+      "viewOnMap": "Näytä kartalla",
+      "newPlayground": "Uuden leikkipaikan tiedot"
     },
     "playgroundsManagement": "Leikkipaikkojen hallinta",
     "usersManagement": "Käyttäjien hallinta"
