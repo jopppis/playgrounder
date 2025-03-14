@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.3] - 2025-03-14
+
 ### Changed
 - Set explicit background color for filter menu collapse button
 
