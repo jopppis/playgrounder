@@ -265,7 +265,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                       top="-1px"
                     />
                   )}
-                  <Box as={FaFilter} boxSize="14px" />
+                  <Box as={FaFilter} boxSize="16px" />
                 </Box>
               </HStack>
             ) : (
@@ -281,7 +281,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     left="-1px"
                   />
                 )}
-                <Box as={FaFilter} boxSize="14px" />
+                <Box as={FaFilter} boxSize="16px" />
               </Box>
             )}
           </Button>
@@ -291,6 +291,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               ref={searchInputRef}
               placeholder={t('searchPlaceholder')}
               size="md"
+              fontSize="md"
               height="40px"
               value={localSearchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
@@ -326,7 +327,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               zIndex="3"
               aria-label={hasActiveFilters ? t('removeFilters') : t('filterPlaygrounds')}
             >
-              <Box as={hasActiveFilters ? FaFilterCircleXmark : FaFilter} boxSize="14px" color={hasActiveFilters ? "brand.500" : "gray.700"} />
+              <Box as={hasActiveFilters ? FaFilterCircleXmark : FaFilter} boxSize="16px" color={hasActiveFilters ? "brand.500" : "gray.700"} />
             </Button>
           </Box>
         )}
@@ -349,15 +350,15 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             overflowY="auto"
           >
             <Box mt={{ base: 0, sm: 0 }} >
-              <HStack gap={1} mb={{ base: 2, sm: 1 }}>
-                <FaCity size={14} color={filters.city ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+              <HStack gap={1.5} mb={{ base: 2, sm: 1.5 }}>
+                <FaCity size={16} color={filters.city ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="md" fontWeight="medium" color="gray.700">
                   {t('city')}
                 </Text>
               </HStack>
               <Box position="relative">
                 <NativeSelect.Root
-                  size="sm"
+                  size="md"
                   variant="outline"
                   colorPalette="brand"
                   color="gray.700"
@@ -371,8 +372,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                         city: e.target.value || null
                       })
                     }}
-                    height="28px"
-                    fontSize="sm"
+                    height="36px"
+                    fontSize="md"
                     onFocus={handleCitySelectFocus}
                     onBlur={handleCitySelectBlur}
                   >
@@ -391,15 +392,15 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             </Box>
 
             <Box>
-              <HStack gap={1} mb={1}>
-                <MdTextFields size={14} color={filters.hideUnnamed !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+              <HStack gap={1.5} mb={1.5}>
+                <MdTextFields size={16} color={filters.hideUnnamed !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="md" fontWeight="medium" color="gray.700">
                   {t('playground.filter.unnamed.label')}
                 </Text>
               </HStack>
               <Box position="relative">
                 <NativeSelect.Root
-                  size="sm"
+                  size="md"
                   variant="outline"
                   colorPalette="brand"
                   color="gray.700"
@@ -410,8 +411,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                       ...filters,
                       hideUnnamed: e.target.value === '' ? null : e.target.value === 'true'
                     })}
-                    height="28px"
-                    fontSize="sm"
+                    height="36px"
+                    fontSize="md"
                     aria-label={t('playground.filter.unnamed.label')}
                   >
                     <option value="">{t('playground.filter.unnamed.any')}</option>
@@ -424,15 +425,15 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
 
             {user && (
               <Box>
-                <HStack gap={1} mb={1}>
-                  <FaUserCheck size={14} color={filters.visitStatus ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                  <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                <HStack gap={1.5} mb={1.5}>
+                  <FaUserCheck size={16} color={filters.visitStatus ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                  <Text fontSize="md" fontWeight="medium" color="gray.700">
                     {t('visitStatus')}
                   </Text>
                 </HStack>
                 <Box position="relative">
                   <NativeSelect.Root
-                    size="sm"
+                    size="md"
                     variant="outline"
                     colorPalette="brand"
                     color="gray.700"
@@ -443,8 +444,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                         ...filters,
                         visitStatus: e.target.value as 'visited' | 'unvisited' || null
                       })}
-                      height="28px"
-                      fontSize="sm"
+                      height="36px"
+                      fontSize="md"
                     >
                       {visitStatusOptions.map((option) => (
                         <option
@@ -461,16 +462,16 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               </Box>
             )}
 
-            <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
-              <HStack gap={1} mb={1}>
-                <FaStar size={14} color={filters.minStars !== null || filters.noRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+            <Box borderTop="1px" borderColor="gray.200" pt={2}>
+              <HStack gap={1.5} mb={1.5}>
+                <FaStar size={16} color={filters.minStars !== null || filters.noRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="md" fontWeight="medium" color="gray.700">
                   {t('minStars')}
                 </Text>
               </HStack>
               <Box position="relative">
                 <NativeSelect.Root
-                  size="sm"
+                  size="md"
                   variant="outline"
                   colorPalette="brand"
                   color="gray.700"
@@ -493,8 +494,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                         });
                       }
                     }}
-                    height="28px"
-                    fontSize="sm"
+                    height="36px"
+                    fontSize="md"
                     aria-label={t('minStars')}
                   >
                     {starOptions.map((option) => (
@@ -511,24 +512,24 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               </Box>
             </Box>
 
-            <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
+            <Box borderTop="1px" borderColor="gray.200" pt={2}>
               <Collapsible.Root
                 open={isAdvancedOpen}
                 onOpenChange={(details) => setIsAdvancedOpen(details.open)}
               >
                 <Collapsible.Content>
-                  <VStack align="stretch" gap={3} pt={2}>
+                  <VStack align="stretch" gap={4} pt={2}>
                     {user && (
                       <Box>
-                        <HStack gap={1} mb={1}>
-                          <FaRegStar size={14} color={filters.minUserStars !== null || filters.noUserRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                          <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                        <HStack gap={1.5} mb={1.5}>
+                          <FaRegStar size={16} color={filters.minUserStars !== null || filters.noUserRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                          <Text fontSize="md" fontWeight="medium" color="gray.700">
                             {t('minUserStars')}
                           </Text>
                         </HStack>
                         <Box position="relative">
                           <NativeSelect.Root
-                            size="sm"
+                            size="md"
                             variant="outline"
                             colorPalette="brand"
                             color="gray.700"
@@ -551,8 +552,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                                   });
                                 }
                               }}
-                              height="28px"
-                              fontSize="sm"
+                              height="36px"
+                              fontSize="md"
                               data-testid="user-rating-select"
                               aria-label={t('minUserStars')}
                             >
@@ -572,15 +573,15 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     )}
 
                     <Box>
-                      <HStack gap={1} mb={1}>
-                        <MdSupervisorAccount size={14} color={filters.hasSupervised !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                        <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                      <HStack gap={1.5} mb={1.5}>
+                        <MdSupervisorAccount size={16} color={filters.hasSupervised !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                        <Text fontSize="md" fontWeight="medium" color="gray.700">
                           {t('playground.supervision.label')}
                         </Text>
                       </HStack>
                       <Box position="relative">
                         <NativeSelect.Root
-                          size="sm"
+                          size="md"
                           variant="outline"
                           colorPalette="brand"
                           color="gray.700"
@@ -591,8 +592,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                               ...filters,
                               hasSupervised: e.target.value === '' ? null : e.target.value === 'true'
                             })}
-                            height="28px"
-                            fontSize="sm"
+                            height="36px"
+                            fontSize="md"
                             aria-label={t('playground.supervision.label')}
                           >
                             {supervisionOptions.map((option) => (
@@ -610,15 +611,15 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     </Box>
 
                     <Box>
-                      <HStack gap={1} mb={1}>
-                        <FaDatabase size={14} color={filters.dataSource ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                        <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                      <HStack gap={1.5} mb={1.5}>
+                        <FaDatabase size={16} color={filters.dataSource ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                        <Text fontSize="md" fontWeight="medium" color="gray.700">
                           {t('playground.dataSource.label')}
                         </Text>
                       </HStack>
                       <Box position="relative">
                         <NativeSelect.Root
-                          size="sm"
+                          size="md"
                           variant="outline"
                           colorPalette="brand"
                           color="gray.700"
@@ -629,8 +630,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                               ...filters,
                               dataSource: e.target.value as 'municipality' | 'osm' | 'community' || null
                             })}
-                            height="28px"
-                            fontSize="sm"
+                            height="36px"
+                            fontSize="md"
                             aria-label={t('playground.dataSource.label')}
                           >
                             {dataSources.map((source) => (
@@ -652,21 +653,21 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                 <Collapsible.Trigger asChild>
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="md"
                     width="full"
-                    height="28px"
+                    height="36px"
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
-                    px={2}
+                    px={3}
                     color="gray.700"
                     _hover={{ bg: 'gray.50' }}
-                    mt={isAdvancedOpen ? 3 : 0}
+                    mt={isAdvancedOpen ? 4 : 0}
                   >
-                    <Text fontSize="sm" fontWeight="medium">
+                    <Text fontSize="md" fontWeight="medium">
                       {isAdvancedOpen ? t('showLess') : t('showMore')}
                     </Text>
-                    <Box as={isAdvancedOpen ? MdExpandLess : MdExpandMore} size={20} />
+                    <Box as={isAdvancedOpen ? MdExpandLess : MdExpandMore} boxSize={5} />
                   </Button>
                 </Collapsible.Trigger>
               </Collapsible.Root>
