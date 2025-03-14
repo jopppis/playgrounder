@@ -352,8 +352,8 @@
   "minUserStars": "My Rating",
   "minUserStars_plural": "My Rating",
   "noRating": "No rating",
-  "showMore": "Show more",
-  "showLess": "Show less",
+  "showMore": "Show more filters",
+  "showLess": "Show fewer filters",
   "removeFilters": "Clear filters",
   "app": {
     "name": "PlaygroundMap"

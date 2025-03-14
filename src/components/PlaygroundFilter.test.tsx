@@ -153,6 +153,13 @@ describe('PlaygroundFilter', () => {
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 
+    // Click the "Show more filters" button
+    const showMoreButton = screen.getByRole('button', { name: enTranslations.showMore })
+    await act(async () => {
+      fireEvent.click(showMoreButton)
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
     const supervisionSelect = screen.getByRole('combobox', { name: enTranslations.playground.supervision.label })
     expect(supervisionSelect).toBeInTheDocument()
 
@@ -171,6 +178,13 @@ describe('PlaygroundFilter', () => {
     renderComponent({ ...defaultFilters, hasSupervised: true })
     await act(async () => {
       fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
+    // Click the "Show more filters" button
+    const showMoreButton = screen.getByRole('button', { name: enTranslations.showMore })
+    await act(async () => {
+      fireEvent.click(showMoreButton)
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 
@@ -356,6 +370,13 @@ describe('PlaygroundFilter', () => {
     // First click the filter button to show the options
     await act(async () => {
       fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
+    // Click the "Show more filters" button
+    const showMoreButton = screen.getByRole('button', { name: enTranslations.showMore })
+    await act(async () => {
+      fireEvent.click(showMoreButton)
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 

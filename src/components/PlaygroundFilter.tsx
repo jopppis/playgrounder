@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Collapsible,
   HStack,
   Input,
   NativeSelect,
@@ -12,7 +13,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaCity, FaDatabase, FaRegStar, FaStar, FaUserCheck } from 'react-icons/fa'
 import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6'
-import { MdSupervisorAccount, MdTextFields } from 'react-icons/md'
+import { MdExpandLess, MdExpandMore, MdSupervisorAccount, MdTextFields } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useCities } from '../hooks/useCities'
 
@@ -38,6 +39,7 @@ interface PlaygroundFilterProps {
 export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: PlaygroundFilterProps) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
   const [localSearchQuery, setLocalSearchQuery] = useState(filters.searchQuery || '')
   const searchTimeoutRef = useRef<NodeJS.Timeout>()
   const { user } = useAuth()
@@ -430,44 +432,6 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
 
             <Box>
               <HStack gap={1} mb={1}>
-                <FaDatabase size={14} color={filters.dataSource ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                <Text fontSize="sm" fontWeight="medium" color="gray.700">
-                  {t('playground.dataSource.label')}
-                </Text>
-              </HStack>
-              <Box position="relative">
-                <NativeSelect.Root
-                  size="sm"
-                  variant="outline"
-                  colorPalette="brand"
-                  color="gray.700"
-                >
-                  <NativeSelect.Field
-                    value={filters.dataSource ?? ''}
-                    onChange={(e) => onChange({
-                      ...filters,
-                      dataSource: e.target.value as 'municipality' | 'osm' | 'community' || null
-                    })}
-                    height="28px"
-                    fontSize="sm"
-                    aria-label={t('playground.dataSource.label')}
-                  >
-                    {dataSources.map((source) => (
-                      <option
-                        key={source.value ?? 'any'}
-                        value={source.value ?? ''}
-                      >
-                        {source.label}
-                      </option>
-                    ))}
-                  </NativeSelect.Field>
-                  <NativeSelect.Indicator/>
-                </NativeSelect.Root>
-              </Box>
-            </Box>
-
-            <Box>
-              <HStack gap={1} mb={1}>
                 <MdTextFields size={14} color={filters.hideUnnamed !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
                 <Text fontSize="sm" fontWeight="medium" color="gray.700">
                   {t('playground.filter.unnamed.label')}
@@ -492,44 +456,6 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                   >
                     <option value="">{t('playground.filter.unnamed.any')}</option>
                     <option value="true">{t('playground.filter.unnamed.hide')}</option>
-                  </NativeSelect.Field>
-                  <NativeSelect.Indicator/>
-                </NativeSelect.Root>
-              </Box>
-            </Box>
-
-            <Box>
-              <HStack gap={1} mb={1}>
-                <MdSupervisorAccount size={14} color={filters.hasSupervised !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                <Text fontSize="sm" fontWeight="medium" color="gray.700">
-                  {t('playground.supervision.label')}
-                </Text>
-              </HStack>
-              <Box position="relative">
-                <NativeSelect.Root
-                  size="sm"
-                  variant="outline"
-                  colorPalette="brand"
-                  color="gray.700"
-                >
-                  <NativeSelect.Field
-                    value={filters.hasSupervised === null ? '' : String(filters.hasSupervised)}
-                    onChange={(e) => onChange({
-                      ...filters,
-                      hasSupervised: e.target.value === '' ? null : e.target.value === 'true'
-                    })}
-                    height="28px"
-                    fontSize="sm"
-                    aria-label={t('playground.supervision.label')}
-                  >
-                    {supervisionOptions.map((option) => (
-                      <option
-                        key={option.value ?? 'any'}
-                        value={option.value ?? ''}
-                      >
-                        {option.label}
-                      </option>
-                    ))}
                   </NativeSelect.Field>
                   <NativeSelect.Indicator/>
                 </NativeSelect.Root>
@@ -623,58 +549,166 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                   <NativeSelect.Indicator/>
                 </NativeSelect.Root>
               </Box>
+            </Box>
 
-              {user && (
-                <Box mt={3}>
-                  <HStack gap={1} mb={1}>
-                    <FaRegStar size={14} color={filters.minUserStars !== null || filters.noUserRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
-                    <Text fontSize="sm" fontWeight="medium" color="gray.700">
-                      {t('minUserStars')}
+            <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
+              <Collapsible.Root
+                open={isAdvancedOpen}
+                onOpenChange={(details) => setIsAdvancedOpen(details.open)}
+              >
+                <Collapsible.Trigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    width="full"
+                    height="28px"
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    px={2}
+                    color="gray.700"
+                    _hover={{ bg: 'gray.50' }}
+                  >
+                    <Text fontSize="sm" fontWeight="medium">
+                      {isAdvancedOpen ? t('showLess') : t('showMore')}
                     </Text>
-                  </HStack>
-                  <Box position="relative">
-                    <NativeSelect.Root
-                      size="sm"
-                      variant="outline"
-                      colorPalette="brand"
-                      color="gray.700"
-                    >
-                      <NativeSelect.Field
-                        value={filters.noUserRating ? 'no-rating' : (filters.minUserStars?.toString() ?? '')}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          if (value === 'no-rating') {
-                            onChange({
-                              ...filters,
-                              minUserStars: null,
-                              noUserRating: true
-                            });
-                          } else {
-                            onChange({
-                              ...filters,
-                              minUserStars: value ? parseInt(value) : null,
-                              noUserRating: null
-                            });
-                          }
-                        }}
-                        height="28px"
-                        fontSize="sm"
-                        data-testid="user-rating-select"
-                      >
-                        {starOptions.map((option) => (
-                          <option
-                            key={option.value ?? 'any'}
-                            value={option.value ?? ''}
+                    {isAdvancedOpen ? <MdExpandLess size={20} /> : <MdExpandMore size={20} />}
+                  </Button>
+                </Collapsible.Trigger>
+
+                <Collapsible.Content>
+                  <VStack align="stretch" gap={3} pt={2}>
+                    {user && (
+                      <Box>
+                        <HStack gap={1} mb={1}>
+                          <FaRegStar size={14} color={filters.minUserStars !== null || filters.noUserRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                          <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                            {t('minUserStars')}
+                          </Text>
+                        </HStack>
+                        <Box position="relative">
+                          <NativeSelect.Root
+                            size="sm"
+                            variant="outline"
+                            colorPalette="brand"
+                            color="gray.700"
                           >
-                            {option.label}
-                          </option>
-                        ))}
-                      </NativeSelect.Field>
-                      <NativeSelect.Indicator/>
-                    </NativeSelect.Root>
-                  </Box>
-                </Box>
-              )}
+                            <NativeSelect.Field
+                              value={filters.noUserRating ? 'no-rating' : (filters.minUserStars?.toString() ?? '')}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (value === 'no-rating') {
+                                  onChange({
+                                    ...filters,
+                                    minUserStars: null,
+                                    noUserRating: true
+                                  });
+                                } else {
+                                  onChange({
+                                    ...filters,
+                                    minUserStars: value ? parseInt(value) : null,
+                                    noUserRating: null
+                                  });
+                                }
+                              }}
+                              height="28px"
+                              fontSize="sm"
+                              data-testid="user-rating-select"
+                              aria-label={t('minUserStars')}
+                            >
+                              {starOptions.map((option) => (
+                                <option
+                                  key={option.value ?? 'any'}
+                                  value={option.value ?? ''}
+                                >
+                                  {option.label}
+                                </option>
+                              ))}
+                            </NativeSelect.Field>
+                            <NativeSelect.Indicator/>
+                          </NativeSelect.Root>
+                        </Box>
+                      </Box>
+                    )}
+
+                    <Box>
+                      <HStack gap={1} mb={1}>
+                        <MdSupervisorAccount size={14} color={filters.hasSupervised !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                        <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                          {t('playground.supervision.label')}
+                        </Text>
+                      </HStack>
+                      <Box position="relative">
+                        <NativeSelect.Root
+                          size="sm"
+                          variant="outline"
+                          colorPalette="brand"
+                          color="gray.700"
+                        >
+                          <NativeSelect.Field
+                            value={filters.hasSupervised === null ? '' : String(filters.hasSupervised)}
+                            onChange={(e) => onChange({
+                              ...filters,
+                              hasSupervised: e.target.value === '' ? null : e.target.value === 'true'
+                            })}
+                            height="28px"
+                            fontSize="sm"
+                            aria-label={t('playground.supervision.label')}
+                          >
+                            {supervisionOptions.map((option) => (
+                              <option
+                                key={option.value ?? 'any'}
+                                value={option.value ?? ''}
+                              >
+                                {option.label}
+                              </option>
+                            ))}
+                          </NativeSelect.Field>
+                          <NativeSelect.Indicator/>
+                        </NativeSelect.Root>
+                      </Box>
+                    </Box>
+
+                    <Box>
+                      <HStack gap={1} mb={1}>
+                        <FaDatabase size={14} color={filters.dataSource ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                        <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                          {t('playground.dataSource.label')}
+                        </Text>
+                      </HStack>
+                      <Box position="relative">
+                        <NativeSelect.Root
+                          size="sm"
+                          variant="outline"
+                          colorPalette="brand"
+                          color="gray.700"
+                        >
+                          <NativeSelect.Field
+                            value={filters.dataSource ?? ''}
+                            onChange={(e) => onChange({
+                              ...filters,
+                              dataSource: e.target.value as 'municipality' | 'osm' | 'community' || null
+                            })}
+                            height="28px"
+                            fontSize="sm"
+                            aria-label={t('playground.dataSource.label')}
+                          >
+                            {dataSources.map((source) => (
+                              <option
+                                key={source.value ?? 'any'}
+                                value={source.value ?? ''}
+                              >
+                                {source.label}
+                              </option>
+                            ))}
+                          </NativeSelect.Field>
+                          <NativeSelect.Indicator/>
+                        </NativeSelect.Root>
+                      </Box>
+                    </Box>
+                  </VStack>
+                </Collapsible.Content>
+              </Collapsible.Root>
             </Box>
           </VStack>
         )}

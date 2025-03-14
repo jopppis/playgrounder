@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Double tap to zoom
 - Icons to filter titles
 
+### Changed
+- Move some filters to collapsible section
+
 ## [0.18.1] - 2025-03-14
 
 ### Fixed

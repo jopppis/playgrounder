@@ -353,8 +353,8 @@
   "minUserStars": "Oma arvio",
   "minUserStars_plural": "Oma arvio",
   "noRating": "Ei arviota",
-  "showMore": "Näytä lisää",
-  "showLess": "Näytä vähemmän",
+  "showMore": "Näytä lisää suodattimia",
+  "showLess": "Näytä vähemmän suodattimia",
   "removeFilters": "Poista suodattimet",
   "app": {
     "name": "Leikkipuistokartta"
