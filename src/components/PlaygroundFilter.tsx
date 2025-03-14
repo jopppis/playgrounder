@@ -24,6 +24,7 @@ export interface FilterOptions {
   dataSource: 'municipality' | 'osm' | 'community' | null
   noRating: boolean | null
   noUserRating: boolean | null
+  hideUnnamed: boolean | null
 }
 
 interface PlaygroundFilterProps {
@@ -93,7 +94,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
       filters.city !== null ||
       filters.noRating !== null ||
       filters.noUserRating !== null ||
-      filters.dataSource !== null
+      filters.dataSource !== null ||
+      filters.hideUnnamed !== null
   }, [filters, user])
 
   const resetFilters = () => {
@@ -106,7 +108,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
         hasSupervised: null,
         city: null,
         noRating: null,
-        dataSource: null
+        dataSource: null,
+        hideUnnamed: null
       })
       return
     }
@@ -120,7 +123,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
       city: null,
       noRating: null,
       noUserRating: null,
-      dataSource: null
+      dataSource: null,
+      hideUnnamed: null
     })
   }
 
@@ -447,6 +451,35 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                         {source.label}
                       </option>
                     ))}
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator/>
+                </NativeSelect.Root>
+              </Box>
+            </Box>
+
+            <Box>
+              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                {t('playground.filter.unnamed.label')}
+              </Text>
+              <Box position="relative">
+                <NativeSelect.Root
+                  size="sm"
+                  variant="outline"
+                  colorPalette="brand"
+                  color="gray.700"
+                >
+                  <NativeSelect.Field
+                    value={filters.hideUnnamed === null ? '' : String(filters.hideUnnamed)}
+                    onChange={(e) => onChange({
+                      ...filters,
+                      hideUnnamed: e.target.value === '' ? null : e.target.value === 'true'
+                    })}
+                    height="28px"
+                    fontSize="sm"
+                    aria-label={t('playground.filter.unnamed.label')}
+                  >
+                    <option value="">{t('playground.filter.unnamed.any')}</option>
+                    <option value="true">{t('playground.filter.unnamed.hide')}</option>
                   </NativeSelect.Field>
                   <NativeSelect.Indicator/>
                 </NativeSelect.Root>

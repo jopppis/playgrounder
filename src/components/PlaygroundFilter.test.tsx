@@ -88,7 +88,8 @@ describe('PlaygroundFilter', () => {
     city: null,
     noRating: null,
     noUserRating: null,
-    dataSource: null
+    dataSource: null,
+    hideUnnamed: null
   }
 
   beforeEach(() => {
@@ -302,6 +303,45 @@ describe('PlaygroundFilter', () => {
       ...defaultFilters,
       minUserStars: null,
       noUserRating: true
+    })
+  })
+
+  // Add test for unnamed playground filter
+  it('calls onChange when unnamed filter is changed', async () => {
+    renderComponent()
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
+    const unnamedSelect = screen.getByLabelText(enTranslations.playground.filter.unnamed.label)
+    await act(async () => {
+      fireEvent.change(unnamedSelect, { target: { value: 'true' } })
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
+    expect(mockOnChange).toHaveBeenCalledWith({
+      ...defaultFilters,
+      hideUnnamed: true
+    })
+  })
+
+  it('resets unnamed filter when selecting show all', async () => {
+    renderComponent({ ...defaultFilters, hideUnnamed: true })
+    await act(async () => {
+      fireEvent.click(getFilterButton())
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
+    const unnamedSelect = screen.getByLabelText(enTranslations.playground.filter.unnamed.label)
+    await act(async () => {
+      fireEvent.change(unnamedSelect, { target: { value: '' } })
+      await new Promise(resolve => setTimeout(resolve, 0))
+    })
+
+    expect(mockOnChange).toHaveBeenCalledWith({
+      ...defaultFilters,
+      hideUnnamed: null
     })
   })
 

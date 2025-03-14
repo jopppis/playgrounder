@@ -13,6 +13,7 @@ type Filters = {
   dataSource: 'municipality' | 'osm' | 'community' | null
   noRating: boolean | null
   noUserRating: boolean | null
+  hideUnnamed: boolean | null
 }
 
 type StatsProps = {
@@ -74,7 +75,8 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, 
       filters.city !== null ||
       filters.dataSource !== null ||
       filters.noRating !== null ||
-      filters.noUserRating !== null
+      filters.noUserRating !== null ||
+      filters.hideUnnamed !== null
   }
 
   // Calculate current city stats
@@ -111,6 +113,10 @@ const Stats = ({ playgrounds, visits, filters, filteredPlaygroundCount, onBack, 
       }
 
       if (filters.dataSource !== null && playground.data_source !== filters.dataSource) {
+        return false
+      }
+
+      if (filters.hideUnnamed === true && playground.name) {
         return false
       }
 

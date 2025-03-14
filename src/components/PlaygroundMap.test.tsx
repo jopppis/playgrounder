@@ -219,6 +219,7 @@ describe('PlaygroundMap', () => {
         hasSupervised: null,
         city: null,
         noRating: null,
+        hideUnnamed: null,
         noUserRating: null
       } as FilterOptions,
       loading: false,

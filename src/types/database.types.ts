@@ -57,6 +57,7 @@ export interface UserFilter {
   data_source: 'municipality' | 'osm' | 'community' | null
   no_rating: boolean | null
   no_user_rating: boolean | null
+  hide_unnamed: boolean | null
   created_at: string
   updated_at: string
 }

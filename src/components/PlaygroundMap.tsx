@@ -568,6 +568,11 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
         return false
       }
 
+      // Filter by unnamed playgrounds
+      if (filters.hideUnnamed === true && !playground.name) {
+        return false
+      }
+
       // Filter by visit status
       if (user && filters.visitStatus !== null) {
         const hasVisited = visits.some(visit => visit.playground_id === playground.id)
@@ -662,7 +667,8 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
       minStars: null,
       noRating: null,
       minUserStars: null,
-      noUserRating: null
+      noUserRating: null,
+      hideUnnamed: null
     })
   }, [updateFilters])
 

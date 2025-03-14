@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Unnamed playground filter
+
 ### Changed
 - Only fetch distinct cities
 - Use select boxes for all filters

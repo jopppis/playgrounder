@@ -14,6 +14,7 @@ export const useUserFilters = () => {
     city: null,
     dataSource: null,
     noRating: null,
+    hideUnnamed: null,
     noUserRating: null
   })
   const [loading, setLoading] = useState(true)
@@ -31,6 +32,7 @@ export const useUserFilters = () => {
         city: null,
         dataSource: null,
         noRating: null,
+        hideUnnamed: null,
         noUserRating: null
       })
       setLoading(false)
@@ -56,6 +58,7 @@ export const useUserFilters = () => {
           city: data.city,
           dataSource: data.data_source,
           noRating: data.no_rating,
+          hideUnnamed: data.hide_unnamed,
           noUserRating: data.no_user_rating
         })
       }
@@ -83,6 +86,7 @@ export const useUserFilters = () => {
         city: newFilters.city,
         data_source: newFilters.dataSource,
         no_rating: newFilters.noRating,
+        hide_unnamed: newFilters.hideUnnamed,
         no_user_rating: newFilters.noUserRating
       }
 

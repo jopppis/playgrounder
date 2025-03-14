@@ -213,6 +213,13 @@
     "noCity": "No city information",
     "markVisited": "Visited",
     "searchByName": "Search Google Maps for {{name}}",
+    "filter": {
+      "unnamed": {
+        "label": "Unnamed playgrounds",
+        "any": "Show all",
+        "hide": "Hide unnamed"
+      }
+    },
     "login": {
       "required": "Login required to mark as visited"
     },

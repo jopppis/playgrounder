@@ -112,6 +112,7 @@ describe('Stats', () => {
       dataSource: null,
       searchQuery: null,
       noRating: null,
+      hideUnnamed: null,
       noUserRating: null
     }
 

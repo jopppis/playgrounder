@@ -213,6 +213,13 @@
     "noCity": "Ei kaupunkitietoa",
     "markVisited": "Vierailtu",
     "searchByName": "Hae Google Mapsista nimellä {{name}}",
+    "filter": {
+      "unnamed": {
+        "label": "Nimeämättömät leikkipaikat",
+        "any": "Näytä kaikki",
+        "hide": "Piilota nimeämättömät"
+      }
+    },
     "login": {
       "required": "Kirjaudu sisään merkitäksesi vierailluksi"
     },
