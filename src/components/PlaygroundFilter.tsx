@@ -516,26 +516,6 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                 open={isAdvancedOpen}
                 onOpenChange={(details) => setIsAdvancedOpen(details.open)}
               >
-                <Collapsible.Trigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    width="full"
-                    height="28px"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    px={2}
-                    color="gray.700"
-                    _hover={{ bg: 'gray.50' }}
-                  >
-                    <Text fontSize="sm" fontWeight="medium">
-                      {isAdvancedOpen ? t('showLess') : t('showMore')}
-                    </Text>
-                    {isAdvancedOpen ? <MdExpandLess size={20} /> : <MdExpandMore size={20} />}
-                  </Button>
-                </Collapsible.Trigger>
-
                 <Collapsible.Content>
                   <VStack align="stretch" gap={3} pt={2}>
                     {user && (
@@ -668,6 +648,27 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     </Box>
                   </VStack>
                 </Collapsible.Content>
+
+                <Collapsible.Trigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    width="full"
+                    height="28px"
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    px={2}
+                    color="gray.700"
+                    _hover={{ bg: 'gray.50' }}
+                    mt={isAdvancedOpen ? 3 : 0}
+                  >
+                    <Text fontSize="sm" fontWeight="medium">
+                      {isAdvancedOpen ? t('showLess') : t('showMore')}
+                    </Text>
+                    <Box as={isAdvancedOpen ? MdExpandLess : MdExpandMore} size={20} />
+                  </Button>
+                </Collapsible.Trigger>
               </Collapsible.Root>
             </Box>
           </VStack>
