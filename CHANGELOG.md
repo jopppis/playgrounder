@@ -14,9 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Move some filters to collapsible section
 - Use hide filter menu button for clearing filters if active
+- Make views security invoker and set search paths
 
 ### Fixed
 - Do not remove edits when user deletes their account
+
 ## [0.18.1] - 2025-03-14
 
 ### Fixed

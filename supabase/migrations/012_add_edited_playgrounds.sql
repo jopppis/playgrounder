@@ -123,6 +123,7 @@ CREATE OR REPLACE FUNCTION refresh_active_playgrounds()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = extensions,public
 AS $$
 BEGIN
   IF EXISTS (
