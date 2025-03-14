@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Double tap to zoom
+- Icons to filter titles
 
 ## [0.18.1] - 2025-03-14
 

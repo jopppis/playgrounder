@@ -153,13 +153,11 @@ describe('PlaygroundFilter', () => {
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 
-    const supervisionSelect = screen.getByText(enTranslations.playground.supervision.label)
-      .parentElement
-      ?.querySelector('select')
+    const supervisionSelect = screen.getByRole('combobox', { name: enTranslations.playground.supervision.label })
     expect(supervisionSelect).toBeInTheDocument()
 
     await act(async () => {
-      fireEvent.change(supervisionSelect!, { target: { value: 'true' } })
+      fireEvent.change(supervisionSelect, { target: { value: 'true' } })
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 
@@ -176,13 +174,11 @@ describe('PlaygroundFilter', () => {
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 
-    const supervisionSelect = screen.getByText(enTranslations.playground.supervision.label)
-      .parentElement
-      ?.querySelector('select')
+    const supervisionSelect = screen.getByRole('combobox', { name: enTranslations.playground.supervision.label })
     expect(supervisionSelect).toBeInTheDocument()
 
     await act(async () => {
-      fireEvent.change(supervisionSelect!, { target: { value: '' } })
+      fireEvent.change(supervisionSelect, { target: { value: '' } })
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 
@@ -363,14 +359,12 @@ describe('PlaygroundFilter', () => {
       await new Promise(resolve => setTimeout(resolve, 0))
     })
 
-    // Now find the data source select by its label text
-    const select = screen.getByText(enTranslations.playground.dataSource.label)
-      .parentElement
-      ?.querySelector('select')
+    // Now find the data source select by its role
+    const select = screen.getByRole('combobox', { name: enTranslations.playground.dataSource.label })
     expect(select).toBeInTheDocument()
 
     // Change the value
-    fireEvent.change(select!, { target: { value: 'community' } })
+    fireEvent.change(select, { target: { value: 'community' } })
 
     expect(onChange).toHaveBeenCalledWith({
       ...defaultFilters,

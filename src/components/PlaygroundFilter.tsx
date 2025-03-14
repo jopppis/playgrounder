@@ -10,7 +10,9 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FaCity, FaDatabase, FaRegStar, FaStar, FaUserCheck } from 'react-icons/fa'
 import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6'
+import { MdSupervisorAccount, MdTextFields } from 'react-icons/md'
 import { useAuth } from '../hooks/useAuth'
 import { useCities } from '../hooks/useCities'
 
@@ -385,9 +387,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               </Button>
             )}
             <Box mt={{ base: 2, sm: 0 }} >
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={{ base: 2, sm: 1 }}>
-                {t('city')}
-              </Text>
+              <HStack gap={1} mb={{ base: 2, sm: 1 }}>
+                <FaCity size={14} color={filters.city ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                  {t('city')}
+                </Text>
+              </HStack>
               <Box position="relative">
                 <NativeSelect.Root
                   size="sm"
@@ -424,9 +429,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             </Box>
 
             <Box>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                {t('playground.dataSource.label')}
-              </Text>
+              <HStack gap={1} mb={1}>
+                <FaDatabase size={14} color={filters.dataSource ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                  {t('playground.dataSource.label')}
+                </Text>
+              </HStack>
               <Box position="relative">
                 <NativeSelect.Root
                   size="sm"
@@ -442,6 +450,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     })}
                     height="28px"
                     fontSize="sm"
+                    aria-label={t('playground.dataSource.label')}
                   >
                     {dataSources.map((source) => (
                       <option
@@ -458,9 +467,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             </Box>
 
             <Box>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                {t('playground.filter.unnamed.label')}
-              </Text>
+              <HStack gap={1} mb={1}>
+                <MdTextFields size={14} color={filters.hideUnnamed !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                  {t('playground.filter.unnamed.label')}
+                </Text>
+              </HStack>
               <Box position="relative">
                 <NativeSelect.Root
                   size="sm"
@@ -487,9 +499,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             </Box>
 
             <Box>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                {t('playground.supervision.label')}
-              </Text>
+              <HStack gap={1} mb={1}>
+                <MdSupervisorAccount size={14} color={filters.hasSupervised !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                  {t('playground.supervision.label')}
+                </Text>
+              </HStack>
               <Box position="relative">
                 <NativeSelect.Root
                   size="sm"
@@ -505,6 +520,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     })}
                     height="28px"
                     fontSize="sm"
+                    aria-label={t('playground.supervision.label')}
                   >
                     {supervisionOptions.map((option) => (
                       <option
@@ -522,9 +538,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
 
             {user && (
               <Box>
-                <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                  {t('visitStatus')}
-                </Text>
+                <HStack gap={1} mb={1}>
+                  <FaUserCheck size={14} color={filters.visitStatus ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                  <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                    {t('visitStatus')}
+                  </Text>
+                </HStack>
                 <Box position="relative">
                   <NativeSelect.Root
                     size="sm"
@@ -557,9 +576,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             )}
 
             <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
-              <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                {t('minStars')}
-              </Text>
+              <HStack gap={1} mb={1}>
+                <FaStar size={14} color={filters.minStars !== null || filters.noRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                  {t('minStars')}
+                </Text>
+              </HStack>
               <Box position="relative">
                 <NativeSelect.Root
                   size="sm"
@@ -604,9 +626,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
 
               {user && (
                 <Box mt={3}>
-                  <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                    {t('minUserStars')}
-                  </Text>
+                  <HStack gap={1} mb={1}>
+                    <FaRegStar size={14} color={filters.minUserStars !== null || filters.noUserRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                    <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                      {t('minUserStars')}
+                    </Text>
+                  </HStack>
                   <Box position="relative">
                     <NativeSelect.Root
                       size="sm"
