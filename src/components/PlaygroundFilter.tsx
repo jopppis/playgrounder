@@ -318,25 +318,15 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               bg="transparent"
               _hover={{ bg: 'gray.50' }}
               _active={{ bg: 'gray.100' }}
-              onClick={() => setIsOpen(false)}
+              onClick={() => hasActiveFilters ? resetFilters() : setIsOpen(false)}
               border="0px"
               display="flex"
               alignItems="center"
               justifyContent="center"
               zIndex="3"
+              aria-label={hasActiveFilters ? t('removeFilters') : t('filterPlaygrounds')}
             >
-              {hasActiveFilters && (
-                <Box
-                  position="absolute"
-                  w="6px"
-                  h="6px"
-                  borderRadius="full"
-                  bg="brand.500"
-                  top="6px"
-                  right="6px"
-                />
-              )}
-              <Box as={FaFilter} boxSize="14px" color="gray.700" />
+              <Box as={hasActiveFilters ? FaFilterCircleXmark : FaFilter} boxSize="14px" color={hasActiveFilters ? "brand.500" : "gray.700"} />
             </Button>
           </Box>
         )}
@@ -358,37 +348,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             maxHeight="calc(90dvh - 40px)"
             overflowY="auto"
           >
-            {hasActiveFilters && (
-              <Button
-                size="xs"
-                height="28px"
-                variant="ghost"
-                bg="transparent"
-                color="gray.700"
-                _hover={{
-                  bg: 'gray.50',
-                  color: 'gray.700'
-                }}
-                _active={{
-                  bg: 'brand.500',
-                  color: 'white',
-                  transform: 'scale(0.98)'
-                }}
-                onClick={resetFilters}
-                width="full"
-                fontSize="sm"
-                justifyContent="flex-start"
-                transition="all 0.2s"
-                mt={{ base: 1, sm: 0 }}
-                px={0}
-              >
-                <HStack width="100%" justify="space-between" px={2}>
-                  <Text>{t('removeFilters')}</Text>
-                  <FaFilterCircleXmark size={14} />
-                </HStack>
-              </Button>
-            )}
-            <Box mt={{ base: 2, sm: 0 }} >
+            <Box mt={{ base: 0, sm: 0 }} >
               <HStack gap={1} mb={{ base: 2, sm: 1 }}>
                 <FaCity size={14} color={filters.city ? "var(--chakra-colors-brand-500)" : "currentColor"} />
                 <Text fontSize="sm" fontWeight="medium" color="gray.700">

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Move some filters to collapsible section
+- Use hide filter menu button for clearing filters if active
 
 ## [0.18.1] - 2025-03-14
 
