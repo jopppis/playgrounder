@@ -189,7 +189,7 @@ export default function ProposalDetail({ proposal, onBack, onNavigateToPlaygroun
                 <Flex justify="space-between">
                   <Text fontWeight="bold" color="gray.700">{t('admin.proposals.requestor')}</Text>
                   <Text color="gray.700" fontFamily="mono" fontSize="sm">
-                    {proposal.user_id}
+                    {proposal.user_id || t('admin.proposals.deletedUser')}
                   </Text>
                 </Flex>
 

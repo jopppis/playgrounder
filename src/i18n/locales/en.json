@@ -398,6 +398,7 @@
       "noReasonProvided": "No reason provided",
       "approve": "Approve",
       "reject": "Reject",
+      "deletedUser": "Deleted User",
       "filter": {
         "all": "All Proposals",
         "pending": "Pending",

@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move some filters to collapsible section
 - Use hide filter menu button for clearing filters if active
 
+### Fixed
+- Do not remove edits when user deletes their account
 ## [0.18.1] - 2025-03-14
 
 ### Fixed

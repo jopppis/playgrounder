@@ -73,7 +73,7 @@ export interface UserPreferences {
 export interface PlaygroundEditProposal {
   id: string
   playground_id: string | null
-  user_id: string
+  user_id: string | null
   proposed_name: string | null
   delete_playground: boolean
   has_supervised_activities: boolean | null

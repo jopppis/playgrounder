@@ -399,6 +399,7 @@
       "noReasonProvided": "Ei syytä annettu",
       "approve": "Hyväksy",
       "reject": "Hylkää",
+      "deletedUser": "Poistettu käyttäjä",
       "filter": {
         "all": "Kaikki ehdotukset",
         "pending": "Käsittelemättömät",
