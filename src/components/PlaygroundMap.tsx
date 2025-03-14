@@ -838,6 +838,8 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
         preferCanvas={true}
+        tapTolerance={15}
+        doubleClickZoom={true}
       >
         <LayersControl position="bottomright">
           <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
