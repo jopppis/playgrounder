@@ -1,8 +1,10 @@
 -- Drop existing view if exists
 DROP VIEW IF EXISTS v_distinct_cities;
 
--- Create view for distinct cities from active playgrounds
-CREATE VIEW v_distinct_cities AS
+-- Create view for distinct cities from active playgrounds with SECURITY INVOKER
+CREATE VIEW v_distinct_cities
+WITH (security_invoker=true)
+AS
 SELECT DISTINCT city
 FROM v_active_playgrounds
 WHERE city IS NOT NULL

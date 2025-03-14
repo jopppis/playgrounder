@@ -3,7 +3,9 @@ DROP FUNCTION IF EXISTS get_playgrounds_with_ratings_in_bbox;
 DROP VIEW IF EXISTS v_active_playgrounds_with_ratings;
 
 -- Create view that combines playground data with ratings
-CREATE VIEW v_active_playgrounds_with_ratings AS
+CREATE VIEW v_active_playgrounds_with_ratings
+WITH (security_invoker=true)
+AS
 SELECT
   vap.*,
   vpr.avg_rating,
@@ -27,7 +29,7 @@ RETURNS TABLE (
   LIKE v_active_playgrounds_with_ratings
 )
 LANGUAGE sql
-SECURITY DEFINER
+SECURITY INVOKER
 SET search_path = public,extensions
 AS $$
   SELECT *
