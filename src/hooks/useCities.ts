@@ -16,21 +16,14 @@ export const useCities = () => {
     setLoading(true)
     try {
       const { data, error } = await supabase
-        .from('v_active_playgrounds')
+        .from('v_distinct_cities')
         .select('city')
-        .not('city', 'is', null)
-        .order('city')
 
       if (error) throw error
 
-      // Get unique cities and transform them
-      const uniqueCities = Array.from(new Set(
-        data.map(p => p.city).filter(Boolean)
-      )).sort()
-
       setCities([
         { label: t('allCities'), value: null },
-        ...uniqueCities.map(city => ({
+        ...data.map(({ city }) => ({
           label: city,
           value: city.toLowerCase()
         })),
