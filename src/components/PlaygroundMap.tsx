@@ -497,8 +497,14 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
     refreshPlaygrounds(currentBBox, zoom)
   }, [refreshPlaygrounds])
 
+  // Add effect to refresh playgrounds when filters change
+  useEffect(() => {
+    if (mapRef.current) {
+      handleMapMoveEnd()
+    }
+  }, [filters, handleMapMoveEnd])
+
   const handleMapReady = useCallback((map: L.Map) => {
-    console.log('handleMapReady')
     mapRef.current = map
     map.on('moveend', handleMapMoveEnd)
     map.on('zoomend', handleMapMoveEnd)
