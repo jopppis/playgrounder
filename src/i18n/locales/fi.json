@@ -255,7 +255,8 @@
     "supervision": {
       "label": "Ohjattu toiminta",
       "supervised": "Ohjattua toimintaa",
-      "unsupervised": "Ei ohjattua toimintaa"
+      "unsupervised": "Ei ohjattua toimintaa",
+      "any": "Mikä tahansa"
     },
     "loginToInteract": "Kirjaudu sisään merkitäksesi leikkipaikkoja vierailluiksi tai arvostellaksesi niitä",
     "dataSource": {
@@ -339,6 +340,7 @@
   "visitStatus": "Vierailutila",
   "visited": "Vierailtu",
   "unvisited": "Ei vierailtu",
+  "any": "Mikä tahansa",
   "minStars": "Arvio",
   "minStars_plural": "Arvio",
   "minUserStars": "Oma arvio",

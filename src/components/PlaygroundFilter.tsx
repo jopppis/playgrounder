@@ -1,18 +1,15 @@
 import {
   Box,
   Button,
-  Collapsible,
   HStack,
   Input,
   NativeSelect,
-  Stack,
   Text,
   VStack,
   useBreakpointValue
 } from '@chakra-ui/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaStar } from 'react-icons/fa'
 import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6'
 import { useAuth } from '../hooks/useAuth'
 import { useCities } from '../hooks/useCities'
@@ -38,7 +35,6 @@ interface PlaygroundFilterProps {
 export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: PlaygroundFilterProps) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
-  const [showAllStars, setShowAllStars] = useState(false)
   const [localSearchQuery, setLocalSearchQuery] = useState(filters.searchQuery || '')
   const searchTimeoutRef = useRef<NodeJS.Timeout>()
   const { user } = useAuth()
@@ -135,6 +131,28 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
     { label: t('playground.dataSource.community'), value: 'community' }
   ]
 
+  const supervisionOptions = [
+    { label: t('playground.supervision.any'), value: null },
+    { label: t('playground.supervision.supervised'), value: 'true' },
+    { label: t('playground.supervision.unsupervised'), value: 'false' }
+  ]
+
+  const visitStatusOptions = [
+    { label: t('any'), value: null },
+    { label: t('visited'), value: 'visited' },
+    { label: t('unvisited'), value: 'unvisited' }
+  ]
+
+  const starOptions = [
+    { label: t('any'), value: null },
+    { label: '★★★★★', value: '5' },
+    { label: '★★★★', value: '4' },
+    { label: '★★★', value: '3' },
+    { label: '★★', value: '2' },
+    { label: '★', value: '1' },
+    { label: t('noRating'), value: 'no-rating' }
+  ]
+
   const filterPosition = useBreakpointValue({
     base: {
       top: '4',
@@ -184,38 +202,6 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-
-  const FilterButton = ({ value, isSelected, onClick, ...props }: {
-    value: string | React.ReactElement,
-    isSelected: boolean,
-    onClick: () => void,
-    [key: string]: unknown
-  }) => (
-    <Button
-      size="sm"
-      height="36px"
-      variant="ghost"
-      bg={isSelected ? 'brand.500' : 'transparent'}
-      color={isSelected ? 'white' : 'gray.700'}
-      _hover={{
-        bg: isSelected ? 'brand.500' : 'gray.50',
-        color: isSelected ? 'white' : 'gray.700'
-      }}
-      _active={{
-        bg: 'brand.500',
-        color: 'white',
-        transform: 'scale(0.98)'
-      }}
-      transition="all 0.2s"
-      onClick={onClick}
-      width="full"
-      fontSize="sm"
-      justifyContent="flex-start"
-      {...props}
-    >
-      {value}
-    </Button>
-  )
 
   // Handle city select focus to load all playgrounds
   const handleCitySelectFocus = async () => {
@@ -471,24 +457,34 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                 {t('playground.supervision.label')}
               </Text>
-              <Stack gap={0.5}>
-                <FilterButton
-                  value={t('playground.supervision.supervised')}
-                  isSelected={filters.hasSupervised === true}
-                  onClick={() => onChange({
-                    ...filters,
-                    hasSupervised: filters.hasSupervised === true ? null : true
-                  })}
-                />
-                <FilterButton
-                  value={t('playground.supervision.unsupervised')}
-                  isSelected={filters.hasSupervised === false}
-                  onClick={() => onChange({
-                    ...filters,
-                    hasSupervised: filters.hasSupervised === false ? null : false
-                  })}
-                />
-              </Stack>
+              <Box position="relative">
+                <NativeSelect.Root
+                  size="sm"
+                  variant="outline"
+                  colorPalette="brand"
+                  color="gray.700"
+                >
+                  <NativeSelect.Field
+                    value={filters.hasSupervised === null ? '' : String(filters.hasSupervised)}
+                    onChange={(e) => onChange({
+                      ...filters,
+                      hasSupervised: e.target.value === '' ? null : e.target.value === 'true'
+                    })}
+                    height="28px"
+                    fontSize="sm"
+                  >
+                    {supervisionOptions.map((option) => (
+                      <option
+                        key={option.value ?? 'any'}
+                        value={option.value ?? ''}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator/>
+                </NativeSelect.Root>
+              </Box>
             </Box>
 
             {user && (
@@ -496,24 +492,34 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                 <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                   {t('visitStatus')}
                 </Text>
-                <Stack gap={0.5}>
-                  <FilterButton
-                    value={t('visited')}
-                    isSelected={filters.visitStatus === 'visited'}
-                    onClick={() => onChange({
-                      ...filters,
-                      visitStatus: filters.visitStatus === 'visited' ? null : 'visited'
-                    })}
-                  />
-                  <FilterButton
-                    value={t('unvisited')}
-                    isSelected={filters.visitStatus === 'unvisited'}
-                    onClick={() => onChange({
-                      ...filters,
-                      visitStatus: filters.visitStatus === 'unvisited' ? null : 'unvisited'
-                    })}
-                  />
-                </Stack>
+                <Box position="relative">
+                  <NativeSelect.Root
+                    size="sm"
+                    variant="outline"
+                    colorPalette="brand"
+                    color="gray.700"
+                  >
+                    <NativeSelect.Field
+                      value={filters.visitStatus ?? ''}
+                      onChange={(e) => onChange({
+                        ...filters,
+                        visitStatus: e.target.value as 'visited' | 'unvisited' || null
+                      })}
+                      height="28px"
+                      fontSize="sm"
+                    >
+                      {visitStatusOptions.map((option) => (
+                        <option
+                          key={option.value ?? 'any'}
+                          value={option.value ?? ''}
+                        >
+                          {option.label}
+                        </option>
+                      ))}
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator/>
+                  </NativeSelect.Root>
+                </Box>
               </Box>
             )}
 
@@ -521,152 +527,96 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
                 {t('minStars')}
               </Text>
-              <Stack gap={0.5}>
-                {[5, 4].map((stars) => (
-                  <FilterButton
-                    key={stars}
-                    value={
-                      <HStack gap={0.5}>
-                        {[...Array(stars)].map((_, i) => (
-                          <FaStar key={i} color="secondary.500" size={14} />
-                        ))}
-                      </HStack>
-                    }
-                    isSelected={filters.minStars === stars}
-                    onClick={() => onChange({
-                      ...filters,
-                      minStars: filters.minStars === stars ? null : stars,
-                      noRating: null
-                    })}
-                  />
-                ))}
-
-                {!showAllStars && (
-                  <Button
-                    size="xs"
-                    height="28px"
-                    variant="ghost"
-                    bg="transparent"
-                    color="gray.700"
-                    _hover={{
-                      bg: 'gray.50',
-                      color: 'gray.700'
-                    }}
-                    _active={{
-                      bg: 'brand.500',
-                      color: 'white',
-                      transform: 'scale(0.98)'
-                    }}
-                    onClick={() => setShowAllStars(true)}
-                    width="full"
-                    fontSize="sm"
-                    justifyContent="flex-start"
-                    transition="all 0.2s"
-                  >
-                    {t('showMore')}
-                  </Button>
-                )}
-
-                <Collapsible.Root open={showAllStars}>
-                  <Collapsible.Content>
-                    <Stack gap={0.5}>
-                      {[3, 2, 1].map((stars) => (
-                        <FilterButton
-                          key={stars}
-                          value={
-                            <HStack gap={0.5}>
-                              {[...Array(stars)].map((_, i) => (
-                                <FaStar key={i} color="secondary.500" size={14} />
-                              ))}
-                            </HStack>
-                          }
-                          isSelected={filters.minStars === stars}
-                          onClick={() => onChange({
-                            ...filters,
-                            minStars: filters.minStars === stars ? null : stars,
-                            noRating: null
-                          })}
-                        />
-                      ))}
-
-                      <FilterButton
-                        value={t('noRating')}
-                        isSelected={filters.noRating === true}
-                        onClick={() => onChange({
+              <Box position="relative">
+                <NativeSelect.Root
+                  size="sm"
+                  variant="outline"
+                  colorPalette="brand"
+                  color="gray.700"
+                >
+                  <NativeSelect.Field
+                    value={filters.noRating ? 'no-rating' : (filters.minStars?.toString() ?? '')}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === 'no-rating') {
+                        onChange({
                           ...filters,
-                          noRating: filters.noRating === true ? null : true,
-                          minStars: null
-                        })}
-                      />
-
-                      {/* User ratings filter */}
-                      {user && (
-                        <Box borderTop="1px" borderColor="gray.200" pt={1.5}>
-                          <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
-                            {t('minUserStars')}
-                          </Text>
-                          <Stack gap={0.5}>
-                            {[5, 4, 3, 2, 1].map((stars) => (
-                              <FilterButton
-                                key={`user-${stars}`}
-                                value={
-                                  <HStack gap={0.5}>
-                                    {[...Array(stars)].map((_, i) => (
-                                      <FaStar key={i} color="secondary.500" size={14} />
-                                    ))}
-                                  </HStack>
-                                }
-                                isSelected={filters.minUserStars === stars}
-                                onClick={() => onChange({
-                                  ...filters,
-                                  minUserStars: filters.minUserStars === stars ? null : stars,
-                                  noUserRating: null
-                                })}
-                                data-testid={`user-rating-${stars}`}
-                              />
-                            ))}
-
-                            <FilterButton
-                              value={t('noRating')}
-                              isSelected={filters.noUserRating === true}
-                              onClick={() => onChange({
-                                ...filters,
-                                noUserRating: filters.noUserRating === true ? null : true,
-                                minUserStars: null
-                              })}
-                              data-testid="user-rating-none"
-                            />
-                          </Stack>
-                        </Box>
-                      )}
-
-                      <Button
-                        size="xs"
-                        height="28px"
-                        variant="ghost"
-                        bg="transparent"
-                        color="gray.700"
-                        _hover={{
-                          bg: 'gray.50',
-                          color: 'gray.700'
-                        }}
-                        _active={{
-                          bg: 'brand.500',
-                          color: 'white',
-                          transform: 'scale(0.98)'
-                        }}
-                        onClick={() => setShowAllStars(false)}
-                        width="full"
-                        fontSize="sm"
-                        justifyContent="flex-start"
-                        transition="all 0.2s"
+                          minStars: null,
+                          noRating: true
+                        });
+                      } else {
+                        onChange({
+                          ...filters,
+                          minStars: value ? parseInt(value) : null,
+                          noRating: null
+                        });
+                      }
+                    }}
+                    height="28px"
+                    fontSize="sm"
+                    aria-label={t('minStars')}
+                  >
+                    {starOptions.map((option) => (
+                      <option
+                        key={option.value ?? 'any'}
+                        value={option.value ?? ''}
                       >
-                        {t('showLess')}
-                      </Button>
-                    </Stack>
-                  </Collapsible.Content>
-                </Collapsible.Root>
-              </Stack>
+                        {option.label}
+                      </option>
+                    ))}
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator/>
+                </NativeSelect.Root>
+              </Box>
+
+              {user && (
+                <Box mt={3}>
+                  <Text fontSize="sm" fontWeight="medium" color="gray.700" mb={1}>
+                    {t('minUserStars')}
+                  </Text>
+                  <Box position="relative">
+                    <NativeSelect.Root
+                      size="sm"
+                      variant="outline"
+                      colorPalette="brand"
+                      color="gray.700"
+                    >
+                      <NativeSelect.Field
+                        value={filters.noUserRating ? 'no-rating' : (filters.minUserStars?.toString() ?? '')}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (value === 'no-rating') {
+                            onChange({
+                              ...filters,
+                              minUserStars: null,
+                              noUserRating: true
+                            });
+                          } else {
+                            onChange({
+                              ...filters,
+                              minUserStars: value ? parseInt(value) : null,
+                              noUserRating: null
+                            });
+                          }
+                        }}
+                        height="28px"
+                        fontSize="sm"
+                        data-testid="user-rating-select"
+                      >
+                        {starOptions.map((option) => (
+                          <option
+                            key={option.value ?? 'any'}
+                            value={option.value ?? ''}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </NativeSelect.Field>
+                      <NativeSelect.Indicator/>
+                    </NativeSelect.Root>
+                  </Box>
+                </Box>
+              )}
             </Box>
           </VStack>
         )}

@@ -255,7 +255,8 @@
     "supervision": {
       "label": "Supervision",
       "supervised": "Supervised activities",
-      "unsupervised": "No supervised activities"
+      "unsupervised": "No supervised activities",
+      "any": "Any supervision"
     },
     "loginToInteract": "Please log in to mark playgrounds as visited or rate them",
     "dataSource": {
@@ -338,6 +339,7 @@
   "visitStatus": "Visit Status",
   "visited": "Visited",
   "unvisited": "Unvisited",
+  "any": "Any",
   "minStars": "Rating",
   "minStars_plural": "Rating",
   "minUserStars": "My Rating",
