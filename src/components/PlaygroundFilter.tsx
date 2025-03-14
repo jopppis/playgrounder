@@ -661,7 +661,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     alignItems="center"
                     px={3}
                     color="gray.700"
-                    _hover={{ bg: 'gray.50' }}
+                    bg="gray.50"
+                    _hover={{ bg: 'gray.100' }}
                     mt={isAdvancedOpen ? 4 : 0}
                   >
                     <Text fontSize="md" fontWeight="medium">
