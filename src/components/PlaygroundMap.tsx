@@ -840,6 +840,7 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
         preferCanvas={true}
         tapTolerance={15}
         doubleClickZoom={true}
+        touchZoom={true}
       >
         <LayersControl position="bottomright">
           <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Enable touch zoom
+
 ## [0.18.3] - 2025-03-14
 
 ### Changed
