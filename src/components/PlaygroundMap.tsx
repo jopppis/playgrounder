@@ -177,6 +177,37 @@ const useMapUrlState = () => {
   return { updateUrlState, getInitialMapState }
 }
 
+const TouchEventHandler = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+
+    // Set up double tap zoom handler
+    let lastTap = 0;
+    const handleTap = (e: TouchEvent) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 500 && tapLength > 0) {
+        const touch = e.changedTouches[0];
+        const container = map.getContainer();
+        const rect = container.getBoundingClientRect();
+        const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
+        map.setZoomAround(point, map.getZoom() + 1);
+      }
+      lastTap = currentTime;
+    };
+
+    map.getContainer().addEventListener('touchend', handleTap);
+
+    return () => {
+      map.getContainer().removeEventListener('touchend', handleTap);
+    };
+  }, [map]);
+
+  return null;
+};
+
 // Add MapStateManager component
 const MapStateManager = ({ onMapReady, playgrounds }: {
   onMapReady: (map: L.Map) => void,
@@ -839,9 +870,9 @@ const PlaygroundMap = ({ editMode = false, onAddPlayground, onEditModeChange, se
         zoomControl={false}
         preferCanvas={true}
         tapTolerance={15}
-        doubleClickZoom={true}
         touchZoom={true}
       >
+        <TouchEventHandler />
         <LayersControl position="bottomright">
           <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
             <TileLayer
