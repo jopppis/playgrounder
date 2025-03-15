@@ -186,6 +186,18 @@ const TouchEventHandler = () => {
     // Set up double tap zoom handler
     let lastTap = 0;
     const handleTap = (e: TouchEvent) => {
+      // Check if the touch target is a control or popup
+      const target = e.target as HTMLElement;
+      if (
+        target.closest('.leaflet-control') || // Ignore controls (zoom, layers, etc.)
+        target.closest('.leaflet-popup') ||   // Ignore popups
+        target.closest('.playground-marker') || // Ignore markers
+        target.closest('button') ||           // Ignore buttons
+        target.closest('.leaflet-control-container') // Ignore control container
+      ) {
+        return;
+      }
+
       const currentTime = new Date().getTime();
       const tapLength = currentTime - lastTap;
       if (tapLength < 500 && tapLength > 0) {
