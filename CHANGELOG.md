@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Clear hide unnamed filter when user is not logged in
+
 ## [0.18.6] - 2025-03-15
 
 ### Changed

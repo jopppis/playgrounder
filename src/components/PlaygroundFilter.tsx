@@ -87,6 +87,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
         filters.hasSupervised !== null ||
         filters.city !== null ||
         filters.noRating !== null ||
+        filters.hideUnnamed !== null ||
         filters.dataSource !== null
     }
     // For logged in users, check all filters
