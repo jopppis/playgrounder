@@ -1,87 +1,72 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  Input,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
-import { AuthError } from '@supabase/supabase-js'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaTimes } from 'react-icons/fa'
-import Turnstile from 'react-turnstile'
-import { useToast } from '../../hooks/useToast'
-import { supabase } from '../../lib/supabaseClient'
+import { Box, Button, Heading, Icon, Input, Stack, Text } from '@chakra-ui/react';
+import { AuthError } from '@supabase/supabase-js';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaTimes } from 'react-icons/fa';
+import Turnstile from 'react-turnstile';
+import { useToast } from '../../hooks/useToast';
+import { supabase } from '../../lib/supabaseClient';
 
 interface ForgotPasswordProps {
-  onSuccess?: () => void
+  onSuccess?: () => void;
 }
 
 export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
-  const { t } = useTranslation()
-  const [email, setEmail] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [resetCounter, setResetCounter] = useState(0)
-  const toast = useToast()
+  const { t } = useTranslation();
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [resetCounter, setResetCounter] = useState(0);
+  const toast = useToast();
   // Enable Turnstile in development and production, but not in local
-  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
+  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local';
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
     if (enableTurnstile && !captchaToken) {
-      setError(t('auth.forgotPassword.error.captchaRequired'))
-      setLoading(false)
-      return
+      setError(t('auth.forgotPassword.error.captchaRequired'));
+      setLoading(false);
+      return;
     }
 
     try {
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/?reset_password=true`,
-        captchaToken: enableTurnstile && captchaToken ? captchaToken : undefined
-      })
+        captchaToken: enableTurnstile && captchaToken ? captchaToken : undefined,
+      });
 
-      if (resetError) throw resetError
+      if (resetError) throw resetError;
 
       toast.showSuccess({
         title: t('auth.forgotPassword.success.title'),
-        description: t('auth.forgotPassword.success.message')
-      })
+        description: t('auth.forgotPassword.success.message'),
+      });
 
-      onSuccess?.()
+      onSuccess?.();
     } catch (err) {
-      const authError = err as AuthError
-      setError(authError.message)
+      const authError = err as AuthError;
+      setError(authError.message);
       toast.showError({
         title: t('auth.forgotPassword.error.title'),
-        description: t('auth.forgotPassword.error.message')
-      })
+        description: t('auth.forgotPassword.error.message'),
+      });
       // Reset captcha on error
       if (window.turnstile) {
         window.turnstile.reset();
       }
-      setCaptchaToken(null)
-      setResetCounter(prev => prev + 1)
+      setCaptchaToken(null);
+      setResetCounter((prev) => prev + 1);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <Box
-      position="relative"
-      p={6}
-      bg="gray.50"
-      color="gray.700"
-      borderRadius="xl"
-      boxShadow="xl"
-    >
+    <Box position="relative" p={6} bg="gray.50" color="gray.700" borderRadius="xl" boxShadow="xl">
       <Box position="absolute" right={2} top={2}>
         <Button
           onClick={onSuccess}
@@ -98,7 +83,9 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
         </Button>
       </Box>
       <Stack gap={8}>
-        <Heading size="lg" color="brand.500">{t('auth.forgotPassword.title')}</Heading>
+        <Heading size="lg" color="brand.500">
+          {t('auth.forgotPassword.title')}
+        </Heading>
         {error && (
           <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
             <Text fontWeight="bold">{t('auth.forgotPassword.error.title')}</Text>
@@ -108,7 +95,9 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
         <Box as="form" onSubmit={handleSubmit}>
           <Stack gap={4}>
             <Box>
-              <Text mb={2} color="gray.700">{t('auth.forgotPassword.email')}</Text>
+              <Text mb={2} color="gray.700">
+                {t('auth.forgotPassword.email')}
+              </Text>
               <Input
                 type="email"
                 name="email"
@@ -124,7 +113,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
                 _focus={{
                   borderColor: 'brand.500',
                   boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                  outline: 'none'
+                  outline: 'none',
                 }}
               />
             </Box>
@@ -151,11 +140,13 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
               transition="all 0.2s"
             >
-              {loading ? t('auth.forgotPassword.submitButton.loading') : t('auth.forgotPassword.submitButton.default')}
+              {loading
+                ? t('auth.forgotPassword.submitButton.loading')
+                : t('auth.forgotPassword.submitButton.default')}
             </Button>
           </Stack>
         </Box>
       </Stack>
     </Box>
-  )
+  );
 }

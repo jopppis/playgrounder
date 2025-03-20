@@ -169,11 +169,7 @@
         },
         "icons": {
           "title": "Icons",
-          "content": [
-            "FontAwesome",
-            "Heroicons",
-            "Material Design Icons"
-          ]
+          "content": ["FontAwesome", "Heroicons", "Material Design Icons"]
         }
       }
     },

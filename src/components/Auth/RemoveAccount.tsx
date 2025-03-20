@@ -1,56 +1,49 @@
-import {
-  Button,
-  Dialog,
-  Heading,
-  Portal,
-  Stack,
-  Text
-} from '@chakra-ui/react'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import { useToast } from '../../hooks/useToast'
-import { supabase } from '../../lib/supabaseClient'
+import { Button, Dialog, Heading, Portal, Stack, Text } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '../../hooks/useToast';
+import { supabase } from '../../lib/supabaseClient';
 
 interface RemoveAccountProps {
-  onClose: () => void
-  isOpen: boolean
+  onClose: () => void;
+  isOpen: boolean;
 }
 
 export default function RemoveAccount({ onClose, isOpen }: RemoveAccountProps) {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
-  const toast = useToast()
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleDelete = async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const { error: deleteError } = await supabase.rpc('delete_user')
+      const { error: deleteError } = await supabase.rpc('delete_user');
 
-      if (deleteError) throw deleteError
+      if (deleteError) throw deleteError;
 
       toast.showSuccess({
         title: t('auth.removeAccount.success.title'),
-        description: t('auth.removeAccount.success.message')
-      })
+        description: t('auth.removeAccount.success.message'),
+      });
 
       // Sign out after successful deletion
-      await supabase.auth.signOut()
-      navigate('/')
-      onClose()
+      await supabase.auth.signOut();
+      navigate('/');
+      onClose();
     } catch (err) {
-      const error = err as Error
+      const error = err as Error;
       toast.showError({
         title: t('auth.removeAccount.error.title'),
-        description: t('auth.removeAccount.error.message')
-      })
-      console.error('Error deleting account:', error.message)
+        description: t('auth.removeAccount.error.message'),
+      });
+      console.error('Error deleting account:', error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={() => onClose()}>
@@ -69,9 +62,7 @@ export default function RemoveAccount({ onClose, isOpen }: RemoveAccountProps) {
               <Heading size="lg" color="gray.700">
                 {t('auth.removeAccount.confirmTitle')}
               </Heading>
-              <Text color="gray.600">
-                {t('auth.removeAccount.confirmMessage')}
-              </Text>
+              <Text color="gray.600">{t('auth.removeAccount.confirmMessage')}</Text>
               <Stack direction="row" gap={4} justifyContent="flex-end">
                 <Button
                   variant="solid"
@@ -80,11 +71,11 @@ export default function RemoveAccount({ onClose, isOpen }: RemoveAccountProps) {
                   color="white"
                   _hover={{
                     bg: 'secondary.500',
-                    transform: 'translateY(-2px)'
+                    transform: 'translateY(-2px)',
                   }}
                   _active={{
                     bg: 'brand.500',
-                    transform: 'translateY(0)'
+                    transform: 'translateY(0)',
                   }}
                   transition="all 0.2s"
                 >
@@ -96,7 +87,7 @@ export default function RemoveAccount({ onClose, isOpen }: RemoveAccountProps) {
                   onClick={handleDelete}
                   disabled={loading}
                   _hover={{
-                    bg: 'red.600'
+                    bg: 'red.600',
                   }}
                 >
                   {t('auth.removeAccount.confirmButton')}
@@ -107,5 +98,5 @@ export default function RemoveAccount({ onClose, isOpen }: RemoveAccountProps) {
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
-  )
+  );
 }

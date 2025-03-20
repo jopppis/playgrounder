@@ -1,38 +1,38 @@
-import { Box, Button, ButtonProps, Text } from '@chakra-ui/react'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useAuth } from '../hooks/useAuth'
-import ChangePasswordModal from './Auth/ChangePasswordModal'
-import RemoveAccount from './Auth/RemoveAccount'
+import { Box, Button, ButtonProps, Text } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
+import ChangePasswordModal from './Auth/ChangePasswordModal';
+import RemoveAccount from './Auth/RemoveAccount';
 
 type AccountProps = {
-  onBack: () => void
-}
+  onBack: () => void;
+};
 
 const Account = ({ onBack }: AccountProps) => {
-  const { t } = useTranslation()
-  const { user } = useAuth()
-  const [showRemoveAccount, setShowRemoveAccount] = useState(false)
-  const [showChangePassword, setShowChangePassword] = useState(false)
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const [showRemoveAccount, setShowRemoveAccount] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
   const buttonProps: ButtonProps = {
-    w: "100%",
-    variant: "solid",
-    bg: "brand.500",
-    color: "white",
-    border: "1px solid",
-    borderColor: "brand.500",
+    w: '100%',
+    variant: 'solid',
+    bg: 'brand.500',
+    color: 'white',
+    border: '1px solid',
+    borderColor: 'brand.500',
     _hover: { bg: 'secondary.500', transform: 'translateY(-2px)', borderColor: 'secondary.500' },
     _active: { bg: 'brand.500', transform: 'translateY(0)' },
-    transition: "all 0.2s",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    transition: 'all 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     px: 3,
-    h: "36px",
+    h: '36px',
     gap: 2,
-    fontSize: "sm"
-  }
+    fontSize: 'sm',
+  };
 
   return (
     <>
@@ -49,11 +49,7 @@ const Account = ({ onBack }: AccountProps) => {
         </Text>
       </Box>
 
-      <Button
-        {...buttonProps}
-        onClick={() => setShowChangePassword(true)}
-        mb={2}
-      >
+      <Button {...buttonProps} onClick={() => setShowChangePassword(true)} mb={2}>
         {t('auth.changePassword.button.default')}
       </Button>
 
@@ -68,17 +64,21 @@ const Account = ({ onBack }: AccountProps) => {
         {t('auth.removeAccount.button')}
       </Button>
 
-      <Button
-        {...buttonProps}
-        onClick={onBack}
-      >
+      <Button {...buttonProps} onClick={onBack}>
         {t('menu.account.backButton')}
       </Button>
 
-      {showRemoveAccount && <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />}
-      {showChangePassword && <ChangePasswordModal isOpen={showChangePassword} onClose={() => setShowChangePassword(false)} />}
+      {showRemoveAccount && (
+        <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />
+      )}
+      {showChangePassword && (
+        <ChangePasswordModal
+          isOpen={showChangePassword}
+          onClose={() => setShowChangePassword(false)}
+        />
+      )}
     </>
-  )
-}
+  );
+};
 
-export default Account
+export default Account;

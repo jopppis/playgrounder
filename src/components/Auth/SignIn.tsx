@@ -1,97 +1,81 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  Input,
-  Link,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
-import { AuthError } from '@supabase/supabase-js'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaTimes } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
-import Turnstile from 'react-turnstile'
-import { useToast } from '../../hooks/useToast'
-import { supabase } from '../../lib/supabaseClient'
+import { Box, Button, Heading, Icon, Input, Link, Stack, Text } from '@chakra-ui/react';
+import { AuthError } from '@supabase/supabase-js';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaTimes } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import Turnstile from 'react-turnstile';
+import { useToast } from '../../hooks/useToast';
+import { supabase } from '../../lib/supabaseClient';
 
 interface SignInProps {
-  onSuccess?: () => void
-  onSignInSuccess?: () => void
-  onClose?: () => void
+  onSuccess?: () => void;
+  onSignInSuccess?: () => void;
+  onClose?: () => void;
 }
 
 export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInProps) {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [resetCounter, setResetCounter] = useState(0)
-  const toast = useToast()
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [resetCounter, setResetCounter] = useState(0);
+  const toast = useToast();
   // Enable Turnstile in development and production, but not in local
-  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
+  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local';
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
     if (enableTurnstile && !captchaToken) {
-      setError(t('auth.signIn.error.captchaRequired'))
-      setLoading(false)
-      return
+      setError(t('auth.signIn.error.captchaRequired'));
+      setLoading(false);
+      return;
     }
 
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: enableTurnstile && captchaToken ? { captchaToken } : undefined
-      })
+        options: enableTurnstile && captchaToken ? { captchaToken } : undefined,
+      });
 
-      if (signInError) throw signInError
+      if (signInError) throw signInError;
 
       toast.showSuccess({
         title: t('auth.signIn.success.title'),
-        description: t('auth.signIn.success.message')
-      })
+        description: t('auth.signIn.success.message'),
+      });
 
-      navigate('/')
-      onSignInSuccess?.()
+      navigate('/');
+      onSignInSuccess?.();
     } catch (err) {
-      const authError = err as AuthError
-      setError(authError.message)
+      const authError = err as AuthError;
+      setError(authError.message);
       toast.showError({
         title: t('auth.signIn.error.title'),
-        description: t('auth.signIn.error.message')
-      })
+        description: t('auth.signIn.error.message'),
+      });
       // Reset captcha on error
       if (window.turnstile) {
         window.turnstile.reset();
       }
       // We need to reset the captchaToken and increment the reset counter
       // to force a fresh instance of the Turnstile component
-      setCaptchaToken(null)
-      setResetCounter(prev => prev + 1)
+      setCaptchaToken(null);
+      setResetCounter((prev) => prev + 1);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <Box
-      position="relative"
-      p={6}
-      bg="gray.50"
-      color="gray.700"
-      borderRadius="xl"
-      boxShadow="xl"
-    >
+    <Box position="relative" p={6} bg="gray.50" color="gray.700" borderRadius="xl" boxShadow="xl">
       <Box position="absolute" right={2} top={2}>
         <Button
           onClick={onClose}
@@ -108,7 +92,9 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
         </Button>
       </Box>
       <Stack gap={8}>
-        <Heading size="lg" color="brand.500">{t('auth.signIn.title')}</Heading>
+        <Heading size="lg" color="brand.500">
+          {t('auth.signIn.title')}
+        </Heading>
         {error && (
           <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
             <Text fontWeight="bold">{t('auth.signIn.error.title')}</Text>
@@ -118,7 +104,9 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
         <Box as="form" onSubmit={handleSubmit}>
           <Stack gap={4}>
             <Box>
-              <Text mb={2} color="gray.700">{t('auth.signIn.email')}</Text>
+              <Text mb={2} color="gray.700">
+                {t('auth.signIn.email')}
+              </Text>
               <Input
                 type="email"
                 name="email"
@@ -127,19 +115,21 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 placeholder={t('auth.signIn.emailPlaceholder')}
                 required
-                fontSize={{ base: "16px", sm: "inherit" }}
+                fontSize={{ base: '16px', sm: 'inherit' }}
                 _placeholder={{ color: 'gray.400' }}
                 borderColor="brand.200"
                 _hover={{ borderColor: 'brand.300' }}
                 _focus={{
                   borderColor: 'brand.500',
                   boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                  outline: 'none'
+                  outline: 'none',
                 }}
               />
             </Box>
             <Box>
-              <Text mb={2} color="gray.700">{t('auth.signIn.password')}</Text>
+              <Text mb={2} color="gray.700">
+                {t('auth.signIn.password')}
+              </Text>
               <Input
                 type="password"
                 name="password"
@@ -149,14 +139,14 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 placeholder={t('auth.signIn.passwordPlaceholder')}
                 required
-                fontSize={{ base: "16px", sm: "inherit" }}
+                fontSize={{ base: '16px', sm: 'inherit' }}
                 _placeholder={{ color: 'gray.400' }}
                 borderColor="brand.200"
                 _hover={{ borderColor: 'brand.300' }}
                 _focus={{
                   borderColor: 'brand.500',
                   boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                  outline: 'none'
+                  outline: 'none',
                 }}
               />
             </Box>
@@ -199,5 +189,5 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
         </Box>
       </Stack>
     </Box>
-  )
+  );
 }

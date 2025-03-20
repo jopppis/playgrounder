@@ -1,38 +1,28 @@
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Icon,
-  Link,
-  Spinner,
-  Text,
-  VStack
-} from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaRegStar, FaStar } from 'react-icons/fa'
-import { HiPencil } from 'react-icons/hi2'
-import { MdLocationOn, MdSearch, MdSupervisorAccount } from 'react-icons/md'
-import { useAuth } from '../hooks/useAuth'
-import { useLoginToast } from '../hooks/useLoginToast'
-import { useRatings } from '../hooks/useRatings'
-import { useToast } from '../hooks/useToast'
-import { useUserPreferences } from '../hooks/useUserPreferences'
-import { useVisits } from '../hooks/useVisits'
-import { supabase } from '../lib/supabaseClient'
-import { PlaygroundWithCoordinates } from '../types/database.types'
-import EditPlaygroundModal from './Playground/EditPlaygroundModal'
-import { Switch } from './ui/switch'
-import { InfoTip } from './ui/toggle-tip'
-import { Tooltip } from './ui/tooltip'
+import { Box, Button, Flex, HStack, Icon, Link, Spinner, Text, VStack } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaRegStar, FaStar } from 'react-icons/fa';
+import { HiPencil } from 'react-icons/hi2';
+import { MdLocationOn, MdSearch, MdSupervisorAccount } from 'react-icons/md';
+import { useAuth } from '../hooks/useAuth';
+import { useLoginToast } from '../hooks/useLoginToast';
+import { useRatings } from '../hooks/useRatings';
+import { useToast } from '../hooks/useToast';
+import { useUserPreferences } from '../hooks/useUserPreferences';
+import { useVisits } from '../hooks/useVisits';
+import { supabase } from '../lib/supabaseClient';
+import { PlaygroundWithCoordinates } from '../types/database.types';
+import EditPlaygroundModal from './Playground/EditPlaygroundModal';
+import { Switch } from './ui/switch';
+import { InfoTip } from './ui/toggle-tip';
+import { Tooltip } from './ui/tooltip';
 
 interface PlaygroundPopupProps {
-  playground: PlaygroundWithCoordinates
-  onVisitChange: (isVisited: boolean) => void
-  onContentChange?: () => void
-  onRatingChange: () => void
-  editMode?: boolean
+  playground: PlaygroundWithCoordinates;
+  onVisitChange: (isVisited: boolean) => void;
+  onContentChange?: () => void;
+  onRatingChange: () => void;
+  editMode?: boolean;
 }
 
 export const PlaygroundPopup = ({
@@ -40,110 +30,112 @@ export const PlaygroundPopup = ({
   onVisitChange,
   onContentChange,
   onRatingChange,
-  editMode = false
+  editMode = false,
 }: PlaygroundPopupProps) => {
-  const { t } = useTranslation()
-  const { user, loading: authLoading } = useAuth()
-  const toast = useToast()
-  const { showLoginToast } = useLoginToast()
-  const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits()
-  const { rating, loading: ratingLoading, submitRating, togglePublic, clearRating } = useRatings(
-    playground.id,
-    playground.avg_rating,
-    playground.total_ratings
-  )
-  const { preferences } = useUserPreferences()
-  const [hoveredRating, setHoveredRating] = useState<number | null>(null)
-  const [showEditModal, setShowEditModal] = useState(false)
-  const [hasVisited, setHasVisited] = useState(false)
+  const { t } = useTranslation();
+  const { user, loading: authLoading } = useAuth();
+  const toast = useToast();
+  const { showLoginToast } = useLoginToast();
+  const { visits, loading: visitsLoading, addVisit, removeVisit } = useVisits();
+  const {
+    rating,
+    loading: ratingLoading,
+    submitRating,
+    togglePublic,
+    clearRating,
+  } = useRatings(playground.id, playground.avg_rating, playground.total_ratings);
+  const { preferences } = useUserPreferences();
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [hasVisited, setHasVisited] = useState(false);
 
   // Reset states when user changes
   useEffect(() => {
     // Only reset if we're sure there's no user (not during loading)
     if (!user && !authLoading) {
-      setHoveredRating(null)
+      setHoveredRating(null);
     }
-  }, [user, authLoading])
+  }, [user, authLoading]);
 
   // Use useEffect to update hasVisited when visits change
   useEffect(() => {
     if (!visitsLoading && user) {
-      setHasVisited(visits.some(visit => visit.playground_id === playground.id))
-      onContentChange?.()
+      setHasVisited(visits.some((visit) => visit.playground_id === playground.id));
+      onContentChange?.();
     } else if (!user && !authLoading) {
-      setHasVisited(false)
-      onContentChange?.()
+      setHasVisited(false);
+      onContentChange?.();
     }
-  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading])
+  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading]);
 
   // Update popup when rating changes
   useEffect(() => {
-    onContentChange?.()
-  }, [rating, ratingLoading, onContentChange])
+    onContentChange?.();
+  }, [rating, ratingLoading, onContentChange]);
 
   // Update popup when hover state changes
   useEffect(() => {
-    onContentChange?.()
-  }, [hoveredRating, onContentChange])
+    onContentChange?.();
+  }, [hoveredRating, onContentChange]);
 
   // Show login toast when component mounts if user is not logged in
   useEffect(() => {
     if (!authLoading && !user) {
-      showLoginToast()
+      showLoginToast();
     }
-  }, [user, authLoading, showLoginToast])
+  }, [user, authLoading, showLoginToast]);
 
   const handleVisit = async () => {
     if (!user) {
-      return
+      return;
     }
 
-    const result = await addVisit(playground.id)
+    const result = await addVisit(playground.id);
     if (result.error) {
       toast.showError({
         title: t('common.error'),
-        description: result.error
-      })
-      return
+        description: result.error,
+      });
+      return;
     }
 
-    setHasVisited(true)
-    onVisitChange(true)
-    onContentChange?.()
+    setHasVisited(true);
+    onVisitChange(true);
+    onContentChange?.();
     toast.showSuccess({
-      title: t('playground.addVisit.title')
-    })
-  }
+      title: t('playground.addVisit.title'),
+    });
+  };
 
   const handleRemoveVisit = async () => {
-    if (!user) return
+    if (!user) return;
 
-    const result = await removeVisit(playground.id)
+    const result = await removeVisit(playground.id);
     if (result.error) {
       toast.showError({
         title: t('common.error'),
-        description: result.error
-      })
-      return
+        description: result.error,
+      });
+      return;
     }
 
     // Reset local state
-    setHasVisited(false)
-    onVisitChange(false)
+    setHasVisited(false);
+    onVisitChange(false);
     // Clear rating data since ratings can't exist without visits
-    clearRating()
-    onRatingChange()
-    onContentChange?.()
+    clearRating();
+    onRatingChange();
+    onContentChange?.();
     toast.showSuccess({
       title: t('playground.removeVisit.title'),
-    })
-  }
+    });
+  };
 
   const handleRating = async (value: number, e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
 
-    if (!user) return
+    if (!user) return;
 
     try {
       // First ensure there's a visit record
@@ -152,50 +144,53 @@ export const PlaygroundPopup = ({
         .select('id')
         .eq('playground_id', playground.id)
         .eq('user_id', user.id)
-        .single()
+        .single();
 
-      if (visitError) throw visitError
+      if (visitError) throw visitError;
       if (!visitData?.id) {
-        throw new Error(t('playground.rating.error.noVisit'))
+        throw new Error(t('playground.rating.error.noVisit'));
       }
 
       // Use default public setting for new ratings
-      const isPublic = rating?.userRating === null ? preferences.defaultPublicRatings : (rating?.isPublic ?? false)
-      setHoveredRating(null)
+      const isPublic =
+        rating?.userRating === null
+          ? preferences.defaultPublicRatings
+          : (rating?.isPublic ?? false);
+      setHoveredRating(null);
 
       // Submit the rating - optimistic updates are now handled in useRatings
-      await submitRating(value, isPublic, visitData.id)
-      onContentChange?.()
-      onRatingChange()
+      await submitRating(value, isPublic, visitData.id);
+      onContentChange?.();
+      onRatingChange();
       toast.showSuccess({
-        title: t('playground.rating.success.title')
-      })
+        title: t('playground.rating.success.title'),
+      });
     } catch (err) {
       toast.showError({
         title: t('playground.rating.error.title'),
-        description: err instanceof Error ? err.message : t('common.unknownError')
-      })
+        description: err instanceof Error ? err.message : t('common.unknownError'),
+      });
     }
-  }
+  };
 
   const handleTogglePublic = async () => {
     try {
-      const wasPublic = rating?.isPublic
-      await togglePublic()
-      onRatingChange() // Call onRatingChange after toggling public status
+      const wasPublic = rating?.isPublic;
+      await togglePublic();
+      onRatingChange(); // Call onRatingChange after toggling public status
       toast.showSuccess({
         title: t('playground.rating.visibility.success.title'),
         description: wasPublic
           ? t('playground.rating.visibility.success.private')
-          : t('playground.rating.visibility.success.public')
-      })
+          : t('playground.rating.visibility.success.public'),
+      });
     } catch (err) {
       toast.showError({
         title: t('playground.rating.visibility.error.title'),
-        description: err instanceof Error ? err.message : t('common.unknownError')
-      })
+        description: err instanceof Error ? err.message : t('common.unknownError'),
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -207,13 +202,7 @@ export const PlaygroundPopup = ({
         ) : (
           <VStack align="stretch" gap={0}>
             <Flex justify="space-between" align="center" gap={2}>
-              <Text
-                fontSize="md"
-                fontWeight="semibold"
-                color="gray.700"
-                truncate
-                flex={1}
-              >
+              <Text fontSize="md" fontWeight="semibold" color="gray.700" truncate flex={1}>
                 {playground.name || t('playground.unnamed')}
               </Text>
             </Flex>
@@ -236,7 +225,9 @@ export const PlaygroundPopup = ({
             {/* Properties row with icons, rating, and visit switch */}
             <Flex justify="space-between" align="center">
               <HStack gap={3}>
-                <Tooltip content={`${Math.abs(playground.latitude).toFixed(6)}°${playground.latitude >= 0 ? 'N' : 'S'}, ${Math.abs(playground.longitude).toFixed(6)}°${playground.longitude >= 0 ? 'E' : 'W'}`}>
+                <Tooltip
+                  content={`${Math.abs(playground.latitude).toFixed(6)}°${playground.latitude >= 0 ? 'N' : 'S'}, ${Math.abs(playground.longitude).toFixed(6)}°${playground.longitude >= 0 ? 'E' : 'W'}`}
+                >
                   <Link
                     href={`https://www.google.com/maps/search/?api=1&query=${playground.latitude},${playground.longitude}`}
                     target="_blank"
@@ -277,11 +268,7 @@ export const PlaygroundPopup = ({
                 {playground.has_supervised_activities && (
                   <Tooltip content={t('playground.supervision.supervised')}>
                     <Box as="span">
-                      <Icon
-                        as={MdSupervisorAccount}
-                        boxSize={5}
-                        color="gray.600"
-                      />
+                      <Icon as={MdSupervisorAccount} boxSize={5} color="gray.600" />
                     </Box>
                   </Tooltip>
                 )}
@@ -303,23 +290,23 @@ export const PlaygroundPopup = ({
 
               <Box>
                 <HStack gap={2} align="center">
-                  <Text fontSize="sm" color={!user ? "gray.400" : "gray.600"}>
+                  <Text fontSize="sm" color={!user ? 'gray.400' : 'gray.600'}>
                     {t('playground.markVisited')}
                   </Text>
                   <Box
                     onClick={() => {
                       if (!user) {
-                        showLoginToast()
+                        showLoginToast();
                       }
                     }}
-                    cursor={!user ? "pointer" : "default"}
+                    cursor={!user ? 'pointer' : 'default'}
                   >
                     <Switch
                       size="md"
                       checked={hasVisited}
                       onCheckedChange={async () => {
                         if (!user) {
-                          return
+                          return;
                         }
                         if (hasVisited) {
                           await handleRemoveVisit();
@@ -339,7 +326,12 @@ export const PlaygroundPopup = ({
             <Box>
               <Box borderBottom="1px solid" borderColor="gray.200" mb={2} />
               {ratingLoading || authLoading ? (
-                <Spinner size="md" color="brand.500" role="status" aria-label={t('playground.rating.loading')} />
+                <Spinner
+                  size="md"
+                  color="brand.500"
+                  role="status"
+                  aria-label={t('playground.rating.loading')}
+                />
               ) : (
                 <HStack gap={2} justify="space-between" align="center">
                   <HStack gap={0.5}>
@@ -348,29 +340,29 @@ export const PlaygroundPopup = ({
                         key={value}
                         as="button"
                         onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
-                          e.preventDefault()
-                          e.stopPropagation()
+                          e.preventDefault();
+                          e.stopPropagation();
                           if (!user) {
-                            showLoginToast()
-                            return
+                            showLoginToast();
+                            return;
                           }
 
                           // If not visited, mark as visited first
                           if (!hasVisited) {
-                            const result = await addVisit(playground.id)
+                            const result = await addVisit(playground.id);
                             if (result.error) {
                               toast.showError({
                                 title: t('common.error'),
-                                description: result.error
-                              })
-                              return
+                                description: result.error,
+                              });
+                              return;
                             }
-                            setHasVisited(true)
-                            onVisitChange(true)
+                            setHasVisited(true);
+                            onVisitChange(true);
                           }
 
                           // Then handle the rating
-                          handleRating(value, e as unknown as React.MouseEvent<HTMLButtonElement>)
+                          handleRating(value, e as unknown as React.MouseEvent<HTMLButtonElement>);
                         }}
                         onMouseEnter={() => setHoveredRating(value)}
                         onMouseLeave={() => setHoveredRating(null)}
@@ -380,10 +372,14 @@ export const PlaygroundPopup = ({
                         cursor={user ? 'pointer' : 'not-allowed'}
                         opacity={!user ? 0.5 : 1}
                         transition="all 0.2s"
-                        _hover={user ? {
-                          transform: 'scale(1.2)',
-                          '& > *': { color: 'secondary.500' }
-                        } : undefined}
+                        _hover={
+                          user
+                            ? {
+                                transform: 'scale(1.2)',
+                                '& > *': { color: 'secondary.500' },
+                              }
+                            : undefined
+                        }
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
@@ -394,7 +390,14 @@ export const PlaygroundPopup = ({
                         _focus={{ outline: 'none' }}
                       >
                         {value <= (hoveredRating || rating?.userRating || 0) ? (
-                          <FaStar color={!user ? "var(--chakra-colors-gray-400)" : "var(--chakra-colors-secondary-500)"} size={20} />
+                          <FaStar
+                            color={
+                              !user
+                                ? 'var(--chakra-colors-gray-400)'
+                                : 'var(--chakra-colors-secondary-500)'
+                            }
+                            size={20}
+                          />
                         ) : (
                           <FaRegStar color="var(--chakra-colors-gray-400)" size={20} />
                         )}
@@ -404,27 +407,25 @@ export const PlaygroundPopup = ({
                   <HStack gap={2} align="center">
                     <Text
                       fontSize="sm"
-                      color={!user || !rating?.userRating ? "gray.400" : "gray.600"}
+                      color={!user || !rating?.userRating ? 'gray.400' : 'gray.600'}
                     >
                       {t('playground.makePublic')}
                     </Text>
-                    <InfoTip>
-                      {t('playground.rating.publicExplanation')}
-                    </InfoTip>
+                    <InfoTip>{t('playground.rating.publicExplanation')}</InfoTip>
                     <Box
                       onClick={() => {
                         if (!user) {
-                          showLoginToast()
-                          return
+                          showLoginToast();
+                          return;
                         }
                         if (!rating?.userRating) {
                           toast.showInfo({
                             title: t('playground.rating.title'),
-                            description: t('playground.rating.requiredForPublic')
-                          })
+                            description: t('playground.rating.requiredForPublic'),
+                          });
                         }
                       }}
-                      cursor={(!user || !rating?.userRating) ? "pointer" : "default"}
+                      cursor={!user || !rating?.userRating ? 'pointer' : 'default'}
                     >
                       <Switch
                         size="md"
@@ -469,5 +470,5 @@ export const PlaygroundPopup = ({
         />
       )}
     </>
-  )
-}
+  );
+};

@@ -1,12 +1,12 @@
-import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const useDocumentTitle = () => {
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    document.title = t('app.name')
-  }, [t, i18n.language])
-}
+    document.title = t('app.name');
+  }, [t, i18n.language]);
+};
 
-export default useDocumentTitle
+export default useDocumentTitle;

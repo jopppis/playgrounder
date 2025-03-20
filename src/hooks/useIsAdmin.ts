@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
-import { useAuth } from './useAuth'
+import { useCallback, useEffect, useState } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from './useAuth';
 
 export const useIsAdmin = () => {
-  const { user } = useAuth()
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const { user } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const checkAdminStatus = useCallback(async () => {
     if (!user) {
-      setIsAdmin(false)
-      setLoading(false)
-      return
+      setIsAdmin(false);
+      setLoading(false);
+      return;
     }
 
     try {
@@ -19,27 +19,27 @@ export const useIsAdmin = () => {
         .from('admin_users')
         .select('user_id')
         .eq('user_id', user.id)
-        .single()
+        .single();
 
       if (error) {
         if (error.code !== 'PGRST116') {
-          console.error('Error checking admin status:', error)
+          console.error('Error checking admin status:', error);
         }
-        setIsAdmin(false)
+        setIsAdmin(false);
       } else {
-        setIsAdmin(!!data)
+        setIsAdmin(!!data);
       }
     } catch (err) {
-      console.error('Exception checking admin status:', err)
-      setIsAdmin(false)
+      console.error('Exception checking admin status:', err);
+      setIsAdmin(false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
-    checkAdminStatus()
-  }, [checkAdminStatus])
+    checkAdminStatus();
+  }, [checkAdminStatus]);
 
-  return { isAdmin, loading }
-}
+  return { isAdmin, loading };
+};

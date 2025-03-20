@@ -9,63 +9,67 @@ import {
   Portal,
   Text,
   Textarea,
-  useDisclosure
-} from '@chakra-ui/react'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { MdSupervisorAccount } from 'react-icons/md'
-import { usePlaygroundEdits } from '../../hooks/usePlaygroundEdits'
-import { useToast } from '../../hooks/useToast'
-import { PlaygroundWithCoordinates } from '../../types/database.types'
-import { Switch } from '../ui/switch'
+  useDisclosure,
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { MdSupervisorAccount } from 'react-icons/md';
+import { usePlaygroundEdits } from '../../hooks/usePlaygroundEdits';
+import { useToast } from '../../hooks/useToast';
+import { PlaygroundWithCoordinates } from '../../types/database.types';
+import { Switch } from '../ui/switch';
 
 interface EditPlaygroundModalProps {
-  isOpen: boolean
-  onClose: () => void
-  playground: PlaygroundWithCoordinates
+  isOpen: boolean;
+  onClose: () => void;
+  playground: PlaygroundWithCoordinates;
 }
 
-export default function EditPlaygroundModal({ isOpen, onClose, playground }: EditPlaygroundModalProps) {
-  const { t } = useTranslation()
-  const [proposedName, setProposedName] = useState(playground.name || '')
-  const [editReason, setEditReason] = useState('')
-  const [deletionReason, setDeletionReason] = useState('')
-  const [hasSupervised, setHasSupervised] = useState<boolean>(playground.has_supervised_activities)
-  const [nameModified, setNameModified] = useState(false)
-  const [supervisedModified, setSupervisedModified] = useState(false)
-  const { proposePlaygroundEdit, proposePlaygroundDeletion, loading } = usePlaygroundEdits()
-  const toast = useToast()
+export default function EditPlaygroundModal({
+  isOpen,
+  onClose,
+  playground,
+}: EditPlaygroundModalProps) {
+  const { t } = useTranslation();
+  const [proposedName, setProposedName] = useState(playground.name || '');
+  const [editReason, setEditReason] = useState('');
+  const [deletionReason, setDeletionReason] = useState('');
+  const [hasSupervised, setHasSupervised] = useState<boolean>(playground.has_supervised_activities);
+  const [nameModified, setNameModified] = useState(false);
+  const [supervisedModified, setSupervisedModified] = useState(false);
+  const { proposePlaygroundEdit, proposePlaygroundDeletion, loading } = usePlaygroundEdits();
+  const toast = useToast();
 
   // For delete confirmation
-  const deleteDialog = useDisclosure()
+  const deleteDialog = useDisclosure();
 
   const handleNameChange = (value: string) => {
-    setProposedName(value)
-    setNameModified(value !== (playground.name || ''))
-  }
+    setProposedName(value);
+    setNameModified(value !== (playground.name || ''));
+  };
 
   const handleSupervisedChange = (value: boolean) => {
-    setHasSupervised(value)
-    setSupervisedModified(value !== playground.has_supervised_activities)
-  }
+    setHasSupervised(value);
+    setSupervisedModified(value !== playground.has_supervised_activities);
+  };
 
   const handleEditSubmit = async () => {
     // Check if any changes were made
     if (!nameModified && !supervisedModified) {
       toast.showInfo({
         title: t('playground.edit.noChanges.title'),
-        description: t('playground.edit.noChanges.description')
-      })
-      return
+        description: t('playground.edit.noChanges.description'),
+      });
+      return;
     }
 
     // If name is modified, ensure it's not empty
     if (nameModified && proposedName.trim() === '') {
       toast.showError({
         title: t('playground.edit.error.title'),
-        description: t('playground.edit.error.emptyName')
-      })
-      return
+        description: t('playground.edit.error.emptyName'),
+      });
+      return;
     }
 
     const { error } = await proposePlaygroundEdit(
@@ -73,54 +77,51 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
       nameModified ? proposedName : null,
       supervisedModified ? hasSupervised : null,
       false,
-      editReason.trim() || null
-    )
+      editReason.trim() || null,
+    );
 
     if (error) {
       toast.showError({
         title: t('playground.edit.error.title'),
-        description: error
-      })
+        description: error,
+      });
     } else {
       toast.showSuccess({
         title: t('playground.edit.success.title'),
-        description: t('playground.edit.success.editProposed')
-      })
-      onClose()
+        description: t('playground.edit.success.editProposed'),
+      });
+      onClose();
     }
-  }
+  };
 
   const handleDeleteSubmit = async () => {
-    const { error } = await proposePlaygroundDeletion(
-      playground.id,
-      deletionReason.trim() || null
-    )
+    const { error } = await proposePlaygroundDeletion(playground.id, deletionReason.trim() || null);
 
     if (error) {
       toast.showError({
         title: t('playground.edit.error.title'),
-        description: error
-      })
+        description: error,
+      });
     } else {
       toast.showSuccess({
         title: t('playground.edit.success.title'),
-        description: t('playground.edit.success.deletionProposed')
-      })
-      deleteDialog.onClose()
-      onClose()
+        description: t('playground.edit.success.deletionProposed'),
+      });
+      deleteDialog.onClose();
+      onClose();
     }
-  }
+  };
 
   const handleClose = () => {
-    onClose()
-  }
+    onClose();
+  };
 
   const handleDeleteDialogClose = () => {
-    deleteDialog.onClose()
-  }
+    deleteDialog.onClose();
+  };
 
   // Check if any changes have been made to enable/disable the submit button
-  const hasChanges = nameModified || supervisedModified
+  const hasChanges = nameModified || supervisedModified;
 
   return (
     <>
@@ -168,7 +169,7 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                       onChange={(e) => handleNameChange(e.target.value)}
                       placeholder={t('playground.edit.namePlaceholder')}
                       color="gray.800"
-                      borderColor={nameModified ? "brand.500" : "gray.300"}
+                      borderColor={nameModified ? 'brand.500' : 'gray.300'}
                       _placeholder={{ color: 'gray.400' }}
                     />
                     {nameModified && (
@@ -201,7 +202,11 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                         />
                       </Box>
                     </HStack>
-                    <Text fontSize="xs" color={supervisedModified ? "brand.500" : "gray.500"} mt={1}>
+                    <Text
+                      fontSize="xs"
+                      color={supervisedModified ? 'brand.500' : 'gray.500'}
+                      mt={1}
+                    >
                       {hasSupervised
                         ? t('playground.supervision.supervised')
                         : t('playground.supervision.unsupervised')}
@@ -232,11 +237,11 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                       borderColor="red.500"
                       _hover={{
                         bg: 'red.50',
-                        transform: 'translateY(-2px)'
+                        transform: 'translateY(-2px)',
                       }}
                       _active={{
                         bg: 'white',
-                        transform: 'translateY(0)'
+                        transform: 'translateY(0)',
                       }}
                       transition="all 0.2s"
                       size="sm"
@@ -256,11 +261,11 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   borderColor="gray.300"
                   _hover={{
                     bg: 'gray.100',
-                    transform: 'translateY(-2px)'
+                    transform: 'translateY(-2px)',
                   }}
                   _active={{
                     bg: 'white',
-                    transform: 'translateY(0)'
+                    transform: 'translateY(0)',
                   }}
                   transition="all 0.2s"
                   onClick={handleClose}
@@ -275,11 +280,11 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   _hover={{
                     bg: 'secondary.500',
                     transform: 'translateY(-2px)',
-                    borderColor: 'secondary.500'
+                    borderColor: 'secondary.500',
                   }}
                   _active={{
                     bg: 'brand.500',
-                    transform: 'translateY(0)'
+                    transform: 'translateY(0)',
                   }}
                   transition="all 0.2s"
                   onClick={handleEditSubmit}
@@ -288,7 +293,17 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                 >
                   {loading ? (
                     <Box as="span" display="flex" alignItems="center" gap={2}>
-                      <Box as="span" w="1em" h="1em" borderRadius="50%" borderWidth="2px" borderStyle="solid" borderColor="white" borderTopColor="transparent" animation="spin 1s linear infinite" />
+                      <Box
+                        as="span"
+                        w="1em"
+                        h="1em"
+                        borderRadius="50%"
+                        borderWidth="2px"
+                        borderStyle="solid"
+                        borderColor="white"
+                        borderTopColor="transparent"
+                        animation="spin 1s linear infinite"
+                      />
                       {t('playground.edit.submitButton')}
                     </Box>
                   ) : (
@@ -352,11 +367,11 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   borderColor="gray.300"
                   _hover={{
                     bg: 'gray.100',
-                    transform: 'translateY(-2px)'
+                    transform: 'translateY(-2px)',
                   }}
                   _active={{
                     bg: 'white',
-                    transform: 'translateY(0)'
+                    transform: 'translateY(0)',
                   }}
                   transition="all 0.2s"
                   onClick={handleDeleteDialogClose}
@@ -370,11 +385,11 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                   borderColor="red.500"
                   _hover={{
                     bg: 'red.600',
-                    transform: 'translateY(-2px)'
+                    transform: 'translateY(-2px)',
                   }}
                   _active={{
                     bg: 'red.500',
-                    transform: 'translateY(0)'
+                    transform: 'translateY(0)',
                   }}
                   transition="all 0.2s"
                   onClick={handleDeleteSubmit}
@@ -382,7 +397,17 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
                 >
                   {loading ? (
                     <Box as="span" display="flex" alignItems="center" gap={2}>
-                      <Box as="span" w="1em" h="1em" borderRadius="50%" borderWidth="2px" borderStyle="solid" borderColor="white" borderTopColor="transparent" animation="spin 1s linear infinite" />
+                      <Box
+                        as="span"
+                        w="1em"
+                        h="1em"
+                        borderRadius="50%"
+                        borderWidth="2px"
+                        borderStyle="solid"
+                        borderColor="white"
+                        borderTopColor="transparent"
+                        animation="spin 1s linear infinite"
+                      />
                       {t('playground.edit.deleteConfirm.confirmButton')}
                     </Box>
                   ) : (
@@ -395,5 +420,5 @@ export default function EditPlaygroundModal({ isOpen, onClose, playground }: Edi
         </Portal>
       </Dialog.Root>
     </>
-  )
+  );
 }

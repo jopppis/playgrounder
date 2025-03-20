@@ -7,91 +7,98 @@ import {
   NativeSelect,
   Text,
   VStack,
-  useBreakpointValue
-} from '@chakra-ui/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaCity, FaDatabase, FaRegStar, FaStar, FaUserCheck } from 'react-icons/fa'
-import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6'
-import { MdExpandLess, MdExpandMore, MdSupervisorAccount, MdTextFields } from 'react-icons/md'
-import { useAuth } from '../hooks/useAuth'
-import { useCities } from '../hooks/useCities'
+  useBreakpointValue,
+} from '@chakra-ui/react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaCity, FaDatabase, FaRegStar, FaStar, FaUserCheck } from 'react-icons/fa';
+import { FaFilter, FaFilterCircleXmark } from 'react-icons/fa6';
+import { MdExpandLess, MdExpandMore, MdSupervisorAccount, MdTextFields } from 'react-icons/md';
+import { useAuth } from '../hooks/useAuth';
+import { useCities } from '../hooks/useCities';
 
 export interface FilterOptions {
-  searchQuery: string | null
-  visitStatus: 'visited' | 'unvisited' | null
-  minStars: number | null
-  minUserStars: number | null
-  hasSupervised: boolean | null
-  city: string | null
-  dataSource: 'municipality' | 'osm' | 'community' | null
-  noRating: boolean | null
-  noUserRating: boolean | null
-  hideUnnamed: boolean | null
+  searchQuery: string | null;
+  visitStatus: 'visited' | 'unvisited' | null;
+  minStars: number | null;
+  minUserStars: number | null;
+  hasSupervised: boolean | null;
+  city: string | null;
+  dataSource: 'municipality' | 'osm' | 'community' | null;
+  noRating: boolean | null;
+  noUserRating: boolean | null;
+  hideUnnamed: boolean | null;
 }
 
 interface PlaygroundFilterProps {
-  filters: FilterOptions
-  onChange: (filters: FilterOptions) => void
-  onLoadAllPlaygrounds: () => Promise<void>
+  filters: FilterOptions;
+  onChange: (filters: FilterOptions) => void;
+  onLoadAllPlaygrounds: () => Promise<void>;
 }
 
-export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: PlaygroundFilterProps) => {
-  const { t } = useTranslation()
-  const [isOpen, setIsOpen] = useState(false)
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
-  const [localSearchQuery, setLocalSearchQuery] = useState(filters.searchQuery || '')
-  const searchTimeoutRef = useRef<NodeJS.Timeout>()
-  const { user } = useAuth()
-  const filterRef = useRef<HTMLDivElement>(null)
-  const searchInputRef = useRef<HTMLInputElement>(null)
-  const { cities, loading: citiesLoading } = useCities()
-  const [isCitySelectOpen, setIsCitySelectOpen] = useState(false)
+export const PlaygroundFilter = ({
+  filters,
+  onChange,
+  onLoadAllPlaygrounds,
+}: PlaygroundFilterProps) => {
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+  const [localSearchQuery, setLocalSearchQuery] = useState(filters.searchQuery || '');
+  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+  const { user } = useAuth();
+  const filterRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const { cities, loading: citiesLoading } = useCities();
+  const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
 
   // Update local search query when filters change externally
   useEffect(() => {
-    setLocalSearchQuery(filters.searchQuery || '')
-  }, [filters.searchQuery])
+    setLocalSearchQuery(filters.searchQuery || '');
+  }, [filters.searchQuery]);
 
   const handleSearchChange = (value: string) => {
-    setLocalSearchQuery(value)
+    setLocalSearchQuery(value);
 
     // Clear any existing timeout
     if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current)
+      clearTimeout(searchTimeoutRef.current);
     }
 
     // Set a new timeout to update the filters
     searchTimeoutRef.current = setTimeout(() => {
       onChange({
         ...filters,
-        searchQuery: value || null
-      })
-    }, 500) // Increased to 500ms for better performance with database persistence
-  }
+        searchQuery: value || null,
+      });
+    }, 500); // Increased to 500ms for better performance with database persistence
+  };
 
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current)
+        clearTimeout(searchTimeoutRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const hasActiveFilters = useMemo(() => {
     // For non-logged in users, only check non-user-specific filters
     if (!user) {
-      return filters.searchQuery !== null ||
+      return (
+        filters.searchQuery !== null ||
         filters.minStars !== null ||
         filters.hasSupervised !== null ||
         filters.city !== null ||
         filters.noRating !== null ||
         filters.hideUnnamed !== null ||
         filters.dataSource !== null
+      );
     }
     // For logged in users, check all filters
-    return filters.searchQuery !== null ||
+    return (
+      filters.searchQuery !== null ||
       filters.visitStatus !== null ||
       filters.minStars !== null ||
       filters.minUserStars !== null ||
@@ -101,7 +108,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
       filters.noUserRating !== null ||
       filters.dataSource !== null ||
       filters.hideUnnamed !== null
-  }, [filters, user])
+    );
+  }, [filters, user]);
 
   const resetFilters = () => {
     // For non-logged in users, only reset non-user-specific filters
@@ -114,9 +122,9 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
         city: null,
         noRating: null,
         dataSource: null,
-        hideUnnamed: null
-      })
-      return
+        hideUnnamed: null,
+      });
+      return;
     }
     // For logged in users, reset all filters
     onChange({
@@ -129,28 +137,28 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
       noRating: null,
       noUserRating: null,
       dataSource: null,
-      hideUnnamed: null
-    })
-  }
+      hideUnnamed: null,
+    });
+  };
 
   const dataSources = [
     { label: t('playground.dataSource.any'), value: null },
     { label: t('playground.dataSource.municipality'), value: 'municipality' },
     { label: t('playground.dataSource.osm'), value: 'osm' },
-    { label: t('playground.dataSource.community'), value: 'community' }
-  ]
+    { label: t('playground.dataSource.community'), value: 'community' },
+  ];
 
   const supervisionOptions = [
     { label: t('playground.supervision.any'), value: null },
     { label: t('playground.supervision.supervised'), value: 'true' },
-    { label: t('playground.supervision.unsupervised'), value: 'false' }
-  ]
+    { label: t('playground.supervision.unsupervised'), value: 'false' },
+  ];
 
   const visitStatusOptions = [
     { label: t('any'), value: null },
     { label: t('visited'), value: 'visited' },
-    { label: t('unvisited'), value: 'unvisited' }
-  ]
+    { label: t('unvisited'), value: 'unvisited' },
+  ];
 
   const starOptions = [
     { label: t('any'), value: null },
@@ -159,8 +167,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
     { label: '★★★', value: '3' },
     { label: '★★', value: '2' },
     { label: '★', value: '1' },
-    { label: t('noRating'), value: 'no-rating' }
-  ]
+    { label: t('noRating'), value: 'no-rating' },
+  ];
 
   const filterPosition = useBreakpointValue({
     base: {
@@ -169,11 +177,11 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
       width: isOpen ? '280px' : '40px',
       maxWidth: isOpen ? '280px' : '40px',
       right: 'auto',
-      transition: 'width 0.2s, max-width 0.2s'
+      transition: 'width 0.2s, max-width 0.2s',
     },
     sm: { top: '4', left: '24px', width: '350px', maxWidth: '350px', right: 'auto' },
-    md: { top: '4', left: '24px', width: '400px', maxWidth: '400px', right: 'auto' }
-  })
+    md: { top: '4', left: '24px', width: '400px', maxWidth: '400px', right: 'auto' },
+  });
 
   const buttonStyle = useBreakpointValue({
     base: {
@@ -184,53 +192,49 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
       alignItems: 'center',
       justifyContent: isOpen ? 'space-between' : 'center',
       borderRadius: isOpen ? 'md md 0 0' : 'md',
-      transition: 'all 0.2s'
+      transition: 'all 0.2s',
     },
     sm: {
       height: '40px',
       width: '100%',
       padding: '0 12px',
-      borderRadius: isOpen ? 'md md 0 0' : 'md'
-    }
-  })
+      borderRadius: isOpen ? 'md md 0 0' : 'md',
+    },
+  });
 
-  const showButtonText = useBreakpointValue({
-    base: isOpen,
-    sm: true
-  }) ?? true
+  const showButtonText =
+    useBreakpointValue({
+      base: isOpen,
+      sm: true,
+    }) ?? true;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Handle city select focus to load all playgrounds
   const handleCitySelectFocus = async () => {
     if (!isCitySelectOpen) {
-      setIsCitySelectOpen(true)
-      await onLoadAllPlaygrounds()
+      setIsCitySelectOpen(true);
+      await onLoadAllPlaygrounds();
     }
-  }
+  };
 
   const handleCitySelectBlur = () => {
-    setIsCitySelectOpen(false)
-  }
+    setIsCitySelectOpen(false);
+  };
 
   return (
-    <Box
-      position="absolute"
-      {...filterPosition}
-      zIndex={1000}
-      ref={filterRef}
-    >
+    <Box position="absolute" {...filterPosition} zIndex={1000} ref={filterRef}>
       <Box bg="white" borderRadius="md" boxShadow="xl" width="100%" position="relative">
         {!isOpen ? (
           <Button
@@ -303,7 +307,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               _focus={{
                 borderColor: 'brand.500',
                 boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                outline: 'none'
+                outline: 'none',
               }}
               borderRadius="md md 0 0"
               border="0px"
@@ -320,7 +324,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               bg="transparent"
               _hover={{ bg: 'gray.50' }}
               _active={{ bg: 'gray.100' }}
-              onClick={() => hasActiveFilters ? resetFilters() : setIsOpen(false)}
+              onClick={() => (hasActiveFilters ? resetFilters() : setIsOpen(false))}
               border="0px"
               display="flex"
               alignItems="center"
@@ -328,7 +332,11 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
               zIndex="3"
               aria-label={hasActiveFilters ? t('removeFilters') : t('filterPlaygrounds')}
             >
-              <Box as={hasActiveFilters ? FaFilterCircleXmark : FaFilter} boxSize="16px" color={hasActiveFilters ? "brand.500" : "gray.700"} />
+              <Box
+                as={hasActiveFilters ? FaFilterCircleXmark : FaFilter}
+                boxSize="16px"
+                color={hasActiveFilters ? 'brand.500' : 'gray.700'}
+              />
             </Button>
           </Box>
         )}
@@ -350,9 +358,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             maxHeight="calc(90dvh - 40px)"
             overflowY="auto"
           >
-            <Box mt={{ base: 0, sm: 0 }} >
+            <Box mt={{ base: 0, sm: 0 }}>
               <HStack gap={1.5} mb={{ base: 2, sm: 1.5 }}>
-                <FaCity size={16} color={filters.city ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <FaCity
+                  size={16}
+                  color={filters.city ? 'var(--chakra-colors-brand-500)' : 'currentColor'}
+                />
                 <Text fontSize="md" fontWeight="medium" color="gray.700">
                   {t('city')}
                 </Text>
@@ -370,8 +381,8 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     onChange={(e) => {
                       onChange({
                         ...filters,
-                        city: e.target.value || null
-                      })
+                        city: e.target.value || null,
+                      });
                     }}
                     height="36px"
                     fontSize="md"
@@ -379,22 +390,24 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     onBlur={handleCitySelectBlur}
                   >
                     {cities.map((city) => (
-                      <option
-                        key={city.value ?? 'all'}
-                        value={city.value ?? ''}
-                      >
+                      <option key={city.value ?? 'all'} value={city.value ?? ''}>
                         {city.label}
                       </option>
                     ))}
                   </NativeSelect.Field>
-                  <NativeSelect.Indicator/>
+                  <NativeSelect.Indicator />
                 </NativeSelect.Root>
               </Box>
             </Box>
 
             <Box>
               <HStack gap={1.5} mb={1.5}>
-                <MdTextFields size={16} color={filters.hideUnnamed !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <MdTextFields
+                  size={16}
+                  color={
+                    filters.hideUnnamed !== null ? 'var(--chakra-colors-brand-500)' : 'currentColor'
+                  }
+                />
                 <Text fontSize="md" fontWeight="medium" color="gray.700">
                   {t('playground.filter.unnamed.label')}
                 </Text>
@@ -408,10 +421,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                 >
                   <NativeSelect.Field
                     value={filters.hideUnnamed === null ? '' : String(filters.hideUnnamed)}
-                    onChange={(e) => onChange({
-                      ...filters,
-                      hideUnnamed: e.target.value === '' ? null : e.target.value === 'true'
-                    })}
+                    onChange={(e) =>
+                      onChange({
+                        ...filters,
+                        hideUnnamed: e.target.value === '' ? null : e.target.value === 'true',
+                      })
+                    }
                     height="36px"
                     fontSize="md"
                     aria-label={t('playground.filter.unnamed.label')}
@@ -419,7 +434,7 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     <option value="">{t('playground.filter.unnamed.any')}</option>
                     <option value="true">{t('playground.filter.unnamed.hide')}</option>
                   </NativeSelect.Field>
-                  <NativeSelect.Indicator/>
+                  <NativeSelect.Indicator />
                 </NativeSelect.Root>
               </Box>
             </Box>
@@ -427,7 +442,10 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
             {user && (
               <Box>
                 <HStack gap={1.5} mb={1.5}>
-                  <FaUserCheck size={16} color={filters.visitStatus ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                  <FaUserCheck
+                    size={16}
+                    color={filters.visitStatus ? 'var(--chakra-colors-brand-500)' : 'currentColor'}
+                  />
                   <Text fontSize="md" fontWeight="medium" color="gray.700">
                     {t('visitStatus')}
                   </Text>
@@ -441,23 +459,22 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                   >
                     <NativeSelect.Field
                       value={filters.visitStatus ?? ''}
-                      onChange={(e) => onChange({
-                        ...filters,
-                        visitStatus: e.target.value as 'visited' | 'unvisited' || null
-                      })}
+                      onChange={(e) =>
+                        onChange({
+                          ...filters,
+                          visitStatus: (e.target.value as 'visited' | 'unvisited') || null,
+                        })
+                      }
                       height="36px"
                       fontSize="md"
                     >
                       {visitStatusOptions.map((option) => (
-                        <option
-                          key={option.value ?? 'any'}
-                          value={option.value ?? ''}
-                        >
+                        <option key={option.value ?? 'any'} value={option.value ?? ''}>
                           {option.label}
                         </option>
                       ))}
                     </NativeSelect.Field>
-                    <NativeSelect.Indicator/>
+                    <NativeSelect.Indicator />
                   </NativeSelect.Root>
                 </Box>
               </Box>
@@ -465,7 +482,14 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
 
             <Box borderTop="1px" borderColor="gray.200" pt={2}>
               <HStack gap={1.5} mb={1.5}>
-                <FaStar size={16} color={filters.minStars !== null || filters.noRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                <FaStar
+                  size={16}
+                  color={
+                    filters.minStars !== null || filters.noRating
+                      ? 'var(--chakra-colors-brand-500)'
+                      : 'currentColor'
+                  }
+                />
                 <Text fontSize="md" fontWeight="medium" color="gray.700">
                   {t('minStars')}
                 </Text>
@@ -485,13 +509,13 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                         onChange({
                           ...filters,
                           minStars: null,
-                          noRating: true
+                          noRating: true,
                         });
                       } else {
                         onChange({
                           ...filters,
                           minStars: value ? parseInt(value) : null,
-                          noRating: null
+                          noRating: null,
                         });
                       }
                     }}
@@ -500,15 +524,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     aria-label={t('minStars')}
                   >
                     {starOptions.map((option) => (
-                      <option
-                        key={option.value ?? 'any'}
-                        value={option.value ?? ''}
-                      >
+                      <option key={option.value ?? 'any'} value={option.value ?? ''}>
                         {option.label}
                       </option>
                     ))}
                   </NativeSelect.Field>
-                  <NativeSelect.Indicator/>
+                  <NativeSelect.Indicator />
                 </NativeSelect.Root>
               </Box>
             </Box>
@@ -523,7 +544,14 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                     {user && (
                       <Box>
                         <HStack gap={1.5} mb={1.5}>
-                          <FaRegStar size={16} color={filters.minUserStars !== null || filters.noUserRating ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                          <FaRegStar
+                            size={16}
+                            color={
+                              filters.minUserStars !== null || filters.noUserRating
+                                ? 'var(--chakra-colors-brand-500)'
+                                : 'currentColor'
+                            }
+                          />
                           <Text fontSize="md" fontWeight="medium" color="gray.700">
                             {t('minUserStars')}
                           </Text>
@@ -536,20 +564,24 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                             color="gray.700"
                           >
                             <NativeSelect.Field
-                              value={filters.noUserRating ? 'no-rating' : (filters.minUserStars?.toString() ?? '')}
+                              value={
+                                filters.noUserRating
+                                  ? 'no-rating'
+                                  : (filters.minUserStars?.toString() ?? '')
+                              }
                               onChange={(e) => {
                                 const value = e.target.value;
                                 if (value === 'no-rating') {
                                   onChange({
                                     ...filters,
                                     minUserStars: null,
-                                    noUserRating: true
+                                    noUserRating: true,
                                   });
                                 } else {
                                   onChange({
                                     ...filters,
                                     minUserStars: value ? parseInt(value) : null,
-                                    noUserRating: null
+                                    noUserRating: null,
                                   });
                                 }
                               }}
@@ -559,15 +591,12 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                               aria-label={t('minUserStars')}
                             >
                               {starOptions.map((option) => (
-                                <option
-                                  key={option.value ?? 'any'}
-                                  value={option.value ?? ''}
-                                >
+                                <option key={option.value ?? 'any'} value={option.value ?? ''}>
                                   {option.label}
                                 </option>
                               ))}
                             </NativeSelect.Field>
-                            <NativeSelect.Indicator/>
+                            <NativeSelect.Indicator />
                           </NativeSelect.Root>
                         </Box>
                       </Box>
@@ -575,7 +604,14 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
 
                     <Box>
                       <HStack gap={1.5} mb={1.5}>
-                        <MdSupervisorAccount size={16} color={filters.hasSupervised !== null ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                        <MdSupervisorAccount
+                          size={16}
+                          color={
+                            filters.hasSupervised !== null
+                              ? 'var(--chakra-colors-brand-500)'
+                              : 'currentColor'
+                          }
+                        />
                         <Text fontSize="md" fontWeight="medium" color="gray.700">
                           {t('playground.supervision.label')}
                         </Text>
@@ -588,32 +624,39 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                           color="gray.700"
                         >
                           <NativeSelect.Field
-                            value={filters.hasSupervised === null ? '' : String(filters.hasSupervised)}
-                            onChange={(e) => onChange({
-                              ...filters,
-                              hasSupervised: e.target.value === '' ? null : e.target.value === 'true'
-                            })}
+                            value={
+                              filters.hasSupervised === null ? '' : String(filters.hasSupervised)
+                            }
+                            onChange={(e) =>
+                              onChange({
+                                ...filters,
+                                hasSupervised:
+                                  e.target.value === '' ? null : e.target.value === 'true',
+                              })
+                            }
                             height="36px"
                             fontSize="md"
                             aria-label={t('playground.supervision.label')}
                           >
                             {supervisionOptions.map((option) => (
-                              <option
-                                key={option.value ?? 'any'}
-                                value={option.value ?? ''}
-                              >
+                              <option key={option.value ?? 'any'} value={option.value ?? ''}>
                                 {option.label}
                               </option>
                             ))}
                           </NativeSelect.Field>
-                          <NativeSelect.Indicator/>
+                          <NativeSelect.Indicator />
                         </NativeSelect.Root>
                       </Box>
                     </Box>
 
                     <Box>
                       <HStack gap={1.5} mb={1.5}>
-                        <FaDatabase size={16} color={filters.dataSource ? "var(--chakra-colors-brand-500)" : "currentColor"} />
+                        <FaDatabase
+                          size={16}
+                          color={
+                            filters.dataSource ? 'var(--chakra-colors-brand-500)' : 'currentColor'
+                          }
+                        />
                         <Text fontSize="md" fontWeight="medium" color="gray.700">
                           {t('playground.dataSource.label')}
                         </Text>
@@ -627,24 +670,24 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
                         >
                           <NativeSelect.Field
                             value={filters.dataSource ?? ''}
-                            onChange={(e) => onChange({
-                              ...filters,
-                              dataSource: e.target.value as 'municipality' | 'osm' | 'community' || null
-                            })}
+                            onChange={(e) =>
+                              onChange({
+                                ...filters,
+                                dataSource:
+                                  (e.target.value as 'municipality' | 'osm' | 'community') || null,
+                              })
+                            }
                             height="36px"
                             fontSize="md"
                             aria-label={t('playground.dataSource.label')}
                           >
                             {dataSources.map((source) => (
-                              <option
-                                key={source.value ?? 'any'}
-                                value={source.value ?? ''}
-                              >
+                              <option key={source.value ?? 'any'} value={source.value ?? ''}>
                                 {source.label}
                               </option>
                             ))}
                           </NativeSelect.Field>
-                          <NativeSelect.Indicator/>
+                          <NativeSelect.Indicator />
                         </NativeSelect.Root>
                       </Box>
                     </Box>
@@ -678,5 +721,5 @@ export const PlaygroundFilter = ({ filters, onChange, onLoadAllPlaygrounds }: Pl
         )}
       </Box>
     </Box>
-  )
-}
+  );
+};

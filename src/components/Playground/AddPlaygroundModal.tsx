@@ -8,55 +8,61 @@ import {
   Input,
   Portal,
   Text,
-  Textarea
-} from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { MdSupervisorAccount } from 'react-icons/md'
-import { usePlaygroundEdits } from '../../hooks/usePlaygroundEdits'
-import { useToast } from '../../hooks/useToast'
-import { Switch } from '../ui/switch'
+  Textarea,
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { MdSupervisorAccount } from 'react-icons/md';
+import { usePlaygroundEdits } from '../../hooks/usePlaygroundEdits';
+import { useToast } from '../../hooks/useToast';
+import { Switch } from '../ui/switch';
 
 interface AddPlaygroundModalProps {
-  isOpen: boolean
-  onClose: (name: string, hasSupervised: boolean) => void
-  onCancel: () => void
-  location: { lat: number; lng: number } | null
-  onLocationSelect: () => void
+  isOpen: boolean;
+  onClose: (name: string, hasSupervised: boolean) => void;
+  onCancel: () => void;
+  location: { lat: number; lng: number } | null;
+  onLocationSelect: () => void;
 }
 
-export default function AddPlaygroundModal({ isOpen, onClose, onCancel, location, onLocationSelect }: AddPlaygroundModalProps) {
-  const { t } = useTranslation()
-  const [name, setName] = useState('')
-  const [reason, setReason] = useState('')
-  const [hasSupervised, setHasSupervised] = useState(false)
-  const { proposePlaygroundEdit, loading } = usePlaygroundEdits()
-  const toast = useToast()
+export default function AddPlaygroundModal({
+  isOpen,
+  onClose,
+  onCancel,
+  location,
+  onLocationSelect,
+}: AddPlaygroundModalProps) {
+  const { t } = useTranslation();
+  const [name, setName] = useState('');
+  const [reason, setReason] = useState('');
+  const [hasSupervised, setHasSupervised] = useState(false);
+  const { proposePlaygroundEdit, loading } = usePlaygroundEdits();
+  const toast = useToast();
 
   // Reset form when modal closes
   useEffect(() => {
     if (!isOpen) {
-      setName('')
-      setReason('')
-      setHasSupervised(false)
+      setName('');
+      setReason('');
+      setHasSupervised(false);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const handleSubmit = async () => {
     if (!location) {
       toast.showError({
         title: t('playground.add.error.title'),
-        description: t('playground.add.error.noLocation')
-      })
-      return
+        description: t('playground.add.error.noLocation'),
+      });
+      return;
     }
 
     if (!name.trim()) {
       toast.showError({
         title: t('playground.add.error.title'),
-        description: t('playground.add.error.emptyName')
-      })
-      return
+        description: t('playground.add.error.emptyName'),
+      });
+      return;
     }
 
     const { error } = await proposePlaygroundEdit(
@@ -65,22 +71,22 @@ export default function AddPlaygroundModal({ isOpen, onClose, onCancel, location
       hasSupervised,
       true,
       reason.trim() || null,
-      location
-    )
+      location,
+    );
 
     if (error) {
       toast.showError({
         title: t('playground.add.error.title'),
-        description: error
-      })
+        description: error,
+      });
     } else {
       toast.showSuccess({
         title: t('playground.add.success.title'),
-        description: t('playground.add.success.message')
-      })
-      onClose(name, hasSupervised)
+        description: t('playground.add.success.message'),
+      });
+      onClose(name, hasSupervised);
     }
-  }
+  };
 
   return (
     <>
@@ -127,11 +133,11 @@ export default function AddPlaygroundModal({ isOpen, onClose, onCancel, location
                         _hover={{
                           bg: 'secondary.500',
                           transform: 'translateY(-2px)',
-                          borderColor: 'secondary.500'
+                          borderColor: 'secondary.500',
                         }}
                         _active={{
                           bg: 'brand.500',
-                          transform: 'translateY(0)'
+                          transform: 'translateY(0)',
                         }}
                         transition="all 0.2s"
                         onClick={onLocationSelect}
@@ -212,11 +218,11 @@ export default function AddPlaygroundModal({ isOpen, onClose, onCancel, location
                   borderColor="gray.300"
                   _hover={{
                     bg: 'gray.100',
-                    transform: 'translateY(-2px)'
+                    transform: 'translateY(-2px)',
                   }}
                   _active={{
                     bg: 'white',
-                    transform: 'translateY(0)'
+                    transform: 'translateY(0)',
                   }}
                   transition="all 0.2s"
                   onClick={onCancel}
@@ -232,11 +238,11 @@ export default function AddPlaygroundModal({ isOpen, onClose, onCancel, location
                     _hover={{
                       bg: 'secondary.500',
                       transform: 'translateY(-2px)',
-                      borderColor: 'secondary.500'
+                      borderColor: 'secondary.500',
                     }}
                     _active={{
                       bg: 'brand.500',
-                      transform: 'translateY(0)'
+                      transform: 'translateY(0)',
                     }}
                     transition="all 0.2s"
                     onClick={handleSubmit}
@@ -244,7 +250,17 @@ export default function AddPlaygroundModal({ isOpen, onClose, onCancel, location
                   >
                     {loading ? (
                       <Box as="span" display="flex" alignItems="center" gap={2}>
-                        <Box as="span" w="1em" h="1em" borderRadius="50%" borderWidth="2px" borderStyle="solid" borderColor="white" borderTopColor="transparent" animation="spin 1s linear infinite" />
+                        <Box
+                          as="span"
+                          w="1em"
+                          h="1em"
+                          borderRadius="50%"
+                          borderWidth="2px"
+                          borderStyle="solid"
+                          borderColor="white"
+                          borderTopColor="transparent"
+                          animation="spin 1s linear infinite"
+                        />
                         {t('playground.add.submitButton')}
                       </Box>
                     ) : (
@@ -258,5 +274,5 @@ export default function AddPlaygroundModal({ isOpen, onClose, onCancel, location
         </Portal>
       </Dialog.Root>
     </>
-  )
+  );
 }

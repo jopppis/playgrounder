@@ -1,3 +1,3 @@
-import { toaster } from "./toaster-instance"
+import { toaster } from './toaster-instance';
 
-export { toaster }
+export { toaster };

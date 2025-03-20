@@ -1,19 +1,19 @@
-import React from 'react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useAuth } from '../hooks/useAuth'
-import { useCurrentCity } from '../hooks/useCurrentCity'
-import { usePlaygrounds } from '../hooks/usePlaygrounds'
-import { useUserFilters } from '../hooks/useUserFilters'
-import { useVisits } from '../hooks/useVisits'
-import { cleanup, i18n } from '../test/testUtils'
-import { PlaygroundWithCoordinates } from '../types/database.types'
-import { FilterOptions } from './PlaygroundFilter'
+import React from 'react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useAuth } from '../hooks/useAuth';
+import { useCurrentCity } from '../hooks/useCurrentCity';
+import { usePlaygrounds } from '../hooks/usePlaygrounds';
+import { useUserFilters } from '../hooks/useUserFilters';
+import { useVisits } from '../hooks/useVisits';
+import { cleanup, i18n } from '../test/testUtils';
+import { PlaygroundWithCoordinates } from '../types/database.types';
+import { FilterOptions } from './PlaygroundFilter';
 
 // Mock React's useEffect to prevent side effects
 vi.mock('react', async () => {
   const actual = await vi.importActual('react');
   return {
-    ...actual as object,
+    ...(actual as object),
     useEffect: vi.fn().mockImplementation(() => {
       // Don't actually call the callback to prevent side effects
       return undefined;
@@ -23,29 +23,29 @@ vi.mock('react', async () => {
 
 // Mock all the hooks and dependencies
 vi.mock('../hooks/useAuth', () => ({
-  useAuth: vi.fn()
-}))
+  useAuth: vi.fn(),
+}));
 
 vi.mock('../hooks/usePlaygrounds', () => ({
   usePlaygrounds: vi.fn(() => ({
     playgrounds: [],
     loading: true,
     refreshPlaygrounds: vi.fn().mockResolvedValue([]),
-    hasAllPlaygrounds: false
-  }))
-}))
+    hasAllPlaygrounds: false,
+  })),
+}));
 
 vi.mock('../hooks/useVisits', () => ({
-  useVisits: vi.fn()
-}))
+  useVisits: vi.fn(),
+}));
 
 vi.mock('../hooks/useUserFilters', () => ({
-  useUserFilters: vi.fn()
-}))
+  useUserFilters: vi.fn(),
+}));
 
 vi.mock('../hooks/useCurrentCity', () => ({
-  useCurrentCity: vi.fn()
-}))
+  useCurrentCity: vi.fn(),
+}));
 
 // Mock Supabase
 vi.mock('../lib/supabaseClient', () => {
@@ -60,10 +60,10 @@ vi.mock('../lib/supabaseClient', () => {
                   {
                     playground_id: 'pg-1',
                     avg_rating: 4.5,
-                    total_ratings: 10
-                  }
+                    total_ratings: 10,
+                  },
                 ],
-                error: null
+                error: null,
               };
             } else if (table === 'ratings') {
               return {
@@ -71,25 +71,25 @@ vi.mock('../lib/supabaseClient', () => {
                   data: [
                     {
                       playground_id: 'pg-1',
-                      rating: 5
-                    }
+                      rating: 5,
+                    },
                   ],
-                  error: null
-                }))
+                  error: null,
+                })),
               };
             }
             return {
               eq: vi.fn().mockImplementation(() => ({
                 data: [],
-                error: null
-              }))
+                error: null,
+              })),
             };
-          })
+          }),
         };
-      })
-    }
-  }
-})
+      }),
+    },
+  };
+});
 
 // Mock react-leaflet components
 vi.mock('react-leaflet', () => {
@@ -115,17 +115,17 @@ vi.mock('react-leaflet', () => {
       ),
       Overlay: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="overlay-layer">{children}</div>
-      )
+      ),
     },
     useMap: () => ({
       locate: vi.fn(),
       on: vi.fn(),
       off: vi.fn(),
       flyTo: vi.fn(),
-      setView: vi.fn()
-    })
+      setView: vi.fn(),
+    }),
   };
-})
+});
 
 // Mock Leaflet
 vi.mock('leaflet', () => {
@@ -134,24 +134,24 @@ vi.mock('leaflet', () => {
     control: {
       zoom: vi.fn().mockReturnValue({
         addTo: vi.fn().mockReturnValue({
-          remove: vi.fn()
-        })
-      })
+          remove: vi.fn(),
+        }),
+      }),
     },
-    Control: function() {
+    Control: function () {
       return {
         setPosition: vi.fn().mockReturnThis(),
         onAdd: vi.fn().mockReturnValue(document.createElement('div')),
-        addTo: vi.fn().mockReturnThis()
+        addTo: vi.fn().mockReturnThis(),
       };
     },
     DomUtil: {
-      create: vi.fn().mockReturnValue(document.createElement('div'))
-    }
+      create: vi.fn().mockReturnValue(document.createElement('div')),
+    },
   };
 
   return { default: L };
-})
+});
 
 describe('PlaygroundMap', () => {
   const mockPlaygrounds: PlaygroundWithCoordinates[] = [
@@ -166,7 +166,7 @@ describe('PlaygroundMap', () => {
       created_at: '2023-01-01T12:00:00Z',
       avg_rating: 4.5,
       total_ratings: 10,
-      user_rating: null
+      user_rating: null,
     },
     {
       id: 'pg-2',
@@ -179,26 +179,26 @@ describe('PlaygroundMap', () => {
       created_at: '2023-01-01T12:00:00Z',
       avg_rating: null,
       total_ratings: 0,
-      user_rating: null
-    }
-  ]
+      user_rating: null,
+    },
+  ];
 
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.clearAllMocks();
 
     // Setup default mock implementations
     vi.mocked(useAuth).mockReturnValue({
       user: null,
-      loading: false
-    })
+      loading: false,
+    });
 
     vi.mocked(usePlaygrounds).mockReturnValue({
       playgrounds: mockPlaygrounds,
       loading: false,
       refreshPlaygrounds: vi.fn().mockResolvedValue(mockPlaygrounds),
       hasAllPlaygrounds: false,
-      refreshSinglePlayground: vi.fn().mockResolvedValue(undefined)
-    })
+      refreshSinglePlayground: vi.fn().mockResolvedValue(undefined),
+    });
 
     vi.mocked(useVisits).mockReturnValue({
       visits: [],
@@ -207,8 +207,8 @@ describe('PlaygroundMap', () => {
       refresh: vi.fn().mockResolvedValue(undefined),
       addVisit: vi.fn().mockResolvedValue({ error: null }),
       removeVisit: vi.fn().mockResolvedValue({ error: null }),
-      updateVisitsState: vi.fn()
-    })
+      updateVisitsState: vi.fn(),
+    });
 
     vi.mocked(useUserFilters).mockReturnValue({
       filters: {
@@ -220,36 +220,35 @@ describe('PlaygroundMap', () => {
         city: null,
         noRating: null,
         hideUnnamed: null,
-        noUserRating: null
+        noUserRating: null,
       } as FilterOptions,
       loading: false,
       error: null,
-      updateFilters: vi.fn()
-    })
+      updateFilters: vi.fn(),
+    });
 
     vi.mocked(useCurrentCity).mockReturnValue({
       currentCity: 'Helsinki',
       loading: false,
       error: null,
-      updateCurrentCity: vi.fn()
-    })
+      updateCurrentCity: vi.fn(),
+    });
 
     // Set up i18n
-    i18n.changeLanguage('en')
-  })
+    i18n.changeLanguage('en');
+  });
 
   afterEach(() => {
     cleanup();
-  })
-
+  });
 
   it('shows visited playgrounds when user is logged in', () => {
     // Skip this test for now
-    expect(true).toBe(true)
-  })
+    expect(true).toBe(true);
+  });
 
   it('applies filters correctly', () => {
     // Skip this test for now
-    expect(true).toBe(true)
-  })
-})
+    expect(true).toBe(true);
+  });
+});

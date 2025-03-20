@@ -1,9 +1,9 @@
-import { Dialog, Portal } from '@chakra-ui/react'
-import ForgotPassword from './ForgotPassword'
+import { Dialog, Portal } from '@chakra-ui/react';
+import ForgotPassword from './ForgotPassword';
 
 interface ForgotPasswordModalProps {
-  onClose: () => void
-  isOpen: boolean
+  onClose: () => void;
+  isOpen: boolean;
 }
 
 export default function ForgotPasswordModal({ onClose, isOpen }: ForgotPasswordModalProps) {
@@ -24,5 +24,5 @@ export default function ForgotPasswordModal({ onClose, isOpen }: ForgotPasswordM
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
-  )
+  );
 }

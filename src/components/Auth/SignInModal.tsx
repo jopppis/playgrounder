@@ -1,29 +1,29 @@
-import { Dialog, Portal } from '@chakra-ui/react'
-import { useState } from 'react'
-import ForgotPassword from './ForgotPassword'
-import SignIn from './SignIn'
+import { Dialog, Portal } from '@chakra-ui/react';
+import { useState } from 'react';
+import ForgotPassword from './ForgotPassword';
+import SignIn from './SignIn';
 
 type SignInModalProps = {
-  onClose: () => void
-  onMenuClose?: () => void
-  isOpen: boolean
-}
+  onClose: () => void;
+  onMenuClose?: () => void;
+  isOpen: boolean;
+};
 
 export default function SignInModal({ onClose, onMenuClose, isOpen }: SignInModalProps) {
-  const [showForgotPassword, setShowForgotPassword] = useState(false)
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleSignInSuccess = () => {
-    onClose()
-    onMenuClose?.()
-  }
+    onClose();
+    onMenuClose?.();
+  };
 
   const handleModalSwitch = () => {
-    setShowForgotPassword(true)
-  }
+    setShowForgotPassword(true);
+  };
 
   const handleForgotPasswordClose = () => {
-    setShowForgotPassword(false)
-  }
+    setShowForgotPassword(false);
+  };
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={() => onClose()}>
@@ -50,5 +50,5 @@ export default function SignInModal({ onClose, onMenuClose, isOpen }: SignInModa
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
-  )
+  );
 }
