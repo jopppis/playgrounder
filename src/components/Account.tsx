@@ -2,6 +2,7 @@ import { Box, Button, ButtonProps, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
+import ChangeEmailModal from './Auth/ChangeEmailModal';
 import ChangePasswordModal from './Auth/ChangePasswordModal';
 import RemoveAccount from './Auth/RemoveAccount';
 
@@ -14,6 +15,7 @@ const Account = ({ onBack }: AccountProps) => {
   const { user } = useAuth();
   const [showRemoveAccount, setShowRemoveAccount] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showChangeEmail, setShowChangeEmail] = useState(false);
 
   const buttonProps: ButtonProps = {
     w: '100%',
@@ -49,6 +51,10 @@ const Account = ({ onBack }: AccountProps) => {
         </Text>
       </Box>
 
+      <Button {...buttonProps} onClick={() => setShowChangeEmail(true)} mb={2}>
+        {t('auth.changeEmail.button.default')}
+      </Button>
+
       <Button {...buttonProps} onClick={() => setShowChangePassword(true)} mb={2}>
         {t('auth.changePassword.button.default')}
       </Button>
@@ -76,6 +82,9 @@ const Account = ({ onBack }: AccountProps) => {
           isOpen={showChangePassword}
           onClose={() => setShowChangePassword(false)}
         />
+      )}
+      {showChangeEmail && (
+        <ChangeEmailModal isOpen={showChangeEmail} onClose={() => setShowChangeEmail(false)} />
       )}
     </>
   );

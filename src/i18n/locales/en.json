@@ -125,6 +125,25 @@
         "captchaRequired": "Please complete the captcha verification"
       },
       "close": "Close change password dialog"
+    },
+    "changeEmail": {
+      "title": "Change Email",
+      "button": {
+        "default": "Change Email",
+        "loading": "Changing Email..."
+      },
+      "newEmail": "New Email",
+      "newEmailPlaceholder": "Enter your new email",
+      "close": "Close",
+      "error": {
+        "title": "Error",
+        "message": "Failed to change email. Please try again.",
+        "captchaRequired": "Please complete the captcha verification."
+      },
+      "success": {
+        "title": "Success",
+        "message": "Your email has been updated. Please check your new email for verification."
+      }
     }
   },
   "menu": {

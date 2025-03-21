@@ -125,6 +125,25 @@
         "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
       },
       "close": "Sulje salasanan vaihtoikkuna"
+    },
+    "changeEmail": {
+      "title": "Vaihda sähköposti",
+      "button": {
+        "default": "Vaihda sähköposti",
+        "loading": "Vaihdetaan sähköpostia..."
+      },
+      "newEmail": "Uusi sähköposti",
+      "newEmailPlaceholder": "Syötä uusi sähköpostiosoitteesi",
+      "close": "Sulje",
+      "error": {
+        "title": "Virhe",
+        "message": "Sähköpostin vaihto epäonnistui. Yritä uudelleen.",
+        "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
+      },
+      "success": {
+        "title": "Onnistui",
+        "message": "Sähköpostisi on päivitetty. Ole hyvä ja tarkista vahvistusviesti uudesta sähköpostiosoitteestasi."
+      }
     }
   },
   "menu": {
