@@ -2,7 +2,6 @@ import { Box, Button, Heading, Icon, Input, Stack, Text } from '@chakra-ui/react
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
-import Turnstile from 'react-turnstile';
 import { useToast } from '../../hooks/useToast';
 import { supabase } from '../../lib/supabaseClient';
 
@@ -15,30 +14,17 @@ export default function ChangeEmail({ onSuccess }: ChangeEmailProps) {
   const [newEmail, setNewEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [resetCounter, setResetCounter] = useState(0);
   const toast = useToast();
-  // Enable Turnstile in development and production, but not in local
-  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    if (enableTurnstile && !captchaToken) {
-      setError(t('auth.changeEmail.error.captchaRequired') || 'Captcha verification required');
-      setLoading(false);
-      return;
-    }
-
-    console.log('newEmail', newEmail);
-
     try {
       // Update the email directly
       const { error: updateError } = await supabase.auth.updateUser({
         email: newEmail,
-        options: enableTurnstile && captchaToken ? { captchaToken } : undefined,
       });
 
       if (updateError) throw updateError;
@@ -56,12 +42,6 @@ export default function ChangeEmail({ onSuccess }: ChangeEmailProps) {
         title: t('auth.changeEmail.error.title'),
         description: t('auth.changeEmail.error.message'),
       });
-      // Reset captcha on error
-      if (window.turnstile) {
-        window.turnstile.reset();
-      }
-      setCaptchaToken(null);
-      setResetCounter((prev) => prev + 1);
     } finally {
       setLoading(false);
     }
@@ -119,24 +99,12 @@ export default function ChangeEmail({ onSuccess }: ChangeEmailProps) {
                 }}
               />
             </Box>
-            {enableTurnstile && (
-              <Box>
-                <Turnstile
-                  key={`turnstile-${resetCounter}`}
-                  sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                  onSuccess={(token) => setCaptchaToken(token)}
-                  onError={() => setCaptchaToken(null)}
-                  onExpire={() => setCaptchaToken(null)}
-                  theme="light"
-                />
-              </Box>
-            )}
             <Button
               type="submit"
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading || (enableTurnstile && !captchaToken)}
+              disabled={loading}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
