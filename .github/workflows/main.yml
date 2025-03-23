@@ -10,6 +10,13 @@ jobs:
   test-and-build:
     runs-on: ubuntu-latest
 
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://test-url.supabase.co' }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'test-anon-key' }}
+      VITE_APP_ENV: 'test'
+      VITE_TURNSTILE_SITE_KEY: 'test-site-key'
+      VITE_CONTACT_EMAIL: 'test@example.com'
+
     steps:
       - uses: actions/checkout@v4
 
