@@ -139,7 +139,6 @@ const visitedPlaygroundIcon = createBaseIcon(true);
 // Add URL state management
 const useMapUrlState = () => {
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
 
   const updateUrlState = useCallback((map: L.Map, playgroundId?: string) => {
     const center = map.getCenter();
@@ -162,6 +161,7 @@ const useMapUrlState = () => {
   }, []);
 
   const getInitialMapState = useCallback(() => {
+    const searchParams = new URLSearchParams(location.search);
     const lat = searchParams.get('lat');
     const lng = searchParams.get('lng');
     const zoom = searchParams.get('zoom');
@@ -172,7 +172,7 @@ const useMapUrlState = () => {
       zoom: zoom ? parseInt(zoom) : undefined,
       playgroundId,
     };
-  }, [searchParams]);
+  }, [location.search]);
 
   return { updateUrlState, getInitialMapState };
 };
