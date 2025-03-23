@@ -23,10 +23,13 @@ vi.mock('../lib/supabaseClient', () => ({
       unsubscribe: vi.fn(),
     })),
     from: vi.fn(() => ({
-      select: vi.fn().mockResolvedValue({ data: [], error: null }),
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          single: vi.fn().mockResolvedValue({ data: null, error: null }),
+        })),
+      })),
       upsert: vi.fn().mockResolvedValue({ error: null }),
       delete: vi.fn().mockResolvedValue({ error: null }),
-      eq: vi.fn().mockResolvedValue({ data: [], error: null }),
     })),
   },
 }));

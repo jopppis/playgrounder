@@ -109,10 +109,10 @@ export default function ChangeEmail({ onSuccess }: ChangeEmailProps) {
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
               transition="all 0.2s"
-              loading={loading}
-              loadingText={t('auth.changeEmail.button.loading')}
             >
-              {t('auth.changeEmail.button.default')}
+              {loading
+                ? t('auth.changeEmail.button.loading')
+                : t('auth.changeEmail.button.default')}
             </Button>
           </Stack>
         </Box>

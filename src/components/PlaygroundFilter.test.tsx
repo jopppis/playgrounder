@@ -110,8 +110,10 @@ describe('PlaygroundFilter', () => {
     return screen.getByRole('button', { name: enTranslations.filterPlaygrounds });
   };
 
-  it('renders filter button', () => {
-    renderComponent();
+  it('renders filter button', async () => {
+    await act(async () => {
+      renderComponent();
+    });
     expect(getFilterButton()).toBeInTheDocument();
   });
 
