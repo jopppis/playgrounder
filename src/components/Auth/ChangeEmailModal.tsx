@@ -1,12 +1,12 @@
 import { Dialog, Portal } from '@chakra-ui/react';
-import ForgotPassword from './ForgotPassword';
+import ChangeEmail from './ChangeEmail';
 
-interface ForgotPasswordModalProps {
+interface ChangeEmailModalProps {
   onClose: () => void;
   isOpen: boolean;
 }
 
-export default function ForgotPasswordModal({ onClose, isOpen }: ForgotPasswordModalProps) {
+export default function ChangeEmailModal({ onClose, isOpen }: ChangeEmailModalProps) {
   return (
     <Dialog.Root open={isOpen} onOpenChange={() => onClose()}>
       <Portal>
@@ -19,7 +19,7 @@ export default function ForgotPasswordModal({ onClose, isOpen }: ForgotPasswordM
             w="90%"
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
-            <ForgotPassword onSuccess={onClose} />
+            <ChangeEmail onSuccess={onClose} />
           </Dialog.Content>
         </Dialog.Positioner>
       </Portal>

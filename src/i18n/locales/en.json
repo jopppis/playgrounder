@@ -125,6 +125,25 @@
         "captchaRequired": "Please complete the captcha verification"
       },
       "close": "Close change password dialog"
+    },
+    "changeEmail": {
+      "title": "Change Email",
+      "button": {
+        "default": "Change Email",
+        "loading": "Changing Email..."
+      },
+      "newEmail": "New Email",
+      "newEmailPlaceholder": "Enter your new email",
+      "close": "Close",
+      "error": {
+        "title": "Error",
+        "message": "Failed to change email. Please try again.",
+        "captchaRequired": "Please complete the captcha verification."
+      },
+      "success": {
+        "title": "Success",
+        "message": "Your email has been updated. Please check your new email for verification."
+      }
     }
   },
   "menu": {
@@ -169,11 +188,7 @@
         },
         "icons": {
           "title": "Icons",
-          "content": [
-            "FontAwesome",
-            "Heroicons",
-            "Material Design Icons"
-          ]
+          "content": ["FontAwesome", "Heroicons", "Material Design Icons"]
         }
       }
     },
@@ -213,6 +228,13 @@
     "noCity": "No city information",
     "markVisited": "Visited",
     "searchByName": "Search Google Maps for {{name}}",
+    "filter": {
+      "unnamed": {
+        "label": "Unnamed playgrounds",
+        "any": "Show all",
+        "hide": "Hide unnamed"
+      }
+    },
     "login": {
       "required": "Login required to mark as visited"
     },
@@ -255,7 +277,8 @@
     "supervision": {
       "label": "Supervision",
       "supervised": "Supervised activities",
-      "unsupervised": "No supervised activities"
+      "unsupervised": "No supervised activities",
+      "any": "Any supervision"
     },
     "loginToInteract": "Please log in to mark playgrounds as visited or rate them",
     "dataSource": {
@@ -338,13 +361,14 @@
   "visitStatus": "Visit Status",
   "visited": "Visited",
   "unvisited": "Unvisited",
+  "any": "Any",
   "minStars": "Rating",
   "minStars_plural": "Rating",
   "minUserStars": "My Rating",
   "minUserStars_plural": "My Rating",
   "noRating": "No rating",
-  "showMore": "Show more",
-  "showLess": "Show less",
+  "showMore": "Show more filters",
+  "showLess": "Show fewer filters",
   "removeFilters": "Clear filters",
   "app": {
     "name": "PlaygroundMap"
@@ -389,6 +413,7 @@
       "noReasonProvided": "No reason provided",
       "approve": "Approve",
       "reject": "Reject",
+      "deletedUser": "Deleted User",
       "filter": {
         "all": "All Proposals",
         "pending": "Pending",

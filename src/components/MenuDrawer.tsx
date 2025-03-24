@@ -7,46 +7,46 @@ import {
   GridItem,
   HStack,
   Icon,
-  Text
-} from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'
-import { HiChartBar, HiLanguage, HiShieldCheck } from 'react-icons/hi2'
-import { useAuth } from '../hooks/useAuth'
-import { useIsAdmin } from '../hooks/useIsAdmin'
-import { useToast } from '../hooks/useToast'
-import { useUserPreferences } from '../hooks/useUserPreferences'
-import { supabase } from '../lib/supabaseClient'
-import { PlaygroundWithCoordinates, Visit } from '../types/database.types'
-import About from './About'
-import Account from './Account'
-import AdminPage from './Admin/AdminPage'
-import ChangePasswordModal from './Auth/ChangePasswordModal'
-import RemoveAccount from './Auth/RemoveAccount'
-import SignInModal from './Auth/SignInModal'
-import SignUp from './Auth/SignUp'
-import LanguageSwitcher from './LanguageSwitcher'
-import { FilterOptions } from './PlaygroundFilter'
-import Stats from './Stats'
-import { Switch } from './ui/switch'
+  Text,
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { HiChartBar, HiLanguage, HiShieldCheck } from 'react-icons/hi2';
+import { useAuth } from '../hooks/useAuth';
+import { useIsAdmin } from '../hooks/useIsAdmin';
+import { useToast } from '../hooks/useToast';
+import { useUserPreferences } from '../hooks/useUserPreferences';
+import { supabase } from '../lib/supabaseClient';
+import { PlaygroundWithCoordinates, Visit } from '../types/database.types';
+import About from './About';
+import Account from './Account';
+import AdminPage from './Admin/AdminPage';
+import ChangePasswordModal from './Auth/ChangePasswordModal';
+import RemoveAccount from './Auth/RemoveAccount';
+import SignInModal from './Auth/SignInModal';
+import SignUp from './Auth/SignUp';
+import LanguageSwitcher from './LanguageSwitcher';
+import { FilterOptions } from './PlaygroundFilter';
+import Stats from './Stats';
+import { Switch } from './ui/switch';
 
 export type MenuDrawerProps = {
-  isOpen: boolean
-  onClose: () => void
-  showSignIn: boolean
-  setShowSignIn: (show: boolean) => void
-  filters: FilterOptions
-  filteredPlaygroundCount: number
-  currentCity: string | null
-  visits: Visit[]
-  editMode?: boolean
-  loading?: boolean
-  showStats?: boolean
-  onStatsChange?: (show: boolean) => void
-  onEditModeChange?: (editMode: boolean) => void
-  playgrounds?: PlaygroundWithCoordinates[]
-}
+  isOpen: boolean;
+  onClose: () => void;
+  showSignIn: boolean;
+  setShowSignIn: (show: boolean) => void;
+  filters: FilterOptions;
+  filteredPlaygroundCount: number;
+  currentCity: string | null;
+  visits: Visit[];
+  editMode?: boolean;
+  loading?: boolean;
+  showStats?: boolean;
+  onStatsChange?: (show: boolean) => void;
+  onEditModeChange?: (editMode: boolean) => void;
+  playgrounds?: PlaygroundWithCoordinates[];
+};
 
 const MenuDrawer = ({
   isOpen,
@@ -62,97 +62,101 @@ const MenuDrawer = ({
   showStats: externalShowStats,
   onStatsChange,
   onEditModeChange,
-  playgrounds
+  playgrounds,
 }: MenuDrawerProps) => {
-  const { t } = useTranslation()
-  const { user } = useAuth()
-  const { isAdmin } = useIsAdmin()
-  const { preferences, loading: preferencesLoading, updateDefaultPublicRatings } = useUserPreferences()
-  const [showAbout, setShowAbout] = useState(false)
-  const [internalShowStats, setInternalShowStats] = useState(false)
-  const [showSignUp, setShowSignUp] = useState(false)
-  const [showAccount, setShowAccount] = useState(false)
-  const [showRemoveAccount, setShowRemoveAccount] = useState(false)
-  const [showChangePassword, setShowChangePassword] = useState(false)
-  const [showAdmin, setShowAdmin] = useState(false)
-  const [editModeLocal, setEditModeLocal] = useState(editMode)
-  const toast = useToast()
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
+  const {
+    preferences,
+    loading: preferencesLoading,
+    updateDefaultPublicRatings,
+  } = useUserPreferences();
+  const [showAbout, setShowAbout] = useState(false);
+  const [internalShowStats, setInternalShowStats] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
+  const [showRemoveAccount, setShowRemoveAccount] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [editModeLocal, setEditModeLocal] = useState(editMode);
+  const toast = useToast();
 
   // Use external or internal state for showStats
-  const showStats = externalShowStats ?? internalShowStats
-  const setShowStats = onStatsChange ?? setInternalShowStats
+  const showStats = externalShowStats ?? internalShowStats;
+  const setShowStats = onStatsChange ?? setInternalShowStats;
 
   useEffect(() => {
     if (!isOpen) {
-      setShowAbout(false)
+      setShowAbout(false);
       if (!onStatsChange) {
-        setInternalShowStats(false)
+        setInternalShowStats(false);
       }
-      setShowAccount(false)
+      setShowAccount(false);
     }
-  }, [isOpen, onStatsChange])
+  }, [isOpen, onStatsChange]);
 
   useEffect(() => {
-    setEditModeLocal(editMode)
-  }, [editMode])
+    setEditModeLocal(editMode);
+  }, [editMode]);
 
   const handleSignOut = async (e: React.MouseEvent) => {
-    e.stopPropagation()
-    await supabase.auth.signOut()
-    onClose()
+    e.stopPropagation();
+    await supabase.auth.signOut();
+    onClose();
     toast.showSuccess({
       title: t('auth.signOut.success.title'),
-      description: t('auth.signOut.success.message')
-    })
-  }
+      description: t('auth.signOut.success.message'),
+    });
+  };
 
   const handleClick = (e: React.MouseEvent, action: () => void) => {
-    e.stopPropagation()
-    action()
-  }
+    e.stopPropagation();
+    action();
+  };
 
   const handleStatsClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setShowStats(true)
-  }
+    e.stopPropagation();
+    setShowStats(true);
+  };
 
   const handleEditModeChange = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    const newEditMode = !editModeLocal
-    setEditModeLocal(newEditMode)
-    onEditModeChange?.(newEditMode)
+    e.preventDefault();
+    e.stopPropagation();
+    const newEditMode = !editModeLocal;
+    setEditModeLocal(newEditMode);
+    onEditModeChange?.(newEditMode);
     if (newEditMode) {
       toast.showInfo({
         title: t('playground.edit.editModeEnabled.title'),
-        description: t('playground.edit.editModeEnabled.description')
-      })
+        description: t('playground.edit.editModeEnabled.description'),
+      });
     } else {
       toast.showInfo({
         title: t('playground.edit.editModeDisabled.title'),
-        description: t('playground.edit.editModeDisabled.description')
-      })
+        description: t('playground.edit.editModeDisabled.description'),
+      });
     }
-  }
+  };
 
   const buttonProps: ButtonProps = {
-    w: "100%",
-    variant: "solid",
-    bg: "brand.500",
-    color: "white",
-    border: "1px solid",
-    borderColor: "brand.500",
+    w: '100%',
+    variant: 'solid',
+    bg: 'brand.500',
+    color: 'white',
+    border: '1px solid',
+    borderColor: 'brand.500',
     _hover: { bg: 'secondary.500', transform: 'translateY(-2px)', borderColor: 'secondary.500' },
     _active: { bg: 'brand.500', transform: 'translateY(0)' },
-    transition: "all 0.2s",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    transition: 'all 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     px: 3,
-    h: "36px",
+    h: '36px',
     gap: 2,
-    fontSize: "sm"
-  }
+    fontSize: 'sm',
+  };
 
   return (
     <>
@@ -175,7 +179,7 @@ const MenuDrawer = ({
             right={0}
             h="100%"
             maxH="100%"
-            w={{ base: "85%", sm: "300px" }}
+            w={{ base: '85%', sm: '300px' }}
             maxW="300px"
             bg="white"
             boxShadow="dark-lg"
@@ -190,8 +194,8 @@ const MenuDrawer = ({
             overflowY="auto"
             overflowX="hidden"
             onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
+              e.preventDefault();
+              e.stopPropagation();
             }}
             data-testid="menu-drawer"
           >
@@ -217,18 +221,18 @@ const MenuDrawer = ({
                           zIndex={2001}
                           cursor="pointer"
                           onClick={async (e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
+                            e.preventDefault();
+                            e.stopPropagation();
                             if (!preferencesLoading) {
                               try {
-                                const newValue = !preferences.defaultPublicRatings
-                                await updateDefaultPublicRatings(newValue)
+                                const newValue = !preferences.defaultPublicRatings;
+                                await updateDefaultPublicRatings(newValue);
                                 toast.showSuccess({
                                   title: t('playground.defaultPublic'),
                                   description: newValue
                                     ? t('playground.defaultPublicEnabled')
-                                    : t('playground.defaultPublicDisabled')
-                                })
+                                    : t('playground.defaultPublicDisabled'),
+                                });
                               } catch {
                                 // Error is handled in the hook
                               }
@@ -264,16 +268,10 @@ const MenuDrawer = ({
                         </Box>
                       </HStack>
                       <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                        <Button
-                          {...buttonProps}
-                          onClick={handleSignOut}
-                        >
+                        <Button {...buttonProps} onClick={handleSignOut}>
                           {t('auth.signOut.button')}
                         </Button>
-                        <Button
-                          {...buttonProps}
-                          onClick={() => setShowAccount(true)}
-                        >
+                        <Button {...buttonProps} onClick={() => setShowAccount(true)}>
                           {t('menu.buttons.account')}
                         </Button>
                       </Grid>
@@ -281,8 +279,8 @@ const MenuDrawer = ({
                         <Button
                           {...buttonProps}
                           onClick={() => {
-                            setShowAdmin(true)
-                            onClose()
+                            setShowAdmin(true);
+                            onClose();
                           }}
                         >
                           <Icon as={HiShieldCheck} boxSize={4} mr={2} />
@@ -292,7 +290,7 @@ const MenuDrawer = ({
                     </>
                   ) : (
                     <Grid
-                      templateColumns={{ base: "1fr", sm: "repeat(2, minmax(0, 1fr))" }}
+                      templateColumns={{ base: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }}
                       gap={2}
                       w="100%"
                     >
@@ -303,9 +301,7 @@ const MenuDrawer = ({
                           minW={0}
                         >
                           <Icon as={FaUserPlus} boxSize={3.5} flexShrink={0} />
-                          <Box as="span">
-                            {t('auth.signUp.title')}
-                          </Box>
+                          <Box as="span">{t('auth.signUp.title')}</Box>
                         </Button>
                       </GridItem>
                       <GridItem w="100%">
@@ -315,18 +311,13 @@ const MenuDrawer = ({
                           minW={0}
                         >
                           <Icon as={FaSignInAlt} boxSize={3.5} flexShrink={0} />
-                          <Box as="span">
-                            {t('auth.signIn.title')}
-                          </Box>
+                          <Box as="span">{t('auth.signIn.title')}</Box>
                         </Button>
                       </GridItem>
                     </Grid>
                   )}
                   <Box borderBottomWidth="1px" borderColor="purple.100" my={2} />
-                  <Button
-                    {...buttonProps}
-                    onClick={handleStatsClick}
-                  >
+                  <Button {...buttonProps} onClick={handleStatsClick}>
                     <Icon as={HiChartBar} boxSize={4} />
                     <Text>{t('stats.title')}</Text>
                   </Button>
@@ -370,13 +361,32 @@ const MenuDrawer = ({
         </>
       )}
 
-      {showSignIn && <SignInModal isOpen={showSignIn} onClose={() => setShowSignIn(false)} onMenuClose={onClose} />}
-      {showRemoveAccount && <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />}
-      {showChangePassword && <ChangePasswordModal isOpen={showChangePassword} onClose={() => setShowChangePassword(false)} />}
-      {showSignUp && <SignUp isOpen={showSignUp} onClose={() => setShowSignUp(false)} onSuccess={() => setShowSignUp(false)} />}
+      {showSignIn && (
+        <SignInModal
+          isOpen={showSignIn}
+          onClose={() => setShowSignIn(false)}
+          onMenuClose={onClose}
+        />
+      )}
+      {showRemoveAccount && (
+        <RemoveAccount isOpen={showRemoveAccount} onClose={() => setShowRemoveAccount(false)} />
+      )}
+      {showChangePassword && (
+        <ChangePasswordModal
+          isOpen={showChangePassword}
+          onClose={() => setShowChangePassword(false)}
+        />
+      )}
+      {showSignUp && (
+        <SignUp
+          isOpen={showSignUp}
+          onClose={() => setShowSignUp(false)}
+          onSuccess={() => setShowSignUp(false)}
+        />
+      )}
       <AdminPage isOpen={showAdmin} onClose={() => setShowAdmin(false)} />
     </>
-  )
-}
+  );
+};
 
-export default MenuDrawer
+export default MenuDrawer;

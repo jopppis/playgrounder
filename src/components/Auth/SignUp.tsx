@@ -1,86 +1,76 @@
-import {
-    Box,
-    Button,
-    Dialog,
-    Heading,
-    Icon,
-    Input,
-    Portal,
-    Stack,
-    Text,
-} from '@chakra-ui/react'
-import { AuthError } from '@supabase/supabase-js'
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaTimes } from 'react-icons/fa'
-import Turnstile from 'react-turnstile'
-import { useToast } from '../../hooks/useToast'
-import { supabase } from '../../lib/supabaseClient'
+import { Box, Button, Dialog, Heading, Icon, Input, Portal, Stack, Text } from '@chakra-ui/react';
+import { AuthError } from '@supabase/supabase-js';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaTimes } from 'react-icons/fa';
+import Turnstile from 'react-turnstile';
+import { useToast } from '../../hooks/useToast';
+import { supabase } from '../../lib/supabaseClient';
 
 interface SignUpProps {
-  onSuccess?: () => void
-  isOpen: boolean
-  onClose: () => void
+  onSuccess?: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
-  const { t } = useTranslation()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [resetCounter, setResetCounter] = useState(0)
-  const toast = useToast()
+  const { t } = useTranslation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [resetCounter, setResetCounter] = useState(0);
+  const toast = useToast();
   // Enable Turnstile in development and production, but not in local
-  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local'
+  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local';
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setSuccess(false)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
 
     if (enableTurnstile && !captchaToken) {
-      setError(t('auth.signUp.error.captchaRequired'))
-      setLoading(false)
-      return
+      setError(t('auth.signUp.error.captchaRequired'));
+      setLoading(false);
+      return;
     }
 
     try {
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
-        options: enableTurnstile && captchaToken ? { captchaToken } : undefined
-      })
+        options: enableTurnstile && captchaToken ? { captchaToken } : undefined,
+      });
 
-      if (signUpError) throw signUpError
+      if (signUpError) throw signUpError;
 
-      setSuccess(true)
+      setSuccess(true);
       toast.showSuccess({
         title: t('auth.signUp.success.title'),
-        description: t('auth.signUp.success.message')
-      })
+        description: t('auth.signUp.success.message'),
+      });
 
-      onSuccess?.()
+      onSuccess?.();
     } catch (err) {
-      const authError = err as AuthError
-      setError(authError.message)
+      const authError = err as AuthError;
+      setError(authError.message);
       toast.showError({
         title: t('auth.signUp.error.title'),
-        description: t('auth.signUp.error.message')
-      })
+        description: t('auth.signUp.error.message'),
+      });
       // Reset captcha on error
       if (window.turnstile) {
         window.turnstile.reset();
       }
-      setCaptchaToken(null)
-      setResetCounter(prev => prev + 1)
+      setCaptchaToken(null);
+      setResetCounter((prev) => prev + 1);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={() => onClose()}>
@@ -118,7 +108,9 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
                 </Button>
               </Box>
               <Stack gap={8}>
-                <Heading size="lg" color="brand.500">{t('auth.signUp.title')}</Heading>
+                <Heading size="lg" color="brand.500">
+                  {t('auth.signUp.title')}
+                </Heading>
                 {error && (
                   <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
                     <Text fontWeight="bold">{t('auth.signUp.error.title')}</Text>
@@ -134,45 +126,53 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
                 <Box as="form" onSubmit={handleSubmit}>
                   <Stack gap={4}>
                     <Box>
-                      <Text mb={2} color="gray.700">{t('auth.signUp.email')}</Text>
+                      <Text mb={2} color="gray.700">
+                        {t('auth.signUp.email')}
+                      </Text>
                       <Input
                         type="email"
                         name="email"
                         autoComplete="username"
                         value={email}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setEmail(e.target.value)
+                        }
                         placeholder={t('auth.signUp.emailPlaceholder')}
                         required
-                        fontSize={{ base: "16px", sm: "inherit" }}
+                        fontSize={{ base: '16px', sm: 'inherit' }}
                         _placeholder={{ color: 'gray.400' }}
                         borderColor="brand.200"
                         _hover={{ borderColor: 'brand.300' }}
                         _focus={{
                           borderColor: 'brand.500',
                           boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                          outline: 'none'
+                          outline: 'none',
                         }}
                       />
                     </Box>
                     <Box>
-                      <Text mb={2} color="gray.700">{t('auth.signUp.password')}</Text>
+                      <Text mb={2} color="gray.700">
+                        {t('auth.signUp.password')}
+                      </Text>
                       <Input
                         type="password"
                         name="password"
                         autoComplete="new-password"
                         data-form-type="password"
                         value={password}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setPassword(e.target.value)
+                        }
                         placeholder={t('auth.signUp.passwordPlaceholder')}
                         required
-                        fontSize={{ base: "16px", sm: "inherit" }}
+                        fontSize={{ base: '16px', sm: 'inherit' }}
                         _placeholder={{ color: 'gray.400' }}
                         borderColor="brand.200"
                         _hover={{ borderColor: 'brand.300' }}
                         _focus={{
                           borderColor: 'brand.500',
                           boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)',
-                          outline: 'none'
+                          outline: 'none',
                         }}
                       />
                     </Box>
@@ -209,5 +209,5 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
-  )
+  );
 }

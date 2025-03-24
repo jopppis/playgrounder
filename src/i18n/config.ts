@@ -14,23 +14,21 @@ const getInitialLanguage = () => {
   return browserLang === 'fi' ? 'fi' : 'en';
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        translation: enTranslations,
-      },
-      fi: {
-        translation: fiTranslations,
-      },
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      translation: enTranslations,
     },
-    lng: getInitialLanguage(),
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false,
+    fi: {
+      translation: fiTranslations,
     },
-  });
+  },
+  lng: getInitialLanguage(),
+  fallbackLng: 'en',
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
 // Store language preference when it changes
 i18n.on('languageChanged', (lng) => {

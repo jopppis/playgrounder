@@ -1,43 +1,43 @@
-import { Box, Button, ButtonProps, Icon, Link, Text } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaGithub } from 'react-icons/fa'
-import Attributions from './Attributions'
+import { Box, Button, ButtonProps, Icon, Link, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaGithub } from 'react-icons/fa';
+import Attributions from './Attributions';
 
 type AboutProps = {
-  onBack: () => void
-}
+  onBack: () => void;
+};
 
 const About = ({ onBack }: AboutProps) => {
-  const { t } = useTranslation()
-  const [showAttributions, setShowAttributions] = useState(false)
+  const { t } = useTranslation();
+  const [showAttributions, setShowAttributions] = useState(false);
 
   const buttonProps: ButtonProps = {
-    w: "100%",
-    variant: "solid",
-    bg: "brand.500",
-    color: "white",
-    border: "1px solid",
-    borderColor: "brand.500",
+    w: '100%',
+    variant: 'solid',
+    bg: 'brand.500',
+    color: 'white',
+    border: '1px solid',
+    borderColor: 'brand.500',
     _hover: { bg: 'secondary.500', transform: 'translateY(-2px)', borderColor: 'secondary.500' },
     _active: { bg: 'brand.500', transform: 'translateY(0)' },
-    transition: "all 0.2s",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    transition: 'all 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     px: 3,
-    h: "36px",
+    h: '36px',
     gap: 2,
-    fontSize: "sm"
-  }
+    fontSize: 'sm',
+  };
 
   const handleClick = (e: React.MouseEvent, action: () => void) => {
-    e.stopPropagation()
-    action()
-  }
+    e.stopPropagation();
+    action();
+  };
 
   if (showAttributions) {
-    return <Attributions onBack={() => setShowAttributions(false)} />
+    return <Attributions onBack={() => setShowAttributions(false)} />;
   }
 
   return (
@@ -94,7 +94,9 @@ const About = ({ onBack }: AboutProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <Text>{t('menu.about.version')}:</Text>
-        <Text>{import.meta.env.APP_VERSION}-{import.meta.env.BUILD_ID}</Text>
+        <Text>
+          {import.meta.env.APP_VERSION}-{import.meta.env.BUILD_ID}
+        </Text>
       </Link>
       <Button
         {...buttonProps}
@@ -103,14 +105,11 @@ const About = ({ onBack }: AboutProps) => {
       >
         {t('menu.about.attributionsButton')}
       </Button>
-      <Button
-        {...buttonProps}
-        onClick={(e) => handleClick(e, () => onBack())}
-      >
+      <Button {...buttonProps} onClick={(e) => handleClick(e, () => onBack())}>
         {t('menu.about.backButton')}
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default About
+export default About;

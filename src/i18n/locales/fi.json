@@ -125,6 +125,25 @@
         "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
       },
       "close": "Sulje salasanan vaihtoikkuna"
+    },
+    "changeEmail": {
+      "title": "Vaihda sähköposti",
+      "button": {
+        "default": "Vaihda sähköposti",
+        "loading": "Vaihdetaan sähköpostia..."
+      },
+      "newEmail": "Uusi sähköposti",
+      "newEmailPlaceholder": "Syötä uusi sähköpostiosoitteesi",
+      "close": "Sulje",
+      "error": {
+        "title": "Virhe",
+        "message": "Sähköpostin vaihto epäonnistui. Yritä uudelleen.",
+        "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
+      },
+      "success": {
+        "title": "Onnistui",
+        "message": "Sähköpostisi on päivitetty. Ole hyvä ja tarkista vahvistusviesti uudesta sähköpostiosoitteestasi."
+      }
     }
   },
   "menu": {
@@ -169,11 +188,7 @@
         },
         "icons": {
           "title": "Ikonit",
-          "content": [
-            "FontAwesome",
-            "Heroicons",
-            "Material Design Icons"
-          ]
+          "content": ["FontAwesome", "Heroicons", "Material Design Icons"]
         }
       }
     },
@@ -213,6 +228,13 @@
     "noCity": "Ei kaupunkitietoa",
     "markVisited": "Vierailtu",
     "searchByName": "Hae Google Mapsista nimellä {{name}}",
+    "filter": {
+      "unnamed": {
+        "label": "Nimeämättömät leikkipaikat",
+        "any": "Näytä kaikki",
+        "hide": "Piilota nimeämättömät"
+      }
+    },
     "login": {
       "required": "Kirjaudu sisään merkitäksesi vierailluksi"
     },
@@ -255,7 +277,8 @@
     "supervision": {
       "label": "Ohjattu toiminta",
       "supervised": "Ohjattua toimintaa",
-      "unsupervised": "Ei ohjattua toimintaa"
+      "unsupervised": "Ei ohjattua toimintaa",
+      "any": "Mikä tahansa"
     },
     "loginToInteract": "Kirjaudu sisään merkitäksesi leikkipaikkoja vierailluiksi tai arvostellaksesi niitä",
     "dataSource": {
@@ -339,13 +362,14 @@
   "visitStatus": "Vierailutila",
   "visited": "Vierailtu",
   "unvisited": "Ei vierailtu",
+  "any": "Mikä tahansa",
   "minStars": "Arvio",
   "minStars_plural": "Arvio",
   "minUserStars": "Oma arvio",
   "minUserStars_plural": "Oma arvio",
   "noRating": "Ei arviota",
-  "showMore": "Näytä lisää",
-  "showLess": "Näytä vähemmän",
+  "showMore": "Näytä lisää suodattimia",
+  "showLess": "Näytä vähemmän suodattimia",
   "removeFilters": "Poista suodattimet",
   "app": {
     "name": "Leikkipuistokartta"
@@ -390,6 +414,7 @@
       "noReasonProvided": "Ei syytä annettu",
       "approve": "Hyväksy",
       "reject": "Hylkää",
+      "deletedUser": "Poistettu käyttäjä",
       "filter": {
         "all": "Kaikki ehdotukset",
         "pending": "Käsittelemättömät",

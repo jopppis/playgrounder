@@ -1,23 +1,23 @@
-import type { User } from '@supabase/supabase-js'
-import '@testing-library/jest-dom/vitest'
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useAuth } from '../hooks/useAuth'
-import { useRatings } from '../hooks/useRatings'
-import { useVisits } from '../hooks/useVisits'
-import enTranslations from '../i18n/locales/en.json'
-import { supabase } from '../lib/supabaseClient'
-import { render } from '../test/testUtils'
-import type { PlaygroundWithCoordinates } from '../types/database.types'
-import { PlaygroundPopup } from './PlaygroundPopup'
+import type { User } from '@supabase/supabase-js';
+import '@testing-library/jest-dom/vitest';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useAuth } from '../hooks/useAuth';
+import { useRatings } from '../hooks/useRatings';
+import { useVisits } from '../hooks/useVisits';
+import enTranslations from '../i18n/locales/en.json';
+import { supabase } from '../lib/supabaseClient';
+import { render } from '../test/testUtils';
+import type { PlaygroundWithCoordinates } from '../types/database.types';
+import { PlaygroundPopup } from './PlaygroundPopup';
 
 // Mock the hooks
 vi.mock('../hooks/useAuth', () => ({
   useAuth: vi.fn().mockReturnValue({
     user: null,
-    loading: false
-  })
-}))
+    loading: false,
+  }),
+}));
 
 vi.mock('../hooks/useVisits', () => ({
   useVisits: vi.fn().mockReturnValue({
@@ -26,9 +26,9 @@ vi.mock('../hooks/useVisits', () => ({
     error: null,
     addVisit: vi.fn(),
     removeVisit: vi.fn(),
-    refresh: vi.fn()
-  })
-}))
+    refresh: vi.fn(),
+  }),
+}));
 
 vi.mock('../hooks/useRatings', () => ({
   useRatings: vi.fn().mockReturnValue({
@@ -36,25 +36,25 @@ vi.mock('../hooks/useRatings', () => ({
       avgRating: null,
       totalRatings: 0,
       userRating: null,
-      isPublic: false
+      isPublic: false,
     },
     loading: false,
     error: null,
     submitRating: vi.fn(),
     togglePublic: vi.fn(),
-    refresh: vi.fn()
-  })
-}))
+    refresh: vi.fn(),
+  }),
+}));
 
 // Mock supabase
 vi.mock('../lib/supabaseClient', () => ({
   supabase: {
     from: vi.fn(() => ({
       insert: vi.fn(),
-      delete: vi.fn()
-    }))
-  }
-}))
+      delete: vi.fn(),
+    })),
+  },
+}));
 
 describe('PlaygroundPopup', () => {
   const mockPlayground: PlaygroundWithCoordinates = {
@@ -68,183 +68,215 @@ describe('PlaygroundPopup', () => {
     data_source: 'municipality',
     avg_rating: null,
     total_ratings: 0,
-    user_rating: null
-  }
+    user_rating: null,
+  };
 
   const defaultProps = {
     playground: mockPlayground,
     onContentChange: vi.fn(),
     onVisitChange: vi.fn(),
-    onRatingChange: vi.fn()
-  }
+    onRatingChange: vi.fn(),
+  };
 
   beforeEach(() => {
-    vi.clearAllMocks()
-  })
+    vi.clearAllMocks();
+  });
 
   const renderComponent = (props = {}) => {
-    return render(<PlaygroundPopup {...defaultProps} {...props} />)
-  }
+    return render(<PlaygroundPopup {...defaultProps} {...props} />);
+  };
 
   it('renders playground information', async () => {
-    renderComponent()
+    renderComponent();
 
     // Check for playground name
-    expect(screen.getByText('Test Playground')).toBeInTheDocument()
-
-  }, 10000) // Increase timeout to 10 seconds
+    expect(screen.getByText('Test Playground')).toBeInTheDocument();
+  }, 10000); // Increase timeout to 10 seconds
 
   it('shows mark visited button when logged in', () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
-      loading: false
-    })
-    renderComponent()
-    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
-    expect(switchElement).toBeInTheDocument()
-    expect(switchElement).not.toBeDisabled()
-  })
+      loading: false,
+    });
+    renderComponent();
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited);
+    expect(switchElement).toBeInTheDocument();
+    expect(switchElement).not.toBeDisabled();
+  });
 
   it('shows disabled mark visited button when not logged in', () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
-      loading: false
-    })
-    renderComponent()
-    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
-    expect(switchElement).toBeInTheDocument()
-    expect(switchElement).toBeDisabled()
-  })
+      loading: false,
+    });
+    renderComponent();
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited);
+    expect(switchElement).toBeInTheDocument();
+    expect(switchElement).toBeDisabled();
+  });
 
   it('shows visited state when visited and logged in', async () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
-      loading: false
-    })
-    ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
-      visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
+      loading: false,
+    });
+    (useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
+      visits: [
+        {
+          playground_id: '1',
+          id: '1',
+          user_id: '1',
+          visited_at: new Date().toISOString(),
+          notes: null,
+        },
+      ],
       loading: false,
       error: null,
       addVisit: vi.fn(),
       removeVisit: vi.fn(),
-      refresh: vi.fn()
-    })
+      refresh: vi.fn(),
+    });
     await act(async () => {
-      renderComponent()
-    })
-    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
-    expect(switchElement).toBeInTheDocument()
-    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked')
-    expect(switchElement).not.toBeDisabled()
-  })
+      renderComponent();
+    });
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited);
+    expect(switchElement).toBeInTheDocument();
+    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'checked');
+    expect(switchElement).not.toBeDisabled();
+  });
 
   it('shows disabled unvisited state when visited but not logged in', async () => {
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
-      loading: false
-    })
-    ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
-      visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
+      loading: false,
+    });
+    (useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
+      visits: [
+        {
+          playground_id: '1',
+          id: '1',
+          user_id: '1',
+          visited_at: new Date().toISOString(),
+          notes: null,
+        },
+      ],
       loading: false,
       error: null,
       addVisit: vi.fn(),
       removeVisit: vi.fn(),
-      refresh: vi.fn()
-    })
+      refresh: vi.fn(),
+    });
     await act(async () => {
-      renderComponent()
-    })
-    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited)
-    expect(switchElement).toBeInTheDocument()
-    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'unchecked')
-    expect(switchElement).toBeDisabled()
-  })
+      renderComponent();
+    });
+    const switchElement = screen.getByLabelText(enTranslations.playground.markVisited);
+    expect(switchElement).toBeInTheDocument();
+    expect(switchElement.closest('label')).toHaveAttribute('data-state', 'unchecked');
+    expect(switchElement).toBeDisabled();
+  });
 
   it('shows loading state when fetching rating', async () => {
-    ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
-      visits: [{ playground_id: '1', id: '1', user_id: '1', visited_at: new Date().toISOString(), notes: null }],
+    (useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
+      visits: [
+        {
+          playground_id: '1',
+          id: '1',
+          user_id: '1',
+          visited_at: new Date().toISOString(),
+          notes: null,
+        },
+      ],
       loading: false,
       error: null,
       refresh: vi.fn(),
-      updateVisitsState: vi.fn()
-    })
-
-    ;(useRatings as ReturnType<typeof vi.fn>).mockReturnValue({
+      updateVisitsState: vi.fn(),
+    });
+    (useRatings as ReturnType<typeof vi.fn>).mockReturnValue({
       rating: {
         avgRating: null,
         totalRatings: 0,
         userRating: null,
-        isPublic: false
+        isPublic: false,
       },
       loading: true,
       error: null,
       submitRating: vi.fn(),
       togglePublic: vi.fn(),
-      refresh: vi.fn()
-    })
+      refresh: vi.fn(),
+    });
 
     await act(async () => {
-      renderComponent()
-    })
+      renderComponent();
+    });
 
-    expect(screen.getByRole('status', { name: enTranslations.playground.rating.loading })).toBeInTheDocument()
-  })
+    expect(
+      screen.getByRole('status', { name: enTranslations.playground.rating.loading }),
+    ).toBeInTheDocument();
+  });
 
   it('calls onContentChange when rating changes', async () => {
-    const mockSubmitRating = vi.fn().mockResolvedValue({ error: null })
-    const mockClearRating = vi.fn()
-    const mockVisitData = { id: '1', user_id: '1', playground_id: '1', visited_at: new Date().toISOString(), notes: null }
-    ;(useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+    const mockSubmitRating = vi.fn().mockResolvedValue({ error: null });
+    const mockClearRating = vi.fn();
+    const mockVisitData = {
+      id: '1',
+      user_id: '1',
+      playground_id: '1',
+      visited_at: new Date().toISOString(),
+      notes: null,
+    };
+    (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
-      loading: false
-    })
-    ;(useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
+      loading: false,
+    });
+    (useVisits as ReturnType<typeof vi.fn>).mockReturnValue({
       visits: [mockVisitData],
       loading: false,
       error: null,
       addVisit: vi.fn(),
       removeVisit: vi.fn(),
-      refresh: vi.fn()
-    })
-    ;(useRatings as ReturnType<typeof vi.fn>).mockReturnValue({
+      refresh: vi.fn(),
+    });
+    (useRatings as ReturnType<typeof vi.fn>).mockReturnValue({
       rating: {
         avgRating: null,
         totalRatings: 0,
         userRating: null,
-        isPublic: false
+        isPublic: false,
       },
       loading: false,
       error: null,
       submitRating: mockSubmitRating,
       togglePublic: vi.fn(),
       refresh: vi.fn(),
-      clearRating: mockClearRating
-    })
-    ;(supabase.from as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      clearRating: mockClearRating,
+    });
+    (supabase.from as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ data: mockVisitData, error: null })
-          })
-        })
-      })
-    })
+            single: vi.fn().mockResolvedValue({ data: mockVisitData, error: null }),
+          }),
+        }),
+      }),
+    });
 
-    const mockOnContentChange = vi.fn()
-    renderComponent({ onContentChange: mockOnContentChange })
+    const mockOnContentChange = vi.fn();
+    renderComponent({ onContentChange: mockOnContentChange });
 
-    const ratingButton = screen.getByRole('button', { name: enTranslations.playground.rating.buttonLabel.replace('{{count}}', '1') })
+    const ratingButton = screen.getByRole('button', {
+      name: enTranslations.playground.rating.buttonLabel.replace('{{count}}', '1'),
+    });
     await act(async () => {
-      fireEvent.click(ratingButton)
-    })
+      fireEvent.click(ratingButton);
+    });
 
     await waitFor(() => {
-      expect(mockSubmitRating).toHaveBeenCalledWith(1, false, mockVisitData.id)
-      expect(mockOnContentChange).toHaveBeenCalled()
-    })
-  })
+      expect(mockSubmitRating).toHaveBeenCalledWith(1, false, mockVisitData.id);
+      expect(mockOnContentChange).toHaveBeenCalled();
+    });
+  });
 
   afterEach(() => {
-    vi.clearAllMocks()
-  })
-})
+    vi.clearAllMocks();
+  });
+});

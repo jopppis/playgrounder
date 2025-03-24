@@ -1,65 +1,47 @@
 import { Box, Button, Heading, Icon, Input, Stack, Text } from '@chakra-ui/react';
-import { AuthError } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
-import Turnstile from 'react-turnstile';
 import { useToast } from '../../hooks/useToast';
 import { supabase } from '../../lib/supabaseClient';
 
-interface ForgotPasswordProps {
+interface ChangeEmailProps {
   onSuccess?: () => void;
 }
 
-export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
+export default function ChangeEmail({ onSuccess }: ChangeEmailProps) {
   const { t } = useTranslation();
-  const [email, setEmail] = useState('');
+  const [newEmail, setNewEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [resetCounter, setResetCounter] = useState(0);
   const toast = useToast();
-  // Enable Turnstile in development and production, but not in local
-  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    if (enableTurnstile && !captchaToken) {
-      setError(t('auth.forgotPassword.error.captchaRequired'));
-      setLoading(false);
-      return;
-    }
-
     try {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/?reset_password=true`,
-        captchaToken: enableTurnstile && captchaToken ? captchaToken : undefined,
+      // Update the email directly
+      const { error: updateError } = await supabase.auth.updateUser({
+        email: newEmail,
       });
 
-      if (resetError) throw resetError;
+      if (updateError) throw updateError;
 
       toast.showSuccess({
-        title: t('auth.forgotPassword.success.title'),
-        description: t('auth.forgotPassword.success.message'),
+        title: t('auth.changeEmail.success.title'),
+        description: t('auth.changeEmail.success.message'),
       });
 
       onSuccess?.();
     } catch (err) {
-      const authError = err as AuthError;
-      setError(authError.message);
+      const error = err as Error;
+      setError(error.message);
       toast.showError({
-        title: t('auth.forgotPassword.error.title'),
-        description: t('auth.forgotPassword.error.message'),
+        title: t('auth.changeEmail.error.title'),
+        description: t('auth.changeEmail.error.message'),
       });
-      // Reset captcha on error
-      if (window.turnstile) {
-        window.turnstile.reset();
-      }
-      setCaptchaToken(null);
-      setResetCounter((prev) => prev + 1);
     } finally {
       setLoading(false);
     }
@@ -77,18 +59,18 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
           minW="24px"
           h="24px"
           p={0}
-          aria-label={t('auth.signIn.close')}
+          aria-label={t('auth.changeEmail.close')}
         >
           <Icon as={FaTimes} boxSize={3} />
         </Button>
       </Box>
       <Stack gap={8}>
         <Heading size="lg" color="brand.500">
-          {t('auth.forgotPassword.title')}
+          {t('auth.changeEmail.title')}
         </Heading>
         {error && (
           <Box p={4} bg="red.50" color="red.500" borderRadius="md" w="100%">
-            <Text fontWeight="bold">{t('auth.forgotPassword.error.title')}</Text>
+            <Text fontWeight="bold">{t('auth.changeEmail.error.title')}</Text>
             <Text>{error}</Text>
           </Box>
         )}
@@ -96,15 +78,15 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
           <Stack gap={4}>
             <Box>
               <Text mb={2} color="gray.700">
-                {t('auth.forgotPassword.email')}
+                {t('auth.changeEmail.newEmail')}
               </Text>
               <Input
                 type="email"
-                name="email"
-                autoComplete="username"
-                value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                placeholder={t('auth.forgotPassword.emailPlaceholder')}
+                name="newEmail"
+                autoComplete="email"
+                value={newEmail}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewEmail(e.target.value)}
+                placeholder={t('auth.changeEmail.newEmailPlaceholder')}
                 required
                 bg="white"
                 _placeholder={{ color: 'gray.400' }}
@@ -117,32 +99,20 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
                 }}
               />
             </Box>
-            {enableTurnstile && (
-              <Box>
-                <Turnstile
-                  key={`turnstile-${resetCounter}`}
-                  sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                  onSuccess={(token) => setCaptchaToken(token)}
-                  onError={() => setCaptchaToken(null)}
-                  onExpire={() => setCaptchaToken(null)}
-                  theme="light"
-                />
-              </Box>
-            )}
             <Button
               type="submit"
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading || (enableTurnstile && !captchaToken)}
+              disabled={loading}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
               transition="all 0.2s"
             >
               {loading
-                ? t('auth.forgotPassword.submitButton.loading')
-                : t('auth.forgotPassword.submitButton.default')}
+                ? t('auth.changeEmail.button.loading')
+                : t('auth.changeEmail.button.default')}
             </Button>
           </Stack>
         </Box>

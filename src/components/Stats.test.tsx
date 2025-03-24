@@ -1,9 +1,9 @@
-import { fireEvent, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import enTranslations from '../i18n/locales/en.json'
-import { i18n, render } from '../test/testUtils'
-import type { PlaygroundWithCoordinates, Visit } from '../types/database.types'
-import Stats from './Stats'
+import { fireEvent, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import enTranslations from '../i18n/locales/en.json';
+import { i18n, render } from '../test/testUtils';
+import type { PlaygroundWithCoordinates, Visit } from '../types/database.types';
+import Stats from './Stats';
 
 describe('Stats', () => {
   // Mock data
@@ -19,7 +19,7 @@ describe('Stats', () => {
       longitude: 24.9384,
       avg_rating: 4.5,
       total_ratings: 10,
-      user_rating: null
+      user_rating: null,
     },
     {
       id: '2',
@@ -32,7 +32,7 @@ describe('Stats', () => {
       longitude: 24.6559,
       avg_rating: null,
       total_ratings: 0,
-      user_rating: null
+      user_rating: null,
     },
     {
       id: '3',
@@ -45,9 +45,9 @@ describe('Stats', () => {
       longitude: 24.9384,
       avg_rating: 3.0,
       total_ratings: 5,
-      user_rating: null
-    }
-  ]
+      user_rating: null,
+    },
+  ];
 
   const mockVisits: Visit[] = [
     {
@@ -55,34 +55,28 @@ describe('Stats', () => {
       playground_id: '1',
       user_id: 'user1',
       visited_at: new Date().toISOString(),
-      notes: null
-    }
-  ]
+      notes: null,
+    },
+  ];
 
-  const mockOnBack = vi.fn()
+  const mockOnBack = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    i18n.changeLanguage('en')
-  })
+    vi.clearAllMocks();
+    i18n.changeLanguage('en');
+  });
 
   it('renders all playgrounds stats', () => {
-    render(
-      <Stats
-        playgrounds={mockPlaygrounds}
-        visits={mockVisits}
-        onBack={mockOnBack}
-      />
-    )
+    render(<Stats playgrounds={mockPlaygrounds} visits={mockVisits} onBack={mockOnBack} />);
 
     // Check title
-    expect(screen.getByText(enTranslations.stats.title)).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.stats.title)).toBeInTheDocument();
 
     // Check total counts
-    expect(screen.getByText(enTranslations.stats.allPlaygrounds)).toBeInTheDocument()
-    expect(screen.getByText('3')).toBeInTheDocument() // Total playgrounds
-    expect(screen.getByText('1')).toBeInTheDocument() // Total visits
-  })
+    expect(screen.getByText(enTranslations.stats.allPlaygrounds)).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument(); // Total playgrounds
+    expect(screen.getByText('1')).toBeInTheDocument(); // Total visits
+  });
 
   it('renders city-specific stats when city is provided', () => {
     render(
@@ -91,20 +85,20 @@ describe('Stats', () => {
         visits={mockVisits}
         onBack={mockOnBack}
         currentCity="Helsinki"
-      />
-    )
+      />,
+    );
 
     // Check city-specific title
-    const cityTitle = enTranslations.stats.currentCity.replace('{{city}}', 'Helsinki')
-    expect(screen.getByText(cityTitle)).toBeInTheDocument()
+    const cityTitle = enTranslations.stats.currentCity.replace('{{city}}', 'Helsinki');
+    expect(screen.getByText(cityTitle)).toBeInTheDocument();
 
     // Check Helsinki counts (2 playgrounds in Helsinki)
-    expect(screen.getByText('2')).toBeInTheDocument()
-  })
+    expect(screen.getByText('2')).toBeInTheDocument();
+  });
 
   it('renders filtered stats when filters are applied', () => {
     const filters = {
-      visitStatus: "visited" as const,
+      visitStatus: 'visited' as const,
       minStars: null,
       minUserStars: null,
       hasSupervised: null,
@@ -112,8 +106,9 @@ describe('Stats', () => {
       dataSource: null,
       searchQuery: null,
       noRating: null,
-      noUserRating: null
-    }
+      hideUnnamed: null,
+      noUserRating: null,
+    };
 
     render(
       <Stats
@@ -122,56 +117,40 @@ describe('Stats', () => {
         onBack={mockOnBack}
         filters={filters}
         filteredPlaygroundCount={2}
-      />
-    )
+      />,
+    );
 
     // Check filtered title
-    expect(screen.getByText(enTranslations.stats.filteredPlaygrounds)).toBeInTheDocument()
+    expect(screen.getByText(enTranslations.stats.filteredPlaygrounds)).toBeInTheDocument();
 
     // Check filtered count
-    expect(screen.getByText('2')).toBeInTheDocument()
-  })
+    expect(screen.getByText('2')).toBeInTheDocument();
+  });
 
   it('calls onBack when back button is clicked', () => {
-    render(
-      <Stats
-        playgrounds={mockPlaygrounds}
-        visits={mockVisits}
-        onBack={mockOnBack}
-      />
-    )
+    render(<Stats playgrounds={mockPlaygrounds} visits={mockVisits} onBack={mockOnBack} />);
 
-    const backButton = screen.getByText(enTranslations.stats.backButton)
-    fireEvent.click(backButton)
+    const backButton = screen.getByText(enTranslations.stats.backButton);
+    fireEvent.click(backButton);
 
-    expect(mockOnBack).toHaveBeenCalledTimes(1)
-  })
+    expect(mockOnBack).toHaveBeenCalledTimes(1);
+  });
 
   it('handles empty data', () => {
-    render(
-      <Stats
-        playgrounds={[]}
-        visits={[]}
-        onBack={mockOnBack}
-      />
-    )
+    render(<Stats playgrounds={[]} visits={[]} onBack={mockOnBack} />);
 
     // Should show 0 for total counts
-    const zeroElements = screen.getAllByText('0')
-    expect(zeroElements.length).toBeGreaterThan(0)
-    expect(zeroElements[0]).toBeInTheDocument()
-  })
+    const zeroElements = screen.getAllByText('0');
+    expect(zeroElements.length).toBeGreaterThan(0);
+    expect(zeroElements[0]).toBeInTheDocument();
+  });
 
   it('handles undefined data', () => {
-    render(
-      <Stats
-        onBack={mockOnBack}
-      />
-    )
+    render(<Stats onBack={mockOnBack} />);
 
     // Should show 0 for total counts
-    const zeroElements = screen.getAllByText('0')
-    expect(zeroElements.length).toBeGreaterThan(0)
-    expect(zeroElements[0]).toBeInTheDocument()
-  })
-})
+    const zeroElements = screen.getAllByText('0');
+    expect(zeroElements.length).toBeGreaterThan(0);
+    expect(zeroElements[0]).toBeInTheDocument();
+  });
+});

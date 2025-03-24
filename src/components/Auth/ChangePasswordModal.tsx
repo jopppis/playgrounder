@@ -1,9 +1,9 @@
-import { Dialog, Portal } from '@chakra-ui/react'
-import ChangePassword from './ChangePassword'
+import { Dialog, Portal } from '@chakra-ui/react';
+import ChangePassword from './ChangePassword';
 
 interface ChangePasswordModalProps {
-  onClose: () => void
-  isOpen: boolean
+  onClose: () => void;
+  isOpen: boolean;
 }
 
 export default function ChangePasswordModal({ onClose, isOpen }: ChangePasswordModalProps) {
@@ -24,5 +24,5 @@ export default function ChangePasswordModal({ onClose, isOpen }: ChangePasswordM
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
-  )
+  );
 }

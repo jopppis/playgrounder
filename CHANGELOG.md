@@ -7,6 +7,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.2] - 2025-03-23
+
+### Fixed
+Fix tests
+
+## [0.19.1] - 2025-03-21
+
+### Fixed
+- Fix build
+
+## [0.19.0] - 2025-03-21
+
+### Added
+- Change email functionality
+
+## [0.18.8] - 2025-03-20
+
+## [0.18.7] - 2025-03-16
+
+### Fixed
+- Clear hide unnamed filter when user is not logged in
+
+## [0.18.6] - 2025-03-15
+
+### Changed
+- Ignore some areas for double tap
+
+## [0.18.5] - 2025-03-15
+
+### Added
+- Custom double tap to zoom for mobile
+
+## [0.18.4] - 2025-03-15
+
+### Added
+- Enable touch zoom
+
+## [0.18.3] - 2025-03-14
+
+### Changed
+- Set explicit background color for filter menu collapse button
+
+## [0.18.2] - 2025-03-14
+
+### Added
+- Double tap to zoom
+- Icons to filter titles
+
+### Changed
+- Move some filters to collapsible section
+- Use hide filter menu button for clearing filters if active
+- Make views security invoker and set search paths
+
+### Fixed
+- Do not remove edits when user deletes their account
+
+## [0.18.1] - 2025-03-14
+
+### Fixed
+- Refresh playgrounds when filters change
+
+## [0.18.0] - 2025-03-14
+
+### Added
+- Unnamed playground filter
+
+### Changed
+- Only fetch distinct cities
+- Use select boxes for all filters
+
 ## [0.17.1] - 2025-03-13
 
 ### Fixed

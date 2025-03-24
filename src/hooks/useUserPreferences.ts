@@ -1,26 +1,26 @@
-import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
-import { useAuth } from './useAuth'
+import { useCallback, useEffect, useState } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from './useAuth';
 
 interface UserPreferences {
-  defaultPublicRatings: boolean
+  defaultPublicRatings: boolean;
 }
 
 export const useUserPreferences = () => {
   const [preferences, setPreferences] = useState<UserPreferences>({
-    defaultPublicRatings: false
-  })
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const { user } = useAuth()
+    defaultPublicRatings: false,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const fetchPreferences = useCallback(async () => {
     if (!user) {
       setPreferences({
-        defaultPublicRatings: false
-      })
-      setLoading(false)
-      return
+        defaultPublicRatings: false,
+      });
+      setLoading(false);
+      return;
     }
 
     try {
@@ -28,77 +28,76 @@ export const useUserPreferences = () => {
         .from('user_preferences')
         .select('*')
         .eq('user_id', user.id)
-        .maybeSingle()
+        .maybeSingle();
 
-      if (error) throw error
+      if (error) throw error;
 
       if (data) {
         setPreferences({
-          defaultPublicRatings: data.default_public_ratings
-        })
+          defaultPublicRatings: data.default_public_ratings,
+        });
       } else {
-        const { error: insertError } = await supabase
-          .from('user_preferences')
-          .insert({
-            user_id: user.id,
-            default_public_ratings: false
-          })
+        const { error: insertError } = await supabase.from('user_preferences').insert({
+          user_id: user.id,
+          default_public_ratings: false,
+        });
 
-        if (insertError) throw insertError
+        if (insertError) throw insertError;
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [user])
+  }, [user]);
 
   const updateDefaultPublicRatings = async (value: boolean) => {
-    if (!user) return
+    if (!user) return;
 
-    const previousValue = preferences.defaultPublicRatings
+    const previousValue = preferences.defaultPublicRatings;
 
     try {
-      setPreferences(prev => ({
+      setPreferences((prev) => ({
         ...prev,
-        defaultPublicRatings: value
-      }))
+        defaultPublicRatings: value,
+      }));
 
-      setError(null)
+      setError(null);
 
-      const { error } = await supabase
-        .from('user_preferences')
-        .upsert({
+      const { error } = await supabase.from('user_preferences').upsert(
+        {
           user_id: user.id,
-          default_public_ratings: value
-        }, {
-          onConflict: 'user_id'
-        })
+          default_public_ratings: value,
+        },
+        {
+          onConflict: 'user_id',
+        },
+      );
 
       if (error) {
-        setPreferences(prev => ({
+        setPreferences((prev) => ({
           ...prev,
-          defaultPublicRatings: previousValue
-        }))
-        throw error
+          defaultPublicRatings: previousValue,
+        }));
+        throw error;
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
-      setPreferences(prev => ({
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setPreferences((prev) => ({
         ...prev,
-        defaultPublicRatings: previousValue
-      }))
+        defaultPublicRatings: previousValue,
+      }));
     }
-  }
+  };
 
   useEffect(() => {
-    fetchPreferences()
-  }, [fetchPreferences])
+    fetchPreferences();
+  }, [fetchPreferences]);
 
   return {
     preferences,
     loading,
     error,
-    updateDefaultPublicRatings
-  }
-}
+    updateDefaultPublicRatings,
+  };
+};

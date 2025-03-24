@@ -16,7 +16,7 @@ function getAllKeys(obj: TranslationObject, parentKey = ''): string[] {
 }
 
 function findMissingKeys(source: string[], target: string[]): string[] {
-  return source.filter(key => !target.includes(key));
+  return source.filter((key) => !target.includes(key));
 }
 
 const enKeys = getAllKeys(en).sort();
@@ -27,12 +27,12 @@ const missingInEn = findMissingKeys(fiKeys, enKeys);
 
 if (missingInFi.length > 0) {
   console.log('Keys missing in Finnish translation:');
-  missingInFi.forEach(key => console.log(`  - ${key}`));
+  missingInFi.forEach((key) => console.log(`  - ${key}`));
 }
 
 if (missingInEn.length > 0) {
   console.log('Keys missing in English translation:');
-  missingInEn.forEach(key => console.log(`  - ${key}`));
+  missingInEn.forEach((key) => console.log(`  - ${key}`));
 }
 
 if (missingInFi.length === 0 && missingInEn.length === 0) {

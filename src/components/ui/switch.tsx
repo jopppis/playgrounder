@@ -1,44 +1,41 @@
-import { Switch as ChakraSwitch } from "@chakra-ui/react"
-import * as React from "react"
+import { Switch as ChakraSwitch } from '@chakra-ui/react';
+import * as React from 'react';
 
 export interface SwitchProps extends ChakraSwitch.RootProps {
-  inputProps?: React.InputHTMLAttributes<HTMLInputElement>
-  rootRef?: React.Ref<HTMLLabelElement>
-  trackLabel?: { on: React.ReactNode; off: React.ReactNode }
-  thumbLabel?: { on: React.ReactNode; off: React.ReactNode }
-  'aria-label'?: string
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  rootRef?: React.Ref<HTMLLabelElement>;
+  trackLabel?: { on: React.ReactNode; off: React.ReactNode };
+  thumbLabel?: { on: React.ReactNode; off: React.ReactNode };
+  'aria-label'?: string;
 }
 
-export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  function Switch(props, ref) {
-    const { inputProps, children, rootRef, trackLabel, thumbLabel, 'aria-label': ariaLabel, ...rest } =
-      props
+export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(function Switch(props, ref) {
+  const {
+    inputProps,
+    children,
+    rootRef,
+    trackLabel,
+    thumbLabel,
+    'aria-label': ariaLabel,
+    ...rest
+  } = props;
 
-    return (
-      <ChakraSwitch.Root
-        ref={rootRef}
-        colorPalette="brand"
-        {...rest}
-      >
-        <ChakraSwitch.HiddenInput ref={ref} {...inputProps} aria-label={ariaLabel} />
-        <ChakraSwitch.Control>
-          <ChakraSwitch.Thumb>
-            {thumbLabel && (
-              <ChakraSwitch.ThumbIndicator fallback={thumbLabel?.off}>
-                {thumbLabel?.on}
-              </ChakraSwitch.ThumbIndicator>
-            )}
-          </ChakraSwitch.Thumb>
-          {trackLabel && (
-            <ChakraSwitch.Indicator fallback={trackLabel.off}>
-              {trackLabel.on}
-            </ChakraSwitch.Indicator>
+  return (
+    <ChakraSwitch.Root ref={rootRef} colorPalette="brand" {...rest}>
+      <ChakraSwitch.HiddenInput ref={ref} {...inputProps} aria-label={ariaLabel} />
+      <ChakraSwitch.Control>
+        <ChakraSwitch.Thumb>
+          {thumbLabel && (
+            <ChakraSwitch.ThumbIndicator fallback={thumbLabel?.off}>
+              {thumbLabel?.on}
+            </ChakraSwitch.ThumbIndicator>
           )}
-        </ChakraSwitch.Control>
-        {children != null && (
-          <ChakraSwitch.Label>{children}</ChakraSwitch.Label>
+        </ChakraSwitch.Thumb>
+        {trackLabel && (
+          <ChakraSwitch.Indicator fallback={trackLabel.off}>{trackLabel.on}</ChakraSwitch.Indicator>
         )}
-      </ChakraSwitch.Root>
-    )
-  },
-)
+      </ChakraSwitch.Control>
+      {children != null && <ChakraSwitch.Label>{children}</ChakraSwitch.Label>}
+    </ChakraSwitch.Root>
+  );
+});
