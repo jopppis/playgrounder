@@ -232,7 +232,7 @@ const MapStateManager = ({
   const { updateUrlState, getInitialMapState } = useMapUrlState();
   const initialState = getInitialMapState();
   const isInitialLoad = useRef(true);
-  const updateTimeout = useRef<number>();
+  const updateTimeout = useRef<number | null>(null);
   const URL_DEBOUNCE_DELAY = 300;
   const initialPlaygroundId = useRef<string | null>(initialState.playgroundId || null);
 
