@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2025-05-31
+
 ### Changed
 - Search on native app on mobile
 - Search by name near real location
