@@ -46,6 +46,11 @@ Start the development server:
 npm run dev
 ```
 
+## Release instructions
+
+- Make sure the changelog is up to date
+- Run `npm version patch` or `npm version minor`  or `npm version major` to bump the version number, write changelog, push the changes. The deployment in Vercel is automatically following the main branch.
+
 ## TODO
 
 - Slow startup
