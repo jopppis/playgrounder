@@ -183,24 +183,34 @@ const TouchEventHandler = () => {
   useEffect(() => {
     if (!map) return;
 
-    // Set up double tap zoom handler
     let lastTap = 0;
+    let mapDragged = false;
+
+    const handleDragStart = () => {
+      mapDragged = true;
+    };
+    const handleDragEnd = () => {
+      // Reset drag flag after drag ends
+      setTimeout(() => {
+        mapDragged = false;
+      }, 0);
+    };
+
     const handleTap = (e: TouchEvent) => {
-      // Check if the touch target is a control or popup
       const target = e.target as HTMLElement;
       if (
-        target.closest('.leaflet-control') || // Ignore controls (zoom, layers, etc.)
-        target.closest('.leaflet-popup') || // Ignore popups
-        target.closest('.playground-marker') || // Ignore markers
-        target.closest('button') || // Ignore buttons
-        target.closest('.leaflet-control-container') // Ignore control container
+        target.closest('.leaflet-control') ||
+        target.closest('.leaflet-popup') ||
+        target.closest('.playground-marker') ||
+        target.closest('button') ||
+        target.closest('.leaflet-control-container')
       ) {
         return;
       }
 
       const currentTime = new Date().getTime();
       const tapLength = currentTime - lastTap;
-      if (tapLength < 500 && tapLength > 0) {
+      if (tapLength < 500 && tapLength > 0 && !mapDragged) {
         const touch = e.changedTouches[0];
         const container = map.getContainer();
         const rect = container.getBoundingClientRect();
@@ -208,12 +218,17 @@ const TouchEventHandler = () => {
         map.setZoomAround(point, map.getZoom() + 1);
       }
       lastTap = currentTime;
+      mapDragged = false; // Reset drag flag after tap
     };
 
     map.getContainer().addEventListener('touchend', handleTap);
+    map.on('dragstart', handleDragStart);
+    map.on('dragend', handleDragEnd);
 
     return () => {
       map.getContainer().removeEventListener('touchend', handleTap);
+      map.off('dragstart', handleDragStart);
+      map.off('dragend', handleDragEnd);
     };
   }, [map]);
 

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Avoid double tap zoom on map drag
+
 ## [0.19.4] - 2025-05-31
 
 ## [0.19.3] - 2025-03-24
