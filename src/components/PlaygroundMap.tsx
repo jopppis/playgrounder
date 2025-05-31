@@ -177,48 +177,48 @@ const useMapUrlState = () => {
   return { updateUrlState, getInitialMapState };
 };
 
-// const TouchEventHandler = () => {
-//   const map = useMap();
+const TouchEventHandler = () => {
+  const map = useMap();
 
-//   useEffect(() => {
-//     if (!map) return;
+  useEffect(() => {
+    if (!map) return;
 
-//     // Set up double tap zoom handler
-//     let lastTap = 0;
-//     const handleTap = (e: TouchEvent) => {
-//       // Check if the touch target is a control or popup
-//       const target = e.target as HTMLElement;
-//       if (
-//         target.closest('.leaflet-control') || // Ignore controls (zoom, layers, etc.)
-//         target.closest('.leaflet-popup') || // Ignore popups
-//         target.closest('.playground-marker') || // Ignore markers
-//         target.closest('button') || // Ignore buttons
-//         target.closest('.leaflet-control-container') // Ignore control container
-//       ) {
-//         return;
-//       }
+    // Set up double tap zoom handler
+    let lastTap = 0;
+    const handleTap = (e: TouchEvent) => {
+      // Check if the touch target is a control or popup
+      const target = e.target as HTMLElement;
+      if (
+        target.closest('.leaflet-control') || // Ignore controls (zoom, layers, etc.)
+        target.closest('.leaflet-popup') || // Ignore popups
+        target.closest('.playground-marker') || // Ignore markers
+        target.closest('button') || // Ignore buttons
+        target.closest('.leaflet-control-container') // Ignore control container
+      ) {
+        return;
+      }
 
-//       const currentTime = new Date().getTime();
-//       const tapLength = currentTime - lastTap;
-//       if (tapLength < 100 && tapLength > 0) {
-//         const touch = e.changedTouches[0];
-//         const container = map.getContainer();
-//         const rect = container.getBoundingClientRect();
-//         const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
-//         map.setZoomAround(point, map.getZoom() + 1);
-//       }
-//       lastTap = currentTime;
-//     };
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 500 && tapLength > 0) {
+        const touch = e.changedTouches[0];
+        const container = map.getContainer();
+        const rect = container.getBoundingClientRect();
+        const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
+        map.setZoomAround(point, map.getZoom() + 1);
+      }
+      lastTap = currentTime;
+    };
 
-//     map.getContainer().addEventListener('touchend', handleTap);
+    map.getContainer().addEventListener('touchend', handleTap);
 
-//     return () => {
-//       map.getContainer().removeEventListener('touchend', handleTap);
-//     };
-//   }, [map]);
+    return () => {
+      map.getContainer().removeEventListener('touchend', handleTap);
+    };
+  }, [map]);
 
-//   return null;
-// };
+  return null;
+};
 
 // Add MapStateManager component
 const MapStateManager = ({
@@ -919,9 +919,8 @@ const PlaygroundMap = ({
         preferCanvas={true}
         tapTolerance={15}
         touchZoom={true}
-        // doubleClickZoom={false} // Disable default double-tap zoom to prevent duplicate zooming on mobile
       >
-        {/* <TouchEventHandler /> */}
+        <TouchEventHandler />
         <LayersControl position="bottomright">
           <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
             <TileLayer
