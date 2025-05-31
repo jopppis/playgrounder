@@ -23,6 +23,37 @@ function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent);
 }
 
+function isIOS() {
+  if (typeof navigator === 'undefined') return false;
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function getMapLink(lat: number, lng: number) {
+  if (isIOS()) {
+    // Apple Maps
+    return `http://maps.apple.com/?ll=${lat},${lng}`;
+  } else if (isMobileDevice()) {
+    // Android or other mobile: geo URI
+    return `geo:${lat},${lng}`;
+  } else {
+    // Desktop: Google Maps
+    return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  }
+}
+
+function getSearchByNameLink(name: string, lat: number, lng: number) {
+  if (isIOS()) {
+    // Apple Maps with query
+    return `http://maps.apple.com/?q=${encodeURIComponent(name)}&ll=${lat},${lng}`;
+  } else if (isMobileDevice()) {
+    // Android or other mobile: geo URI with query
+    return `geo:${lat},${lng}?q=${encodeURIComponent(name)}`;
+  } else {
+    // Desktop: Google Maps with query and near
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}%20near%20${lat},${lng}`;
+  }
+}
+
 interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates;
   onVisitChange: (isVisited: boolean) => void;
@@ -235,11 +266,7 @@ export const PlaygroundPopup = ({
                   content={`${Math.abs(playground.latitude).toFixed(6)}°${playground.latitude >= 0 ? 'N' : 'S'}, ${Math.abs(playground.longitude).toFixed(6)}°${playground.longitude >= 0 ? 'E' : 'W'}`}
                 >
                   <Link
-                    href={
-                      isMobileDevice()
-                        ? `geo:${playground.latitude},${playground.longitude}`
-                        : `https://www.google.com/maps/search/?api=1&query=${playground.latitude},${playground.longitude}`
-                    }
+                    href={getMapLink(playground.latitude, playground.longitude)}
                     target="_blank"
                     rel="noopener noreferrer"
                     display="flex"
@@ -258,11 +285,11 @@ export const PlaygroundPopup = ({
                 {playground.name && (
                   <Tooltip content={t('playground.searchByName', { name: playground.name })}>
                     <Link
-                      href={
-                        isMobileDevice()
-                          ? `geo:${playground.latitude},${playground.longitude}?q=${encodeURIComponent(playground.name)}`
-                          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(playground.name)}%20near%20${playground.latitude},${playground.longitude}`
-                      }
+                      href={getSearchByNameLink(
+                        playground.name,
+                        playground.latitude,
+                        playground.longitude,
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                       display="flex"
