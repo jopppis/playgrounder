@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.2] - 2025-05-31
+
 ### Changed
 - Try to make the native app opener work better on iOS
 
