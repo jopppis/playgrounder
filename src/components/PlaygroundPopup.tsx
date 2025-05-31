@@ -17,6 +17,12 @@ import { Switch } from './ui/switch';
 import { InfoTip } from './ui/toggle-tip';
 import { Tooltip } from './ui/tooltip';
 
+// Centralized device detection for map links
+function isMobileDevice() {
+  if (typeof navigator === 'undefined') return false;
+  return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent);
+}
+
 interface PlaygroundPopupProps {
   playground: PlaygroundWithCoordinates;
   onVisitChange: (isVisited: boolean) => void;
@@ -229,7 +235,11 @@ export const PlaygroundPopup = ({
                   content={`${Math.abs(playground.latitude).toFixed(6)}°${playground.latitude >= 0 ? 'N' : 'S'}, ${Math.abs(playground.longitude).toFixed(6)}°${playground.longitude >= 0 ? 'E' : 'W'}`}
                 >
                   <Link
-                    href={`https://maps.google.com/search/?api=1&query=${playground.latitude},${playground.longitude}`}
+                    href={
+                      isMobileDevice()
+                        ? `geo:${playground.latitude},${playground.longitude}`
+                        : `https://www.google.com/maps/search/?api=1&query=${playground.latitude},${playground.longitude}`
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     display="flex"
@@ -248,7 +258,11 @@ export const PlaygroundPopup = ({
                 {playground.name && (
                   <Tooltip content={t('playground.searchByName', { name: playground.name })}>
                     <Link
-                      href={`https://maps.google.com/search/?api=1&query=${encodeURIComponent(playground.name)}`}
+                      href={
+                        isMobileDevice()
+                          ? `geo:${playground.latitude},${playground.longitude}?q=${encodeURIComponent(playground.name)}`
+                          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(playground.name)}%20near%20${playground.latitude},${playground.longitude}`
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                       display="flex"
