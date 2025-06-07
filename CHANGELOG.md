@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.3] - 2025-06-07
+
 ### Fixed
 - Do not trigger double tap zoom on two finger tap
 
