@@ -197,6 +197,11 @@ const TouchEventHandler = () => {
     };
 
     const handleTap = (e: TouchEvent) => {
+      // Ignore if there are multiple touches (pinch/zoom gestures)
+      if (e.touches.length > 1) {
+        return;
+      }
+
       const target = e.target as HTMLElement;
       if (
         target.closest('.leaflet-control') ||
