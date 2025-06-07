@@ -184,6 +184,7 @@ const TouchEventHandler = () => {
     if (!map) return;
 
     let lastTap = 0;
+    let lastTapLocation: { x: number; y: number } | null = null;
     let mapDragged = false;
     let activeTouches = 0;
     let multiTouchTimeout: number | null = null;
@@ -234,14 +235,31 @@ const TouchEventHandler = () => {
 
       const currentTime = new Date().getTime();
       const tapLength = currentTime - lastTap;
-      if (tapLength < 500 && tapLength > 0 && !mapDragged) {
-        const touch = e.changedTouches[0];
+      const touch = e.changedTouches[0];
+      const currentTapLocation = { x: touch.clientX, y: touch.clientY };
+
+      // Check if this is a valid double tap (timing and location)
+      let isValidDoubleTap = false;
+      if (tapLength < 500 && tapLength > 0 && !mapDragged && lastTapLocation) {
+        // Calculate distance between current tap and last tap
+        const distance = Math.sqrt(
+          Math.pow(currentTapLocation.x - lastTapLocation.x, 2) +
+            Math.pow(currentTapLocation.y - lastTapLocation.y, 2),
+        );
+
+        // Only consider it a double tap if taps are within 50 pixels of each other
+        isValidDoubleTap = distance <= 50;
+      }
+
+      if (isValidDoubleTap) {
         const container = map.getContainer();
         const rect = container.getBoundingClientRect();
         const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
         map.setZoomAround(point, map.getZoom() + 1);
       }
+
       lastTap = currentTime;
+      lastTapLocation = currentTapLocation;
       mapDragged = false; // Reset drag flag after tap
     };
 
