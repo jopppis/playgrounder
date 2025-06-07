@@ -185,6 +185,8 @@ const TouchEventHandler = () => {
 
     let lastTap = 0;
     let mapDragged = false;
+    let activeTouches = 0;
+    let multiTouchTimeout: number | null = null;
 
     const handleDragStart = () => {
       mapDragged = true;
@@ -196,9 +198,26 @@ const TouchEventHandler = () => {
       }, 0);
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      activeTouches = e.touches.length;
+
+      // Clear any pending multi-touch timeout
+      if (multiTouchTimeout) {
+        clearTimeout(multiTouchTimeout);
+        multiTouchTimeout = null;
+      }
+
+      // If more than one touch, set a timeout to prevent double tap
+      if (activeTouches > 1) {
+        multiTouchTimeout = window.setTimeout(() => {
+          multiTouchTimeout = null;
+        }, 600); // Slightly longer than double tap window
+      }
+    };
+
     const handleTap = (e: TouchEvent) => {
-      // Ignore if there are multiple touches (pinch/zoom gestures)
-      if (e.touches.length > 1) {
+      // Don't process double tap if we recently had multiple touches
+      if (multiTouchTimeout || e.touches.length > 1 || e.changedTouches.length !== 1) {
         return;
       }
 
@@ -226,11 +245,16 @@ const TouchEventHandler = () => {
       mapDragged = false; // Reset drag flag after tap
     };
 
+    map.getContainer().addEventListener('touchstart', handleTouchStart);
     map.getContainer().addEventListener('touchend', handleTap);
     map.on('dragstart', handleDragStart);
     map.on('dragend', handleDragEnd);
 
     return () => {
+      if (multiTouchTimeout) {
+        clearTimeout(multiTouchTimeout);
+      }
+      map.getContainer().removeEventListener('touchstart', handleTouchStart);
       map.getContainer().removeEventListener('touchend', handleTap);
       map.off('dragstart', handleDragStart);
       map.off('dragend', handleDragEnd);
