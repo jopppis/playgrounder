@@ -197,8 +197,8 @@ const TouchEventHandler = () => {
     };
 
     const handleTap = (e: TouchEvent) => {
-      // Ignore if there are multiple touches (pinch/zoom gestures)
-      if (e.touches.length > 1) {
+      // Only handle single finger touches for double tap
+      if (e.changedTouches.length !== 1) {
         return;
       }
 
