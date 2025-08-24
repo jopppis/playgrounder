@@ -6,7 +6,7 @@ import { usePlaygrounds } from '../hooks/usePlaygrounds';
 import { useUserFilters } from '../hooks/useUserFilters';
 import { useVisits } from '../hooks/useVisits';
 import { cleanup, i18n } from '../test/testUtils';
-import { PlaygroundWithCoordinatesAndRatings } from '../types/database.types';
+import { PlaygroundWithCoordinates } from '../types/database.types';
 import { FilterOptions } from './PlaygroundFilter';
 
 // Mock React's useEffect to prevent side effects
@@ -154,7 +154,7 @@ vi.mock('leaflet', () => {
 });
 
 describe('PlaygroundMap', () => {
-  const mockPlaygrounds: PlaygroundWithCoordinatesAndRatings[] = [
+  const mockPlaygrounds: PlaygroundWithCoordinates[] = [
     {
       id: 'pg-1',
       name: 'Test Playground 1',

@@ -8,7 +8,7 @@ import { useVisits } from '../hooks/useVisits';
 import enTranslations from '../i18n/locales/en.json';
 import { supabase } from '../lib/supabaseClient';
 import { render } from '../test/testUtils';
-import type { PlaygroundWithCoordinatesAndRatings } from '../types/database.types';
+import type { PlaygroundWithCoordinates } from '../types/database.types';
 import { PlaygroundPopup } from './PlaygroundPopup';
 
 // Mock the hooks
@@ -57,15 +57,15 @@ vi.mock('../lib/supabaseClient', () => ({
 }));
 
 describe('PlaygroundPopup', () => {
-  const mockPlayground: PlaygroundWithCoordinatesAndRatings = {
+  const mockPlayground: PlaygroundWithCoordinates = {
     id: '1',
     name: 'Test Playground',
-    latitude: 60.1699,
-    longitude: 24.9384,
-    has_supervised_activities: false,
-    city: 'Helsinki',
+    has_supervised_activities: true,
+    created_at: new Date().toISOString(),
+    latitude: 0,
+    longitude: 0,
+    city: 'Test City',
     data_source: 'municipality',
-    created_at: '2023-01-01T00:00:00Z',
     avg_rating: null,
     total_ratings: 0,
     user_rating: null,
