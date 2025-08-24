@@ -10,12 +10,31 @@
       "groupName": "all patch updates"
     },
     {
-      "matchUpdateTypes": ["minor"],
-      "groupName": "all minor updates"
-    },
-    {
       "matchManagers": ["pip_requirements"],
       "enabled": false
+    },
+    {
+      "matchPackageNames": ["typescript"],
+      "separateMinorPatch": true,
+      "separateMajorPatch": true,
+      "labels": ["typescript-update"]
+    },
+    {
+      "matchPackageNames": ["@supabase/supabase-js"],
+      "separateMinorPatch": true,
+      "separateMajorPatch": true,
+      "labels": ["supabase-update"]
+    },
+    {
+      "matchPackageNames": ["@typescript-eslint/*"],
+      "groupName": "typescript-eslint packages",
+      "separateMinorPatch": true,
+      "labels": ["eslint-update"]
+    },
+    {
+      "matchCategories": ["test"],
+      "groupName": "test dependencies",
+      "labels": ["test-deps"]
     }
   ]
 }
