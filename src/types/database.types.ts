@@ -114,24 +114,6 @@ export interface EditProposalWithPlayground extends PlaygroundEditProposal {
   };
 }
 
-export interface EditedPlayground {
-  id: string;
-  original_id: string;
-  proposal_id: string;
-  name: string | null;
-  has_supervised_activities: boolean | null;
-  is_deleted: boolean;
-  reverted_at: string | null;
-  reverted_by: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface AdminUser {
-  user_id: string;
-  created_at: string;
-}
-
 export interface Database {
   public: {
     Tables: {
@@ -167,16 +149,6 @@ export interface Database {
           'id' | 'created_at' | 'updated_at' | 'status' | 'admin_notes'
         >;
         Update: Partial<Omit<PlaygroundEditProposal, 'id' | 'created_at' | 'updated_at'>>;
-      };
-      edited_playgrounds: {
-        Row: EditedPlayground;
-        Insert: Omit<EditedPlayground, 'id' | 'created_at' | 'updated_at'>;
-        Update: Partial<Omit<EditedPlayground, 'id' | 'created_at' | 'updated_at'>>;
-      };
-      admin_users: {
-        Row: AdminUser;
-        Insert: Omit<AdminUser, 'created_at'>;
-        Update: Partial<Omit<AdminUser, 'created_at'>>;
       };
     };
     Views: {
