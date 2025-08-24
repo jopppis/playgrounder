@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { PlaygroundWithCoordinates } from '../types/database.types';
+import { PlaygroundWithCoordinatesAndRatings } from '../types/database.types';
 import { BBox, usePlaygroundFetcher } from './usePlaygroundFetcher';
 
 const BBOX_PADDING_FACTOR = 10; // How much to expand the bbox for prefetching
@@ -9,7 +9,7 @@ const ZOOM_THRESHOLD = 11; // Zoom level at which we switch between full and bbo
 export type { BBox } from './usePlaygroundFetcher';
 
 export const usePlaygrounds = () => {
-  const [playgrounds, setPlaygrounds] = useState<PlaygroundWithCoordinates[]>([]);
+  const [playgrounds, setPlaygrounds] = useState<PlaygroundWithCoordinatesAndRatings[]>([]);
   const [loading, setLoading] = useState(false);
   const [lastFetchedBBox, setLastFetchedBBox] = useState<BBox | null>(null);
   const [hasAllPlaygrounds, setHasAllPlaygrounds] = useState(false);
@@ -94,7 +94,7 @@ export const usePlaygrounds = () => {
       }
 
       // Transform the playground data to include latitude and longitude
-      const transformedPlayground: PlaygroundWithCoordinates = {
+      const transformedPlayground: PlaygroundWithCoordinatesAndRatings = {
         ...updatedPlayground,
         latitude: updatedPlayground.location.coordinates[1],
         longitude: updatedPlayground.location.coordinates[0],

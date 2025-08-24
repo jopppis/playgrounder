@@ -16,7 +16,7 @@ import { useCurrentCity } from '../hooks/useCurrentCity';
 import { BBox, usePlaygrounds } from '../hooks/usePlaygrounds';
 import { useUserFilters } from '../hooks/useUserFilters';
 import { useVisits } from '../hooks/useVisits';
-import { PlaygroundWithCoordinates, Visit } from '../types/database.types';
+import { PlaygroundWithCoordinatesAndRatings, Visit } from '../types/database.types';
 import LocationControl from './LocationControl';
 import MenuDrawer from './MenuDrawer';
 import NoVisiblePlaygrounds from './NoVisiblePlaygrounds';
@@ -226,7 +226,7 @@ const MapStateManager = ({
   playgrounds,
 }: {
   onMapReady: (map: L.Map) => void;
-  playgrounds: PlaygroundWithCoordinates[];
+  playgrounds: PlaygroundWithCoordinatesAndRatings[];
 }) => {
   const map = useMap();
   const { updateUrlState, getInitialMapState } = useMapUrlState();
@@ -330,7 +330,7 @@ const PlaygroundMarker = memo(
     onRatingChange,
     editMode,
   }: {
-    playground: PlaygroundWithCoordinates;
+    playground: PlaygroundWithCoordinatesAndRatings;
     visits: Visit[];
     user: User | null;
     visitsLoading: boolean;

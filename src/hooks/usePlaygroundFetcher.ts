@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { PlaygroundWithCoordinates } from '../types/database.types';
+import { PlaygroundWithCoordinatesAndRatings } from '../types/database.types';
 
 export interface BBox {
   minLon: number;
@@ -9,7 +9,8 @@ export interface BBox {
   maxLat: number;
 }
 
-interface PlaygroundFromView extends Omit<PlaygroundWithCoordinates, 'latitude' | 'longitude'> {
+interface PlaygroundFromView
+  extends Omit<PlaygroundWithCoordinatesAndRatings, 'latitude' | 'longitude'> {
   location: {
     coordinates: [number, number]; // [longitude, latitude]
   };
@@ -20,7 +21,7 @@ interface PlaygroundFromView extends Omit<PlaygroundWithCoordinates, 'latitude' 
 
 interface CacheEntry {
   bbox: BBox | null;
-  playgrounds: PlaygroundWithCoordinates[];
+  playgrounds: PlaygroundWithCoordinatesAndRatings[];
   timestamp: number;
 }
 
@@ -28,10 +29,10 @@ const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 export const usePlaygroundFetcher = () => {
   const [cache, setCache] = useState<CacheEntry | null>(null);
-  const pendingFetchRef = useRef<Promise<PlaygroundWithCoordinates[]> | null>(null);
+  const pendingFetchRef = useRef<Promise<PlaygroundWithCoordinatesAndRatings[]> | null>(null);
 
   const transformPlayground = useCallback(
-    (playground: PlaygroundFromView): PlaygroundWithCoordinates => {
+    (playground: PlaygroundFromView): PlaygroundWithCoordinatesAndRatings => {
       return {
         ...playground,
         latitude: playground.location.coordinates[1],
@@ -50,7 +51,9 @@ export const usePlaygroundFetcher = () => {
     );
   }, []);
 
-  const fetchAllPlaygrounds = useCallback(async (): Promise<PlaygroundWithCoordinates[]> => {
+  const fetchAllPlaygrounds = useCallback(async (): Promise<
+    PlaygroundWithCoordinatesAndRatings[]
+  > => {
     const { data: playgroundsData, error: playgroundsError } = await supabase
       .from('v_active_playgrounds_with_ratings')
       .select('*');
@@ -61,7 +64,7 @@ export const usePlaygroundFetcher = () => {
   }, [transformPlayground]);
 
   const fetchPlaygroundsInBBox = useCallback(
-    async (bbox: BBox): Promise<PlaygroundWithCoordinates[]> => {
+    async (bbox: BBox): Promise<PlaygroundWithCoordinatesAndRatings[]> => {
       const { data: playgroundsData, error: playgroundsError } = await supabase.rpc(
         'get_playgrounds_with_ratings_in_bbox',
         {
@@ -84,7 +87,10 @@ export const usePlaygroundFetcher = () => {
   }, [cache]);
 
   const getPlaygrounds = useCallback(
-    async (bbox: BBox | null, forceRefresh = false): Promise<PlaygroundWithCoordinates[]> => {
+    async (
+      bbox: BBox | null,
+      forceRefresh = false,
+    ): Promise<PlaygroundWithCoordinatesAndRatings[]> => {
       // Return from cache if valid and usable
       if (!forceRefresh && isCacheValid()) {
         if (!bbox) {
@@ -105,7 +111,7 @@ export const usePlaygroundFetcher = () => {
       // Start new fetch
       pendingFetchRef.current = (async () => {
         try {
-          let playgrounds: PlaygroundWithCoordinates[];
+          let playgrounds: PlaygroundWithCoordinatesAndRatings[];
           let cacheBBox: BBox | null = null;
 
           if (!bbox) {

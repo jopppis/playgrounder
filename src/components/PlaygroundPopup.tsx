@@ -11,14 +11,14 @@ import { useToast } from '../hooks/useToast';
 import { useUserPreferences } from '../hooks/useUserPreferences';
 import { useVisits } from '../hooks/useVisits';
 import { supabase } from '../lib/supabaseClient';
-import { PlaygroundWithCoordinates } from '../types/database.types';
+import { PlaygroundWithCoordinatesAndRatings } from '../types/database.types';
 import EditPlaygroundModal from './Playground/EditPlaygroundModal';
 import { Switch } from './ui/switch';
 import { InfoTip } from './ui/toggle-tip';
 import { Tooltip } from './ui/tooltip';
 
-interface PlaygroundPopupProps {
-  playground: PlaygroundWithCoordinates;
+export interface PlaygroundPopupProps {
+  playground: PlaygroundWithCoordinatesAndRatings;
   onVisitChange: (isVisited: boolean) => void;
   onContentChange?: () => void;
   onRatingChange: () => void;

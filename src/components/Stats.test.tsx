@@ -2,50 +2,50 @@ import { fireEvent, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import enTranslations from '../i18n/locales/en.json';
 import { i18n, render } from '../test/testUtils';
-import type { PlaygroundWithCoordinates, Visit } from '../types/database.types';
+import type { PlaygroundWithCoordinatesAndRatings, Visit } from '../types/database.types';
 import Stats from './Stats';
 
 describe('Stats', () => {
   // Mock data
-  const mockPlaygrounds: PlaygroundWithCoordinates[] = [
+  const mockPlaygrounds: PlaygroundWithCoordinatesAndRatings[] = [
     {
       id: '1',
-      name: 'Playground 1',
-      city: 'Helsinki',
-      data_source: 'municipality',
-      has_supervised_activities: true,
-      created_at: new Date().toISOString(),
+      name: 'Test Playground 1',
       latitude: 60.1699,
       longitude: 24.9384,
+      has_supervised_activities: true,
+      city: 'Helsinki',
+      data_source: 'municipality',
+      created_at: '2023-01-01T00:00:00Z',
       avg_rating: 4.5,
       total_ratings: 10,
-      user_rating: null,
+      user_rating: 5,
     },
     {
       id: '2',
-      name: 'Playground 2',
-      city: 'Espoo',
-      data_source: 'municipality',
+      name: 'Test Playground 2',
+      latitude: 60.1709,
+      longitude: 24.9394,
       has_supervised_activities: false,
-      created_at: new Date().toISOString(),
-      latitude: 60.2055,
-      longitude: 24.6559,
+      city: 'Helsinki',
+      data_source: 'osm',
+      created_at: '2023-01-02T00:00:00Z',
       avg_rating: null,
       total_ratings: 0,
       user_rating: null,
     },
     {
       id: '3',
-      name: 'Playground 3',
-      city: 'Helsinki',
-      data_source: 'osm',
+      name: 'Test Playground 3',
+      latitude: 60.1719,
+      longitude: 24.9404,
       has_supervised_activities: true,
-      created_at: new Date().toISOString(),
-      latitude: 60.1699,
-      longitude: 24.9384,
+      city: 'Espoo',
+      data_source: 'community',
+      created_at: '2023-01-03T00:00:00Z',
       avg_rating: 3.0,
       total_ratings: 5,
-      user_rating: null,
+      user_rating: 3,
     },
   ];
 
