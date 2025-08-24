@@ -6,9 +6,6 @@ export interface Playground {
   has_supervised_activities: boolean;
   city: string | null;
   data_source: 'municipality' | 'osm' | 'community' | null;
-}
-
-export interface PlaygroundWithRatings extends Playground {
   avg_rating: number | null;
   total_ratings: number;
   user_rating: number | null;
@@ -17,19 +14,6 @@ export interface PlaygroundWithRatings extends Playground {
 export interface PlaygroundWithCoordinates extends Omit<Playground, 'location'> {
   latitude: number;
   longitude: number;
-}
-
-export interface PlaygroundWithCoordinatesAndRatings
-  extends Omit<PlaygroundWithRatings, 'location'> {
-  latitude: number;
-  longitude: number;
-}
-
-// Type for playground data as returned from views with location as a coordinate object
-export interface PlaygroundFromView extends Omit<PlaygroundWithRatings, 'location'> {
-  location: {
-    coordinates: [number, number]; // [longitude, latitude]
-  };
 }
 
 export interface Visit {
@@ -151,20 +135,6 @@ export interface Database {
         Update: Partial<Omit<PlaygroundEditProposal, 'id' | 'created_at' | 'updated_at'>>;
       };
     };
-    Views: {
-      v_active_playgrounds: {
-        Row: Playground;
-      };
-      v_active_playgrounds_with_ratings: {
-        Row: PlaygroundWithRatings;
-      };
-      v_playground_ratings: {
-        Row: PlaygroundRatings & { playground_id: string };
-      };
-      v_distinct_cities: {
-        Row: { city: string };
-      };
-    };
     Functions: {
       playgrounds_nearby: {
         Args: {
@@ -180,24 +150,6 @@ export interface Database {
           lng: number;
         };
         Returns: string | null;
-      };
-      get_playgrounds_in_bbox: {
-        Args: {
-          min_lon: number;
-          min_lat: number;
-          max_lon: number;
-          max_lat: number;
-        };
-        Returns: Playground[];
-      };
-      get_playgrounds_with_ratings_in_bbox: {
-        Args: {
-          min_lon: number;
-          min_lat: number;
-          max_lon: number;
-          max_lat: number;
-        };
-        Returns: PlaygroundWithRatings[];
       };
     };
   };
