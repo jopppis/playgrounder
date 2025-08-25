@@ -46,10 +46,75 @@ Start the development server:
 npm run dev
 ```
 
-## Release instructions
+## Linting and Code Quality
 
-- Make sure the changelog is up to date
-- Run `npm version patch` or `npm version minor`  or `npm version major` to bump the version number, write changelog, push the changes. The deployment in Vercel is automatically following the main branch.
+The project uses ESLint and Prettier for code quality and formatting:
+
+```bash
+# Run ESLint to check for issues
+npm run lint
+
+# Format code with Prettier (automatically runs on pre-commit)
+npx prettier --write .
+
+# Run tests
+npm run test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode during development
+npm run test:watch
+```
+
+### Pre-commit Hooks
+
+The project uses Husky with lint-staged to automatically:
+
+- Format code with Prettier
+- Fix ESLint issues
+- Run related tests
+
+These checks run automatically when you commit changes.
+
+## Building
+
+Build the project for production:
+
+```bash
+# Build the application
+npm run build
+
+# Preview the built application locally
+npm run preview
+```
+
+The built files will be output to the `dist/` directory.
+
+## Releases
+
+The project uses automated releases with changelog generation. The releases should be done only from the `main` branch which Vercel follows. Run the following command to create a new version:
+
+First make sure the changelog is up to date, then run the following command to create a new version:
+```bash
+# Create a new patch version (0.19.2 -> 0.19.3)
+npm version patch
+
+# Create a new minor version (0.19.2 -> 0.20.0)
+npm version minor
+
+# Create a new major version (0.19.2 -> 1.0.0)
+npm version major
+```
+
+The release process automatically:
+
+1. Updates the changelog with new version
+2. Creates a git tag
+3. Pushes changes and tags to GitHub
+4. Creates a GitHub release with changelog notes
+
+Note that the release requires Github CLI and push access in the repository.
 
 ## TODO
 

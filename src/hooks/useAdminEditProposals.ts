@@ -15,12 +15,6 @@ export interface EditProposalWithPlayground extends PlaygroundEditProposal {
   };
 }
 
-interface PlaygroundWithLocation {
-  location: {
-    coordinates: [number, number]; // [longitude, latitude]
-  };
-}
-
 export const useAdminEditProposals = () => {
   const [proposals, setProposals] = useState<EditProposalWithPlayground[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,23 +54,42 @@ export const useAdminEditProposals = () => {
       if (proposalsError) throw proposalsError;
 
       // Convert playground location to coordinates for each proposal
-      const proposalsWithCoordinates = proposalsData.map((proposal) => {
-        const playground = proposal.playground as PlaygroundWithLocation;
+      const proposalsWithCoordinates = (proposalsData || []).map((proposal) => {
+        const playground = proposal.playground as Record<string, unknown>;
         const edit =
           Array.isArray(proposal.edit) && proposal.edit.length > 0 ? proposal.edit[0] : null;
 
         if (playground) {
+          let latitude = 0;
+          let longitude = 0;
+
+          if (playground.location && typeof playground.location === 'object') {
+            const loc = playground.location as { coordinates?: [number, number] };
+            if (loc.coordinates && Array.isArray(loc.coordinates)) {
+              longitude = loc.coordinates[0];
+              latitude = loc.coordinates[1];
+            }
+          }
+
           return {
             ...proposal,
             playground: {
-              ...playground,
-              latitude: playground.location.coordinates[1],
-              longitude: playground.location.coordinates[0],
+              id: playground.id || '',
+              name: playground.name,
+              created_at: playground.created_at || new Date().toISOString(),
+              has_supervised_activities: playground.has_supervised_activities || false,
+              city: playground.city,
+              data_source: playground.data_source,
+              avg_rating: null,
+              total_ratings: 0,
+              user_rating: null,
+              latitude,
+              longitude,
             },
             edit,
           };
         }
-        return proposal;
+        return { ...proposal, edit };
       }) as EditProposalWithPlayground[];
 
       // Now fetch the current data from v_active_playgrounds for each proposal
@@ -93,14 +106,35 @@ export const useAdminEditProposals = () => {
         if (!activeError && activePlaygrounds) {
           // Update the proposals with the current playground data
           const activePlaygroundMap = new Map(
-            activePlaygrounds.map((p) => [
-              p.id,
-              {
-                ...p,
-                latitude: p.location.coordinates[1],
-                longitude: p.location.coordinates[0],
-              },
-            ]),
+            activePlaygrounds.map((p) => {
+              let latitude = 0;
+              let longitude = 0;
+
+              if (p.location && typeof p.location === 'object') {
+                const loc = p.location as { coordinates?: [number, number] };
+                if (loc.coordinates && Array.isArray(loc.coordinates)) {
+                  longitude = loc.coordinates[0];
+                  latitude = loc.coordinates[1];
+                }
+              }
+
+              return [
+                p.id,
+                {
+                  id: p.id || '',
+                  name: p.name,
+                  created_at: p.created_at || new Date().toISOString(),
+                  has_supervised_activities: p.has_supervised_activities || false,
+                  city: p.city,
+                  data_source: p.data_source,
+                  avg_rating: null,
+                  total_ratings: 0,
+                  user_rating: null,
+                  latitude,
+                  longitude,
+                },
+              ];
+            }),
           );
 
           proposalsWithCoordinates.forEach((proposal) => {
@@ -146,7 +180,7 @@ export const useAdminEditProposals = () => {
             .from('playgrounds')
             .insert({
               name: proposal.proposed_name,
-              has_supervised_activities: proposal.has_supervised_activities,
+              has_supervised_activities: proposal.has_supervised_activities ?? false,
               location: proposal.proposed_location,
               data_source: 'community',
               city: null,

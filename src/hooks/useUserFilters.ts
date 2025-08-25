@@ -51,7 +51,7 @@ export const useUserFilters = () => {
       if (data) {
         setFilters({
           searchQuery: null, // Search query is not persisted
-          visitStatus: data.visit_status,
+          visitStatus: data.visit_status as 'visited' | 'unvisited' | null,
           minStars: data.min_stars,
           minUserStars: data.min_user_stars,
           hasSupervised: data.has_supervised_activities,
