@@ -183,37 +183,99 @@ const TouchEventHandler = () => {
   useEffect(() => {
     if (!map) return;
 
-    // Set up double tap zoom handler
     let lastTap = 0;
+    let lastTapLocation: { x: number; y: number } | null = null;
+    let mapDragged = false;
+    let activeTouches = 0;
+    let multiTouchTimeout: number | null = null;
+
+    const handleDragStart = () => {
+      mapDragged = true;
+    };
+    const handleDragEnd = () => {
+      // Reset drag flag after drag ends
+      setTimeout(() => {
+        mapDragged = false;
+      }, 0);
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      activeTouches = e.touches.length;
+
+      // Clear any pending multi-touch timeout
+      if (multiTouchTimeout) {
+        clearTimeout(multiTouchTimeout);
+        multiTouchTimeout = null;
+      }
+
+      // If more than one touch, set a timeout to prevent double tap
+      if (activeTouches > 1) {
+        multiTouchTimeout = window.setTimeout(() => {
+          multiTouchTimeout = null;
+        }, 600); // Slightly longer than double tap window
+      }
+    };
+
     const handleTap = (e: TouchEvent) => {
-      // Check if the touch target is a control or popup
+      // Don't process double tap if we recently had multiple touches
+      if (multiTouchTimeout || e.touches.length > 1 || e.changedTouches.length !== 1) {
+        return;
+      }
+
       const target = e.target as HTMLElement;
       if (
-        target.closest('.leaflet-control') || // Ignore controls (zoom, layers, etc.)
-        target.closest('.leaflet-popup') || // Ignore popups
-        target.closest('.playground-marker') || // Ignore markers
-        target.closest('button') || // Ignore buttons
-        target.closest('.leaflet-control-container') // Ignore control container
+        target.closest('.leaflet-control') ||
+        target.closest('.leaflet-popup') ||
+        target.closest('.playground-marker') ||
+        target.closest('button') ||
+        target.closest('.leaflet-control-container')
       ) {
         return;
       }
 
       const currentTime = new Date().getTime();
       const tapLength = currentTime - lastTap;
-      if (tapLength < 500 && tapLength > 0) {
-        const touch = e.changedTouches[0];
+      const touch = e.changedTouches[0];
+      const currentTapLocation = { x: touch.clientX, y: touch.clientY };
+
+      // Check if this is a valid double tap (timing and location)
+      let isValidDoubleTap = false;
+      if (tapLength < 500 && tapLength > 0 && !mapDragged && lastTapLocation) {
+        // Calculate distance between current tap and last tap
+        const distance = Math.sqrt(
+          Math.pow(currentTapLocation.x - lastTapLocation.x, 2) +
+            Math.pow(currentTapLocation.y - lastTapLocation.y, 2),
+        );
+
+        // Only consider it a double tap if taps are within 50 pixels of each other
+        isValidDoubleTap = distance <= 50;
+      }
+
+      if (isValidDoubleTap) {
         const container = map.getContainer();
         const rect = container.getBoundingClientRect();
         const point = L.point(touch.clientX - rect.left, touch.clientY - rect.top);
         map.setZoomAround(point, map.getZoom() + 1);
       }
+
       lastTap = currentTime;
+      lastTapLocation = currentTapLocation;
+      mapDragged = false; // Reset drag flag after tap
     };
 
+    map.getContainer().addEventListener('touchstart', handleTouchStart);
     map.getContainer().addEventListener('touchend', handleTap);
+    map.on('dragstart', handleDragStart);
+    map.on('dragend', handleDragEnd);
 
     return () => {
+      if (multiTouchTimeout) {
+        clearTimeout(multiTouchTimeout);
+      }
+      map.getContainer().removeEventListener('touchstart', handleTouchStart);
       map.getContainer().removeEventListener('touchend', handleTap);
+      map.off('dragstart', handleDragStart);
+      map.off('dragend', handleDragEnd);
     };
   }, [map]);
 

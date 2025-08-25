@@ -10,6 +10,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Release instructions to README
 
+## [0.20.4] - 2025-06-07
+
+### Fixed
+- Try to better avoid double tap zoom on two finger tap
+
+## [0.20.3] - 2025-06-07
+
+### Fixed
+- Do not trigger double tap zoom on two finger tap
+
+## [0.20.2] - 2025-05-31
+
+### Changed
+- Try to make the native app opener work better on iOS
+
+## [0.20.1] - 2025-05-31
+
+### Fixed
+- Try to fix iOS native maps app links
+
+## [0.20.0] - 2025-05-31
+
+### Changed
+- Search on native app on mobile
+- Search by name near real location
+
+## [0.19.5] - 2025-05-31
+
+### Changed
+- Avoid double tap zoom on map drag
+
+## [0.19.4] - 2025-05-31
+
+## [0.19.3] - 2025-03-24
+
 ### Changed
 - Bump dependencies
 

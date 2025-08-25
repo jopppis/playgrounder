@@ -1,21 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "baseBranches": ["develop"],
+  "extends": ["config:recommended"],
+  "baseBranchPatterns": ["develop"],
   "packageRules": [
     {
       "matchUpdateTypes": ["patch"],
       "groupName": "all patch updates"
     },
     {
-      "matchUpdateTypes": ["minor"],
-      "groupName": "all minor updates"
-    },
-    {
       "matchManagers": ["pip_requirements"],
       "enabled": false
+    },
+    {
+      "matchCategories": ["test"],
+      "groupName": "test dependencies",
+      "labels": ["test-deps"]
     }
   ]
 }

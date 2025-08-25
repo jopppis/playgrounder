@@ -93,8 +93,9 @@ The built files will be output to the `dist/` directory.
 
 ## Releases
 
-The project uses automated releases with changelog generation. The releases should be done only from the `main` branch. Run the following command to create a new version:
+The project uses automated releases with changelog generation. The releases should be done only from the `main` branch which Vercel follows. Run the following command to create a new version:
 
+First make sure the changelog is up to date, then run the following command to create a new version:
 ```bash
 # Create a new patch version (0.19.2 -> 0.19.3)
 npm version patch
