@@ -429,7 +429,7 @@ export const PlaygroundPopup = ({
                     >
                       <Switch
                         size="md"
-                        checked={rating?.isPublic}
+                        checked={rating?.isPublic ?? false}
                         onCheckedChange={handleTogglePublic}
                         disabled={!user || !rating?.userRating}
                         aria-label={t('playground.makePublic')}

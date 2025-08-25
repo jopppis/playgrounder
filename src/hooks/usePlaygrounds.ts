@@ -94,10 +94,29 @@ export const usePlaygrounds = () => {
       }
 
       // Transform the playground data to include latitude and longitude
+      let latitude = 0;
+      let longitude = 0;
+
+      if (updatedPlayground.location && typeof updatedPlayground.location === 'object') {
+        const loc = updatedPlayground.location as { coordinates?: [number, number] };
+        if (loc.coordinates && Array.isArray(loc.coordinates)) {
+          longitude = loc.coordinates[0];
+          latitude = loc.coordinates[1];
+        }
+      }
+
       const transformedPlayground: PlaygroundWithCoordinates = {
-        ...updatedPlayground,
-        latitude: updatedPlayground.location.coordinates[1],
-        longitude: updatedPlayground.location.coordinates[0],
+        id: updatedPlayground.id || '',
+        name: updatedPlayground.name,
+        created_at: updatedPlayground.created_at || new Date().toISOString(),
+        has_supervised_activities: updatedPlayground.has_supervised_activities || false,
+        city: updatedPlayground.city,
+        data_source: updatedPlayground.data_source,
+        avg_rating: updatedPlayground.avg_rating,
+        total_ratings: updatedPlayground.total_ratings || 0,
+        user_rating: updatedPlayground.user_rating,
+        latitude,
+        longitude,
       };
 
       // Update this playground in the local state

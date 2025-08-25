@@ -6,7 +6,7 @@ interface PlaygroundRating {
   avgRating: number | null;
   totalRatings: number;
   userRating: number | null;
-  isPublic: boolean;
+  isPublic: boolean | null;
 }
 
 export const useRatings = (

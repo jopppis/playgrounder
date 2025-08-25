@@ -2,20 +2,25 @@ import { useCallback, useRef, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { PlaygroundWithCoordinates } from '../types/database.types';
 
+// Type for playground data coming from database views/RPC
+interface PlaygroundRawData {
+  id: string | null;
+  name: string | null;
+  created_at: string | null;
+  has_supervised_activities: boolean | null;
+  city: string | null;
+  data_source: 'municipality' | 'osm' | 'community' | null;
+  location: unknown;
+  avg_rating: number | null;
+  total_ratings: number | null;
+  user_rating: number | null;
+}
+
 export interface BBox {
   minLon: number;
   minLat: number;
   maxLon: number;
   maxLat: number;
-}
-
-interface PlaygroundFromView extends Omit<PlaygroundWithCoordinates, 'latitude' | 'longitude'> {
-  location: {
-    coordinates: [number, number]; // [longitude, latitude]
-  };
-  avg_rating: number | null;
-  total_ratings: number;
-  user_rating: number | null;
 }
 
 interface CacheEntry {
@@ -31,11 +36,31 @@ export const usePlaygroundFetcher = () => {
   const pendingFetchRef = useRef<Promise<PlaygroundWithCoordinates[]> | null>(null);
 
   const transformPlayground = useCallback(
-    (playground: PlaygroundFromView): PlaygroundWithCoordinates => {
+    (playground: PlaygroundRawData): PlaygroundWithCoordinates => {
+      // Parse PostGIS geometry - location comes as WKT or parsed coordinates
+      let latitude = 0;
+      let longitude = 0;
+
+      if (playground.location && typeof playground.location === 'object') {
+        const loc = playground.location as { coordinates?: [number, number] };
+        if (loc.coordinates && Array.isArray(loc.coordinates)) {
+          longitude = loc.coordinates[0];
+          latitude = loc.coordinates[1];
+        }
+      }
+
       return {
-        ...playground,
-        latitude: playground.location.coordinates[1],
-        longitude: playground.location.coordinates[0],
+        id: playground.id ?? '',
+        name: playground.name,
+        created_at: playground.created_at ?? new Date().toISOString(),
+        has_supervised_activities: playground.has_supervised_activities ?? false,
+        city: playground.city,
+        data_source: playground.data_source,
+        avg_rating: playground.avg_rating,
+        total_ratings: playground.total_ratings ?? 0,
+        user_rating: playground.user_rating,
+        latitude,
+        longitude,
       };
     },
     [],
@@ -62,7 +87,8 @@ export const usePlaygroundFetcher = () => {
 
   const fetchPlaygroundsInBBox = useCallback(
     async (bbox: BBox): Promise<PlaygroundWithCoordinates[]> => {
-      const { data: playgroundsData, error: playgroundsError } = await supabase.rpc(
+      // Use RPC function but handle the type properly
+      const { data: rpcData, error: playgroundsError } = await supabase.rpc(
         'get_playgrounds_with_ratings_in_bbox',
         {
           min_lon: bbox.minLon,
@@ -74,6 +100,8 @@ export const usePlaygroundFetcher = () => {
 
       if (playgroundsError) throw playgroundsError;
 
+      // The RPC returns the same structure as the view, just typed incorrectly by Supabase
+      const playgroundsData = rpcData as unknown as PlaygroundRawData[];
       return (playgroundsData || []).map(transformPlayground);
     },
     [transformPlayground],

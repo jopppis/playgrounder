@@ -21,10 +21,12 @@ export const useCities = () => {
 
       setCities([
         { label: t('allCities'), value: null },
-        ...data.map(({ city }) => ({
-          label: city,
-          value: city.toLowerCase(),
-        })),
+        ...data
+          .filter(({ city }) => city !== null)
+          .map(({ city }) => ({
+            label: city!,
+            value: city!.toLowerCase(),
+          })),
         { label: t('playground.noCity'), value: 'no_city' },
       ]);
     } catch (err) {
