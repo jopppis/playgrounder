@@ -136,7 +136,6 @@ export const PlaygroundPopup = ({
       return;
     }
 
-    setHasVisited(true);
     onVisitChange(true);
     onContentChange?.();
     toast.showSuccess({
@@ -157,7 +156,6 @@ export const PlaygroundPopup = ({
     }
 
     // Reset local state
-    setHasVisited(false);
     onVisitChange(false);
     // Clear rating data since ratings can't exist without visits
     clearRating();
@@ -398,12 +396,14 @@ export const PlaygroundPopup = ({
                               });
                               return;
                             }
-                            setHasVisited(true);
                             onVisitChange(true);
                           }
 
                           // Then handle the rating
-                          handleRating(value, e as unknown as React.MouseEvent<HTMLButtonElement>);
+                          await handleRating(
+                            value,
+                            e as unknown as React.MouseEvent<HTMLButtonElement>,
+                          );
                         }}
                         onMouseEnter={() => setHoveredRating(value)}
                         onMouseLeave={() => setHoveredRating(null)}

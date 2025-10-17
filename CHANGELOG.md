@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Improved visit and rating handling
+
 ## [0.20.6] - 2025-08-25
 
 ### Fixed
