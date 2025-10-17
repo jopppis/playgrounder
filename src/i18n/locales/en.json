@@ -227,7 +227,8 @@
     "location": "Location",
     "noCity": "No city information",
     "markVisited": "Visited",
-    "searchByName": "Search Google Maps for {{name}}",
+    "searchByName": "Search Maps for {{name}}",
+    "searchGoogleMaps": "Search Google Maps for {{name}}",
     "filter": {
       "unnamed": {
         "label": "Unnamed playgrounds",

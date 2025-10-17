@@ -227,7 +227,8 @@
     "location": "Sijainti",
     "noCity": "Ei kaupunkitietoa",
     "markVisited": "Vierailtu",
-    "searchByName": "Hae Google Mapsista nimellä {{name}}",
+    "searchByName": "Hae Mapsista nimellä {{name}}",
+    "searchGoogleMaps": "Hae Google Mapsista nimellä {{name}}",
     "filter": {
       "unnamed": {
         "label": "Nimeämättömät leikkipaikat",
