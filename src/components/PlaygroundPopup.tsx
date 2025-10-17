@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { HiPencil } from 'react-icons/hi2';
-import { MdLocationOn, MdSearch, MdSupervisorAccount } from 'react-icons/md';
+import { MdLocationOn, MdMap, MdSearch, MdSupervisorAccount } from 'react-icons/md';
 import { useAuth } from '../hooks/useAuth';
 import { useLoginToast } from '../hooks/useLoginToast';
 import { useRatings } from '../hooks/useRatings';
@@ -50,8 +50,13 @@ function getSearchByNameLink(name: string, lat: number, lng: number) {
     return `geo:${lat},${lng}?q=${encodeURIComponent(name)}`;
   } else {
     // Desktop: Google Maps with query and near
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}%20near%20${lat},${lng}`;
+    return getGoogleMapsSearchLink(name, lat, lng);
   }
+}
+
+function getGoogleMapsSearchLink(name: string, lat: number, lng: number) {
+  // Google Maps search link for all platforms
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}%20near%20${lat},${lng}`;
 }
 
 interface PlaygroundPopupProps {
@@ -136,7 +141,6 @@ export const PlaygroundPopup = ({
       return;
     }
 
-    setHasVisited(true);
     onVisitChange(true);
     onContentChange?.();
     toast.showSuccess({
@@ -157,7 +161,6 @@ export const PlaygroundPopup = ({
     }
 
     // Reset local state
-    setHasVisited(false);
     onVisitChange(false);
     // Clear rating data since ratings can't exist without visits
     clearRating();
@@ -306,6 +309,30 @@ export const PlaygroundPopup = ({
                     </Link>
                   </Tooltip>
                 )}
+                {playground.name && isIOS() && (
+                  <Tooltip content={t('playground.searchGoogleMaps', { name: playground.name })}>
+                    <Link
+                      href={getGoogleMapsSearchLink(
+                        playground.name,
+                        playground.latitude,
+                        playground.longitude,
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      display="flex"
+                      alignItems="center"
+                      _hover={{ color: 'brand.500' }}
+                    >
+                      <Icon
+                        as={MdMap}
+                        boxSize={5}
+                        color="gray.600"
+                        transition="color 0.2s"
+                        _hover={{ color: 'inherit' }}
+                      />
+                    </Link>
+                  </Tooltip>
+                )}
                 {playground.has_supervised_activities && (
                   <Tooltip content={t('playground.supervision.supervised')}>
                     <Box as="span">
@@ -398,12 +425,14 @@ export const PlaygroundPopup = ({
                               });
                               return;
                             }
-                            setHasVisited(true);
                             onVisitChange(true);
                           }
 
                           // Then handle the rating
-                          handleRating(value, e as unknown as React.MouseEvent<HTMLButtonElement>);
+                          await handleRating(
+                            value,
+                            e as unknown as React.MouseEvent<HTMLButtonElement>,
+                          );
                         }}
                         onMouseEnter={() => setHoveredRating(value)}
                         onMouseLeave={() => setHoveredRating(null)}
