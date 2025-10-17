@@ -97,6 +97,10 @@ The project uses automated releases with changelog generation. The releases shou
 
 First make sure the changelog is up to date, then run the following command to create a new version:
 ```bash
+git checkout main
+
+git merge develop
+
 # Create a new patch version (0.19.2 -> 0.19.3)
 npm version patch
 
