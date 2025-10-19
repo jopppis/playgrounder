@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.1] - 2025-10-17
+
+### Changed
+- Bump dependencies
+
+## [0.21.0] - 2025-10-17
+
 ### Added
 - Search Google Maps button for iOS
 
