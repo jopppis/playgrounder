@@ -230,7 +230,7 @@
     "locationInMaps": "Maps",
     "showLocationOnMaps": "Näytä {{coordinates}} kartalla",
     "searchOnMaps": "Hae",
-    "searchOnGoogleMaps": "Google Maps",
+    "searchOnGoogleMaps": "Google",
     "searchOnMapsByName": "Hae Mapsista nimellä {{name}}",
     "searchOnGoogleMapsByName": "Hae Google Mapsista nimellä {{name}}",
     "filter": {

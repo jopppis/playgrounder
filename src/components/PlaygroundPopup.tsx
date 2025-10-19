@@ -102,22 +102,26 @@ export const PlaygroundPopup = ({
   // Use useEffect to update hasVisited when visits change
   useEffect(() => {
     if (!visitsLoading && user) {
-      setHasVisited(visits.some((visit) => visit.playground_id === playground.id));
-      onContentChange?.();
-    } else if (!user && !authLoading) {
+      const newHasVisited = visits.some((visit) => visit.playground_id === playground.id);
+      // Only update if actually different to avoid unnecessary re-renders
+      if (newHasVisited !== hasVisited) {
+        setHasVisited(newHasVisited);
+        setTimeout(() => onContentChange?.(), 0);
+      }
+    } else if (!user && !authLoading && hasVisited) {
       setHasVisited(false);
-      onContentChange?.();
+      setTimeout(() => onContentChange?.(), 0);
     }
-  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading]);
+  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading, hasVisited]);
 
   // Update popup when rating changes
   useEffect(() => {
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
   }, [rating, ratingLoading, onContentChange]);
 
   // Update popup when hover state changes
   useEffect(() => {
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
   }, [hoveredRating, onContentChange]);
 
   // Show login toast when component mounts if user is not logged in
@@ -141,8 +145,9 @@ export const PlaygroundPopup = ({
       return;
     }
 
+    setHasVisited(true);
     onVisitChange(true);
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
     toast.showSuccess({
       title: t('playground.addVisit.title'),
     });
@@ -160,35 +165,44 @@ export const PlaygroundPopup = ({
       return;
     }
 
-    // Reset local state
+    // Update local state immediately after successful removal
+    setHasVisited(false);
     onVisitChange(false);
     // Clear rating data since ratings can't exist without visits
     clearRating();
     onRatingChange();
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
     toast.showSuccess({
       title: t('playground.removeVisit.title'),
     });
   };
 
-  const handleRating = async (value: number, e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRating = async (
+    value: number,
+    e: React.MouseEvent<HTMLButtonElement>,
+    providedVisitId?: string,
+  ) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (!user) return;
 
     try {
-      // First ensure there's a visit record
-      const { data: visitData, error: visitError } = await supabase
-        .from('visits')
-        .select('id')
-        .eq('playground_id', playground.id)
-        .eq('user_id', user.id)
-        .single();
+      // Use provided visit ID if available, otherwise query the database
+      let visitId = providedVisitId;
+      if (!visitId) {
+        const { data: visitData, error: visitError } = await supabase
+          .from('visits')
+          .select('id')
+          .eq('playground_id', playground.id)
+          .eq('user_id', user.id)
+          .single();
 
-      if (visitError) throw visitError;
-      if (!visitData?.id) {
-        throw new Error(t('playground.rating.error.noVisit'));
+        if (visitError) throw visitError;
+        if (!visitData?.id) {
+          throw new Error(t('playground.rating.error.noVisit'));
+        }
+        visitId = visitData.id;
       }
 
       // Use default public setting for new ratings
@@ -199,8 +213,8 @@ export const PlaygroundPopup = ({
       setHoveredRating(null);
 
       // Submit the rating - optimistic updates are now handled in useRatings
-      await submitRating(value, isPublic, visitData.id);
-      onContentChange?.();
+      await submitRating(value, isPublic, visitId);
+      setTimeout(() => onContentChange?.(), 0);
       onRatingChange();
       toast.showSuccess({
         title: t('playground.rating.success.title'),
@@ -234,7 +248,7 @@ export const PlaygroundPopup = ({
 
   return (
     <>
-      <Box minW="300px" maxW="700px">
+      <Box minW="300px" maxW="70vw">
         {visitsLoading ? (
           <VStack align="stretch" gap={1} justify="center" minH="100px" p={4}>
             <Spinner size="md" color="brand.500" alignSelf="center" />
@@ -245,33 +259,27 @@ export const PlaygroundPopup = ({
             <Box
               bg="linear-gradient(135deg, var(--chakra-colors-brand-500) 0%, var(--chakra-colors-brand-600) 100%)"
               px={4}
-              pt={2}
-              pb={2}
+              pt={1.5}
+              pb={0}
             >
-              <Flex justify="space-between" align="flex-end" gap={2}>
-                <Text fontSize="lg" fontWeight="bold" color="white" flex={1} lineHeight="1.3">
+              <Flex justify="space-between" align="center">
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  flex={1}
+                  lineHeight="1.3"
+                  pr={4}
+                >
                   {playground.name || t('playground.unnamed')}
                 </Text>
-                <Flex align="center" gap={2} flexShrink={0}>
-                  {playground.has_supervised_activities && (
-                    <Tooltip content={t('playground.supervision.supervised')}>
-                      <Box as="span" flexShrink={0}>
-                        <Icon as={MdSupervisorAccount} boxSize={6} color="white" />
-                      </Box>
-                    </Tooltip>
-                  )}
-                  {!ratingLoading && (
-                    <Flex align="center" gap={1}>
-                      <Text fontSize="md" fontWeight="bold" color="white">
-                        {rating?.avgRating ? Number(rating.avgRating).toFixed(1) : 'N/A'}
-                      </Text>
-                      <Icon as={FaStar} boxSize={4} color="white" />
-                      <Text fontSize="xs" color="white" opacity={0.9}>
-                        ({rating?.totalRatings || 0})
-                      </Text>
-                    </Flex>
-                  )}
-                </Flex>
+                {playground.has_supervised_activities && (
+                  <Tooltip content={t('playground.supervision.supervised')}>
+                    <Box as="span" flexShrink={0}>
+                      <Icon as={MdSupervisorAccount} boxSize={6} color="white" />
+                    </Box>
+                  </Tooltip>
+                )}
               </Flex>
             </Box>
 
@@ -445,73 +453,9 @@ export const PlaygroundPopup = ({
             </style>
 
             {/* Main content area */}
-            <Box px={4} pt={0} pb={0}>
-              <VStack gap={0} align="stretch">
-                {/* Visited and Public Rating Toggle */}
-                {!ratingLoading && (
-                  <Flex justify="center" align="center" gap={4}>
-                    <Flex align="center" gap={2}>
-                      <Text
-                        fontSize="sm"
-                        fontWeight="medium"
-                        color={!user ? 'gray.400' : 'gray.700'}
-                      >
-                        {t('playground.markVisited')}
-                      </Text>
-                      <Box
-                        onClick={() => {
-                          if (!user) {
-                            showLoginToast();
-                          }
-                        }}
-                        cursor={!user ? 'pointer' : 'default'}
-                      >
-                        <Switch
-                          size="md"
-                          checked={hasVisited}
-                          onCheckedChange={async () => {
-                            if (!user) {
-                              return;
-                            }
-                            if (hasVisited) {
-                              await handleRemoveVisit();
-                            } else {
-                              await handleVisit();
-                            }
-                          }}
-                          disabled={!user}
-                          aria-label={t('playground.markVisited')}
-                        />
-                      </Box>
-                    </Flex>
-                    {/* Public Rating Toggle - only shown if user has rated */}
-                    {!authLoading && rating?.userRating && (
-                      <Flex align="center" gap={2}>
-                        <HStack gap={1}>
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            color={!user ? 'gray.400' : 'gray.700'}
-                          >
-                            {t('playground.makePublic')}
-                          </Text>
-                          <InfoTip>{t('playground.rating.publicExplanation')}</InfoTip>
-                        </HStack>
-                        <Box cursor="default">
-                          <Switch
-                            size="md"
-                            checked={rating?.isPublic ?? false}
-                            onCheckedChange={handleTogglePublic}
-                            disabled={!user}
-                            aria-label={t('playground.makePublic')}
-                          />
-                        </Box>
-                      </Flex>
-                    )}
-                  </Flex>
-                )}
-
-                {/* Star Rating */}
+            <Box px={4} py={2}>
+              <VStack align="stretch" gap={2}>
+                {/* Star Rating Section */}
                 {ratingLoading || authLoading ? (
                   <Flex justify="center" align="center" minH="50px">
                     <Spinner
@@ -522,77 +466,195 @@ export const PlaygroundPopup = ({
                     />
                   </Flex>
                 ) : (
-                  <Flex justify="center" align="center" gap={1} pb={3}>
-                    {[1, 2, 3, 4, 5].map((value) => (
-                      <Box
-                        key={value}
-                        as="button"
-                        onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          if (!user) {
-                            showLoginToast();
-                            return;
-                          }
-
-                          // If not visited, mark as visited first
-                          if (!hasVisited) {
-                            const result = await addVisit(playground.id);
-                            if (result.error) {
-                              toast.showError({
-                                title: t('common.error'),
-                                description: result.error,
-                              });
-                              return;
-                            }
-                            onVisitChange(true);
-                          }
-
-                          // Then handle the rating
-                          await handleRating(
-                            value,
-                            e as unknown as React.MouseEvent<HTMLButtonElement>,
-                          );
-                        }}
-                        onMouseEnter={() => setHoveredRating(value)}
-                        onMouseLeave={() => setHoveredRating(null)}
-                        aria-disabled={!user}
-                        aria-label={t('playground.rating.buttonLabel', { count: value })}
-                        role="button"
-                        cursor={user ? 'pointer' : 'not-allowed'}
-                        opacity={!user ? 0.5 : 1}
-                        transition="all 0.2s"
-                        _hover={
-                          user
-                            ? {
-                                transform: 'scale(1.3)',
+                  <VStack gap={1.5}>
+                    {/* Visited and Public Rating Toggle - integrated below stars */}
+                    {!ratingLoading && (
+                      <Flex justify="center" align="center" gap={4}>
+                        <Flex align="center" gap={2}>
+                          <Text
+                            fontSize="sm"
+                            fontWeight="medium"
+                            color={!user ? 'gray.400' : 'gray.700'}
+                          >
+                            {t('playground.markVisited')}
+                          </Text>
+                          <Box
+                            onClick={() => {
+                              if (!user) {
+                                showLoginToast();
                               }
-                            : undefined
-                        }
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        p={1}
-                        bg="transparent"
-                        border="none"
-                        outline="none"
-                        _focus={{ outline: 'none' }}
-                      >
-                        {value <= (hoveredRating || rating?.userRating || 0) ? (
-                          <FaStar
-                            color={
-                              !user
-                                ? 'var(--chakra-colors-gray-400)'
-                                : 'var(--chakra-colors-secondary-500)'
-                            }
-                            size={24}
-                          />
-                        ) : (
-                          <FaRegStar color="var(--chakra-colors-gray-400)" size={24} />
+                            }}
+                            cursor={!user ? 'pointer' : 'default'}
+                          >
+                            <Switch
+                              size="md"
+                              checked={hasVisited}
+                              onCheckedChange={async () => {
+                                if (!user) {
+                                  return;
+                                }
+                                if (hasVisited) {
+                                  await handleRemoveVisit();
+                                } else {
+                                  await handleVisit();
+                                }
+                              }}
+                              disabled={!user}
+                              aria-label={t('playground.markVisited')}
+                            />
+                          </Box>
+                        </Flex>
+                        {/* Public Rating Toggle - only shown if user has rated */}
+                        {!authLoading && rating?.userRating && (
+                          <Flex align="center" gap={2}>
+                            <HStack gap={1}>
+                              <Text
+                                fontSize="sm"
+                                fontWeight="medium"
+                                color={!user ? 'gray.400' : 'gray.700'}
+                              >
+                                {t('playground.makePublic')}
+                              </Text>
+                              <InfoTip>{t('playground.rating.publicExplanation')}</InfoTip>
+                            </HStack>
+                            <Box cursor="default">
+                              <Switch
+                                size="md"
+                                checked={rating?.isPublic ?? false}
+                                onCheckedChange={handleTogglePublic}
+                                disabled={!user}
+                                aria-label={t('playground.makePublic')}
+                              />
+                            </Box>
+                          </Flex>
                         )}
-                      </Box>
-                    ))}
-                  </Flex>
+                      </Flex>
+                    )}
+
+                    {/* Average Rating and User Star Rating on same row */}
+                    <Flex
+                      align="center"
+                      justify="center"
+                      gap={3}
+                      pt={1.5}
+                      borderTop="1px solid"
+                      borderColor="gray.200"
+                    >
+                      {/* Average Rating */}
+                      <Flex align="center" gap={1}>
+                        <Text fontSize="lg" fontWeight="bold" color="gray.700">
+                          {rating?.avgRating ? Number(rating.avgRating).toFixed(1) : 'N/A'}
+                        </Text>
+                        <Icon as={FaStar} boxSize={4} color="secondary.500" />
+                        <Text fontSize="xs" color="gray.500">
+                          ({rating?.totalRatings || 0})
+                        </Text>
+                      </Flex>
+
+                      {/* Divider */}
+                      <Box w="1px" h="20px" bg="gray.300" />
+
+                      {/* User Star Rating */}
+                      <Flex align="center" gap={1}>
+                        {[1, 2, 3, 4, 5].map((value) => (
+                          <Box
+                            key={value}
+                            as="button"
+                            onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (!user) {
+                                showLoginToast();
+                                return;
+                              }
+
+                              try {
+                                // If not visited, mark as visited first and get the visit ID
+                                let visitId: string | undefined;
+                                if (!hasVisited) {
+                                  const result = await addVisit(playground.id);
+                                  if (result.error) {
+                                    toast.showError({
+                                      title: t('common.error'),
+                                      description: result.error,
+                                    });
+                                    return;
+                                  }
+                                  visitId = result.visitId;
+                                  // Update local state immediately to ensure consistency
+                                  setHasVisited(true);
+                                  onVisitChange(true);
+                                }
+
+                                // Then handle the rating
+                                await handleRating(
+                                  value,
+                                  e as unknown as React.MouseEvent<HTMLButtonElement>,
+                                  visitId,
+                                );
+                              } catch (error) {
+                                // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
+                                console.error('Rating operation failed:', error);
+                              }
+                            }}
+                            onMouseEnter={
+                              // Only enable hover effects if already visited to avoid re-render issues
+                              hasVisited
+                                ? () => {
+                                    if (hoveredRating !== value) {
+                                      setHoveredRating(value);
+                                    }
+                                  }
+                                : undefined
+                            }
+                            onMouseLeave={
+                              hasVisited
+                                ? () => {
+                                    if (hoveredRating !== null) {
+                                      setHoveredRating(null);
+                                    }
+                                  }
+                                : undefined
+                            }
+                            aria-disabled={!user}
+                            aria-label={t('playground.rating.buttonLabel', { count: value })}
+                            role="button"
+                            cursor={user ? 'pointer' : 'not-allowed'}
+                            opacity={!user ? 0.5 : 1}
+                            transition="all 0.2s"
+                            _hover={
+                              user
+                                ? {
+                                    transform: 'scale(1.3)',
+                                  }
+                                : undefined
+                            }
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            p={1}
+                            bg="transparent"
+                            border="none"
+                            outline="none"
+                            _focus={{ outline: 'none' }}
+                          >
+                            {value <= (hoveredRating || rating?.userRating || 0) ? (
+                              <FaStar
+                                color={
+                                  !user
+                                    ? 'var(--chakra-colors-gray-400)'
+                                    : 'var(--chakra-colors-secondary-500)'
+                                }
+                                size={24}
+                              />
+                            ) : (
+                              <FaRegStar color="var(--chakra-colors-gray-400)" size={24} />
+                            )}
+                          </Box>
+                        ))}
+                      </Flex>
+                    </Flex>
+                  </VStack>
                 )}
 
                 {/* Edit button - only shown in edit mode */}
