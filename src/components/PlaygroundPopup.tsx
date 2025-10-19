@@ -234,175 +234,295 @@ export const PlaygroundPopup = ({
 
   return (
     <>
-      <Box p={3} minW="300px" maxW="700px">
+      <Box minW="300px" maxW="700px">
         {visitsLoading ? (
-          <VStack align="stretch" gap={1} justify="center" minH="100px">
+          <VStack align="stretch" gap={1} justify="center" minH="100px" p={4}>
             <Spinner size="md" color="brand.500" alignSelf="center" />
           </VStack>
         ) : (
           <VStack align="stretch" gap={0}>
-            <Flex justify="space-between" align="center" gap={2}>
-              <Text fontSize="md" fontWeight="semibold" color="gray.700" truncate flex={1}>
-                {playground.name || t('playground.unnamed')}
-              </Text>
-            </Flex>
+            {/* Banner with playground name and average rating */}
+            <Box
+              bg="linear-gradient(135deg, var(--chakra-colors-brand-500) 0%, var(--chakra-colors-brand-600) 100%)"
+              px={4}
+              pt={2}
+              pb={2}
+            >
+              <Flex justify="space-between" align="flex-end" gap={2}>
+                <Text fontSize="lg" fontWeight="bold" color="white" flex={1} lineHeight="1.3">
+                  {playground.name || t('playground.unnamed')}
+                </Text>
+                <Flex align="center" gap={2} flexShrink={0}>
+                  {playground.has_supervised_activities && (
+                    <Tooltip content={t('playground.supervision.supervised')}>
+                      <Box as="span" flexShrink={0}>
+                        <Icon as={MdSupervisorAccount} boxSize={6} color="white" />
+                      </Box>
+                    </Tooltip>
+                  )}
+                  {!ratingLoading && (
+                    <Flex align="center" gap={1}>
+                      <Text fontSize="md" fontWeight="bold" color="white">
+                        {rating?.avgRating ? Number(rating.avgRating).toFixed(1) : 'N/A'}
+                      </Text>
+                      <Icon as={FaStar} boxSize={4} color="white" />
+                      <Text fontSize="xs" color="white" opacity={0.9}>
+                        ({rating?.totalRatings || 0})
+                      </Text>
+                    </Flex>
+                  )}
+                </Flex>
+              </Flex>
+            </Box>
 
-            {/* Add style to hide Leaflet's default close button */}
+            {/* Action Buttons - Map and Search */}
+            <Box
+              display="grid"
+              gridTemplateColumns={
+                playground.name && isIOS()
+                  ? 'repeat(3, 1fr)'
+                  : playground.name
+                    ? 'repeat(2, 1fr)'
+                    : '1fr'
+              }
+              gap={2}
+              p={3}
+              bg="white"
+            >
+              <Tooltip
+                content={t('playground.showLocationOnMaps', {
+                  coordinates: `${Math.abs(playground.latitude).toFixed(6)}°${playground.latitude >= 0 ? 'N' : 'S'}, ${Math.abs(playground.longitude).toFixed(6)}°${playground.longitude >= 0 ? 'E' : 'W'}`,
+                })}
+              >
+                <Link
+                  href={getMapLink(playground.latitude, playground.longitude)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <Button
+                    size="sm"
+                    variant="solid"
+                    bg="brand.500"
+                    color="white"
+                    border="1px solid"
+                    borderColor="brand.500"
+                    _hover={{
+                      bg: 'secondary.500',
+                      transform: 'translateY(-2px)',
+                      borderColor: 'secondary.500',
+                    }}
+                    _active={{
+                      bg: 'brand.500',
+                      transform: 'translateY(0)',
+                    }}
+                    transition="all 0.2s"
+                    width="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={2}
+                  >
+                    <Icon as={MdLocationOn} boxSize={5} />
+                    <Text fontSize="sm" fontWeight="medium">
+                      {t('playground.locationInMaps')}
+                    </Text>
+                  </Button>
+                </Link>
+              </Tooltip>
+              {playground.name && (
+                <Tooltip content={t('playground.searchOnMapsByName', { name: playground.name })}>
+                  <Link
+                    href={getSearchByNameLink(
+                      playground.name,
+                      playground.latitude,
+                      playground.longitude,
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    _hover={{ textDecoration: 'none' }}
+                  >
+                    <Button
+                      size="sm"
+                      variant="solid"
+                      bg="brand.500"
+                      color="white"
+                      border="1px solid"
+                      borderColor="brand.500"
+                      _hover={{
+                        bg: 'secondary.500',
+                        transform: 'translateY(-2px)',
+                        borderColor: 'secondary.500',
+                      }}
+                      _active={{
+                        bg: 'brand.500',
+                        transform: 'translateY(0)',
+                      }}
+                      transition="all 0.2s"
+                      width="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap={2}
+                    >
+                      <Icon as={MdSearch} boxSize={5} />
+                      <Text fontSize="sm" fontWeight="medium">
+                        {t('playground.searchOnMaps')}
+                      </Text>
+                    </Button>
+                  </Link>
+                </Tooltip>
+              )}
+              {playground.name && isIOS() && (
+                <Tooltip
+                  content={t('playground.searchOnGoogleMapsByName', { name: playground.name })}
+                >
+                  <Link
+                    href={getGoogleMapsSearchLink(
+                      playground.name,
+                      playground.latitude,
+                      playground.longitude,
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    _hover={{ textDecoration: 'none' }}
+                  >
+                    <Button
+                      size="sm"
+                      variant="solid"
+                      bg="brand.500"
+                      color="white"
+                      border="1px solid"
+                      borderColor="brand.500"
+                      _hover={{
+                        bg: 'secondary.500',
+                        transform: 'translateY(-2px)',
+                        borderColor: 'secondary.500',
+                      }}
+                      _active={{
+                        bg: 'brand.500',
+                        transform: 'translateY(0)',
+                      }}
+                      transition="all 0.2s"
+                      width="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap={2}
+                    >
+                      <Icon as={MdMap} boxSize={5} />
+                      <Text fontSize="sm" fontWeight="medium">
+                        {t('playground.searchOnGoogleMaps')}
+                      </Text>
+                    </Button>
+                  </Link>
+                </Tooltip>
+              )}
+            </Box>
+
+            {/* Add style to customize Leaflet's popup */}
             <style>
               {`
                 .leaflet-popup-close-button {
-                  color: var(--chakra-colors-brand-600) !important;
+                  color: var(--chakra-colors-white) !important;
+                  font-size: 24px !important;
+                  font-weight: bold !important;
+                  padding: 8px !important;
+                  width: auto !important;
+                  height: auto !important;
+                }
+                .leaflet-popup-close-button:hover {
+                  color: var(--chakra-colors-secondary-300) !important;
                 }
                 .leaflet-popup-content {
-                  margin-top: 0px !important;
-                  margin-bottom: 0px !important;
-                  margin-left: 8px !important;
-                  margin-right: 8px !important;
+                  margin: 0px !important;
+                }
+                .leaflet-popup-content-wrapper {
+                  padding: 0px !important;
+                  border-radius: 8px !important;
                 }
               `}
             </style>
 
-            {/* Properties row with icons, rating, and visit switch */}
-            <Flex justify="space-between" align="center">
-              <HStack gap={3}>
-                <Tooltip
-                  content={`${Math.abs(playground.latitude).toFixed(6)}°${playground.latitude >= 0 ? 'N' : 'S'}, ${Math.abs(playground.longitude).toFixed(6)}°${playground.longitude >= 0 ? 'E' : 'W'}`}
-                >
-                  <Link
-                    href={getMapLink(playground.latitude, playground.longitude)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    display="flex"
-                    alignItems="center"
-                    _hover={{ color: 'brand.500' }}
-                  >
-                    <Icon
-                      as={MdLocationOn}
-                      boxSize={5}
-                      color="gray.600"
-                      transition="color 0.2s"
-                      _hover={{ color: 'inherit' }}
-                    />
-                  </Link>
-                </Tooltip>
-                {playground.name && (
-                  <Tooltip content={t('playground.searchByName', { name: playground.name })}>
-                    <Link
-                      href={getSearchByNameLink(
-                        playground.name,
-                        playground.latitude,
-                        playground.longitude,
-                      )}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      display="flex"
-                      alignItems="center"
-                      _hover={{ color: 'brand.500' }}
-                    >
-                      <Icon
-                        as={MdSearch}
-                        boxSize={5}
-                        color="gray.600"
-                        transition="color 0.2s"
-                        _hover={{ color: 'inherit' }}
-                      />
-                    </Link>
-                  </Tooltip>
+            {/* Main content area */}
+            <Box px={4} pt={0} pb={0}>
+              <VStack gap={0} align="stretch">
+                {/* Visited and Public Rating Toggle */}
+                {!ratingLoading && (
+                  <Flex justify="center" align="center" gap={4}>
+                    <Flex align="center" gap={2}>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color={!user ? 'gray.400' : 'gray.700'}
+                      >
+                        {t('playground.markVisited')}
+                      </Text>
+                      <Box
+                        onClick={() => {
+                          if (!user) {
+                            showLoginToast();
+                          }
+                        }}
+                        cursor={!user ? 'pointer' : 'default'}
+                      >
+                        <Switch
+                          size="md"
+                          checked={hasVisited}
+                          onCheckedChange={async () => {
+                            if (!user) {
+                              return;
+                            }
+                            if (hasVisited) {
+                              await handleRemoveVisit();
+                            } else {
+                              await handleVisit();
+                            }
+                          }}
+                          disabled={!user}
+                          aria-label={t('playground.markVisited')}
+                        />
+                      </Box>
+                    </Flex>
+                    {/* Public Rating Toggle - only shown if user has rated */}
+                    {!authLoading && rating?.userRating && (
+                      <Flex align="center" gap={2}>
+                        <HStack gap={1}>
+                          <Text
+                            fontSize="sm"
+                            fontWeight="medium"
+                            color={!user ? 'gray.400' : 'gray.700'}
+                          >
+                            {t('playground.makePublic')}
+                          </Text>
+                          <InfoTip>{t('playground.rating.publicExplanation')}</InfoTip>
+                        </HStack>
+                        <Box cursor="default">
+                          <Switch
+                            size="md"
+                            checked={rating?.isPublic ?? false}
+                            onCheckedChange={handleTogglePublic}
+                            disabled={!user}
+                            aria-label={t('playground.makePublic')}
+                          />
+                        </Box>
+                      </Flex>
+                    )}
+                  </Flex>
                 )}
-                {playground.name && isIOS() && (
-                  <Tooltip content={t('playground.searchGoogleMaps', { name: playground.name })}>
-                    <Link
-                      href={getGoogleMapsSearchLink(
-                        playground.name,
-                        playground.latitude,
-                        playground.longitude,
-                      )}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      display="flex"
-                      alignItems="center"
-                      _hover={{ color: 'brand.500' }}
-                    >
-                      <Icon
-                        as={MdMap}
-                        boxSize={5}
-                        color="gray.600"
-                        transition="color 0.2s"
-                        _hover={{ color: 'inherit' }}
-                      />
-                    </Link>
-                  </Tooltip>
-                )}
-                {playground.has_supervised_activities && (
-                  <Tooltip content={t('playground.supervision.supervised')}>
-                    <Box as="span">
-                      <Icon as={MdSupervisorAccount} boxSize={5} color="gray.600" />
-                    </Box>
-                  </Tooltip>
-                )}
-              </HStack>
 
-              <Box flex={1} minW={4} />
-
-              {!ratingLoading && (
-                <HStack gap={0.5} flexShrink={0} mr={3}>
-                  <Text fontSize="sm" fontWeight="medium" color="gray.600" whiteSpace="nowrap">
-                    {rating?.avgRating ? Number(rating.avgRating).toFixed(1) : 'N/A'}
-                  </Text>
-                  <Icon as={FaStar} boxSize={4} color="gray.600" />
-                  <Text fontSize="sm" color="gray.500" whiteSpace="nowrap">
-                    ({rating?.totalRatings || 0})
-                  </Text>
-                </HStack>
-              )}
-
-              <Box>
-                <HStack gap={2} align="center">
-                  <Text fontSize="sm" color={!user ? 'gray.400' : 'gray.600'}>
-                    {t('playground.markVisited')}
-                  </Text>
-                  <Box
-                    onClick={() => {
-                      if (!user) {
-                        showLoginToast();
-                      }
-                    }}
-                    cursor={!user ? 'pointer' : 'default'}
-                  >
-                    <Switch
+                {/* Star Rating */}
+                {ratingLoading || authLoading ? (
+                  <Flex justify="center" align="center" minH="50px">
+                    <Spinner
                       size="md"
-                      checked={hasVisited}
-                      onCheckedChange={async () => {
-                        if (!user) {
-                          return;
-                        }
-                        if (hasVisited) {
-                          await handleRemoveVisit();
-                        } else {
-                          await handleVisit();
-                        }
-                      }}
-                      disabled={!user}
-                      aria-label={t('playground.markVisited')}
+                      color="brand.500"
+                      role="status"
+                      aria-label={t('playground.rating.loading')}
                     />
-                  </Box>
-                </HStack>
-              </Box>
-            </Flex>
-
-            {/* Rating section */}
-            <Box>
-              <Box borderBottom="1px solid" borderColor="gray.200" mb={2} />
-              {ratingLoading || authLoading ? (
-                <Spinner
-                  size="md"
-                  color="brand.500"
-                  role="status"
-                  aria-label={t('playground.rating.loading')}
-                />
-              ) : (
-                <HStack gap={2} justify="space-between" align="center">
-                  <HStack gap={0.5}>
+                  </Flex>
+                ) : (
+                  <Flex justify="center" align="center" gap={1} pb={3}>
                     {[1, 2, 3, 4, 5].map((value) => (
                       <Box
                         key={value}
@@ -445,15 +565,14 @@ export const PlaygroundPopup = ({
                         _hover={
                           user
                             ? {
-                                transform: 'scale(1.2)',
-                                '& > *': { color: 'secondary.500' },
+                                transform: 'scale(1.3)',
                               }
                             : undefined
                         }
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        p={0}
+                        p={1}
                         bg="transparent"
                         border="none"
                         outline="none"
@@ -466,67 +585,48 @@ export const PlaygroundPopup = ({
                                 ? 'var(--chakra-colors-gray-400)'
                                 : 'var(--chakra-colors-secondary-500)'
                             }
-                            size={20}
+                            size={24}
                           />
                         ) : (
-                          <FaRegStar color="var(--chakra-colors-gray-400)" size={20} />
+                          <FaRegStar color="var(--chakra-colors-gray-400)" size={24} />
                         )}
                       </Box>
                     ))}
-                  </HStack>
-                  <HStack gap={2} align="center">
-                    <Text
-                      fontSize="sm"
-                      color={!user || !rating?.userRating ? 'gray.400' : 'gray.600'}
-                    >
-                      {t('playground.makePublic')}
-                    </Text>
-                    <InfoTip>{t('playground.rating.publicExplanation')}</InfoTip>
-                    <Box
-                      onClick={() => {
-                        if (!user) {
-                          showLoginToast();
-                          return;
-                        }
-                        if (!rating?.userRating) {
-                          toast.showInfo({
-                            title: t('playground.rating.title'),
-                            description: t('playground.rating.requiredForPublic'),
-                          });
-                        }
-                      }}
-                      cursor={!user || !rating?.userRating ? 'pointer' : 'default'}
-                    >
-                      <Switch
-                        size="md"
-                        checked={rating?.isPublic ?? false}
-                        onCheckedChange={handleTogglePublic}
-                        disabled={!user || !rating?.userRating}
-                        aria-label={t('playground.makePublic')}
-                      />
-                    </Box>
-                  </HStack>
-                </HStack>
-              )}
-            </Box>
+                  </Flex>
+                )}
 
-            {/* Edit button - only shown in edit mode */}
-            {editMode && user && (
-              <Box mt={3} pt={2} borderTop="1px solid" borderColor="gray.200">
-                <Button
-                  size="sm"
-                  variant="solid"
-                  bg="brand.500"
-                  color="white"
-                  _hover={{ bg: 'brand.600' }}
-                  onClick={() => setShowEditModal(true)}
-                  width="100%"
-                >
-                  <Icon as={HiPencil} mr={1} boxSize={3} />
-                  {t('playground.edit.editButton')}
-                </Button>
-              </Box>
-            )}
+                {/* Edit button - only shown in edit mode */}
+                {editMode && user && (
+                  <Button
+                    size="sm"
+                    variant="solid"
+                    bg="brand.500"
+                    color="white"
+                    border="1px solid"
+                    borderColor="brand.500"
+                    _hover={{
+                      bg: 'secondary.500',
+                      transform: 'translateY(-2px)',
+                      borderColor: 'secondary.500',
+                    }}
+                    _active={{
+                      bg: 'brand.500',
+                      transform: 'translateY(0)',
+                    }}
+                    transition="all 0.2s"
+                    onClick={() => setShowEditModal(true)}
+                    width="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={2}
+                  >
+                    <Icon as={HiPencil} boxSize={4} />
+                    {t('playground.edit.editButton')}
+                  </Button>
+                )}
+              </VStack>
+            </Box>
           </VStack>
         )}
       </Box>
