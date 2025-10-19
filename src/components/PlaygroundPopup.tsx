@@ -102,22 +102,24 @@ export const PlaygroundPopup = ({
   // Use useEffect to update hasVisited when visits change
   useEffect(() => {
     if (!visitsLoading && user) {
-      setHasVisited(visits.some((visit) => visit.playground_id === playground.id));
-      onContentChange?.();
+      const newHasVisited = visits.some((visit) => visit.playground_id === playground.id);
+      setHasVisited(newHasVisited);
+      // Defer content change to avoid interrupting active operations on iOS Safari
+      setTimeout(() => onContentChange?.(), 0);
     } else if (!user && !authLoading) {
       setHasVisited(false);
-      onContentChange?.();
+      setTimeout(() => onContentChange?.(), 0);
     }
   }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading]);
 
   // Update popup when rating changes
   useEffect(() => {
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
   }, [rating, ratingLoading, onContentChange]);
 
   // Update popup when hover state changes
   useEffect(() => {
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
   }, [hoveredRating, onContentChange]);
 
   // Show login toast when component mounts if user is not logged in
@@ -143,7 +145,7 @@ export const PlaygroundPopup = ({
 
     setHasVisited(true);
     onVisitChange(true);
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
     toast.showSuccess({
       title: t('playground.addVisit.title'),
     });
@@ -167,7 +169,7 @@ export const PlaygroundPopup = ({
     // Clear rating data since ratings can't exist without visits
     clearRating();
     onRatingChange();
-    onContentChange?.();
+    setTimeout(() => onContentChange?.(), 0);
     toast.showSuccess({
       title: t('playground.removeVisit.title'),
     });
@@ -210,7 +212,7 @@ export const PlaygroundPopup = ({
 
       // Submit the rating - optimistic updates are now handled in useRatings
       await submitRating(value, isPublic, visitId);
-      onContentChange?.();
+      setTimeout(() => onContentChange?.(), 0);
       onRatingChange();
       toast.showSuccess({
         title: t('playground.rating.success.title'),
@@ -564,30 +566,34 @@ export const PlaygroundPopup = ({
                                 return;
                               }
 
-                              // If not visited, mark as visited first and get the visit ID
-                              let visitId: string | undefined;
-                              if (!hasVisited) {
-                                const result = await addVisit(playground.id);
-                                if (result.error) {
-                                  toast.showError({
-                                    title: t('common.error'),
-                                    description: result.error,
-                                  });
-                                  return;
+                              try {
+                                // If not visited, mark as visited first and get the visit ID
+                                let visitId: string | undefined;
+                                if (!hasVisited) {
+                                  const result = await addVisit(playground.id);
+                                  if (result.error) {
+                                    toast.showError({
+                                      title: t('common.error'),
+                                      description: result.error,
+                                    });
+                                    return;
+                                  }
+                                  visitId = result.visitId;
+                                  // Update local state immediately to ensure consistency
+                                  setHasVisited(true);
+                                  onVisitChange(true);
                                 }
-                                visitId = result.visitId;
-                                // Update local state immediately to ensure consistency
-                                setHasVisited(true);
-                                onVisitChange(true);
-                                onContentChange?.();
-                              }
 
-                              // Then handle the rating
-                              await handleRating(
-                                value,
-                                e as unknown as React.MouseEvent<HTMLButtonElement>,
-                                visitId,
-                              );
+                                // Then handle the rating - this must complete before any popup updates
+                                await handleRating(
+                                  value,
+                                  e as unknown as React.MouseEvent<HTMLButtonElement>,
+                                  visitId,
+                                );
+                              } catch (error) {
+                                // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
+                                console.error('Rating operation failed:', error);
+                              }
                             }}
                             onMouseEnter={() => setHoveredRating(value)}
                             onMouseLeave={() => setHoveredRating(null)}
