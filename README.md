@@ -35,6 +35,7 @@ Install dependencies:
 npm install
 ```
 
+If running supabase locally, start the Supabase local development
 ```bash
 npx supabase start
 ```
