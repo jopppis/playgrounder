@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Make playground popup prettier
+
 ## [0.21.1] - 2025-10-17
 
 ### Changed

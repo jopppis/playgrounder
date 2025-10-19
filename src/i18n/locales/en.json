@@ -227,8 +227,12 @@
     "location": "Location",
     "noCity": "No city information",
     "markVisited": "Visited",
-    "searchByName": "Search Maps for {{name}}",
-    "searchGoogleMaps": "Search Google Maps for {{name}}",
+    "locationInMaps": "Maps",
+    "showLocationOnMaps": "Show {{coordinates}} on Maps",
+    "searchOnMaps": "Search",
+    "searchOnGoogleMaps": "Google Maps",
+    "searchOnMapsByName": "Search Maps for {{name}}",
+    "searchOnGoogleMapsByName": "Search Google Maps for {{name}}",
     "filter": {
       "unnamed": {
         "label": "Unnamed playgrounds",
