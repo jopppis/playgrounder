@@ -75,7 +75,16 @@ export const useRatings = (
   }, [user, playgroundId, fetchRatings]);
 
   const submitRating = async (value: number, isPublic: boolean, visitId: string) => {
-    if (!user) return;
+    const timestamp = new Date().toISOString();
+    console.log(
+      `[${timestamp}] 🎬 useRatings.submitRating START - value: ${value}, isPublic: ${isPublic}, visitId: ${visitId}`,
+    );
+    console.log(`[${timestamp}] 📊 Current rating state:`, rating);
+
+    if (!user) {
+      console.log(`[${timestamp}] ❌ useRatings.submitRating: No user`);
+      return;
+    }
 
     try {
       // Calculate optimistic updates
@@ -83,6 +92,10 @@ export const useRatings = (
       const wasPublic = rating.isPublic;
       let newAvgRating = rating.avgRating;
       let newTotalRatings = rating.totalRatings;
+
+      console.log(
+        `[${timestamp}] 🔄 Calculating optimistic updates - oldRating: ${oldRating}, wasPublic: ${wasPublic}`,
+      );
 
       // Only update public stats if the rating is or was public
       if (isPublic || wasPublic) {
@@ -94,12 +107,16 @@ export const useRatings = (
           } else {
             newAvgRating = (rating.avgRating * rating.totalRatings + value) / newTotalRatings;
           }
+          console.log(
+            `[${timestamp}] ➕ New public rating - newAvg: ${newAvgRating}, newTotal: ${newTotalRatings}`,
+          );
         }
         // If this is updating an existing public rating
         else if (wasPublic && isPublic) {
           newAvgRating =
             ((rating.avgRating || 0) * rating.totalRatings - oldRating + value) /
             rating.totalRatings;
+          console.log(`[${timestamp}] 🔄 Updating public rating - newAvg: ${newAvgRating}`);
         }
         // If changing from public to private
         else if (wasPublic && !isPublic) {
@@ -110,10 +127,14 @@ export const useRatings = (
             newAvgRating =
               ((rating.avgRating || 0) * rating.totalRatings - oldRating) / newTotalRatings;
           }
+          console.log(
+            `[${timestamp}] 🔒 Making private - newAvg: ${newAvgRating}, newTotal: ${newTotalRatings}`,
+          );
         }
       }
 
       // Update state optimistically
+      console.log(`[${timestamp}] 🔄 Setting optimistic state...`);
       setRating((prev) => ({
         ...prev,
         userRating: value,
@@ -125,7 +146,9 @@ export const useRatings = (
             }
           : {}),
       }));
+      console.log(`[${timestamp}] ✅ Optimistic state set`);
 
+      console.log(`[${timestamp}] 💾 Upserting rating to database...`);
       const { error } = await supabase.from('ratings').upsert(
         {
           playground_id: playgroundId,
@@ -139,13 +162,22 @@ export const useRatings = (
         },
       );
 
-      if (error) throw error;
+      console.log(`[${timestamp}] 📊 Rating upsert result - error:`, error);
 
+      if (error) {
+        console.error(`[${timestamp}] ❌ Rating upsert error:`, error);
+        throw error;
+      }
+
+      console.log(`[${timestamp}] ✅ Rating upserted successfully, fetching updated ratings...`);
       // Fetch updated ratings to ensure accuracy
       await fetchRatings();
+      console.log(`[${timestamp}] ✅ useRatings.submitRating COMPLETE`);
     } catch (err) {
+      console.error(`[${timestamp}] ❌ useRatings.submitRating ERROR:`, err);
       setError(err instanceof Error ? err.message : 'An error occurred');
       // Revert optimistic update on error
+      console.log(`[${timestamp}] 🔄 Reverting optimistic update by fetching ratings...`);
       await fetchRatings();
     }
   };

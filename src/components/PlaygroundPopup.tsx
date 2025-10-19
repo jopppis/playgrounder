@@ -180,15 +180,24 @@ export const PlaygroundPopup = ({
     e: React.MouseEvent<HTMLButtonElement>,
     providedVisitId?: string,
   ) => {
+    const timestamp = new Date().toISOString();
+    console.log(
+      `[${timestamp}] 🎬 handleRating START - value: ${value}, providedVisitId: ${providedVisitId}`,
+    );
+
     e.preventDefault();
     e.stopPropagation();
 
-    if (!user) return;
+    if (!user) {
+      console.log(`[${timestamp}] ❌ handleRating: No user`);
+      return;
+    }
 
     try {
       // Use provided visit ID if available, otherwise query the database
       let visitId = providedVisitId;
       if (!visitId) {
+        console.log(`[${timestamp}] 🔍 No visitId provided, querying database...`);
         const { data: visitData, error: visitError } = await supabase
           .from('visits')
           .select('id')
@@ -196,11 +205,18 @@ export const PlaygroundPopup = ({
           .eq('user_id', user.id)
           .single();
 
-        if (visitError) throw visitError;
+        console.log(`[${timestamp}] 📊 Visit query result:`, { visitData, visitError });
+
+        if (visitError) {
+          console.error(`[${timestamp}] ❌ Visit query error:`, visitError);
+          throw visitError;
+        }
         if (!visitData?.id) {
+          console.error(`[${timestamp}] ❌ No visit found in query result`);
           throw new Error(t('playground.rating.error.noVisit'));
         }
         visitId = visitData.id;
+        console.log(`[${timestamp}] ✅ Found visit ID from query: ${visitId}`);
       }
 
       // Use default public setting for new ratings
@@ -208,16 +224,26 @@ export const PlaygroundPopup = ({
         rating?.userRating === null
           ? preferences.defaultPublicRatings
           : (rating?.isPublic ?? false);
+      console.log(`[${timestamp}] 🔒 isPublic: ${isPublic}, current rating:`, rating);
+
       setHoveredRating(null);
 
       // Submit the rating - optimistic updates are now handled in useRatings
+      console.log(
+        `[${timestamp}] 💾 Calling submitRating: value=${value}, isPublic=${isPublic}, visitId=${visitId}`,
+      );
       await submitRating(value, isPublic, visitId);
+      console.log(`[${timestamp}] ✅ submitRating completed successfully`);
+
+      console.log(`[${timestamp}] 🔔 Scheduling onContentChange and calling onRatingChange`);
       setTimeout(() => onContentChange?.(), 0);
       onRatingChange();
       toast.showSuccess({
         title: t('playground.rating.success.title'),
       });
+      console.log(`[${timestamp}] ✅ handleRating COMPLETE`);
     } catch (err) {
+      console.error(`[${timestamp}] ❌ handleRating ERROR:`, err);
       toast.showError({
         title: t('playground.rating.error.title'),
         description: err instanceof Error ? err.message : t('common.unknownError'),
@@ -559,19 +585,36 @@ export const PlaygroundPopup = ({
                             key={value}
                             as="button"
                             onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+                              const timestamp = new Date().toISOString();
+                              console.log(
+                                `[${timestamp}] 🎯 STAR CLICKED - Rating value: ${value}`,
+                              );
+
                               e.preventDefault();
                               e.stopPropagation();
                               if (!user) {
+                                console.log(`[${timestamp}] ❌ No user, showing login toast`);
                                 showLoginToast();
                                 return;
                               }
 
                               try {
+                                console.log(`[${timestamp}] 📍 hasVisited state: ${hasVisited}`);
+
                                 // If not visited, mark as visited first and get the visit ID
                                 let visitId: string | undefined;
                                 if (!hasVisited) {
+                                  console.log(
+                                    `[${timestamp}] 🏗️  Creating visit for playground ${playground.id}...`,
+                                  );
                                   const result = await addVisit(playground.id);
+                                  console.log(`[${timestamp}] ✅ addVisit result:`, result);
+
                                   if (result.error) {
+                                    console.error(
+                                      `[${timestamp}] ❌ addVisit error:`,
+                                      result.error,
+                                    );
                                     toast.showError({
                                       title: t('common.error'),
                                       description: result.error,
@@ -579,20 +622,30 @@ export const PlaygroundPopup = ({
                                     return;
                                   }
                                   visitId = result.visitId;
+                                  console.log(
+                                    `[${timestamp}] ✅ Visit created with ID: ${visitId}`,
+                                  );
+
                                   // Update local state immediately to ensure consistency
+                                  console.log(`[${timestamp}] 🔄 Setting hasVisited to true`);
                                   setHasVisited(true);
                                   onVisitChange(true);
+                                  console.log(`[${timestamp}] 🔄 State updated`);
                                 }
 
                                 // Then handle the rating - this must complete before any popup updates
+                                console.log(
+                                  `[${timestamp}] 💾 Calling handleRating with visitId: ${visitId}`,
+                                );
                                 await handleRating(
                                   value,
                                   e as unknown as React.MouseEvent<HTMLButtonElement>,
                                   visitId,
                                 );
+                                console.log(`[${timestamp}] ✅ STAR CLICK HANDLER COMPLETE`);
                               } catch (error) {
                                 // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
-                                console.error('Rating operation failed:', error);
+                                console.error(`[${timestamp}] ❌ Star click handler error:`, error);
                               }
                             }}
                             onMouseEnter={() => setHoveredRating(value)}
