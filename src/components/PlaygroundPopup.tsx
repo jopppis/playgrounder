@@ -253,8 +253,8 @@ export const PlaygroundPopup = ({
             <Box
               bg="linear-gradient(135deg, var(--chakra-colors-brand-500) 0%, var(--chakra-colors-brand-600) 100%)"
               px={4}
-              pt={3}
-              pb={1}
+              pt={1.5}
+              pb={0}
             >
               <Flex justify="space-between" align="center">
                 <Text
