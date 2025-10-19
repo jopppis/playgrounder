@@ -230,7 +230,7 @@
     "locationInMaps": "Maps",
     "showLocationOnMaps": "Show {{coordinates}} on Maps",
     "searchOnMaps": "Search",
-    "searchOnGoogleMaps": "Google Maps",
+    "searchOnGoogleMaps": "Google",
     "searchOnMapsByName": "Search Maps for {{name}}",
     "searchOnGoogleMapsByName": "Search Google Maps for {{name}}",
     "filter": {
