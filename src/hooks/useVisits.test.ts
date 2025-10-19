@@ -45,7 +45,8 @@ describe('useVisits', () => {
   const mockFromDelete = vi.fn();
   const mockFromEq = vi.fn();
   const mockFromMatch = vi.fn();
-  const mockFromOnConflict = vi.fn();
+  const mockFromSingle = vi.fn();
+  const mockUpsertSelect = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -67,15 +68,20 @@ describe('useVisits', () => {
       eq: mockFromEq,
     });
 
-    // Mock supabase.from().upsert()
-    mockFromUpsert.mockReturnValue({
-      onConflict: mockFromOnConflict,
+    // Mock supabase.from().upsert().select().single()
+    mockFromSingle.mockResolvedValue({
+      data: { id: 'test-visit-id' },
+      error: null,
     });
 
-    // Mock supabase.from().upsert().onConflict()
-    mockFromOnConflict.mockResolvedValue({
-      data: null,
-      error: null,
+    // Mock supabase.from().upsert().select()
+    mockUpsertSelect.mockReturnValue({
+      single: mockFromSingle,
+    });
+
+    // Mock supabase.from().upsert()
+    mockFromUpsert.mockReturnValue({
+      select: mockUpsertSelect,
     });
 
     // Mock supabase.from().delete()
@@ -223,13 +229,17 @@ describe('useVisits', () => {
     });
 
     // Mock the upsert to return an error
-    mockFromUpsert.mockReturnValue({
-      onConflict: mockFromOnConflict,
-    });
-
-    mockFromOnConflict.mockResolvedValue({
+    const mockErrorSingle = vi.fn().mockResolvedValue({
       data: null,
       error: { message: errorMessage },
+    });
+
+    const mockErrorSelect = vi.fn().mockReturnValue({
+      single: mockErrorSingle,
+    });
+
+    mockFromUpsert.mockReturnValue({
+      select: mockErrorSelect,
     });
 
     // Setup supabase.from() to return our mocked functions

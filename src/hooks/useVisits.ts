@@ -37,7 +37,7 @@ export const useVisits = () => {
 
       if (isVisited) {
         const newVisit: Visit = {
-          id: crypto.randomUUID(),
+          id: '', // Temporary placeholder - real ID will come from database
           playground_id: playgroundId,
           user_id: user.id,
           visited_at: new Date().toISOString(),
@@ -76,23 +76,29 @@ export const useVisits = () => {
     };
   }, [user, fetchVisits]);
 
-  const addVisit = async (playgroundId: string): Promise<{ error: string | null }> => {
+  const addVisit = async (
+    playgroundId: string,
+  ): Promise<{ error: string | null; visitId?: string }> => {
     if (!user) return { error: 'User not authenticated' };
 
     // Update state immediately for optimistic UI
     updateVisitsState(playgroundId, true);
 
     try {
-      const { error } = await supabase.from('visits').upsert(
-        {
-          playground_id: playgroundId,
-          user_id: user.id,
-          visited_at: new Date().toISOString(),
-        },
-        {
-          onConflict: 'playground_id,user_id',
-        },
-      );
+      const { data, error } = await supabase
+        .from('visits')
+        .upsert(
+          {
+            playground_id: playgroundId,
+            user_id: user.id,
+            visited_at: new Date().toISOString(),
+          },
+          {
+            onConflict: 'playground_id,user_id',
+          },
+        )
+        .select('id')
+        .single();
 
       if (error) {
         // Revert optimistic update on error
@@ -100,7 +106,7 @@ export const useVisits = () => {
         throw error;
       }
 
-      return { error: null };
+      return { error: null, visitId: data?.id };
     } catch (err) {
       return { error: err instanceof Error ? err.message : 'An error occurred' };
     }

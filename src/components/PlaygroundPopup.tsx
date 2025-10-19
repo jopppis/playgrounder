@@ -171,24 +171,32 @@ export const PlaygroundPopup = ({
     });
   };
 
-  const handleRating = async (value: number, e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRating = async (
+    value: number,
+    e: React.MouseEvent<HTMLButtonElement>,
+    providedVisitId?: string,
+  ) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (!user) return;
 
     try {
-      // First ensure there's a visit record
-      const { data: visitData, error: visitError } = await supabase
-        .from('visits')
-        .select('id')
-        .eq('playground_id', playground.id)
-        .eq('user_id', user.id)
-        .single();
+      // Use provided visit ID if available, otherwise query the database
+      let visitId = providedVisitId;
+      if (!visitId) {
+        const { data: visitData, error: visitError } = await supabase
+          .from('visits')
+          .select('id')
+          .eq('playground_id', playground.id)
+          .eq('user_id', user.id)
+          .single();
 
-      if (visitError) throw visitError;
-      if (!visitData?.id) {
-        throw new Error(t('playground.rating.error.noVisit'));
+        if (visitError) throw visitError;
+        if (!visitData?.id) {
+          throw new Error(t('playground.rating.error.noVisit'));
+        }
+        visitId = visitData.id;
       }
 
       // Use default public setting for new ratings
@@ -199,7 +207,7 @@ export const PlaygroundPopup = ({
       setHoveredRating(null);
 
       // Submit the rating - optimistic updates are now handled in useRatings
-      await submitRating(value, isPublic, visitData.id);
+      await submitRating(value, isPublic, visitId);
       onContentChange?.();
       onRatingChange();
       toast.showSuccess({
@@ -535,7 +543,8 @@ export const PlaygroundPopup = ({
                             return;
                           }
 
-                          // If not visited, mark as visited first
+                          // If not visited, mark as visited first and get the visit ID
+                          let visitId: string | undefined;
                           if (!hasVisited) {
                             const result = await addVisit(playground.id);
                             if (result.error) {
@@ -545,6 +554,7 @@ export const PlaygroundPopup = ({
                               });
                               return;
                             }
+                            visitId = result.visitId;
                             onVisitChange(true);
                           }
 
@@ -552,6 +562,7 @@ export const PlaygroundPopup = ({
                           await handleRating(
                             value,
                             e as unknown as React.MouseEvent<HTMLButtonElement>,
+                            visitId,
                           );
                         }}
                         onMouseEnter={() => setHoveredRating(value)}
