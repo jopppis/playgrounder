@@ -141,6 +141,7 @@ export const PlaygroundPopup = ({
       return;
     }
 
+    setHasVisited(true);
     onVisitChange(true);
     onContentChange?.();
     toast.showSuccess({
@@ -160,7 +161,8 @@ export const PlaygroundPopup = ({
       return;
     }
 
-    // Reset local state
+    // Update local state immediately after successful removal
+    setHasVisited(false);
     onVisitChange(false);
     // Clear rating data since ratings can't exist without visits
     clearRating();
@@ -574,7 +576,10 @@ export const PlaygroundPopup = ({
                                   return;
                                 }
                                 visitId = result.visitId;
+                                // Update local state immediately to ensure consistency
+                                setHasVisited(true);
                                 onVisitChange(true);
+                                onContentChange?.();
                               }
 
                               // Then handle the rating
