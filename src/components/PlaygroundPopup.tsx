@@ -585,116 +585,129 @@ export const PlaygroundPopup = ({
 
                       {/* User Star Rating */}
                       <Flex align="center" gap={1}>
-                        {[1, 2, 3, 4, 5].map((value) => (
-                          <Box
-                            key={value}
-                            as="button"
-                            onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
-                              const timestamp = new Date().toISOString();
-                              console.log(
-                                `[${timestamp}] 🎯 STAR CLICKED - Rating value: ${value}`,
-                              );
-
-                              e.preventDefault();
-                              e.stopPropagation();
-                              if (!user) {
-                                console.log(`[${timestamp}] ❌ No user, showing login toast`);
-                                showLoginToast();
-                                return;
-                              }
-
-                              try {
-                                console.log(`[${timestamp}] 📍 hasVisited state: ${hasVisited}`);
-
-                                // If not visited, mark as visited first and get the visit ID
-                                let visitId: string | undefined;
-                                if (!hasVisited) {
-                                  console.log(
-                                    `[${timestamp}] 🏗️  Creating visit for playground ${playground.id}...`,
-                                  );
-                                  const result = await addVisit(playground.id);
-                                  console.log(`[${timestamp}] ✅ addVisit result:`, result);
-
-                                  if (result.error) {
-                                    console.error(
-                                      `[${timestamp}] ❌ addVisit error:`,
-                                      result.error,
-                                    );
-                                    toast.showError({
-                                      title: t('common.error'),
-                                      description: result.error,
-                                    });
-                                    return;
-                                  }
-                                  visitId = result.visitId;
-                                  console.log(
-                                    `[${timestamp}] ✅ Visit created with ID: ${visitId}`,
-                                  );
-                                }
-
-                                // Then handle the rating - this must complete before any popup updates
+                        {[1, 2, 3, 4, 5].map((value) => {
+                          console.log(
+                            `[RENDER] Rendering star button ${value}, hasVisited=${hasVisited}`,
+                          );
+                          return (
+                            <Box
+                              key={value}
+                              as="button"
+                              onMouseDown={() => {
                                 console.log(
-                                  `[${timestamp}] 💾 Calling handleRating with visitId: ${visitId}`,
+                                  `[MOUSEDOWN] Star ${value} mousedown - hasVisited=${hasVisited}`,
                                 );
-                                await handleRating(
-                                  value,
-                                  e as unknown as React.MouseEvent<HTMLButtonElement>,
-                                  visitId,
+                              }}
+                              onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+                                const timestamp = new Date().toISOString();
+                                console.log(
+                                  `[${timestamp}] 🎯 STAR CLICKED - Rating value: ${value}`,
                                 );
 
-                                // Only update state after rating succeeds
-                                if (!hasVisited && visitId) {
-                                  console.log(
-                                    `[${timestamp}] 🔄 Rating succeeded, updating hasVisited state`,
-                                  );
-                                  setHasVisited(true);
-                                  onVisitChange(true);
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (!user) {
+                                  console.log(`[${timestamp}] ❌ No user, showing login toast`);
+                                  showLoginToast();
+                                  return;
                                 }
 
-                                console.log(`[${timestamp}] ✅ STAR CLICK HANDLER COMPLETE`);
-                              } catch (error) {
-                                // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
-                                console.error(`[${timestamp}] ❌ Star click handler error:`, error);
-                              }
-                            }}
-                            onMouseEnter={() => setHoveredRating(value)}
-                            onMouseLeave={() => setHoveredRating(null)}
-                            aria-disabled={!user}
-                            aria-label={t('playground.rating.buttonLabel', { count: value })}
-                            role="button"
-                            cursor={user ? 'pointer' : 'not-allowed'}
-                            opacity={!user ? 0.5 : 1}
-                            transition="all 0.2s"
-                            _hover={
-                              user
-                                ? {
-                                    transform: 'scale(1.3)',
+                                try {
+                                  console.log(`[${timestamp}] 📍 hasVisited state: ${hasVisited}`);
+
+                                  // If not visited, mark as visited first and get the visit ID
+                                  let visitId: string | undefined;
+                                  if (!hasVisited) {
+                                    console.log(
+                                      `[${timestamp}] 🏗️  Creating visit for playground ${playground.id}...`,
+                                    );
+                                    const result = await addVisit(playground.id);
+                                    console.log(`[${timestamp}] ✅ addVisit result:`, result);
+
+                                    if (result.error) {
+                                      console.error(
+                                        `[${timestamp}] ❌ addVisit error:`,
+                                        result.error,
+                                      );
+                                      toast.showError({
+                                        title: t('common.error'),
+                                        description: result.error,
+                                      });
+                                      return;
+                                    }
+                                    visitId = result.visitId;
+                                    console.log(
+                                      `[${timestamp}] ✅ Visit created with ID: ${visitId}`,
+                                    );
                                   }
-                                : undefined
-                            }
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            p={1}
-                            bg="transparent"
-                            border="none"
-                            outline="none"
-                            _focus={{ outline: 'none' }}
-                          >
-                            {value <= (hoveredRating || rating?.userRating || 0) ? (
-                              <FaStar
-                                color={
-                                  !user
-                                    ? 'var(--chakra-colors-gray-400)'
-                                    : 'var(--chakra-colors-secondary-500)'
+
+                                  // Then handle the rating - this must complete before any popup updates
+                                  console.log(
+                                    `[${timestamp}] 💾 Calling handleRating with visitId: ${visitId}`,
+                                  );
+                                  await handleRating(
+                                    value,
+                                    e as unknown as React.MouseEvent<HTMLButtonElement>,
+                                    visitId,
+                                  );
+
+                                  // Only update state after rating succeeds
+                                  if (!hasVisited && visitId) {
+                                    console.log(
+                                      `[${timestamp}] 🔄 Rating succeeded, updating hasVisited state`,
+                                    );
+                                    setHasVisited(true);
+                                    onVisitChange(true);
+                                  }
+
+                                  console.log(`[${timestamp}] ✅ STAR CLICK HANDLER COMPLETE`);
+                                } catch (error) {
+                                  // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
+                                  console.error(
+                                    `[${timestamp}] ❌ Star click handler error:`,
+                                    error,
+                                  );
                                 }
-                                size={24}
-                              />
-                            ) : (
-                              <FaRegStar color="var(--chakra-colors-gray-400)" size={24} />
-                            )}
-                          </Box>
-                        ))}
+                              }}
+                              onMouseEnter={() => setHoveredRating(value)}
+                              onMouseLeave={() => setHoveredRating(null)}
+                              aria-disabled={!user}
+                              aria-label={t('playground.rating.buttonLabel', { count: value })}
+                              role="button"
+                              cursor={user ? 'pointer' : 'not-allowed'}
+                              opacity={!user ? 0.5 : 1}
+                              transition="all 0.2s"
+                              _hover={
+                                user
+                                  ? {
+                                      transform: 'scale(1.3)',
+                                    }
+                                  : undefined
+                              }
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              p={1}
+                              bg="transparent"
+                              border="none"
+                              outline="none"
+                              _focus={{ outline: 'none' }}
+                            >
+                              {value <= (hoveredRating || rating?.userRating || 0) ? (
+                                <FaStar
+                                  color={
+                                    !user
+                                      ? 'var(--chakra-colors-gray-400)'
+                                      : 'var(--chakra-colors-secondary-500)'
+                                  }
+                                  size={24}
+                                />
+                              ) : (
+                                <FaRegStar color="var(--chakra-colors-gray-400)" size={24} />
+                              )}
+                            </Box>
+                          );
+                        })}
                       </Flex>
                     </Flex>
                   </VStack>
