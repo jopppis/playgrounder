@@ -1,5 +1,5 @@
 import { Box, Button, Flex, HStack, Icon, Link, Spinner, Text, VStack } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { HiPencil } from 'react-icons/hi2';
@@ -90,7 +90,6 @@ export const PlaygroundPopup = ({
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [hasVisited, setHasVisited] = useState(false);
-  const isClickingRef = useRef(false);
 
   // Reset states when user changes
   useEffect(() => {
@@ -102,23 +101,14 @@ export const PlaygroundPopup = ({
 
   // Use useEffect to update hasVisited when visits change
   useEffect(() => {
-    // Don't update state if we're in the middle of a click operation
-    if (isClickingRef.current) {
-      console.log(`[useEffect] Skipping hasVisited update - click in progress`);
-      return;
-    }
-
     if (!visitsLoading && user) {
       const newHasVisited = visits.some((visit) => visit.playground_id === playground.id);
       // Only update if actually different to avoid unnecessary re-renders
       if (newHasVisited !== hasVisited) {
-        console.log(`[useEffect] hasVisited changing from ${hasVisited} to ${newHasVisited}`);
         setHasVisited(newHasVisited);
-        // Defer content change to avoid interrupting active operations on iOS Safari
         setTimeout(() => onContentChange?.(), 0);
       }
     } else if (!user && !authLoading && hasVisited) {
-      console.log(`[useEffect] No user, setting hasVisited to false`);
       setHasVisited(false);
       setTimeout(() => onContentChange?.(), 0);
     }
@@ -192,24 +182,15 @@ export const PlaygroundPopup = ({
     e: React.MouseEvent<HTMLButtonElement>,
     providedVisitId?: string,
   ) => {
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[${timestamp}] 🎬 handleRating START - value: ${value}, providedVisitId: ${providedVisitId}`,
-    );
-
     e.preventDefault();
     e.stopPropagation();
 
-    if (!user) {
-      console.log(`[${timestamp}] ❌ handleRating: No user`);
-      return;
-    }
+    if (!user) return;
 
     try {
       // Use provided visit ID if available, otherwise query the database
       let visitId = providedVisitId;
       if (!visitId) {
-        console.log(`[${timestamp}] 🔍 No visitId provided, querying database...`);
         const { data: visitData, error: visitError } = await supabase
           .from('visits')
           .select('id')
@@ -217,18 +198,11 @@ export const PlaygroundPopup = ({
           .eq('user_id', user.id)
           .single();
 
-        console.log(`[${timestamp}] 📊 Visit query result:`, { visitData, visitError });
-
-        if (visitError) {
-          console.error(`[${timestamp}] ❌ Visit query error:`, visitError);
-          throw visitError;
-        }
+        if (visitError) throw visitError;
         if (!visitData?.id) {
-          console.error(`[${timestamp}] ❌ No visit found in query result`);
           throw new Error(t('playground.rating.error.noVisit'));
         }
         visitId = visitData.id;
-        console.log(`[${timestamp}] ✅ Found visit ID from query: ${visitId}`);
       }
 
       // Use default public setting for new ratings
@@ -236,26 +210,16 @@ export const PlaygroundPopup = ({
         rating?.userRating === null
           ? preferences.defaultPublicRatings
           : (rating?.isPublic ?? false);
-      console.log(`[${timestamp}] 🔒 isPublic: ${isPublic}, current rating:`, rating);
-
       setHoveredRating(null);
 
       // Submit the rating - optimistic updates are now handled in useRatings
-      console.log(
-        `[${timestamp}] 💾 Calling submitRating: value=${value}, isPublic=${isPublic}, visitId=${visitId}`,
-      );
       await submitRating(value, isPublic, visitId);
-      console.log(`[${timestamp}] ✅ submitRating completed successfully`);
-
-      console.log(`[${timestamp}] 🔔 Scheduling onContentChange and calling onRatingChange`);
       setTimeout(() => onContentChange?.(), 0);
       onRatingChange();
       toast.showSuccess({
         title: t('playground.rating.success.title'),
       });
-      console.log(`[${timestamp}] ✅ handleRating COMPLETE`);
     } catch (err) {
-      console.error(`[${timestamp}] ❌ handleRating ERROR:`, err);
       toast.showError({
         title: t('playground.rating.error.title'),
         description: err instanceof Error ? err.message : t('common.unknownError'),
@@ -592,156 +556,102 @@ export const PlaygroundPopup = ({
 
                       {/* User Star Rating */}
                       <Flex align="center" gap={1}>
-                        {[1, 2, 3, 4, 5].map((value) => {
-                          console.log(
-                            `[RENDER] Rendering star button ${value}, hasVisited=${hasVisited}`,
-                          );
-                          return (
-                            <Box
-                              key={value}
-                              as="button"
-                              onMouseDown={() => {
-                                console.log(
-                                  `[MOUSEDOWN] Star ${value} mousedown - hasVisited=${hasVisited}`,
-                                );
-                                isClickingRef.current = true;
-                                console.log(`[MOUSEDOWN] Set isClickingRef to true`);
-                              }}
-                              onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
-                                console.log(
-                                  `[ONCLICK START] isClickingRef.current = ${isClickingRef.current}`,
-                                );
-                                const timestamp = new Date().toISOString();
-                                console.log(
-                                  `[${timestamp}] 🎯 STAR CLICKED - Rating value: ${value}`,
-                                );
+                        {[1, 2, 3, 4, 5].map((value) => (
+                          <Box
+                            key={value}
+                            as="button"
+                            onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (!user) {
+                                showLoginToast();
+                                return;
+                              }
 
-                                e.preventDefault();
-                                e.stopPropagation();
-                                if (!user) {
-                                  console.log(`[${timestamp}] ❌ No user, showing login toast`);
-                                  showLoginToast();
-                                  return;
+                              try {
+                                // If not visited, mark as visited first and get the visit ID
+                                let visitId: string | undefined;
+                                if (!hasVisited) {
+                                  const result = await addVisit(playground.id);
+                                  if (result.error) {
+                                    toast.showError({
+                                      title: t('common.error'),
+                                      description: result.error,
+                                    });
+                                    return;
+                                  }
+                                  visitId = result.visitId;
+                                  // Update local state immediately to ensure consistency
+                                  setHasVisited(true);
+                                  onVisitChange(true);
                                 }
 
-                                try {
-                                  console.log(`[${timestamp}] 📍 hasVisited state: ${hasVisited}`);
-
-                                  // If not visited, mark as visited first and get the visit ID
-                                  let visitId: string | undefined;
-                                  if (!hasVisited) {
-                                    console.log(
-                                      `[${timestamp}] 🏗️  Creating visit for playground ${playground.id}...`,
-                                    );
-                                    const result = await addVisit(playground.id);
-                                    console.log(`[${timestamp}] ✅ addVisit result:`, result);
-
-                                    if (result.error) {
-                                      console.error(
-                                        `[${timestamp}] ❌ addVisit error:`,
-                                        result.error,
-                                      );
-                                      toast.showError({
-                                        title: t('common.error'),
-                                        description: result.error,
-                                      });
-                                      return;
+                                // Then handle the rating
+                                await handleRating(
+                                  value,
+                                  e as unknown as React.MouseEvent<HTMLButtonElement>,
+                                  visitId,
+                                );
+                              } catch (error) {
+                                // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
+                                console.error('Rating operation failed:', error);
+                              }
+                            }}
+                            onMouseEnter={
+                              // Only enable hover effects if already visited to avoid re-render issues
+                              hasVisited
+                                ? () => {
+                                    if (hoveredRating !== value) {
+                                      setHoveredRating(value);
                                     }
-                                    visitId = result.visitId;
-                                    console.log(
-                                      `[${timestamp}] ✅ Visit created with ID: ${visitId}`,
-                                    );
                                   }
-
-                                  // Then handle the rating - this must complete before any popup updates
-                                  console.log(
-                                    `[${timestamp}] 💾 Calling handleRating with visitId: ${visitId}`,
-                                  );
-                                  await handleRating(
-                                    value,
-                                    e as unknown as React.MouseEvent<HTMLButtonElement>,
-                                    visitId,
-                                  );
-
-                                  // Only update state after rating succeeds
-                                  if (!hasVisited && visitId) {
-                                    console.log(
-                                      `[${timestamp}] 🔄 Rating succeeded, updating hasVisited state`,
-                                    );
-                                    setHasVisited(true);
-                                    onVisitChange(true);
+                                : undefined
+                            }
+                            onMouseLeave={
+                              hasVisited
+                                ? () => {
+                                    if (hoveredRating !== null) {
+                                      setHoveredRating(null);
+                                    }
                                   }
-
-                                  console.log(`[${timestamp}] ✅ STAR CLICK HANDLER COMPLETE`);
-                                } catch (error) {
-                                  // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
-                                  console.error(
-                                    `[${timestamp}] ❌ Star click handler error:`,
-                                    error,
-                                  );
-                                } finally {
-                                  isClickingRef.current = false;
-                                  console.log(`[ONCLICK END] Set isClickingRef to false`);
+                                : undefined
+                            }
+                            aria-disabled={!user}
+                            aria-label={t('playground.rating.buttonLabel', { count: value })}
+                            role="button"
+                            cursor={user ? 'pointer' : 'not-allowed'}
+                            opacity={!user ? 0.5 : 1}
+                            transition="all 0.2s"
+                            _hover={
+                              user
+                                ? {
+                                    transform: 'scale(1.3)',
+                                  }
+                                : undefined
+                            }
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            p={1}
+                            bg="transparent"
+                            border="none"
+                            outline="none"
+                            _focus={{ outline: 'none' }}
+                          >
+                            {value <= (hoveredRating || rating?.userRating || 0) ? (
+                              <FaStar
+                                color={
+                                  !user
+                                    ? 'var(--chakra-colors-gray-400)'
+                                    : 'var(--chakra-colors-secondary-500)'
                                 }
-                              }}
-                              onMouseEnter={
-                                // Only enable hover effects if already visited to avoid re-render issues
-                                hasVisited
-                                  ? () => {
-                                      if (hoveredRating !== value) {
-                                        console.log(`[HOVER] Setting hoveredRating to ${value}`);
-                                        setHoveredRating(value);
-                                      }
-                                    }
-                                  : undefined
-                              }
-                              onMouseLeave={
-                                hasVisited
-                                  ? () => {
-                                      if (hoveredRating !== null) {
-                                        console.log(`[HOVER] Setting hoveredRating to null`);
-                                        setHoveredRating(null);
-                                      }
-                                    }
-                                  : undefined
-                              }
-                              aria-disabled={!user}
-                              aria-label={t('playground.rating.buttonLabel', { count: value })}
-                              role="button"
-                              cursor={user ? 'pointer' : 'not-allowed'}
-                              opacity={!user ? 0.5 : 1}
-                              transition="all 0.2s"
-                              _hover={
-                                user
-                                  ? {
-                                      transform: 'scale(1.3)',
-                                    }
-                                  : undefined
-                              }
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              p={1}
-                              bg="transparent"
-                              border="none"
-                              outline="none"
-                              _focus={{ outline: 'none' }}
-                            >
-                              {value <= (hoveredRating || rating?.userRating || 0) ? (
-                                <FaStar
-                                  color={
-                                    !user
-                                      ? 'var(--chakra-colors-gray-400)'
-                                      : 'var(--chakra-colors-secondary-500)'
-                                  }
-                                  size={24}
-                                />
-                              ) : (
-                                <FaRegStar color="var(--chakra-colors-gray-400)" size={24} />
-                              )}
-                            </Box>
-                          );
-                        })}
+                                size={24}
+                              />
+                            ) : (
+                              <FaRegStar color="var(--chakra-colors-gray-400)" size={24} />
+                            )}
+                          </Box>
+                        ))}
                       </Flex>
                     </Flex>
                   </VStack>
