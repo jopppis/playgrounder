@@ -455,6 +455,7 @@ const PlaygroundMarker = memo(
           ref={popupRef}
           autoPan={true}
           autoPanPadding={[50, 50]}
+          maxWidth={700}
           eventHandlers={{
             add: handlePopupOpen,
             remove: handlePopupClose,
