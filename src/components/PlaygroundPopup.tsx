@@ -242,7 +242,7 @@ export const PlaygroundPopup = ({
 
   return (
     <>
-      <Box minW="300px" maxW="700px">
+      <Box minW="300px" maxW="800px">
         {visitsLoading ? (
           <VStack align="stretch" gap={1} justify="center" minH="100px" p={4}>
             <Spinner size="md" color="brand.500" alignSelf="center" />

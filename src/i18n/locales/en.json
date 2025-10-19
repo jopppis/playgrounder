@@ -227,10 +227,10 @@
     "location": "Location",
     "noCity": "No city information",
     "markVisited": "Visited",
-    "locationInMaps": "Location in Maps",
+    "locationInMaps": "Maps",
     "showLocationOnMaps": "Show {{coordinates}} on Maps",
-    "searchOnMaps": "Search on Maps",
-    "searchOnGoogleMaps": "Search on Google Maps",
+    "searchOnMaps": "Search",
+    "searchOnGoogleMaps": "Google Maps",
     "searchOnMapsByName": "Search Maps for {{name}}",
     "searchOnGoogleMapsByName": "Search Google Maps for {{name}}",
     "filter": {
