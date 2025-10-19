@@ -103,14 +103,19 @@ export const PlaygroundPopup = ({
   useEffect(() => {
     if (!visitsLoading && user) {
       const newHasVisited = visits.some((visit) => visit.playground_id === playground.id);
-      setHasVisited(newHasVisited);
-      // Defer content change to avoid interrupting active operations on iOS Safari
-      setTimeout(() => onContentChange?.(), 0);
-    } else if (!user && !authLoading) {
+      // Only update if actually different to avoid unnecessary re-renders
+      if (newHasVisited !== hasVisited) {
+        console.log(`[useEffect] hasVisited changing from ${hasVisited} to ${newHasVisited}`);
+        setHasVisited(newHasVisited);
+        // Defer content change to avoid interrupting active operations on iOS Safari
+        setTimeout(() => onContentChange?.(), 0);
+      }
+    } else if (!user && !authLoading && hasVisited) {
+      console.log(`[useEffect] No user, setting hasVisited to false`);
       setHasVisited(false);
       setTimeout(() => onContentChange?.(), 0);
     }
-  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading]);
+  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading, hasVisited]);
 
   // Update popup when rating changes
   useEffect(() => {
@@ -625,12 +630,6 @@ export const PlaygroundPopup = ({
                                   console.log(
                                     `[${timestamp}] ✅ Visit created with ID: ${visitId}`,
                                   );
-
-                                  // Update local state immediately to ensure consistency
-                                  console.log(`[${timestamp}] 🔄 Setting hasVisited to true`);
-                                  setHasVisited(true);
-                                  onVisitChange(true);
-                                  console.log(`[${timestamp}] 🔄 State updated`);
                                 }
 
                                 // Then handle the rating - this must complete before any popup updates
@@ -642,6 +641,16 @@ export const PlaygroundPopup = ({
                                   e as unknown as React.MouseEvent<HTMLButtonElement>,
                                   visitId,
                                 );
+
+                                // Only update state after rating succeeds
+                                if (!hasVisited && visitId) {
+                                  console.log(
+                                    `[${timestamp}] 🔄 Rating succeeded, updating hasVisited state`,
+                                  );
+                                  setHasVisited(true);
+                                  onVisitChange(true);
+                                }
+
                                 console.log(`[${timestamp}] ✅ STAR CLICK HANDLER COMPLETE`);
                               } catch (error) {
                                 // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
