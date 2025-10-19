@@ -227,10 +227,10 @@
     "location": "Sijainti",
     "noCity": "Ei kaupunkitietoa",
     "markVisited": "Vierailtu",
-    "locationInMaps": "Maps",
+    "locationInMaps": "Sijainti Mapsissa",
     "showLocationOnMaps": "Näytä {{coordinates}} kartalla",
-    "searchOnMaps": "Hae",
-    "searchOnGoogleMaps": "Google Maps",
+    "searchOnMaps": "Hae Mapsissa",
+    "searchOnGoogleMaps": "Hae Google Mapsissa",
     "searchOnMapsByName": "Hae Mapsista nimellä {{name}}",
     "searchOnGoogleMapsByName": "Hae Google Mapsista nimellä {{name}}",
     "filter": {
