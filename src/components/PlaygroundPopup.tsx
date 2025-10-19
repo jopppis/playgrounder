@@ -684,18 +684,27 @@ export const PlaygroundPopup = ({
                                   console.log(`[ONCLICK END] Set isClickingRef to false`);
                                 }
                               }}
-                              onMouseEnter={() => {
-                                if (!isClickingRef.current && hoveredRating !== value) {
-                                  console.log(`[HOVER] Setting hoveredRating to ${value}`);
-                                  setHoveredRating(value);
-                                }
-                              }}
-                              onMouseLeave={() => {
-                                if (!isClickingRef.current && hoveredRating !== null) {
-                                  console.log(`[HOVER] Setting hoveredRating to null`);
-                                  setHoveredRating(null);
-                                }
-                              }}
+                              onMouseEnter={
+                                // Only enable hover effects if already visited to avoid re-render issues
+                                hasVisited
+                                  ? () => {
+                                      if (hoveredRating !== value) {
+                                        console.log(`[HOVER] Setting hoveredRating to ${value}`);
+                                        setHoveredRating(value);
+                                      }
+                                    }
+                                  : undefined
+                              }
+                              onMouseLeave={
+                                hasVisited
+                                  ? () => {
+                                      if (hoveredRating !== null) {
+                                        console.log(`[HOVER] Setting hoveredRating to null`);
+                                        setHoveredRating(null);
+                                      }
+                                    }
+                                  : undefined
+                              }
                               aria-disabled={!user}
                               aria-label={t('playground.rating.buttonLabel', { count: value })}
                               role="button"
