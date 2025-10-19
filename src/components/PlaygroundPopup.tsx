@@ -1,5 +1,5 @@
 import { Box, Button, Flex, HStack, Icon, Link, Spinner, Text, VStack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { HiPencil } from 'react-icons/hi2';
@@ -90,6 +90,7 @@ export const PlaygroundPopup = ({
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [hasVisited, setHasVisited] = useState(false);
+  const isClickingRef = useRef(false);
 
   // Reset states when user changes
   useEffect(() => {
@@ -101,6 +102,12 @@ export const PlaygroundPopup = ({
 
   // Use useEffect to update hasVisited when visits change
   useEffect(() => {
+    // Don't update state if we're in the middle of a click operation
+    if (isClickingRef.current) {
+      console.log(`[useEffect] Skipping hasVisited update - click in progress`);
+      return;
+    }
+
     if (!visitsLoading && user) {
       const newHasVisited = visits.some((visit) => visit.playground_id === playground.id);
       // Only update if actually different to avoid unnecessary re-renders
@@ -597,8 +604,13 @@ export const PlaygroundPopup = ({
                                 console.log(
                                   `[MOUSEDOWN] Star ${value} mousedown - hasVisited=${hasVisited}`,
                                 );
+                                isClickingRef.current = true;
+                                console.log(`[MOUSEDOWN] Set isClickingRef to true`);
                               }}
                               onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+                                console.log(
+                                  `[ONCLICK START] isClickingRef.current = ${isClickingRef.current}`,
+                                );
                                 const timestamp = new Date().toISOString();
                                 console.log(
                                   `[${timestamp}] 🎯 STAR CLICKED - Rating value: ${value}`,
@@ -667,10 +679,23 @@ export const PlaygroundPopup = ({
                                     `[${timestamp}] ❌ Star click handler error:`,
                                     error,
                                   );
+                                } finally {
+                                  isClickingRef.current = false;
+                                  console.log(`[ONCLICK END] Set isClickingRef to false`);
                                 }
                               }}
-                              onMouseEnter={() => setHoveredRating(value)}
-                              onMouseLeave={() => setHoveredRating(null)}
+                              onMouseEnter={() => {
+                                if (!isClickingRef.current && hoveredRating !== value) {
+                                  console.log(`[HOVER] Setting hoveredRating to ${value}`);
+                                  setHoveredRating(value);
+                                }
+                              }}
+                              onMouseLeave={() => {
+                                if (!isClickingRef.current && hoveredRating !== null) {
+                                  console.log(`[HOVER] Setting hoveredRating to null`);
+                                  setHoveredRating(null);
+                                }
+                              }}
                               aria-disabled={!user}
                               aria-label={t('playground.rating.buttonLabel', { count: value })}
                               role="button"
