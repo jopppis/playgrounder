@@ -248,7 +248,7 @@ export const PlaygroundPopup = ({
 
   return (
     <>
-      <Box minW="300px" maxW="70vw">
+      <Box minW="300px" maxW="max(300px, 80vw)">
         {visitsLoading ? (
           <VStack align="stretch" gap={1} justify="center" minH="100px" p={4}>
             <Spinner size="md" color="brand.500" alignSelf="center" />
@@ -332,7 +332,7 @@ export const PlaygroundPopup = ({
                     gap={2}
                   >
                     <Icon as={MdLocationOn} boxSize={5} />
-                    <Text fontSize="sm" fontWeight="medium">
+                    <Text fontSize="xs" fontWeight="medium">
                       {t('playground.locationInMaps')}
                     </Text>
                   </Button>
@@ -374,7 +374,7 @@ export const PlaygroundPopup = ({
                       gap={2}
                     >
                       <Icon as={MdSearch} boxSize={5} />
-                      <Text fontSize="sm" fontWeight="medium">
+                      <Text fontSize="xs" fontWeight="medium">
                         {t('playground.searchOnMaps')}
                       </Text>
                     </Button>
@@ -419,7 +419,7 @@ export const PlaygroundPopup = ({
                       gap={2}
                     >
                       <Icon as={MdMap} boxSize={5} />
-                      <Text fontSize="sm" fontWeight="medium">
+                      <Text fontSize="xs" fontWeight="medium">
                         {t('playground.searchOnGoogleMaps')}
                       </Text>
                     </Button>
