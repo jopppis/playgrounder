@@ -106,10 +106,12 @@ export const PlaygroundPopup = ({
       // Only update if actually different to avoid unnecessary re-renders
       if (newHasVisited !== hasVisited) {
         setHasVisited(newHasVisited);
+        onVisitChange(newHasVisited);
         setTimeout(() => onContentChange?.(), 0);
       }
     } else if (!user && !authLoading && hasVisited) {
       setHasVisited(false);
+      onVisitChange(false);
       setTimeout(() => onContentChange?.(), 0);
     }
   }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading, hasVisited]);
@@ -117,6 +119,7 @@ export const PlaygroundPopup = ({
   // Update popup when rating changes
   useEffect(() => {
     setTimeout(() => onContentChange?.(), 0);
+    onRatingChange();
   }, [rating, ratingLoading, onContentChange]);
 
   // Update popup when hover state changes
@@ -145,9 +148,6 @@ export const PlaygroundPopup = ({
       return;
     }
 
-    setHasVisited(true);
-    onVisitChange(true);
-    setTimeout(() => onContentChange?.(), 0);
     toast.showSuccess({
       title: t('playground.addVisit.title'),
     });
@@ -165,13 +165,7 @@ export const PlaygroundPopup = ({
       return;
     }
 
-    // Update local state immediately after successful removal
-    setHasVisited(false);
-    onVisitChange(false);
-    // Clear rating data since ratings can't exist without visits
     clearRating();
-    onRatingChange();
-    setTimeout(() => onContentChange?.(), 0);
     toast.showSuccess({
       title: t('playground.removeVisit.title'),
     });
@@ -212,10 +206,8 @@ export const PlaygroundPopup = ({
           : (rating?.isPublic ?? false);
       setHoveredRating(null);
 
-      // Submit the rating - optimistic updates are now handled in useRatings
+      // Submit the rating
       await submitRating(value, isPublic, visitId);
-      setTimeout(() => onContentChange?.(), 0);
-      onRatingChange();
       toast.showSuccess({
         title: t('playground.rating.success.title'),
       });
@@ -231,7 +223,6 @@ export const PlaygroundPopup = ({
     try {
       const wasPublic = rating?.isPublic;
       await togglePublic();
-      onRatingChange(); // Call onRatingChange after toggling public status
       toast.showSuccess({
         title: t('playground.rating.visibility.success.title'),
         description: wasPublic
@@ -255,7 +246,7 @@ export const PlaygroundPopup = ({
           </VStack>
         ) : (
           <VStack align="stretch" gap={0}>
-            {/* Banner with playground name and average rating */}
+            {/* Banner with playground name */}
             <Box
               bg="linear-gradient(135deg, var(--chakra-colors-brand-500) 0%, var(--chakra-colors-brand-600) 100%)"
               px={4}
@@ -581,9 +572,6 @@ export const PlaygroundPopup = ({
                                     return;
                                   }
                                   visitId = result.visitId;
-                                  // Update local state immediately to ensure consistency
-                                  setHasVisited(true);
-                                  onVisitChange(true);
                                 }
 
                                 // Then handle the rating
