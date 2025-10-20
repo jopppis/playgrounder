@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Try to fix optimistic visit state update on rating change
+
 ## [0.22.2] - 2025-10-19
 
 ### Changed
