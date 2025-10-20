@@ -246,7 +246,7 @@ export const PlaygroundPopup = ({
           </VStack>
         ) : (
           <VStack align="stretch" gap={0}>
-            {/* Banner with playground name and average rating */}
+            {/* Banner with playground name */}
             <Box
               bg="linear-gradient(135deg, var(--chakra-colors-brand-500) 0%, var(--chakra-colors-brand-600) 100%)"
               px={4}
