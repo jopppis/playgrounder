@@ -124,6 +124,7 @@ export const PlaygroundPopup = ({
 
   // Update popup when hover state changes
   useEffect(() => {
+    console.log('Hovered rating changed to:', hoveredRating);
     setTimeout(() => onContentChange?.(), 0);
   }, [hoveredRating, onContentChange]);
 
