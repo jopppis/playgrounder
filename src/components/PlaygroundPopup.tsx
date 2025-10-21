@@ -561,25 +561,21 @@ export const PlaygroundPopup = ({
                               }
 
                               try {
-                                // If not visited, mark as visited first and get the visit ID
-                                let visitId: string | undefined;
-                                if (!hasVisited) {
-                                  const result = await addVisit(playground.id);
-                                  if (result.error) {
-                                    toast.showError({
-                                      title: t('common.error'),
-                                      description: result.error,
-                                    });
-                                    return;
-                                  }
-                                  visitId = result.visitId;
+                                // Update the visit first
+                                const result = await addVisit(playground.id);
+                                if (result.error) {
+                                  toast.showError({
+                                    title: t('common.error'),
+                                    description: result.error,
+                                  });
+                                  return;
                                 }
 
                                 // Then handle the rating
                                 await handleRating(
                                   value,
                                   e as unknown as React.MouseEvent<HTMLButtonElement>,
-                                  visitId,
+                                  result.visitId,
                                 );
                               } catch (error) {
                                 // Error handling is done in handleRating, but catch to prevent unhandled promise rejection
