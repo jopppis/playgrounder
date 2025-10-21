@@ -199,6 +199,7 @@ export const PlaygroundPopup = ({
         visitId = visitData.id;
       }
 
+      console.log('Handling rating submission:', { value, visitId, providedVisitId });
       // Use default public setting for new ratings
       const isPublic =
         rating?.userRating === null
