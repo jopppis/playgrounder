@@ -589,6 +589,7 @@ export const PlaygroundPopup = ({
                               hasVisited
                                 ? () => {
                                     if (hoveredRating !== value) {
+                                      console.log('User hovered over star rating:', value);
                                       setHoveredRating(value);
                                     }
                                   }
@@ -598,6 +599,7 @@ export const PlaygroundPopup = ({
                               hasVisited
                                 ? () => {
                                     if (hoveredRating !== null) {
+                                      console.log('User unhovered star rating');
                                       setHoveredRating(null);
                                     }
                                   }
