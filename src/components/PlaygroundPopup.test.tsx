@@ -224,6 +224,8 @@ describe('PlaygroundPopup', () => {
       visited_at: new Date().toISOString(),
       notes: null,
     };
+    const newVisitId = 'new-visit-id-123';
+    const mockAddVisit = vi.fn().mockResolvedValue({ error: null, visitId: newVisitId });
     (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { id: '1' } as User,
       loading: false,
@@ -232,7 +234,7 @@ describe('PlaygroundPopup', () => {
       visits: [mockVisitData],
       loading: false,
       error: null,
-      addVisit: vi.fn(),
+      addVisit: mockAddVisit,
       removeVisit: vi.fn(),
       refresh: vi.fn(),
     });
@@ -271,8 +273,8 @@ describe('PlaygroundPopup', () => {
     });
 
     await waitFor(() => {
-      // TODO: Fix this assert
-      // expect(mockSubmitRating).toHaveBeenCalledWith(1, false, mockVisitData.id);
+      expect(mockAddVisit).toHaveBeenCalledWith('1');
+      expect(mockSubmitRating).toHaveBeenCalledWith(1, false, newVisitId);
       expect(mockOnContentChange).toHaveBeenCalled();
     });
   });

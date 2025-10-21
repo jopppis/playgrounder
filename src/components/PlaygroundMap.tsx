@@ -388,7 +388,6 @@ const PlaygroundMarker = memo(
     visits,
     user,
     visitsLoading,
-    onVisitChange,
     onRatingChange,
     editMode,
   }: {
@@ -396,7 +395,6 @@ const PlaygroundMarker = memo(
     visits: Visit[];
     user: User | null;
     visitsLoading: boolean;
-    onVisitChange: (playgroundId: string, isVisited: boolean) => void;
     onRatingChange: (playgroundId: string) => void;
     editMode: boolean;
   }) => {
@@ -429,16 +427,12 @@ const PlaygroundMarker = memo(
     }, [hasVisited, updatePopup]);
 
     // Handle local visit status change
-    const handleVisitChange = useCallback(
-      (isVisited: boolean) => {
-        onVisitChange(playground.id, isVisited);
-        // Force icon update immediately
-        if (markerRef.current) {
-          markerRef.current.setIcon(isVisited ? visitedPlaygroundIcon : basePlaygroundIcon);
-        }
-      },
-      [playground.id, onVisitChange],
-    );
+    const handleVisitChange = useCallback((isVisited: boolean) => {
+      // Force icon update immediately
+      if (markerRef.current) {
+        markerRef.current.setIcon(isVisited ? visitedPlaygroundIcon : basePlaygroundIcon);
+      }
+    }, []);
 
     // Handle popup open/close
     const handlePopupOpen = useCallback(() => {
@@ -515,7 +509,7 @@ const PlaygroundMap = ({
     refreshPlaygrounds,
     refreshSinglePlayground,
   } = usePlaygrounds();
-  const { visits, loading: visitsLoading, updateVisitsState } = useVisits();
+  const { visits, loading: visitsLoading } = useVisits();
   const { filters, loading: filtersLoading, updateFilters } = useUserFilters();
   const { currentCity, updateCurrentCity } = useCurrentCity();
   const [showSignIn, setShowSignIn] = useState(false);
@@ -1017,7 +1011,6 @@ const PlaygroundMap = ({
               visits={visits}
               user={user}
               visitsLoading={visitsLoading}
-              onVisitChange={updateVisitsState}
               onRatingChange={() => refreshSinglePlayground(playground.id)}
               editMode={editMode}
             />

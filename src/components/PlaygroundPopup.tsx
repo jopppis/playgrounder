@@ -107,24 +107,24 @@ export const PlaygroundPopup = ({
       if (newHasVisited !== hasVisited) {
         setHasVisited(newHasVisited);
         onVisitChange(newHasVisited);
-        setTimeout(() => onContentChange?.(), 0);
+        onContentChange?.();
       }
     } else if (!user && !authLoading && hasVisited) {
       setHasVisited(false);
       onVisitChange(false);
-      setTimeout(() => onContentChange?.(), 0);
+      onContentChange?.();
     }
   }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading, hasVisited]);
 
   // Update popup when rating changes
   useEffect(() => {
-    setTimeout(() => onContentChange?.(), 0);
+    onContentChange?.();
     onRatingChange();
   }, [rating, ratingLoading, onContentChange]);
 
   // Update popup when hover state changes
   useEffect(() => {
-    setTimeout(() => onContentChange?.(), 0);
+    onContentChange?.();
   }, [hoveredRating, onContentChange]);
 
   // Show login toast when component mounts if user is not logged in
@@ -581,25 +581,23 @@ export const PlaygroundPopup = ({
                                 console.error('Rating operation failed:', error);
                               }
                             }}
-                            onMouseEnter={
-                              // Only enable hover effects if already visited to avoid re-render issues
-                              hasVisited
-                                ? () => {
-                                    if (hoveredRating !== value) {
-                                      setHoveredRating(value);
-                                    }
-                                  }
-                                : undefined
-                            }
-                            onMouseLeave={
-                              hasVisited
-                                ? () => {
-                                    if (hoveredRating !== null) {
-                                      setHoveredRating(null);
-                                    }
-                                  }
-                                : undefined
-                            }
+                            onPointerEnter={(e) => {
+                              // Only apply hover effects for mouse input, not touch
+                              // This prevents re-renders during touch events on iOS
+                              if (e.pointerType === 'mouse' && user) {
+                                if (hoveredRating !== value) {
+                                  setHoveredRating(value);
+                                }
+                              }
+                            }}
+                            onPointerLeave={(e) => {
+                              // Only apply hover effects for mouse input, not touch
+                              if (e.pointerType === 'mouse' && user) {
+                                if (hoveredRating !== null) {
+                                  setHoveredRating(null);
+                                }
+                              }
+                            }}
                             aria-disabled={!user}
                             aria-label={t('playground.rating.buttonLabel', { count: value })}
                             role="button"
