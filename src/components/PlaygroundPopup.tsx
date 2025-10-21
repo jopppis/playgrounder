@@ -239,7 +239,7 @@ export const PlaygroundPopup = ({
 
   return (
     <>
-      <Box minW="300px" maxW="max(300px, 80vw)">
+      <Box minW="350px" maxW="max(350px, 80vw)">
         {visitsLoading ? (
           <VStack align="stretch" gap={1} justify="center" minH="100px" p={4}>
             <Spinner size="md" color="brand.500" alignSelf="center" />
@@ -249,11 +249,10 @@ export const PlaygroundPopup = ({
             {/* Banner with playground name */}
             <Box
               bg="linear-gradient(135deg, var(--chakra-colors-brand-500) 0%, var(--chakra-colors-brand-600) 100%)"
-              px={4}
               pt={1.5}
               pb={0}
             >
-              <Flex justify="space-between" align="center">
+              <Flex justify="space-between" align="center" px={4}>
                 <Text
                   fontSize="lg"
                   fontWeight="bold"

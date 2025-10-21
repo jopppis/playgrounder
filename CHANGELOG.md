@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Try to fix popup banner coloring issue
+
 ## [0.22.5] - 2025-10-21
 
 ### Fixed
