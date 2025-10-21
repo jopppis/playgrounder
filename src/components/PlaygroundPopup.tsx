@@ -107,24 +107,24 @@ export const PlaygroundPopup = ({
       if (newHasVisited !== hasVisited) {
         setHasVisited(newHasVisited);
         onVisitChange(newHasVisited);
-        setTimeout(() => onContentChange?.(), 0);
+        onContentChange?.();
       }
     } else if (!user && !authLoading && hasVisited) {
       setHasVisited(false);
       onVisitChange(false);
-      setTimeout(() => onContentChange?.(), 0);
+      onContentChange?.();
     }
   }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading, hasVisited]);
 
   // Update popup when rating changes
   useEffect(() => {
-    setTimeout(() => onContentChange?.(), 0);
+    onContentChange?.();
     onRatingChange();
   }, [rating, ratingLoading, onContentChange]);
 
   // Update popup when hover state changes
   useEffect(() => {
-    setTimeout(() => onContentChange?.(), 0);
+    onContentChange?.();
   }, [hoveredRating, onContentChange]);
 
   // Show login toast when component mounts if user is not logged in
