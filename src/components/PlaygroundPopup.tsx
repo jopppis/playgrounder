@@ -584,27 +584,23 @@ export const PlaygroundPopup = ({
                                 console.error('Rating operation failed:', error);
                               }
                             }}
-                            onMouseEnter={
-                              // Only enable hover effects if already visited to avoid re-render issues
-                              hasVisited
-                                ? () => {
-                                    if (hoveredRating !== value) {
-                                      console.log('User hovered over star rating:', value);
-                                      setHoveredRating(value);
-                                    }
-                                  }
-                                : undefined
-                            }
-                            onMouseLeave={
-                              hasVisited
-                                ? () => {
-                                    if (hoveredRating !== null) {
-                                      console.log('User unhovered star rating');
-                                      setHoveredRating(null);
-                                    }
-                                  }
-                                : undefined
-                            }
+                            onPointerEnter={(e) => {
+                              // Only apply hover effects for mouse input, not touch
+                              // This prevents re-renders during touch events on iOS
+                              if (e.pointerType === 'mouse' && user) {
+                                if (hoveredRating !== value) {
+                                  setHoveredRating(value);
+                                }
+                              }
+                            }}
+                            onPointerLeave={(e) => {
+                              // Only apply hover effects for mouse input, not touch
+                              if (e.pointerType === 'mouse' && user) {
+                                if (hoveredRating !== null) {
+                                  setHoveredRating(null);
+                                }
+                              }
+                            }}
                             aria-disabled={!user}
                             aria-label={t('playground.rating.buttonLabel', { count: value })}
                             role="button"
