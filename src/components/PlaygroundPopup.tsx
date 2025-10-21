@@ -239,7 +239,7 @@ export const PlaygroundPopup = ({
 
   return (
     <>
-      <Box minW="350px" maxW="max(350px, 80vw)">
+      <Box minW="350px" maxW="max(350px, 80vw)" overflow="hidden">
         {visitsLoading ? (
           <VStack align="stretch" gap={1} justify="center" minH="100px" p={4}>
             <Spinner size="md" color="brand.500" alignSelf="center" />
@@ -251,6 +251,8 @@ export const PlaygroundPopup = ({
               bg="linear-gradient(135deg, var(--chakra-colors-brand-500) 0%, var(--chakra-colors-brand-600) 100%)"
               pt={1.5}
               pb={0}
+              mx={-1}
+              px={1}
             >
               <Flex justify="space-between" align="center" px={4}>
                 <Text
@@ -434,10 +436,12 @@ export const PlaygroundPopup = ({
                 }
                 .leaflet-popup-content {
                   margin: 0px !important;
+                  width: 100% !important;
                 }
                 .leaflet-popup-content-wrapper {
                   padding: 0px !important;
                   border-radius: 8px !important;
+                  overflow: hidden !important;
                 }
               `}
             </style>
