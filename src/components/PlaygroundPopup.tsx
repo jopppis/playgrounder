@@ -559,6 +559,7 @@ export const PlaygroundPopup = ({
                                 showLoginToast();
                                 return;
                               }
+                              console.log('User clicked star rating:', value);
 
                               try {
                                 // Update the visit first
