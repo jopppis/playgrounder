@@ -124,7 +124,6 @@ export const PlaygroundPopup = ({
 
   // Update popup when hover state changes
   useEffect(() => {
-    console.log('Hovered rating changed to:', hoveredRating);
     setTimeout(() => onContentChange?.(), 0);
   }, [hoveredRating, onContentChange]);
 
@@ -200,7 +199,6 @@ export const PlaygroundPopup = ({
         visitId = visitData.id;
       }
 
-      console.log('Handling rating submission:', { value, visitId, providedVisitId });
       // Use default public setting for new ratings
       const isPublic =
         rating?.userRating === null
@@ -560,7 +558,6 @@ export const PlaygroundPopup = ({
                                 showLoginToast();
                                 return;
                               }
-                              console.log('User clicked star rating:', value);
 
                               try {
                                 // Update the visit first

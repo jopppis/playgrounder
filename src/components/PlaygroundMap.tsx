@@ -416,7 +416,6 @@ const PlaygroundMarker = memo(
     const markerRef = useRef<L.Marker>(null);
 
     const updatePopup = useCallback(() => {
-      console.log('Updating popup:');
       if (popupRef.current) {
         popupRef.current.update();
       }

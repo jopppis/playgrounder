@@ -126,13 +126,6 @@ export const useRatings = (
           : {}),
       }));
 
-      console.log('Submitting rating:', {
-        playground_id: playgroundId,
-        user_id: user.id,
-        rating: value,
-        is_public: isPublic,
-        visit_id: visitId,
-      });
       const { error } = await supabase.from('ratings').upsert(
         {
           playground_id: playgroundId,

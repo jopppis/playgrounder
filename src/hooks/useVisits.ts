@@ -43,10 +43,8 @@ export const useVisits = () => {
           visited_at: new Date().toISOString(),
           notes: null,
         };
-        console.log('Adding new visit:', newVisit);
         setVisits((current) => [...current, newVisit]);
       } else {
-        console.log('Removing visit:', playgroundId);
         setVisits((current) => current.filter((visit) => visit.playground_id !== playgroundId));
       }
     },
@@ -99,7 +97,6 @@ export const useVisits = () => {
         .select('id')
         .single();
 
-      console.log('Add visit response:', { data, error });
       if (error) {
         throw error;
       }
