@@ -52,11 +52,6 @@ export const PlaygroundFilter = ({
   const { cities, loading: citiesLoading } = useCities();
   const [isCitySelectOpen, setIsCitySelectOpen] = useState(false);
 
-  // Update local search query when filters change externally
-  useEffect(() => {
-    setLocalSearchQuery(filters.searchQuery || '');
-  }, [filters.searchQuery]);
-
   const handleSearchChange = (value: string) => {
     setLocalSearchQuery(value);
 
@@ -112,6 +107,13 @@ export const PlaygroundFilter = ({
   }, [filters, user]);
 
   const resetFilters = () => {
+    // Clear the local search query
+    setLocalSearchQuery('');
+    // Clear any pending timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
     // For non-logged in users, only reset non-user-specific filters
     if (!user) {
       onChange({

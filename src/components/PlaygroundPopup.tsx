@@ -114,13 +114,22 @@ export const PlaygroundPopup = ({
       onVisitChange(false);
       onContentChange?.();
     }
-  }, [visits, playground.id, onContentChange, visitsLoading, user, authLoading, hasVisited]);
+  }, [
+    visits,
+    playground.id,
+    onContentChange,
+    visitsLoading,
+    user,
+    authLoading,
+    hasVisited,
+    onVisitChange,
+  ]);
 
   // Update popup when rating changes
   useEffect(() => {
     onContentChange?.();
     onRatingChange();
-  }, [rating, ratingLoading, onContentChange]);
+  }, [rating, ratingLoading, onContentChange, onRatingChange]);
 
   // Update popup when hover state changes
   useEffect(() => {

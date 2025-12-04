@@ -4,6 +4,10 @@
   "version": "0.22.7",
   "description": "An interactive playground map for tracking visited playgrounds nearby",
   "type": "module",
+  "engines": {
+    "node": "^22.0.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -58,7 +62,7 @@
     "@chakra-ui/react": "^3.7.0",
     "@supabase/supabase-js": "^2.48.1",
     "@types/leaflet": "^1.9.16",
-    "framer-motion": "^12.4.1",
+    "motion": "^12.23.25",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "react-i18next": "^16.0.0",

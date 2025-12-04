@@ -10,7 +10,7 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdSupervisorAccount } from 'react-icons/md';
 import { usePlaygroundEdits } from '../../hooks/usePlaygroundEdits';
@@ -39,14 +39,11 @@ export default function AddPlaygroundModal({
   const { proposePlaygroundEdit, loading } = usePlaygroundEdits();
   const toast = useToast();
 
-  // Reset form when modal closes
-  useEffect(() => {
-    if (!isOpen) {
-      setName('');
-      setReason('');
-      setHasSupervised(false);
-    }
-  }, [isOpen]);
+  const resetForm = () => {
+    setName('');
+    setReason('');
+    setHasSupervised(false);
+  };
 
   const handleSubmit = async () => {
     if (!location) {
@@ -84,8 +81,14 @@ export default function AddPlaygroundModal({
         title: t('playground.add.success.title'),
         description: t('playground.add.success.message'),
       });
+      resetForm();
       onClose(name, hasSupervised);
     }
+  };
+
+  const handleCancel = () => {
+    resetForm();
+    onCancel();
   };
 
   return (
@@ -100,7 +103,7 @@ export default function AddPlaygroundModal({
         `}
       </style>
 
-      <Dialog.Root open={isOpen} onOpenChange={() => onCancel()}>
+      <Dialog.Root open={isOpen} onOpenChange={() => handleCancel()}>
         <Portal>
           <Dialog.Backdrop />
           <Dialog.Positioner>
@@ -113,7 +116,7 @@ export default function AddPlaygroundModal({
                   position="absolute"
                   right="8px"
                   top="8px"
-                  onClick={onCancel}
+                  onClick={handleCancel}
                   bg="brand.500"
                   _hover={{ bg: 'secondary.500' }}
                 />
@@ -225,7 +228,7 @@ export default function AddPlaygroundModal({
                     transform: 'translateY(0)',
                   }}
                   transition="all 0.2s"
-                  onClick={onCancel}
+                  onClick={handleCancel}
                 >
                   {t('playground.add.cancelButton')}
                 </Button>

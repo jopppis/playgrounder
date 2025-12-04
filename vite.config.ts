@@ -1,17 +1,17 @@
-import react from '@vitejs/plugin-react-swc'
-import { execSync } from 'child_process'
-import { defineConfig } from 'vite'
-import { VitePWA } from 'vite-plugin-pwa'
-import { version } from './package.json'
+import react from '@vitejs/plugin-react-swc';
+import { execSync } from 'child_process';
+import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
+import { version } from './package.json';
 
 // Get Git commit hash for build ID
 const getBuildId = () => {
   try {
-    return execSync('git rev-parse --short HEAD').toString().trim()
+    return execSync('git rev-parse --short HEAD').toString().trim();
   } catch {
-    return 'unknown'
+    return 'unknown';
   }
-}
+};
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -31,12 +31,12 @@ export default defineConfig({
               cacheName: 'map-tiles-osm',
               expiration: {
                 maxEntries: 1000,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
               },
               cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
+                statuses: [0, 200],
+              },
+            },
           },
           {
             urlPattern: /^https:\/\/.*\.basemaps\.cartocdn\.com\/.*/i,
@@ -45,34 +45,35 @@ export default defineConfig({
               cacheName: 'map-tiles-carto',
               expiration: {
                 maxEntries: 1000,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
               },
               cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
+                statuses: [0, 200],
+              },
+            },
           },
           {
-            urlPattern: /^https:\/\/server\.arcgisonline\.com\/ArcGIS\/rest\/services\/World_Imagery\/.*/i,
+            urlPattern:
+              /^https:\/\/server\.arcgisonline\.com\/ArcGIS\/rest\/services\/World_Imagery\/.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'map-tiles-esri',
               expiration: {
                 maxEntries: 1000,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
               },
               cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          }
-        ]
-      }
-    })
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+      },
+    }),
   ],
   define: {
     'import.meta.env.APP_VERSION': JSON.stringify(version),
-    'import.meta.env.BUILD_ID': JSON.stringify(getBuildId())
+    'import.meta.env.BUILD_ID': JSON.stringify(getBuildId()),
   },
   server: {
     headers: {
@@ -82,22 +83,22 @@ export default defineConfig({
       'X-XSS-Protection': '1; mode=block',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
       'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), interest-cohort=()',
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
-    }
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+    },
   },
   build: {
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'chakra': ['@chakra-ui/react', 'framer-motion'],
-          'map': ['leaflet', 'react-leaflet'],
-          'supabase': ['@supabase/supabase-js']
-        }
-      }
-    }
-  }
-})
+          chakra: ['@chakra-ui/react', 'motion'],
+          map: ['leaflet', 'react-leaflet'],
+          supabase: ['@supabase/supabase-js'],
+        },
+      },
+    },
+  },
+});
 
 // Vitest configuration
 export const test = {
@@ -112,8 +113,8 @@ export const test = {
   deps: {
     optimizer: {
       web: {
-        include: ['@testing-library/jest-dom']
-      }
-    }
-  }
-}
+        include: ['@testing-library/jest-dom'],
+      },
+    },
+  },
+};
