@@ -26,6 +26,46 @@ type StatsProps = {
   loading?: boolean;
 };
 
+const StatBox = ({ label, value }: { label: string; value: number | string }) => (
+  <Box
+    bg="gray.50"
+    p={4}
+    borderRadius="md"
+    border="1px solid"
+    borderColor="gray.200"
+    textAlign="center"
+  >
+    <Text fontSize="2xl" fontWeight="bold" color="brand.500">
+      {value}
+    </Text>
+    <Text fontSize="sm" color="gray.600">
+      {label}
+    </Text>
+  </Box>
+);
+
+const StatSection = ({
+  title,
+  totalCount,
+  visitedCount,
+  t,
+}: {
+  title: string;
+  totalCount: number;
+  visitedCount: number;
+  t: (key: string) => string;
+}) => (
+  <Box mb={6}>
+    <Heading size="lg" color="brand.500" mb={3}>
+      {title}
+    </Heading>
+    <Box display="grid" gridTemplateColumns="1fr 1fr" gap={4}>
+      <StatBox label={t('stats.total')} value={totalCount} />
+      <StatBox label={t('stats.visited')} value={visitedCount} />
+    </Box>
+  </Box>
+);
+
 const Stats = ({
   playgrounds,
   visits,
@@ -55,24 +95,6 @@ const Stats = ({
     gap: 2,
     fontSize: 'sm',
   };
-
-  const StatBox = ({ label, value }: { label: string; value: number | string }) => (
-    <Box
-      bg="gray.50"
-      p={4}
-      borderRadius="md"
-      border="1px solid"
-      borderColor="gray.200"
-      textAlign="center"
-    >
-      <Text fontSize="2xl" fontWeight="bold" color="brand.500">
-        {value}
-      </Text>
-      <Text fontSize="sm" color="gray.600">
-        {label}
-      </Text>
-    </Box>
-  );
 
   const hasActiveFilters = (filters: Filters) => {
     return (
@@ -142,26 +164,6 @@ const Stats = ({
     }).length;
   }, [visits, playgrounds, filters, filteredPlaygroundCount]);
 
-  const StatSection = ({
-    title,
-    totalCount,
-    visitedCount,
-  }: {
-    title: string;
-    totalCount: number;
-    visitedCount: number;
-  }) => (
-    <Box mb={6}>
-      <Heading size="lg" color="brand.500" mb={3}>
-        {title}
-      </Heading>
-      <Box display="grid" gridTemplateColumns="1fr 1fr" gap={4}>
-        <StatBox label={t('stats.total')} value={totalCount} />
-        <StatBox label={t('stats.visited')} value={visitedCount} />
-      </Box>
-    </Box>
-  );
-
   return (
     <>
       <Text fontSize="lg" fontWeight="bold" color="brand.500" mb={4}>
@@ -179,6 +181,7 @@ const Stats = ({
               title={t('stats.allPlaygrounds')}
               totalCount={playgrounds?.length || 0}
               visitedCount={visits?.length || 0}
+              t={t}
             />
 
             {/* Filtered Section */}
@@ -187,6 +190,7 @@ const Stats = ({
                 title={t('stats.filteredPlaygrounds')}
                 totalCount={filteredPlaygroundCount}
                 visitedCount={filteredVisitedCount || 0}
+                t={t}
               />
             )}
 
@@ -196,6 +200,7 @@ const Stats = ({
                 title={t('stats.currentCity', { city: currentCity })}
                 totalCount={currentCityStats.total}
                 visitedCount={currentCityStats.visited}
+                t={t}
               />
             )}
           </VStack>
