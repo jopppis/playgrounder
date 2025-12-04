@@ -4,6 +4,10 @@
   "version": "0.22.7",
   "description": "An interactive playground map for tracking visited playgrounds nearby",
   "type": "module",
+  "engines": {
+    "node": "^22.0.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
