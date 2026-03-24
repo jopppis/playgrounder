@@ -8,8 +8,7 @@
       "passwordPlaceholder": "Create your password",
       "error": {
         "title": "Sign Up Failed",
-        "message": "Failed to create account",
-        "captchaRequired": "Please complete the captcha verification"
+        "message": "Failed to create account"
       },
       "success": {
         "title": "Account Created",
@@ -121,8 +120,7 @@
       "error": {
         "title": "Change Failed",
         "message": "Failed to change your password",
-        "incorrectPassword": "Current password is incorrect",
-        "captchaRequired": "Please complete the captcha verification"
+        "incorrectPassword": "Current password is incorrect"
       },
       "close": "Close change password dialog"
     },
@@ -137,8 +135,7 @@
       "close": "Close",
       "error": {
         "title": "Error",
-        "message": "Failed to change email. Please try again.",
-        "captchaRequired": "Please complete the captcha verification."
+        "message": "Failed to change email. Please try again."
       },
       "success": {
         "title": "Success",
