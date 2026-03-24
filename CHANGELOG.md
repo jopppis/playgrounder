@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-03-24
+
+### Changed
+- Bumped dependencies
+
+### Removed
+- Turnstile Captcha due to migration away from Cloudflare
+
 ## [0.22.9] - 2025-12-06
 
 ### Changed
