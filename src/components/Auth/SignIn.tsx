@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import Turnstile from 'react-turnstile';
 import { useToast } from '../../hooks/useToast';
 import { supabase } from '../../lib/supabaseClient';
 
@@ -21,28 +20,17 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [resetCounter, setResetCounter] = useState(0);
   const toast = useToast();
-  // Enable Turnstile in development and production, but not in local
-  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    if (enableTurnstile && !captchaToken) {
-      setError(t('auth.signIn.error.captchaRequired'));
-      setLoading(false);
-      return;
-    }
-
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: enableTurnstile && captchaToken ? { captchaToken } : undefined,
       });
 
       if (signInError) throw signInError;
@@ -61,14 +49,6 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
         title: t('auth.signIn.error.title'),
         description: t('auth.signIn.error.message'),
       });
-      // Reset captcha on error
-      if (window.turnstile) {
-        window.turnstile.reset();
-      }
-      // We need to reset the captchaToken and increment the reset counter
-      // to force a fresh instance of the Turnstile component
-      setCaptchaToken(null);
-      setResetCounter((prev) => prev + 1);
     } finally {
       setLoading(false);
     }
@@ -160,24 +140,12 @@ export default function SignIn({ onSuccess, onSignInSuccess, onClose }: SignInPr
             >
               {t('auth.forgotPassword.button')}
             </Link>
-            <Box>
-              {enableTurnstile && (
-                <Turnstile
-                  key={`turnstile-${resetCounter}`}
-                  sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                  onSuccess={(token) => setCaptchaToken(token)}
-                  onError={() => setCaptchaToken(null)}
-                  onExpire={() => setCaptchaToken(null)}
-                  theme="light"
-                />
-              )}
-            </Box>
             <Button
               type="submit"
               bg="brand.500"
               color="white"
               w="100%"
-              disabled={loading || (enableTurnstile && !captchaToken)}
+              disabled={loading}
               size="lg"
               _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
               _active={{ bg: 'brand.500', transform: 'translateY(0)' }}

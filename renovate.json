@@ -2,10 +2,16 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "baseBranchPatterns": ["develop"],
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
   "packageRules": [
     {
       "matchUpdateTypes": ["patch"],
       "groupName": "all patch updates"
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "groupName": "all minor updates"
     },
     {
       "matchManagers": ["pip_requirements"],

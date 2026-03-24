@@ -8,8 +8,7 @@
       "passwordPlaceholder": "Luo salasanasi",
       "error": {
         "title": "Rekisteröityminen epäonnistui",
-        "message": "Tilin luominen epäonnistui",
-        "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
+        "message": "Tilin luominen epäonnistui"
       },
       "success": {
         "title": "Tili luotu",
@@ -121,8 +120,7 @@
       "error": {
         "title": "Vaihto epäonnistui",
         "message": "Salasanan vaihto epäonnistui",
-        "incorrectPassword": "Nykyinen salasana on virheellinen",
-        "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
+        "incorrectPassword": "Nykyinen salasana on virheellinen"
       },
       "close": "Sulje salasanan vaihtoikkuna"
     },
@@ -137,8 +135,7 @@
       "close": "Sulje",
       "error": {
         "title": "Virhe",
-        "message": "Sähköpostin vaihto epäonnistui. Yritä uudelleen.",
-        "captchaRequired": "Ole hyvä ja suorita captcha-vahvistus"
+        "message": "Sähköpostin vaihto epäonnistui. Yritä uudelleen."
       },
       "success": {
         "title": "Onnistui",

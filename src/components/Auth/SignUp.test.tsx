@@ -24,36 +24,6 @@ vi.mock('../../lib/supabaseClient', () => ({
   },
 }));
 
-// Mock Turnstile
-vi.mock('react-turnstile', () => ({
-  default: vi.fn().mockImplementation(({ onSuccess }) => {
-    // Call onSuccess synchronously to ensure it's called before any assertions
-    if (onSuccess) {
-      onSuccess('test-token');
-    }
-    return <div data-testid="mock-turnstile">Turnstile</div>;
-  }),
-}));
-
-// Mock environment variables
-vi.mock('../../lib/env', () => ({
-  env: {
-    VITE_APP_ENV: 'test',
-    VITE_TURNSTILE_SITE_KEY: 'test-site-key',
-  },
-}));
-
-// Define a type for the turnstile object
-interface Turnstile {
-  reset: () => void;
-}
-
-declare global {
-  interface Window {
-    turnstile?: Turnstile;
-  }
-}
-
 describe('SignUp', () => {
   const mockOnSuccess = vi.fn();
   const mockShowSuccess = vi.fn();
@@ -74,11 +44,6 @@ describe('SignUp', () => {
       data: {},
       error: null,
     });
-
-    // Mock window.turnstile
-    global.window.turnstile = {
-      reset: vi.fn(),
-    };
   });
 
   it('renders the sign up form', () => {
@@ -181,13 +146,6 @@ describe('SignUp', () => {
     await waitFor(
       () => {
         expect(screen.getByText(enTranslations.auth.signUp.error.title)).toBeInTheDocument();
-      },
-      { timeout: 2000 },
-    );
-
-    await waitFor(
-      () => {
-        expect(window.turnstile?.reset).toHaveBeenCalled();
       },
       { timeout: 2000 },
     );

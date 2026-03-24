@@ -1,4 +1,3 @@
-import type { User } from '@supabase/supabase-js';
 import '@testing-library/jest-dom/vitest';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -9,13 +8,6 @@ import { render } from '../../test/testUtils';
 import ChangePassword from './ChangePassword';
 
 // Mock the hooks
-vi.mock('../../hooks/useAuth', () => ({
-  useAuth: vi.fn().mockReturnValue({
-    user: { id: 'test-user-id', email: 'test@example.com' } as User,
-    loading: false,
-  }),
-}));
-
 vi.mock('../../hooks/useToast', () => ({
   useToast: vi.fn().mockReturnValue({
     showSuccess: vi.fn(),
@@ -33,36 +25,6 @@ vi.mock('../../lib/supabaseClient', () => ({
     },
   },
 }));
-
-// Mock Turnstile
-vi.mock('react-turnstile', () => ({
-  default: vi.fn().mockImplementation(({ onSuccess }) => {
-    // Call onSuccess synchronously to ensure it's called before any assertions
-    if (onSuccess) {
-      onSuccess('test-token');
-    }
-    return <div data-testid="mock-turnstile">Turnstile</div>;
-  }),
-}));
-
-// Mock environment variables
-vi.mock('../../lib/env', () => ({
-  env: {
-    VITE_APP_ENV: 'test',
-    VITE_TURNSTILE_SITE_KEY: 'test-site-key',
-  },
-}));
-
-// Define a type for the turnstile object
-interface Turnstile {
-  reset: () => void;
-}
-
-declare global {
-  interface Window {
-    turnstile?: Turnstile;
-  }
-}
 
 describe('ChangePassword', () => {
   const mockOnSuccess = vi.fn();
@@ -91,11 +53,6 @@ describe('ChangePassword', () => {
       data: {},
       error: null,
     });
-
-    // Mock window.turnstile
-    global.window.turnstile = {
-      reset: vi.fn(),
-    };
   });
 
   it('renders the change password form', () => {

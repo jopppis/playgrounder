@@ -3,7 +3,6 @@ import { AuthError } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
-import Turnstile from 'react-turnstile';
 import { useToast } from '../../hooks/useToast';
 import { supabase } from '../../lib/supabaseClient';
 
@@ -20,11 +19,7 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [resetCounter, setResetCounter] = useState(0);
   const toast = useToast();
-  // Enable Turnstile in development and production, but not in local
-  const enableTurnstile = import.meta.env.VITE_APP_ENV !== 'local';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,17 +27,10 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
     setError(null);
     setSuccess(false);
 
-    if (enableTurnstile && !captchaToken) {
-      setError(t('auth.signUp.error.captchaRequired'));
-      setLoading(false);
-      return;
-    }
-
     try {
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
-        options: enableTurnstile && captchaToken ? { captchaToken } : undefined,
       });
 
       if (signUpError) throw signUpError;
@@ -61,12 +49,6 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
         title: t('auth.signUp.error.title'),
         description: t('auth.signUp.error.message'),
       });
-      // Reset captcha on error
-      if (window.turnstile) {
-        window.turnstile.reset();
-      }
-      setCaptchaToken(null);
-      setResetCounter((prev) => prev + 1);
     } finally {
       setLoading(false);
     }
@@ -176,24 +158,12 @@ export default function SignUp({ onSuccess, isOpen, onClose }: SignUpProps) {
                         }}
                       />
                     </Box>
-                    <Box>
-                      {enableTurnstile && (
-                        <Turnstile
-                          key={`turnstile-${resetCounter}`}
-                          sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                          onSuccess={(token) => setCaptchaToken(token)}
-                          onError={() => setCaptchaToken(null)}
-                          onExpire={() => setCaptchaToken(null)}
-                          theme="light"
-                        />
-                      )}
-                    </Box>
                     <Button
                       type="submit"
                       bg="brand.500"
                       color="white"
                       w="100%"
-                      disabled={loading || (enableTurnstile && !captchaToken)}
+                      disabled={loading}
                       size="lg"
                       _hover={{ bg: 'secondary.500', transform: 'translateY(-2px)' }}
                       _active={{ bg: 'brand.500', transform: 'translateY(0)' }}
