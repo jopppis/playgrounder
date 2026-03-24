@@ -8,6 +8,10 @@
       "groupName": "all patch updates"
     },
     {
+      "matchUpdateTypes": ["minor"],
+      "groupName": "all minor updates"
+    },
+    {
       "matchManagers": ["pip_requirements"],
       "enabled": false
     },
