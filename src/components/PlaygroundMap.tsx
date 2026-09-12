@@ -979,17 +979,17 @@ const PlaygroundMap = ({
       >
         <TouchEventHandler />
         <LayersControl position="bottomright">
-          <LayersControl.BaseLayer checked name={t('map.standard') || 'Standard'}>
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-              maxZoom={19}
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name={t('map.osm') || 'OpenStreetMap'}>
+          <LayersControl.BaseLayer checked name={t('map.osm') || 'OpenStreetMap'}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom={19}
+            />
+          </LayersControl.BaseLayer>
+          <LayersControl.BaseLayer name={t('map.standard') || 'Standard'}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
               maxZoom={19}
             />
           </LayersControl.BaseLayer>
