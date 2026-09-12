@@ -32,7 +32,7 @@
   "devDependencies": {
     "@chakra-ui/cli": "^3.8.0",
     "@eslint/js": "^10.0.0",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/leaflet.markercluster": "^1.5.5",
